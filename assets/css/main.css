@@ -69,12 +69,27 @@ img {
   border-bottom: 4px solid var(--cac-red);
 }
 
-.hero-logo {
-  height: 90px;
-  width: auto;
+.hero-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
   margin-bottom: 1.25rem;
   position: relative;
   z-index: 1;
+}
+
+.hero-logo {
+  height: 90px;
+  width: auto;
+}
+
+.hero-logo-separator {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--cac-muted);
+  user-select: none;
 }
 
 .hero h1 {
