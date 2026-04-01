@@ -4,132 +4,288 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- TODO: Change the title to your app name and your name -->
   <title>RecycleRightCA | Omar Ahmad & Preston Chang</title>
 
-  <!-- Shared styles — gives you navigation arrows and CAC CSS variables -->
   <link rel="stylesheet" href="../../assets/css/shared.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Outfit:wght@300;600;900&display=swap" rel="stylesheet">
 
   <style>
-    /*
-     * TODO: Add your custom styles here. Go wild — this is YOUR page!
-     *
-     * You can use Congressional App Challenge colors with CSS variables:
-     *   var(--cac-navy)  → #000f63
-     *   var(--cac-red)   → #a53535
-     *   var(--cac-blue)  → #4560b3
-     *   var(--cac-white) → #ffffff
-     *
-     * Or use completely your own palette. It's up to you!
-     */
+    :root {
+      --cac-navy: #000f63;
+      --cac-red: #a53535;
+      --cac-blue: #4560b3;
+      --cac-white: #ffffff;
+      --eco-green: #2ecc71; /* Added for the recycling theme */
+      --glass: rgba(255, 255, 255, 0.8);
+    }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      color: #333;
-      background: #f9fafc;
+      font-family: 'Inter', sans-serif;
+      color: var(--cac-navy);
+      background: #000; /* Dark base for the animated background */
+      overflow-x: hidden;
       min-height: 100vh;
     }
 
+    /* --- ANIMATED MESH BACKGROUND --- */
+    .bg-wrapper {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -1;
+      background: linear-gradient(45deg, #000f63, #4560b3, #a53535, #2ecc71);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating Blobs for extra "Bonkers" feel */
+    .blob {
+      position: absolute;
+      width: 500px; height: 500px;
+      background: rgba(255,255,255,0.1);
+      filter: blur(80px);
+      border-radius: 50%;
+      z-index: -1;
+      animation: float 20s infinite alternate;
+    }
+
+    @keyframes float {
+      from { transform: translate(-10%, -10%) rotate(0deg); }
+      to { transform: translate(20%, 20%) rotate(360deg); }
+    }
+
+    /* --- LAYOUT & CONTAINERS --- */
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 4rem 2rem 3rem;
+      padding: 6rem 2rem 5rem;
     }
 
-    header { text-align: center; margin-bottom: 3rem; }
-    header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    header {
+      text-align: center;
+      margin-bottom: 5rem;
+      color: white;
+      animation: fadeInDown 1s ease-out;
+    }
 
+    header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, #fff, #4560b3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* --- GLASS SECTIONS --- */
     section {
-      background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      background: var(--glass);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 24px;
+      padding: 3rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      transform: translateY(30px);
+      opacity: 0;
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
-    h2 { font-size: 1.4rem; margin-bottom: 1rem; }
-    p { line-height: 1.7; margin-bottom: 1rem; }
+    section.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
 
+    section:hover {
+      transform: scale(1.02) translateY(-5px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+      border: 1px solid var(--cac-blue);
+    }
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: var(--cac-navy);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2::before {
+      content: '';
+      width: 30px;
+      height: 4px;
+      background: var(--cac-red);
+      border-radius: 2px;
+    }
+
+    p { line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.1rem; }
+
+    /* --- VIDEO BOX --- */
+    .video { padding: 1rem; background: rgba(0,0,0,0.05); }
+    
     .video iframe {
       width: 100%;
       aspect-ratio: 16 / 9;
       border: none;
-      border-radius: 8px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    /* --- BUTTONS & LINKS --- */
+    .links-grid {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.3s;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--cac-navy);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: var(--cac-red);
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      filter: brightness(1.2);
+    }
+
+    .back-to-showcase {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      background: white;
+      padding: 10px 20px;
+      border-radius: 50px;
+      color: var(--cac-navy) !important;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: 0.3s;
     }
 
     footer {
       text-align: center;
-      padding: 2rem;
-      color: #999;
-      font-size: 0.9rem;
+      padding: 4rem;
+      color: white;
+      font-weight: 300;
     }
 
-    footer a { color: var(--cac-red); }
+    /* Animations */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      .container { padding: 4rem 1rem; }
+      section { padding: 1.5rem; }
+      header h1 { font-size: 3rem; }
+    }
   </style>
 </head>
 <body>
-  <!-- Back button — links to the main showcase -->
+  <div class="bg-wrapper"></div>
+  <div class="blob" style="top: 10%; left: 10%;"></div>
+  <div class="blob" style="bottom: 10%; right: 10%; background: rgba(74, 144, 226, 0.1);"></div>
+
   <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
 
   <div class="container">
     <header>
-      <!-- TODO: Replace with your name -->
-      <h1>Omar Ahmad & Preston Chang</h1>
-      <!-- TODO: Write a short tagline about yourself -->
-      <p>A short tagline about you or your project.</p>
+      <h1>Omar Ahmad & <br>Preston Chang</h1>
+      <p>Building a Greener California through Code</p>
     </header>
 
     <section>
-      <!-- TODO: Tell us about yourself -->
-      <h2>About Me</h2>
-      <p>Write a few sentences about yourself. What school do you go to? What are you passionate about? What got you into coding?</p>
+      <h2>The Creators</h2>
+      <p>We are student developers passionate about using technology to solve environmental challenges. Based in California, we've witnessed the importance of proper waste management firsthand. Our journey into coding started with a simple question: <em>"Can we make recycling as easy as taking a photo?"</em></p>
     </section>
 
     <section>
-      <!-- TODO: Tell us about your app -->
       <h2>RecycleRightCA</h2>
-      <p>Describe your app. What does it do? Who is it for? What problem does it solve?</p>
-      <p>What technologies did you use to build it?</p>
+      <p><strong>RecycleRightCA</strong> is an AI-powered sustainability assistant designed to take the guesswork out of waste disposal. Whether you're at home, school, or on the go, our app helps users instantly identify what goes in which bin based on local California regulations.</p>
+      <p>Built using modern web technologies and a focus on accessibility, we aim to reduce landfill contamination one item at a time.</p>
     </section>
 
     <section class="video">
-      <!-- TODO: Replace YOUR_VIDEO_ID with your YouTube video ID.
-           For example, if your video URL is https://www.youtube.com/watch?v=abc123
-           then your video ID is "abc123" -->
-      <h2>Demo</h2>
+      <h2>Project Demo</h2>
       <iframe
-        src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+        src="https://www.youtube.com/embed/W8oCgQ0U3w8"
         title="App Demo Video"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
       </iframe>
-
-      <!-- Alternative: Self-hosted video (NOT recommended — use YouTube/Vimeo instead
-           to avoid bloating the repository)
-      <video controls width="100%">
-        <source src="assets/demo.mp4" type="video/mp4">
-        Your browser does not support the video element.
-      </video>
-      -->
     </section>
 
     <section>
-      <!-- TODO: Add any relevant links -->
-      <h2>Links</h2>
-      <p>
-        <a href="https://github.com/yourusername/yourrepo">GitHub</a> &bull;
-        <a href="https://yourapp.com">Live App</a>
-      </p>
+      <h2>Resources</h2>
+      <div class="links-grid">
+        <a href="https://github.com/unknowncode08/RecycleRightCA" class="btn btn-primary">View on GitHub</a>
+        <a href="https://unknowncode08.github.io/RecycleRightCA" class="btn btn-secondary">Launch Live App</a>
+      </div>
     </section>
   </div>
 
   <footer>
-    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+    <p>Congressional App Challenge 2024 &bull; Designed with &hearts; in CA</p>
   </footer>
 
-  <!-- Navigation script — enables arrow key navigation. Do NOT remove this. -->
+  <script>
+    // Scroll Reveal Script
+    const observerOptions = {
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('section').forEach(section => {
+      observer.observe(section);
+    });
+  </script>
+
   <script src="../../assets/js/nav.js" data-root="../../"></script>
 </body>
 </html>
