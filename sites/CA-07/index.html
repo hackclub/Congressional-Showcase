@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- TODO: Change the title to your app name and your name -->
+  <title>My App Name | Your Name</title>
+
+  <!-- Shared styles — gives you navigation arrows and CAC CSS variables -->
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
+  <style>
+    /*
+     * TODO: Add your custom styles here. Go wild — this is YOUR page!
+     *
+     * You can use Congressional App Challenge colors with CSS variables:
+     *   var(--cac-navy)  → #000f63
+     *   var(--cac-red)   → #a53535
+     *   var(--cac-blue)  → #4560b3
+     *   var(--cac-white) → #ffffff
+     *
+     * Or use completely your own palette. It's up to you!
+     */
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #333;
+      background: #f9fafc;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 2rem 3rem;
+    }
+
+    header { text-align: center; margin-bottom: 3rem; }
+    header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+    section {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; }
+    p { line-height: 1.7; margin-bottom: 1rem; }
+
+    .video iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    footer a { color: var(--cac-red); }
+  </style>
+</head>
+<body>
+  <!-- Back button — links to the main showcase -->
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <div class="container">
+    <header>
+      <!-- TODO: Replace with your name -->
+      <h1>Your Name</h1>
+      <!-- TODO: Write a short tagline about yourself -->
+      <p>A short tagline about you or your project.</p>
+    </header>
+
+    <section>
+      <!-- TODO: Tell us about yourself -->
+      <h2>About Me</h2>
+      <p>Write a few sentences about yourself. What school do you go to? What are you passionate about? What got you into coding?</p>
+    </section>
+
+    <section>
+      <!-- TODO: Tell us about your app -->
+      <h2>Your App Name</h2>
+      <p>Describe your app. What does it do? Who is it for? What problem does it solve?</p>
+      <p>What technologies did you use to build it?</p>
+    </section>
+
+    <section class="video">
+      <!-- TODO: Replace YOUR_VIDEO_ID with your YouTube video ID.
+           For example, if your video URL is https://www.youtube.com/watch?v=abc123
+           then your video ID is "abc123" -->
+      <h2>Demo</h2>
+      <iframe
+        src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+        title="App Demo Video"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+
+      <!-- Alternative: Self-hosted video (NOT recommended — use YouTube/Vimeo instead
+           to avoid bloating the repository)
+      <video controls width="100%">
+        <source src="assets/demo.mp4" type="video/mp4">
+        Your browser does not support the video element.
+      </video>
+      -->
+    </section>
+
+    <section>
+      <!-- TODO: Add any relevant links -->
+      <h2>Links</h2>
+      <p>
+        <a href="https://github.com/yourusername/yourrepo">GitHub</a> &bull;
+        <a href="https://yourapp.com">Live App</a>
+      </p>
+    </section>
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+  <!-- Navigation script — enables arrow key navigation. Do NOT remove this. -->
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>
