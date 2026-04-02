@@ -1,112 +1,494 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Congressional App Challenge Showcase | #HouseOfCode</title>
-  <meta name="description" content="Congress named nearly 400 winning teams from all 50 states during the 2025 Congressional App Challenge. See their apps and watch live demos at the U.S. Capitol on April 22, 2026.">
-  <meta property="og:title" content="Congressional App Challenge Showcase | Virtual #HouseOfCode Demos">
-  <meta property="og:description" content="Congress named nearly 400 winning teams from all 50 states during the 2025 Congressional App Challenge. Explore their projects and watch live demos at the U.S. Capitol.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://hackclub.github.io/Congressional-Showcase/">
-  <meta property="og:site_name" content="Congressional App Challenge Showcase">
-  <meta property="og:image" content="https://hackclub.github.io/Congressional-Showcase/assets/images/og-default.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Congressional App Challenge Showcase | Virtual #HouseOfCode Demos">
-  <meta name="twitter:description" content="Congress named nearly 400 winning teams from all 50 states during the 2025 Congressional App Challenge. Explore their projects and watch live demos at the U.S. Capitol.">
-  <meta name="twitter:image" content="https://hackclub.github.io/Congressional-Showcase/assets/images/og-default.png">
-  <link rel="canonical" href="https://hackclub.github.io/Congressional-Showcase/">
-  <link rel="manifest" href="manifest.json">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        "name": "Congressional App Challenge Showcase",
-        "url": "https://hackclub.github.io/Congressional-Showcase/",
-        "description": "A showcase of apps built by high schoolers for the Congressional App Challenge — #HouseOfCode"
-      },
-      {
-        "@type": "Organization",
-        "name": "Hack Club",
-        "url": "https://hackclub.com",
-        "logo": "https://assets.hackclub.com/icon-rounded.png"
-      },
-      {
-        "@type": "Event",
-        "name": "Congressional App Challenge Showcase at the U.S. Capitol",
-        "startDate": "2026-04-22",
-        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-        "eventStatus": "https://schema.org/EventScheduled",
-        "location": {
-          "@type": "Place",
-          "name": "U.S. Capitol",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Washington",
-            "addressRegion": "DC",
-            "addressCountry": "US"
-          }
-        },
-        "description": "Nearly 400 winning teams from all 50 states demonstrate their apps live at the U.S. Capitol.",
-        "organizer": {
-          "@type": "Organization",
-          "name": "Congressional App Challenge",
-          "url": "https://www.congressionalappchallenge.us"
-        }
-      }
-    ]
-  }
-  </script>
+  <title>AidSense | Emergency Support Simplified.</title>
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="icon" href="https://assets.hackclub.com/icon-rounded.png" type="image/png">
-  <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- AOS Animation CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          animation: {
+            'blob': 'blob 7s infinite',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #050505;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .text-gradient {
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-image: linear-gradient(to right, #f87171, #ffffff);
+    }
+    
+    .bg-gradient-red {
+      background-image: linear-gradient(to bottom right, #ef4444, #be123c);
+    }
+  </style>
 </head>
-<body>
-  <header class="hero">
-    <div class="hero-logos">
-      <img src="https://assets.hackclub.com/flag-orpheus-top.svg" alt="Hack Club" class="hero-logo">
-      <span class="hero-logo-separator">&times;</span>
-      <img src="https://cdn.hackclub.com/019ce382-fe8e-7efa-a987-b937435e489b/logolight-vector.svg" alt="House of Code" class="hero-logo">
-    </div>
-    <h1>Congressional App Challenge Showcase</h1>
-    <p class="tagline">Virtual #HouseOfCode Demos</p>
-    <p class="subtitle">Congress named nearly 400 winning teams from all 50 states during the 2025 Congressional App Challenge and those winning students will be demonstrating their apps live at the U.S. Capitol on April 22, 2026. Ready to see what they created? Click a pin on the map to explore their projects.</p>
-    <div class="hero-actions">
-      <a href="https://github.com/hackclub/Congressional-Showcase/blob/main/README.md#add-your-project" class="hero-btn">Add Your Project</a>
-      <a href="sites/example/" class="hero-btn">Example Page</a>
-      <button id="random-project" class="hero-btn" onclick="goToRandomProject()">View Random Project</button>
-    </div>
-  </header>
+<body class="antialiased selection:bg-red-500/30">
 
-  <div class="map-header">Explore Projects Across the Country</div>
-  <section id="map">
-    <div id="map-container"></div>
-  </section>
+  <!-- Background Animated Blobs -->
+  <div class="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden flex justify-center items-center">
+    <div class="absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] bg-red-600/15 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[40rem] h-[40rem] bg-rose-700/15 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000"></div>
+    <div class="absolute top-[40%] left-[20%] w-[30rem] h-[30rem] bg-red-500/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-4000"></div>
+  </div>
 
-  <footer>
-    <p>Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> arrow keys to browse projects. Press <kbd>Esc</kbd> to return here.</p>
-    <p>Built with <span style="color: #e05555">&hearts;</span> by <a href="https://github.com/claynicholson">Clay Nicholson</a></p>
-    <p>follow me for a cookie</p>
+  <!-- Navbar -->
+  <nav class="relative z-50 max-w-7xl mx-auto px-6 py-6 flex justify-between items-center" data-aos="fade-down" data-aos-duration="1000">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-gradient-red flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(239,68,68,0.5)]">
+        A
+      </div>
+      <span class="text-xl font-semibold tracking-tight">AidSense</span>
+    </div>
+    <div class="flex items-center gap-6">
+      <a href="https://github.com/ImSpxrsh/Aidsense" target="_blank" class="text-sm font-medium text-gray-400 hover:text-white transition-colors flex items-center gap-2">
+        <i data-lucide="github" class="w-5 h-5"></i> Open Source
+      </a>
+      <a href="https://aidsense.app/" target="_blank" class="text-sm font-medium text-gray-400 hover:text-white transition-colors flex items-center gap-2">
+        Visit Website <i data-lucide="external-link" class="w-4 h-4"></i>
+      </a>
+    </div>
+  </nav>
+
+  <main class="relative z-10 w-full flex flex-col items-center overflow-hidden">
+    
+    <!-- 1. HERO SECTION -->
+    <section class="w-full max-w-7xl mx-auto px-6 py-24 md:py-32 flex flex-col items-center text-center">
+      <div data-aos="fade-up" data-aos-duration="1000" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 mb-8 backdrop-blur-md">
+        <span class="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
+        Built for NJ-09 Community Support
+      </div>
+      
+      <h1 data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000" class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-tight max-w-5xl">
+        Support when you <br class="hidden md:block"/>
+        <span class="text-gradient">need it most.</span>
+      </h1>
+      
+      <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl px-4">
+        AidSense is a medical utility app designed to help individuals in crisis quickly find nearby support services like food banks, shelters, and clinics. No forms, no confusion.
+      </p>
+      
+      <div data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" class="flex flex-col sm:flex-row gap-4 w-full justify-center px-4">
+        <a href="https://github.com/ImSpxrsh/Aidsense" target="_blank" class="px-8 py-4 rounded-full bg-white text-black font-semibold flex items-center justify-center gap-2 hover:bg-gray-200 transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+          <i data-lucide="github" class="w-5 h-5"></i> View on GitHub
+        </a>
+        <a href="#demo" class="px-8 py-4 rounded-full glass-card text-white font-semibold flex items-center justify-center gap-2 transition-all hover:scale-105 active:scale-95">
+          Watch Demo <i data-lucide="play-circle" class="w-5 h-5"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- 4. SOCIAL PROOF (Moved up slightly for impact) -->
+    <section class="w-full max-w-3xl mx-auto px-6 mb-32" data-aos="zoom-y-out" data-aos-delay="400">
+      <a href="https://www.congressionalappchallenge.us/25-NJ09/" target="_blank" class="group block relative rounded-2xl p-[1px] bg-gradient-to-r from-red-500/40 via-rose-500/40 to-red-500/40 overflow-hidden hover:from-red-400 hover:via-rose-400 hover:to-red-400 transition-all duration-500 shadow-[0_0_40px_rgba(225,29,72,0.15)] hover:shadow-[0_0_60px_rgba(225,29,72,0.3)]">
+        <div class="relative bg-black/80 backdrop-blur-xl rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400/20 to-orange-500/20 flex items-center justify-center border border-yellow-500/30 shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+              <i data-lucide="award" class="text-yellow-500 w-6 h-6"></i>
+            </div>
+            <div class="text-center md:text-left">
+              <h3 class="font-semibold text-white md:text-lg">Winning App – Congressional App Challenge</h3>
+              <p class="text-sm text-gray-400">Championing innovation for New Jersey's 9th District</p>
+            </div>
+          </div>
+          <div class="text-red-400 group-hover:text-red-300 transition-colors flex items-center gap-2 text-sm font-medium">
+            View Award <i data-lucide="external-link" class="w-4 h-4"></i>
+          </div>
+        </div>
+      </a>
+    </section>
+
+    <!-- 2. VIDEO DEMO -->
+    <section id="demo" class="w-full px-6 mb-32 flex flex-col items-center">
+      <div data-aos="fade-up" class="w-full max-w-5xl rounded-[2rem] p-2 glass-card relative group">
+        <!-- Glow Behind -->
+        <div class="absolute inset-0 bg-gradient-to-r from-red-500/30 to-rose-500/30 blur-3xl -z-10 group-hover:opacity-100 opacity-60 transition-opacity duration-700"></div>
+        
+        <div class="relative w-full aspect-video rounded-[1.5rem] overflow-hidden bg-black/50 border border-white/5">
+          <iframe 
+            width="100%" 
+            height="100%" 
+            src="https://www.youtube.com/embed/5opk96gpXq8" 
+            title="AidSense Demo" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen
+            class="w-full h-full rounded-[1.5rem]">
+          </iframe>
+        </div>
+      </div>
+      <p data-aos="fade-up" data-aos-delay="100" class="mt-8 text-gray-400 text-center max-w-lg">
+        Watch how AidSense transforms a simple text message into a life-saving connection to local resources.
+      </p>
+    </section>
+
+    <!-- STORY SECTION: Why we made AidSense -->
+    <section class="w-full max-w-5xl mx-auto px-6 mb-32">
+      <div class="glass-card rounded-[2rem] p-10 md:p-16 relative overflow-hidden" data-aos="fade-up">
+        <div class="absolute top-0 right-0 p-8 opacity-10">
+          <i data-lucide="quote" class="w-32 h-32 text-red-500"></i>
+        </div>
+        <div class="relative z-10">
+          <h2 class="text-3xl font-bold mb-6 text-white tracking-tight">Why We Built AidSense</h2>
+          <p class="text-gray-300 text-lg leading-relaxed mb-6 italic">
+            "In our communities, many people struggle to find local resources or look for the answers to their questions about a specific place. There is a high demand for supportive services, shelters, and resource access, yet awareness and access are limited in underserved neighborhoods."
+          </p>
+          <p class="text-gray-300 text-lg leading-relaxed mb-6">
+            "Google Maps may provide limited information, reviews can be biased, unhelpful, or nonexistent, and having to search online in an urgent situation can be overwhelming."
+          </p>
+          <p class="text-gray-300 text-lg leading-relaxed font-medium text-white">
+            "This is why we thought of making an app that makes this situation easier for those in need, as they are already struggling with so much. By offering an easy-to-use user interface and personalized guidance from an AI chatbot, AidSense helps users quickly and confidently find the support they need."
+          </p>
+          <div class="mt-8 flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400">
+              <i data-lucide="users" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <p class="font-semibold text-white">The Creators</p>
+              <p class="text-xs text-gray-400">Congressional App Challenge NJ-09 Winners</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. FEATURES -->
+    <section class="w-full max-w-7xl mx-auto px-6 mb-32">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl md:text-5xl font-bold mb-4">Immediate. Intuitive. Essential.</h2>
+        <p class="text-gray-400 max-w-xl mx-auto">Designed to drop barriers and connect people strictly to the real, local assistance they need.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Feature 1 -->
+        <div data-aos="fade-up" data-aos-delay="0" class="glass-card p-8 rounded-3xl transition-all duration-300 group">
+          <div class="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-400 mb-6 group-hover:scale-110 transition-transform duration-300 group-hover:bg-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.15)] group-hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]">
+            <i data-lucide="message-circle"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-white">Speaks Your Language</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Understands simple, plain messages like “I need food” or “I lost my home.”</p>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div data-aos="fade-up" data-aos-delay="100" class="glass-card p-8 rounded-3xl transition-all duration-300 group">
+          <div class="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-400 mb-6 group-hover:scale-110 transition-transform duration-300 group-hover:bg-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.15)] group-hover:shadow-[0_0_20px_rgba(244,63,94,0.3)]">
+            <i data-lucide="map-pin"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-white">Instant Local Help</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Directly matches you to nearby food pantries, shelters, and clinics.</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div data-aos="fade-up" data-aos-delay="200" class="glass-card p-8 rounded-3xl transition-all duration-300 group">
+          <div class="w-12 h-12 rounded-2xl bg-red-600/10 flex items-center justify-center text-red-500 mb-6 group-hover:scale-110 transition-transform duration-300 group-hover:bg-red-600/20 shadow-[0_0_15px_rgba(220,38,38,0.15)] group-hover:shadow-[0_0_20px_rgba(220,38,38,0.3)]">
+            <i data-lucide="wifi-off"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-white">Works Offline</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">View cached and nearby results even if you lose internet connection.</p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div data-aos="fade-up" data-aos-delay="300" class="glass-card p-8 rounded-3xl transition-all duration-300 group">
+          <div class="w-12 h-12 rounded-2xl bg-pink-500/10 flex items-center justify-center text-pink-400 mb-6 group-hover:scale-110 transition-transform duration-300 group-hover:bg-pink-500/20 shadow-[0_0_15px_rgba(236,72,153,0.15)] group-hover:shadow-[0_0_20px_rgba(236,72,153,0.3)]">
+            <i data-lucide="smartphone"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-white">Universal Access</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Available on Android & iOS. Save & sort resources right on your device.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="w-full max-w-4xl mx-auto px-6 mb-32">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl md:text-5xl font-bold mb-4">How It Works</h2>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-red-400 bg-red-500/10 border border-red-500/20 text-xs font-semibold uppercase tracking-widest">
+          Simple 3-Step Process
+        </div>
+      </div>
+      
+      <div class="relative pl-8 md:pl-0 border-l border-white/10 md:border-l-0 md:space-y-0 space-y-12">
+        <!-- Step 1 -->
+        <div data-aos="fade-up" data-aos-delay="0" class="md:grid md:grid-cols-5 md:gap-8 items-center relative">
+          <div class="md:col-span-2 md:text-right hidden md:block">
+            <h3 class="text-2xl font-bold text-white mb-2">Type a Message</h3>
+            <p class="text-gray-400">Describe your situation using everyday language.</p>
+          </div>
+          <div class="absolute w-12 h-12 rounded-full glass-card border-red-500/30 flex items-center justify-center -left-14 top-0 md:relative md:left-auto md:top-auto md:mx-auto md:col-span-1 shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+            <span class="text-red-400 font-bold">1</span>
+          </div>
+          <div class="md:col-span-2">
+            <div class="md:hidden mb-4">
+              <h3 class="text-2xl font-bold text-white mb-2">Type a Message</h3>
+              <p class="text-gray-400">Describe your situation using everyday language.</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl">
+              <div class="flex items-center gap-3 text-sm text-gray-300 bg-black/40 p-4 rounded-xl border border-white/5">
+                <i data-lucide="edit-3" class="w-5 h-5 text-red-400"></i>
+                "I lost my home and need a safe place to stay tonight."
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div data-aos="fade-up" data-aos-delay="100" class="md:grid md:grid-cols-5 md:gap-8 items-center relative">
+          <div class="md:col-span-2 md:text-right md:order-last hidden md:block">
+            <h3 class="text-2xl font-bold text-white mb-2">Get Matched</h3>
+            <p class="text-gray-400">The AI interprets your need to find specific nearest services.</p>
+          </div>
+          <div class="absolute w-12 h-12 rounded-full glass-card border-red-500/30 flex items-center justify-center -left-14 top-0 md:relative md:left-auto md:top-auto md:mx-auto md:col-span-1 shadow-[0_0_20px_rgba(239,68,68,0.2)] md:order-start">
+            <span class="text-red-400 font-bold">2</span>
+          </div>
+          <div class="md:col-span-2 md:order-first">
+            <div class="md:hidden mb-4">
+              <h3 class="text-2xl font-bold text-white mb-2">Get Matched</h3>
+              <p class="text-gray-400">The AI interprets your need to find specific nearest services.</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl flex justify-center">
+              <div class="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center">
+                <i data-lucide="cpu" class="w-6 h-6 text-red-400 animate-pulse"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div data-aos="fade-up" data-aos-delay="200" class="md:grid md:grid-cols-5 md:gap-8 items-center relative">
+          <div class="md:col-span-2 md:text-right hidden md:block">
+            <h3 class="text-2xl font-bold text-white mb-2">See Results</h3>
+            <p class="text-gray-400">Actionable, localized solutions right on your screen.</p>
+          </div>
+          <div class="absolute w-12 h-12 rounded-full glass-card border-red-500/30 flex items-center justify-center -left-14 top-0 md:relative md:left-auto md:top-auto md:mx-auto md:col-span-1 shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+            <span class="text-red-400 font-bold">3</span>
+          </div>
+          <div class="md:col-span-2">
+            <div class="md:hidden mb-4">
+              <h3 class="text-2xl font-bold text-white mb-2">See Results</h3>
+              <p class="text-gray-400">Actionable, localized solutions right on your screen.</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl space-y-3">
+              <div class="bg-black/40 p-3 rounded-lg border border-white/5 flex justify-between items-center">
+                <span class="text-white text-sm font-medium">Community Shelter</span>
+                <span class="text-red-400 text-xs">1.2 mi</span>
+              </div>
+              <div class="bg-black/40 p-3 rounded-lg border border-white/5 flex justify-between items-center">
+                <span class="text-white text-sm font-medium">Local Food Bank</span>
+                <span class="text-red-400 text-xs">2.4 mi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. CREATORS SECTION (IMPORTANT) -->
+    <section class="w-full mb-32 pt-20 relative">
+      <div class="absolute inset-0 bg-white/[0.02] border-y border-white/5 -z-10"></div>
+      
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-red-400 bg-red-500/10 border border-red-500/20 text-xs font-semibold mb-4 uppercase tracking-widest">
+            The Team
+          </div>
+          <h2 class="text-3xl md:text-5xl font-bold mb-4">Meet the Visionaries</h2>
+          <p class="text-gray-400 max-w-xl mx-auto">The driven students operating behind AidSense.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Sparsh Roy -->
+          <a href="https://www.linkedin.com/in/roysparsh/" target="_blank" data-aos="fade-up" data-aos-delay="0" class="group flex flex-col justify-between p-8 rounded-3xl glass-card relative overflow-hidden transition-all duration-300 hover:-translate-y-1">
+            <div class="absolute inset-0 bg-gradient-to-br from-red-500/0 to-rose-500/0 group-hover:from-red-500/10 group-hover:to-rose-500/10 transition-colors duration-500"></div>
+            <div class="relative z-10 flex justify-between items-start mb-8">
+              <div class="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-xl font-bold text-white shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/10 group-hover:border-white/20 transition-all">
+                S
+              </div>
+              <div class="p-2.5 rounded-full bg-white/5 text-gray-400 group-hover:bg-[#0A66C2] group-hover:text-white transition-all duration-300 shadow-md">
+                <i data-lucide="linkedin" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="relative z-10">
+              <h3 class="text-2xl font-bold mb-1 text-white">Sparsh Roy</h3>
+              <p class="text-gray-400 text-sm">Hopewell Valley Central High School, New Jersey</p>
+            </div>
+          </a>
+
+          <!-- Mohammed Gezzaz -->
+          <a href="https://www.linkedin.com/in/mohammed-gezzaz-6638b9354/" target="_blank" data-aos="fade-up" data-aos-delay="100" class="group flex flex-col justify-between p-8 rounded-3xl glass-card relative overflow-hidden transition-all duration-300 hover:-translate-y-1">
+            <div class="absolute inset-0 bg-gradient-to-br from-red-500/0 to-rose-500/0 group-hover:from-red-500/10 group-hover:to-rose-500/10 transition-colors duration-500"></div>
+            <div class="relative z-10 flex justify-between items-start mb-8">
+              <div class="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-xl font-bold text-white shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/10 group-hover:border-white/20 transition-all">
+                M
+              </div>
+              <div class="p-2.5 rounded-full bg-white/5 text-gray-400 group-hover:bg-[#0A66C2] group-hover:text-white transition-all duration-300 shadow-md">
+                <i data-lucide="linkedin" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="relative z-10">
+              <h3 class="text-2xl font-bold mb-1 text-white">Mohammed Gezzaz</h3>
+              <p class="text-gray-400 text-sm">High Tech High School, New Jersey</p>
+            </div>
+          </a>
+
+          <!-- Aarya Patel -->
+          <a href="https://www.linkedin.com/in/aarya-patel-8901262a5/" target="_blank" data-aos="fade-up" data-aos-delay="200" class="group flex flex-col justify-between p-8 rounded-3xl glass-card relative overflow-hidden transition-all duration-300 hover:-translate-y-1">
+            <div class="absolute inset-0 bg-gradient-to-br from-red-500/0 to-rose-500/0 group-hover:from-red-500/10 group-hover:to-rose-500/10 transition-colors duration-500"></div>
+            <div class="relative z-10 flex justify-between items-start mb-8">
+              <div class="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-xl font-bold text-white shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/10 group-hover:border-white/20 transition-all">
+                A
+              </div>
+              <div class="p-2.5 rounded-full bg-white/5 text-gray-400 group-hover:bg-[#0A66C2] group-hover:text-white transition-all duration-300 shadow-md">
+                <i data-lucide="linkedin" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="relative z-10">
+              <h3 class="text-2xl font-bold mb-1 text-white">Aarya Patel</h3>
+              <p class="text-gray-400 text-sm">High Tech High School, New Jersey</p>
+            </div>
+          </a>
+
+          <!-- Arhaan Shah -->
+          <a href="https://www.linkedin.com/in/arhaan-shah/" target="_blank" data-aos="fade-up" data-aos-delay="300" class="group flex flex-col justify-between p-8 rounded-3xl glass-card relative overflow-hidden transition-all duration-300 hover:-translate-y-1">
+            <div class="absolute inset-0 bg-gradient-to-br from-red-500/0 to-rose-500/0 group-hover:from-red-500/10 group-hover:to-rose-500/10 transition-colors duration-500"></div>
+            <div class="relative z-10 flex justify-between items-start mb-8">
+              <div class="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-xl font-bold text-white shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/10 group-hover:border-white/20 transition-all">
+                A
+              </div>
+              <div class="p-2.5 rounded-full bg-white/5 text-gray-400 group-hover:bg-[#0A66C2] group-hover:text-white transition-all duration-300 shadow-md">
+                <i data-lucide="linkedin" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="relative z-10">
+              <h3 class="text-2xl font-bold mb-1 text-white">Arhaan Shah</h3>
+              <p class="text-gray-400 text-sm">Paradise Valley High School, Arizona</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. FINAL CTA -->
+    <section class="w-full px-6 mb-32" data-aos="zoom-in" data-aos-duration="1000">
+      <div class="max-w-5xl mx-auto relative rounded-[3rem] p-10 md:p-20 overflow-hidden text-center glass-card shadow-[0_0_50px_rgba(255,255,255,0.05)]">
+        <!-- Inner glow effect -->
+        <div class="absolute inset-0 bg-gradient-to-br from-red-600/20 to-rose-600/20 z-0"></div>
+        <div class="absolute inset-[-50%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent z-0 blur-2xl opacity-50"></div>
+        
+        <div class="relative z-10">
+          <h2 class="text-4xl md:text-6xl font-bold mb-6 text-white tracking-tight">Support within reach.</h2>
+          <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+            Experience the mission-driven approach to accessible healthcare and community aid. Proudly open-source.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center w-full">
+            <a href="https://github.com/ImSpxrsh/Aidsense" target="_blank" class="px-8 py-4 rounded-full bg-white text-black font-semibold flex items-center justify-center hover:bg-gray-200 transition-transform hover:scale-105 active:scale-95 shadow-xl gap-2">
+              <i data-lucide="github" class="w-5 h-5"></i> Open Source
+            </a>
+            <a href="https://aidsense.app/" target="_blank" class="px-8 py-4 rounded-full bg-black/40 text-white font-semibold flex items-center justify-center hover:bg-black/60 transition-all border border-white/10 hover:border-white/20 backdrop-blur-md hover:scale-105 active:scale-95 gap-2">
+              Visit Website <i data-lucide="external-link" class="w-5 h-5"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 8. FOOTER -->
+  <footer class="w-full border-t border-white/10 py-10 px-6 mt-auto bg-black/50 backdrop-blur-lg">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+      
+      <div class="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity">
+        <div class="w-6 h-6 rounded bg-gradient-red flex items-center justify-center font-bold text-[10px] text-white">A</div>
+        <span class="font-semibold text-lg text-white">AidSense</span>
+      </div>
+      
+      <div class="text-center md:text-left text-sm text-gray-500 flex flex-col gap-1">
+        <p class="text-gray-400">Built for the Congressional App Challenge (NJ-09)</p>
+        <p>&copy; 2026 AidSense. All rights reserved.</p>
+      </div>
+      
+      <div class="flex gap-6">
+        <a href="https://github.com/ImSpxrsh/Aidsense" target="_blank" class="text-sm font-medium text-gray-400 hover:text-white transition-colors flex items-center gap-1">
+          GitHub <i data-lucide="github" class="w-3 h-3"></i>
+        </a>
+        <a href="https://aidsense.app/" target="_blank" class="text-sm font-medium text-gray-400 hover:text-white transition-colors flex items-center gap-1">
+          Website <i data-lucide="external-link" class="w-3 h-3"></i>
+        </a>
+      </div>
+
+    </div>
   </footer>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="assets/js/map.js"></script>
-  <script src="assets/js/nav.js" data-root="./"></script>
+  <!-- Scripts: Initializing AOS & Lucide Icons -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
-    function goToRandomProject() {
-      fetch('./projects.json')
-        .then(function(r) { return r.json(); })
-        .then(function(p) {
-          if (p.length === 0) return;
-          var pick = p[Math.floor(Math.random() * p.length)];
-          window.location.href = 'sites/' + pick.slug + '/';
-        });
-    }
+    // Initialize AOS Animations
+    AOS.init({
+      once: true,
+      offset: 50,
+      duration: 800,
+      easing: 'ease-out-cubic',
+    });
+    
+    // Initialize Lucide Icons
+    lucide.createIcons();
   </script>
 </body>
 </html>
