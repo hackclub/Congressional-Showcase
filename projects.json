@@ -1,1 +1,17 @@
-[]
+[
+  {
+  "slug": "CA-07",
+  "name": "Omar Ahmad & Preston Chang",
+  "appName": "RecycleRightCA",
+  "description": "A one-sentence description of your app.",
+  "thumbnail": "sites/CA-07/thumbnail.png",
+  "location": {
+    "lat": 40.7128,
+    "lng": -74.0060,
+    "label": "New York, NY"
+  },
+  "district": "XX-00",
+  "state": "XX",
+  "tags": ["category1", "category2"]
+}
+]
