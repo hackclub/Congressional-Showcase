@@ -6,12 +6,12 @@
   "description": "A one-sentence description of your app.",
   "thumbnail": "sites/CA-07/thumbnail.png",
   "location": {
-    "lat": 40.7128,
-    "lng": -74.0060,
-    "label": "New York, NY"
+    "lat": 38.3882,
+    "lng": -121.4354,
+    "label": "Elk Grove, CA"
   },
-  "district": "XX-00",
-  "state": "XX",
+  "district": "CA-07",
+  "state": "CA",
   "tags": ["category1", "category2"]
 }
 ]
