@@ -343,5 +343,65 @@
   "district": "CA-49",
   "state": "CA",
   "tags": ["Public Health", "Emergency", "CPR"]
+},
+{
+  "slug": "MD-03",
+  "name": "Matthew Yang",
+  "appName": "CellposeCellCounter",
+  "description": "A segmentation model-based automatic cell quantification tool that provides cell count, confluency, and viability assessment from microscopy images.",
+  "thumbnail": "sites/MD-03/thumbnail.png",
+  "location": {
+    "lat": 39.2674,
+    "lng": -76.7983,
+    "label": "Ellicott City, MD"
+  },
+  "district": "MD-03",
+  "state": "MD",
+  "tags": ["health", "ai", "accessibility"]
+},
+{
+  "slug": "AZ-08",
+  "name": "Vignesh Nagarajan and Raghav Senthil Kumar",
+  "appName": "Chronos",
+  "description": "A calendar coordination SaaS platform that synchronizes Google Calendars across groups and schedules meetings with a single click.",
+  "thumbnail": "sites/AZ-08/thumbnail.png",
+  "location": {
+    "lat": 33.4484,
+    "lng": -112.0740,
+    "label": "Phoenix, AZ"
+  },
+  "district": "AZ-08",
+  "state": "AZ",
+  "tags": ["social", "ai"]
+},
+{
+  "slug": "PA-04",
+  "name": "Ezra Aslan",
+  "appName": "InfiniteMonkey",
+  "description": "A computationally efficient text generator that uses Markov probability chains to formulate text from web-scraped content.",
+  "thumbnail": "sites/PA-04/thumbnail.png",
+  "location": {
+    "lat": 39.9526,
+    "lng": -75.1652,
+    "label": "Philadelphia, PA"
+  },
+  "district": "PA-04",
+  "state": "PA",
+  "tags": ["education", "ai", "accessibility"]
+},
+{
+  "slug": "OR-01",
+  "name": "Dhruv Singh",
+  "appName": "ReinforceLearn",
+  "description": "A user-friendly platform designed to teach individuals the fundamentals and applications of reinforcement learning through hands-on resources.",
+  "thumbnail": "sites/OR-01/thumbnail.png",
+  "location": {
+    "lat": 45.5152,
+    "lng": -122.6784,
+    "label": "Portland, OR"
+  },
+  "district": "OR-01",
+  "state": "OR",
+  "tags": ["education", "ai"]
 }
 ]

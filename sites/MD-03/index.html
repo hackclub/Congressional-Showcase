@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CellposeCellCounter | Matthew Yang</title>
+  <meta name="description" content="Matthew Yang's Congressional App Challenge showcase page for CellposeCellCounter, a segmentation model-based automatic cell quantification tool.">
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0f1a;
+      --bg-card: rgba(16, 22, 40, 0.85);
+      --border: rgba(99, 179, 237, 0.15);
+      --accent: #63b3ed;
+      --accent-soft: rgba(99, 179, 237, 0.12);
+      --green: #68d391;
+      --green-soft: rgba(104, 211, 145, 0.12);
+      --text: #e8edf5;
+      --text-dim: #a0aec0;
+      --text-muted: #718096;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(99, 179, 237, 0.06), transparent 40%),
+        radial-gradient(circle at 80% 60%, rgba(104, 211, 145, 0.04), transparent 40%);
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .page { max-width: 900px; margin: 0 auto; padding: 5.5rem 1.5rem 3rem; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 3rem 2rem;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--bg-card);
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero .badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-soft);
+      border: 1px solid rgba(104, 211, 145, 0.25);
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero .author {
+      color: var(--text-dim);
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .hero .school {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero .tagline {
+      color: var(--text-dim);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .hero-links {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .hero-link:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* Cards */
+    .card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card h2 .kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: block;
+    }
+
+    .card p {
+      color: var(--text-dim);
+      line-height: 1.75;
+      margin-bottom: 0.75rem;
+    }
+
+    .card p:last-child { margin-bottom: 0; }
+
+    .tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(99, 179, 237, 0.2);
+    }
+
+    /* Video */
+    .video-wrapper {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer a { color: var(--text-dim); }
+
+    @media (max-width: 600px) {
+      .hero { padding: 2rem 1.25rem; }
+      .card { padding: 1.5rem; }
+      .page { padding-top: 4.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <main class="page">
+    <header class="hero">
+      <div class="badge">MD-03 &middot; Congressional App Challenge Winner</div>
+      <h1>CellposeCellCounter</h1>
+      <p class="author">by Matthew Yang</p>
+      <p class="school">Centennial High School, Ellicott City, MD &middot; Junior</p>
+      <p class="tagline">Segmentation model-based automatic cell quantification tool. Provides cell count, confluency, and viability assessment.</p>
+      <div class="hero-links">
+        <a class="hero-link" href="https://github.com/matthewy4218/CellposeCellCounterMobile/tree/main" target="_blank" rel="noopener">GitHub</a>
+        <a class="hero-link" href="https://lianglabumb-cellposecellcountermobile.hf.space/" target="_blank" rel="noopener">Try the App</a>
+      </div>
+    </header>
+
+    <div class="card">
+      <h2><span class="kicker">Background</span></h2>
+      <h2>About Me</h2>
+      <p>I'm Matthew Yang, a junior at Centennial High School in Ellicott City, Maryland. I worked with my mentor Dr. Yajie Liang at the University of Maryland School of Medicine to build CellposeCellCounter.</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="kicker">The App</span></h2>
+      <h2>What It Does</h2>
+      <p>CellposeCellCounter leverages deep learning segmentation models to automate cell counting from microscopy images. Instead of relying on expensive commercial cell counters or tedious manual counting methods, researchers can get accurate cell count, confluency, and viability assessments in seconds.</p>
+      <div class="tags">
+        <span class="tag">Health</span>
+        <span class="tag">AI / Machine Learning</span>
+        <span class="tag">Accessibility</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="kicker">Demo</span></h2>
+      <h2>See It in Action</h2>
+      <div class="video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/MpNkuZhtYs8"
+          title="CellposeCellCounter Demo Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+</body>
+</html>

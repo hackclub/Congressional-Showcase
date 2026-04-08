@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReinforceLearn | Dhruv Singh</title>
+  <meta name="description" content="Dhruv Singh's Congressional App Challenge showcase page for ReinforceLearn, a platform teaching reinforcement learning fundamentals through hands-on resources.">
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0fdf4;
+      --card: #ffffff;
+      --border: #d1e7dd;
+      --accent: #16a34a;
+      --accent-soft: rgba(22, 163, 74, 0.08);
+      --accent-dark: #15803d;
+      --blue: #2563eb;
+      --blue-soft: rgba(37, 99, 235, 0.08);
+      --text: #1a2e1a;
+      --text-dim: #4a5e4a;
+      --text-muted: #8a9e8a;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(22, 163, 74, 0.04);
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .page { max-width: 880px; margin: 0 auto; padding: 5.5rem 1.5rem 3rem; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #15803d 0%, #16a34a 40%, #22c55e 100%);
+      color: white;
+      padding: 3.5rem 2.5rem;
+      border-radius: 24px;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 80%, rgba(255, 255, 255, 0.1), transparent 40%),
+        radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.06), transparent 35%);
+      pointer-events: none;
+    }
+
+    .hero * { position: relative; }
+
+    .hero .badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero .author {
+      opacity: 0.9;
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .hero .school {
+      opacity: 0.7;
+      font-size: 0.9rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero .tagline {
+      opacity: 0.9;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card .kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+
+    .card h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .card p {
+      color: var(--text-dim);
+      line-height: 1.75;
+      margin-bottom: 0.75rem;
+    }
+
+    .card p:last-child { margin-bottom: 0; }
+
+    .tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    /* Video */
+    .video-wrapper {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer a { color: var(--text-dim); }
+
+    @media (max-width: 600px) {
+      .hero { padding: 2.5rem 1.5rem; }
+      .card { padding: 1.5rem; }
+      .page { padding-top: 4.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <main class="page">
+    <header class="hero">
+      <div class="badge">OR-01 &middot; Congressional App Challenge Winner</div>
+      <h1>ReinforceLearn</h1>
+      <p class="author">by Dhruv Singh</p>
+      <p class="school">Westview High School, Portland, OR &middot; Junior</p>
+      <p class="tagline">A user-friendly platform designed to teach individuals the fundamentals and applications of reinforcement learning.</p>
+    </header>
+
+    <div class="card">
+      <p class="kicker">Background</p>
+      <h2>About Me</h2>
+      <p>I'm Dhruv Singh, a junior at Westview High School in Portland, Oregon. I have extensive robotics experience and co-founded Gearforward, a Portland-based 501(c)(3) focused on STEM education for underserved students. I also coach a FIRST Tech Robotics team.</p>
+    </div>
+
+    <div class="card">
+      <p class="kicker">The App</p>
+      <h2>What ReinforceLearn Does</h2>
+      <p>ReinforceLearn is a comprehensive educational platform teaching reinforcement learning fundamentals through hands-on resources. The application features seven main sections covering RL overview, algorithm types, a learning hub, pathway information, a playground environment, robotics simulations, and more.</p>
+      <p>Users can explore GitHub projects, research headlines, internship opportunities, and additional resources, all designed to make reinforcement learning accessible to beginners.</p>
+      <div class="tags">
+        <span class="tag">Education</span>
+        <span class="tag">AI / Machine Learning</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="kicker">Demo</p>
+      <h2>See It in Action</h2>
+      <div class="video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/4rk211is_DM"
+          title="ReinforceLearn Demo Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+</body>
+</html>
