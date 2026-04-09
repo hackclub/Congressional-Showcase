@@ -1,1 +1,2173 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OncoGAT — AI-Powered Oncology Genomic Analysis Tool</title>
+  <meta name="description" content="OncoGAT is an AI-powered Genomic Analysis Tool that assists Molecular Tumor Boards with precision oncology decisions. Congressional App Challenge TX-08 2025 Winner." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
+  <style>
+    /* ============================
+       CSS VARIABLES & RESET
+    ============================ */
+    :root {
+      --bg-primary: #04080F;
+      --bg-secondary: #070D1A;
+      --bg-card: rgba(10, 20, 40, 0.7);
+      --bg-card-hover: rgba(15, 30, 60, 0.85);
+      --cyan: #00E5FF;
+      --cyan-dim: #00B8CC;
+      --cyan-glow: rgba(0, 229, 255, 0.3);
+      --purple: #7C3AED;
+      --purple-light: #A78BFA;
+      --purple-glow: rgba(124, 58, 237, 0.3);
+      --emerald: #10B981;
+      --emerald-glow: rgba(16, 185, 129, 0.3);
+      --amber: #F59E0B;
+      --rose: #F43F5E;
+      --text-primary: #F1F5F9;
+      --text-secondary: #94A3B8;
+      --text-muted: #475569;
+      --border: rgba(255, 255, 255, 0.07);
+      --border-bright: rgba(0, 229, 255, 0.3);
+      --font-sans: 'Inter', -apple-system, sans-serif;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ============================
+       PARTICLE CANVAS (BACKGROUND)
+    ============================ */
+    #bgCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ============================
+       SCROLLBAR
+    ============================ */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+
+    /* ============================
+       UTILITIES
+    ============================ */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--purple-light) 50%, var(--emerald) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .glow-cyan { text-shadow: 0 0 20px var(--cyan), 0 0 40px var(--cyan-glow); }
+    .glow-purple { text-shadow: 0 0 20px var(--purple-light), 0 0 40px var(--purple-glow); }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      padding: 6px 14px;
+      border: 1px solid var(--cyan-glow);
+      border-radius: 100px;
+      background: rgba(0, 229, 255, 0.05);
+      margin-bottom: 20px;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* fade-up animation class */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-up.delay-1 { transition-delay: 0.1s; }
+    .fade-up.delay-2 { transition-delay: 0.2s; }
+    .fade-up.delay-3 { transition-delay: 0.3s; }
+    .fade-up.delay-4 { transition-delay: 0.4s; }
+    .fade-up.delay-5 { transition-delay: 0.5s; }
+
+    /* ============================
+       NAVIGATION
+    ============================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(4, 8, 15, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    nav.scrolled {
+      padding: 12px 24px;
+      background: rgba(4, 8, 15, 0.95);
+      border-bottom-color: var(--border-bright);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      box-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    .nav-logo-text {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text-primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a:hover { color: var(--cyan); }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: var(--cyan);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), var(--cyan-dim));
+      color: var(--bg-primary);
+      box-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 35px var(--cyan-glow), 0 0 60px rgba(0, 229, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--border-bright);
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.05);
+    }
+
+    .btn-purple {
+      background: linear-gradient(135deg, var(--purple), #5B21B6);
+      color: white;
+      box-shadow: 0 0 20px var(--purple-glow);
+    }
+
+    .btn-purple:hover {
+      box-shadow: 0 0 35px var(--purple-glow);
+      transform: translateY(-1px);
+    }
+
+    .btn-lg {
+      padding: 14px 28px;
+      font-size: 16px;
+      border-radius: 10px;
+    }
+
+    /* ============================
+       HERO SECTION
+    ============================ */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 100px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--amber);
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+      animation: badge-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes badge-glow {
+      0%, 100% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.2); }
+      50% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.4); }
+    }
+
+    .hero-badge .trophy { font-size: 14px; }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 7vw, 96px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .hero-title-sub {
+      font-family: var(--font-display);
+      font-size: clamp(18px, 2.5vw, 28px);
+      font-weight: 400;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+
+    .hero-title-sub strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .hero-description {
+      font-size: 18px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 520px;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+    }
+
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hero-stat-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    .hero-stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .hero-stat-divider {
+      width: 1px;
+      background: var(--border);
+      align-self: stretch;
+    }
+
+    /* DNA Canvas */
+    #dnaCanvas {
+      width: 100%;
+      height: 500px;
+      display: block;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-visual-glow {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* ============================
+       SCROLL INDICATOR
+    ============================ */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      animation: scroll-bounce 2s ease-in-out infinite;
+    }
+
+    .scroll-indicator .mouse {
+      width: 22px;
+      height: 36px;
+      border: 2px solid var(--text-muted);
+      border-radius: 11px;
+      display: flex;
+      justify-content: center;
+      padding-top: 6px;
+    }
+
+    .scroll-indicator .wheel {
+      width: 3px;
+      height: 8px;
+      background: var(--cyan);
+      border-radius: 2px;
+      animation: wheel-scroll 2s ease-in-out infinite;
+    }
+
+    @keyframes wheel-scroll {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(10px); opacity: 0; }
+    }
+
+    @keyframes scroll-bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(5px); }
+    }
+
+    /* ============================
+       PROBLEM SECTION
+    ============================ */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    section:nth-child(even) {
+      background: linear-gradient(180deg, transparent, rgba(7, 13, 26, 0.6), transparent);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Problem cards */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 64px;
+    }
+
+    .problem-card {
+      padding: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .problem-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--rose), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .problem-card:hover {
+      border-color: rgba(244, 63, 94, 0.3);
+      background: var(--bg-card-hover);
+      transform: translateY(-4px);
+    }
+
+    .problem-card:hover::before { opacity: 1; }
+
+    .problem-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .problem-card h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    .problem-card p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Solution bridge */
+    .solution-bridge {
+      text-align: center;
+      padding: 48px;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.05), rgba(124, 58, 237, 0.05));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .solution-bridge::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0, 229, 255, 0.07), transparent 70%);
+    }
+
+    .solution-bridge-text {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 3vw, 36px);
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================
+       HOW IT WORKS
+    ============================ */
+    .steps-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .steps-line {
+      position: absolute;
+      left: 28px;
+      top: 28px;
+      bottom: 28px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--cyan), var(--purple), var(--emerald));
+      z-index: 0;
+    }
+
+    .step-item {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 32px;
+      padding: 32px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-num {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 700;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+
+    .step-item:nth-child(2) .step-num { background: rgba(0, 229, 255, 0.15); border: 2px solid var(--cyan); color: var(--cyan); }
+    .step-item:nth-child(3) .step-num { background: rgba(124, 58, 237, 0.15); border: 2px solid var(--purple); color: var(--purple-light); }
+    .step-item:nth-child(4) .step-num { background: rgba(16, 185, 129, 0.15); border: 2px solid var(--emerald); color: var(--emerald); }
+    .step-item:nth-child(5) .step-num { background: rgba(245, 158, 11, 0.15); border: 2px solid var(--amber); color: var(--amber); }
+    .step-item:nth-child(6) .step-num { background: rgba(244, 63, 94, 0.15); border: 2px solid var(--rose); color: var(--rose); }
+
+    .step-content {
+      padding-top: 8px;
+    }
+
+    .step-content h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step-content p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .step-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* ============================
+       FEATURES
+    ============================ */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      padding: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--feature-color, var(--cyan));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      background: var(--bg-card-hover);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+    }
+
+    .feature-card:hover::after { transform: scaleX(1); }
+
+    .feature-card:nth-child(1) { --feature-color: var(--cyan); }
+    .feature-card:nth-child(2) { --feature-color: var(--purple-light); }
+    .feature-card:nth-child(3) { --feature-color: var(--emerald); }
+    .feature-card:nth-child(4) { --feature-color: var(--amber); }
+    .feature-card:nth-child(5) { --feature-color: var(--rose); }
+    .feature-card:nth-child(6) { --feature-color: #60A5FA; }
+
+    .feature-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon-wrap {
+      border-color: var(--feature-color, var(--cyan));
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+    }
+
+    .feature-card h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ============================
+       DEMO SECTION
+    ============================ */
+    #demo {
+      padding: 120px 0;
+    }
+
+    .demo-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .video-wrapper {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow:
+        0 0 0 1px rgba(0, 229, 255, 0.1),
+        0 24px 80px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(0, 229, 255, 0.08);
+      background: #000;
+      aspect-ratio: 16/9;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .yt-thumb {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease, filter 0.4s ease;
+      filter: brightness(0.7);
+    }
+
+    .video-wrapper:hover .yt-thumb {
+      transform: scale(1.04);
+      filter: brightness(0.5);
+    }
+
+    .yt-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .yt-play {
+      width: 84px; height: 84px;
+      border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 48px rgba(0,229,255,0.35), 0 8px 32px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+    }
+
+    .video-wrapper:hover .yt-play {
+      border-color: var(--cyan);
+      background: rgba(0,229,255,0.2);
+      box-shadow: 0 0 80px rgba(0,229,255,0.55), 0 8px 32px rgba(0,0,0,0.5);
+      transform: scale(1.1);
+    }
+
+    .yt-play svg { margin-left: 6px; }
+
+    .yt-cta-label {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.92);
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 100px;
+      padding: 7px 20px;
+      backdrop-filter: blur(6px);
+      letter-spacing: 0.03em;
+      transition: all 0.3s;
+    }
+
+    .video-wrapper:hover .yt-cta-label {
+      background: rgba(0,229,255,0.15);
+      border-color: rgba(0,229,255,0.4);
+      color: var(--cyan);
+    }
+
+    .yt-logo-badge {
+      position: absolute;
+      bottom: 14px; right: 14px;
+      background: rgba(0,0,0,0.72);
+      border-radius: 6px;
+      padding: 5px 10px;
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 700;
+      color: white;
+      backdrop-filter: blur(4px);
+    }
+
+    .video-decoration {
+      position: absolute;
+      inset: -2px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--cyan-glow), transparent 50%, var(--purple-glow));
+      z-index: -1;
+    }
+
+    .demo-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    /* ============================
+       IMPACT / STATS
+    ============================ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .stat-card {
+      padding: 40px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--stat-color, var(--cyan));
+    }
+
+    .stat-card:nth-child(1) { --stat-color: var(--cyan); }
+    .stat-card:nth-child(2) { --stat-color: var(--purple-light); }
+    .stat-card:nth-child(3) { --stat-color: var(--emerald); }
+    .stat-card:nth-child(4) { --stat-color: var(--amber); }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--stat-color, var(--cyan));
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* ============================
+       TECH STACK
+    ============================ */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 48px;
+    }
+
+    .tech-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 100px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .tech-pill:hover {
+      border-color: var(--cyan-glow);
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.05);
+      transform: translateY(-2px);
+    }
+
+    .tech-pill .tech-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    /* ============================
+       AWARD SECTION
+    ============================ */
+    #award {
+      padding: 80px 0;
+    }
+
+    .award-card {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 64px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(124, 58, 237, 0.08));
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .award-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.1), transparent 60%);
+    }
+
+    .award-trophy {
+      font-size: 64px;
+      line-height: 1;
+      margin-bottom: 24px;
+      filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.5));
+    }
+
+    .award-title {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 12px;
+    }
+
+    .award-desc {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      line-height: 1.6;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .award-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--amber);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 12px 24px;
+      border-radius: 8px;
+      background: rgba(245, 158, 11, 0.05);
+      transition: all 0.2s;
+    }
+
+    .award-link:hover {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: rgba(245, 158, 11, 0.5);
+      transform: translateY(-2px);
+    }
+
+    /* ============================
+       TEAM SECTION
+    ============================ */
+    .team-card {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 48px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .team-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 24px;
+      box-shadow: 0 0 30px var(--cyan-glow);
+    }
+
+    .team-name {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .team-role {
+      font-size: 15px;
+      color: var(--cyan);
+      font-weight: 500;
+      margin-bottom: 16px;
+      font-family: var(--font-mono);
+    }
+
+    .team-bio {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ============================
+       FOOTER
+    ============================ */
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 64px 0 40px;
+      border-top: 1px solid var(--border);
+      background: rgba(4, 8, 15, 0.8);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand h3 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .footer-brand p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .footer-col h4 {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      font-size: 15px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-links a:hover { color: var(--cyan); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .footer-bottom a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+
+    /* ============================
+       FLOATING GENOMIC ELEMENTS
+    ============================ */
+    .genomic-float {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: rgba(0, 229, 255, 0.15);
+      letter-spacing: 0.2em;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    /* ============================
+       MOBILE RESPONSIVE
+    ============================ */
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .problem-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .award-card { padding: 40px 24px; }
+      .team-card { padding: 32px 24px; }
+    }
+
+    @media (max-width: 600px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .hero-cta { flex-direction: column; }
+      .demo-links { flex-direction: column; align-items: center; }
+    }
+
+    /* ============================
+       CURSOR GLOW
+    ============================ */
+    .cursor-glow {
+      position: fixed;
+      pointer-events: none;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 229, 255, 0.04), transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease;
+      z-index: 9999;
+      mix-blend-mode: screen;
+    }
+
+    /* ============================
+       GLITCH EFFECT
+    ============================ */
+    @keyframes glitch {
+      0%, 90%, 100% { transform: translate(0); text-shadow: none; }
+      92% { transform: translate(-2px, 1px); text-shadow: 2px 0 var(--rose); }
+      94% { transform: translate(2px, -1px); text-shadow: -2px 0 var(--cyan); }
+      96% { transform: translate(0); }
+    }
+
+    .glitch-text:hover { animation: glitch 0.5s ease; }
+
+    /* ============================
+       CODE TERMINAL CARD
+    ============================ */
+    .terminal-card {
+      background: #0D1117;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      font-family: var(--font-mono);
+    }
+
+    .terminal-header {
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .terminal-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+    }
+
+    .t-red { background: #FF5F57; }
+    .t-yellow { background: #FFBD2E; }
+    .t-green { background: #28C840; }
+
+    .terminal-title {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .terminal-body {
+      padding: 20px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .t-prompt { color: var(--emerald); }
+    .t-cmd { color: var(--text-primary); }
+    .t-comment { color: var(--text-muted); }
+    .t-output { color: var(--cyan); }
+    .t-highlight { color: var(--amber); }
+    .t-cursor {
+      display: inline-block;
+      width: 8px; height: 14px;
+      background: var(--cyan);
+      vertical-align: middle;
+      animation: cursor-blink 1s step-end infinite;
+      margin-left: 2px;
+    }
+
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cursor glow -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- Background particle canvas -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- ============================
+     NAVIGATION
+============================ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-icon">OG</div>
+    <span class="nav-logo-text">OncoGAT</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#mission">Mission</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="#tech">Tech</a></li>
+  </ul>
+
+  <div class="nav-cta">
+    <a href="https://github.com/srikarkarri/OncoPrecisionMTBAssistant" target="_blank" class="btn btn-ghost">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      GitHub
+    </a>
+    <a href="https://studio--oncoprecisionai.us-central1.hosted.app" target="_blank" class="btn btn-primary">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Live App
+    </a>
+  </div>
+</nav>
+
+<!-- ============================
+     HERO SECTION
+============================ -->
+<section id="hero">
+  <!-- Floating genomic strings -->
+  <div class="genomic-float" style="top: 20%; left: 3%; opacity:0.4; animation: float-left 20s ease-in-out infinite;">ATGCTAGCTAGCTAG</div>
+  <div class="genomic-float" style="top: 60%; right: 3%; opacity:0.3; animation: float-right 25s ease-in-out infinite;">CGATTACGATCGAT</div>
+  <div class="genomic-float" style="top: 40%; left: 5%; font-size:10px; opacity:0.2;">BRAF•KRAS•TP53•EGFR•ALK•HER2</div>
+
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content fade-up">
+        <div class="hero-badge">
+          <span class="trophy">🏆</span>
+          Congressional App Challenge 2025 — TX District 8 Winner
+        </div>
+
+        <h1 class="hero-title">
+          <span class="gradient-text glitch-text">OncoGAT</span>
+        </h1>
+
+        <p class="hero-title-sub">
+          <strong>Oncology Genomic AI Tool</strong><br/>
+          Precision Medicine for Every Patient
+        </p>
+
+        <p class="hero-description">
+          An AI-powered clinical decision support system that helps oncologists and Molecular Tumor Boards analyze complex genomic profiles, identify targeted therapies, and match patients to life-saving clinical trials — in minutes, not weeks.
+        </p>
+
+        <div class="hero-cta">
+          <a href="https://studio--oncoprecisionai.us-central1.hosted.app" target="_blank" class="btn btn-primary btn-lg">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+            Launch OncoGAT
+          </a>
+          <a href="https://www.youtube.com/watch?v=O8_Fava1Ajw&t=11s" target="_blank" class="btn btn-ghost btn-lg">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            Watch Demo
+          </a>
+          <a href="https://github.com/srikarkarri/OncoPrecisionMTBAssistant" target="_blank" class="btn btn-ghost btn-lg">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            Source Code
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-value" data-count="500">0</span>
+            <span class="hero-stat-label">Cancer Mutations Tracked</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-value" data-count="95">0</span>
+            <span class="hero-stat-label">% Accuracy Rate</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-value" data-count="10">0</span>
+            <span class="hero-stat-label">Min vs. Hours Saved</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual fade-up delay-2">
+        <div class="hero-visual-glow"></div>
+        <canvas id="dnaCanvas" width="500" height="500"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="mouse"><div class="wheel"></div></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ============================
+     THE PROBLEM
+============================ -->
+<section id="mission">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-label">The Problem</div>
+      <h2 class="section-title">Cancer is Complex.<br/><span class="gradient-text">Treatment Decisions Shouldn't Be.</span></h2>
+      <p class="section-subtitle">
+        Every cancer patient has a unique genomic fingerprint. Yet oncologists face an overwhelming volume of data, literature, and treatment options when making critical life-or-death decisions.
+      </p>
+    </div>
+
+    <div class="problem-grid">
+      <div class="problem-card fade-up delay-1">
+        <div class="problem-icon">🧬</div>
+        <h3>Genomic Data Overload</h3>
+        <p>Modern tumor sequencing panels identify hundreds of mutations. Manually interpreting each variant's clinical significance takes days of expert analysis.</p>
+      </div>
+      <div class="problem-card fade-up delay-2">
+        <div class="problem-icon">⏳</div>
+        <h3>Delayed Treatment Decisions</h3>
+        <p>Molecular Tumor Boards meet infrequently, causing weeks of delay between diagnosis and targeted therapy initiation — time patients can't afford to lose.</p>
+      </div>
+      <div class="problem-card fade-up delay-3">
+        <div class="problem-icon">📚</div>
+        <h3>Knowledge Gap</h3>
+        <p>The biomedical literature grows by thousands of papers daily. No single oncologist can stay current on every mutation, drug interaction, and emerging trial.</p>
+      </div>
+    </div>
+
+    <div class="solution-bridge fade-up">
+      <p class="solution-bridge-text">
+        <span style="color: var(--text-secondary)">What if AI could read every paper, know every mutation,<br/>and surface the right answer — </span><span class="gradient-text">instantly?</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================
+     HOW IT WORKS
+============================ -->
+<section id="how-it-works" style="background: linear-gradient(180deg, transparent, rgba(7,13,26,0.8), transparent);">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-label">How It Works</div>
+      <h2 class="section-title">From Genome to <span class="gradient-text">Treatment Plan</span></h2>
+      <p class="section-subtitle">
+        OncoGAT transforms raw genomic sequencing data into actionable clinical insights through a streamlined AI pipeline.
+      </p>
+    </div>
+
+    <div class="steps-container">
+      <div class="steps-line"></div>
+
+      <div class="step-item fade-up">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3>Enter Patient Case Details</h3>
+          <p>Clinicians input the patient's diagnosis, cancer type, stage, prior treatment history, and biomarker status. OncoGAT builds a structured clinical profile ready for AI-powered analysis.</p>
+          <span class="step-tag">🏥 Structured Patient Intake</span>
+        </div>
+      </div>
+
+      <div class="step-item fade-up delay-1">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3>Submit Genomic Mutations</h3>
+          <p>Enter key somatic mutations (e.g. BRAF V600E, KRAS G12C, TP53 R175H) or paste NGS panel results. OncoGAT cross-references each variant against OncoKB, ClinVar, and COSMIC to assign clinical tier and actionability.</p>
+          <span class="step-tag">🧬 Variant Interpretation Engine</span>
+        </div>
+      </div>
+
+      <div class="step-item fade-up delay-2">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3>AI MTB Analysis & Recommendations</h3>
+          <p>The AI co-pilot synthesizes all inputs and generates a ranked list of targeted therapies (FDA-approved and off-label), resistance mechanisms, and matched open clinical trials — with full evidence citations.</p>
+          <span class="step-tag">🤖 AI-Powered Treatment Planning</span>
+        </div>
+      </div>
+
+      <div class="step-item fade-up delay-3">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3>Interactive Q&A with the AI Co-Pilot</h3>
+          <p>During the MTB meeting, oncologists ask plain-English follow-ups: "What resistance mechanisms are expected with vemurafenib?" or "Are there trials for co-mutated BRAF + PIK3CA?" — answered with cited evidence in real time.</p>
+          <span class="step-tag">💬 Live MTB Decision Support</span>
+        </div>
+      </div>
+
+      <div class="step-item fade-up delay-4">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <h3>Export Structured MTB Report</h3>
+          <p>Generate a clean, comprehensive Molecular Tumor Board report summarizing the case, genomic findings, AI recommendations, and clinical trial matches — ready for documentation and multidisciplinary review.</p>
+          <span class="step-tag">📋 One-Click Report Generation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================
+     FEATURES
+============================ -->
+<section id="features">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-label">Key Features</div>
+      <h2 class="section-title">Everything Your<br/><span class="gradient-text">MTB Needs</span></h2>
+      <p class="section-subtitle">
+        OncoGAT combines cutting-edge AI with deep oncology expertise to give tumor boards a decisive advantage.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card fade-up delay-1">
+        <div class="feature-icon-wrap">🏥</div>
+        <h3>MTB Case Dashboard</h3>
+        <p>A dedicated Molecular Tumor Board workspace to manage patient cases — input diagnoses, cancer stage, biomarkers, and treatment history in a clean, structured interface built for clinical workflows.</p>
+      </div>
+      <div class="feature-card fade-up delay-2">
+        <div class="feature-icon-wrap">🧬</div>
+        <h3>Somatic Mutation Interpreter</h3>
+        <p>Enter any mutation (BRAF V600E, KRAS G12C, HER2 amplification…) and get instant clinical tier classification, pathogenicity assessment, and functional impact — powered by OncoKB and COSMIC databases.</p>
+      </div>
+      <div class="feature-card fade-up delay-3">
+        <div class="feature-icon-wrap">🎯</div>
+        <h3>Targeted Therapy Recommender</h3>
+        <p>AI ranks FDA-approved targeted therapies, immunotherapy options, and off-label treatments by evidence level (1A–4), expected response rate, and known resistance profiles for the patient's exact mutation set.</p>
+      </div>
+      <div class="feature-card fade-up delay-1">
+        <div class="feature-icon-wrap">🔬</div>
+        <h3>Clinical Trial Matcher</h3>
+        <p>Automatically surfaces open ClinicalTrials.gov studies matching the patient's tumor type, genomic alterations, and eligibility criteria — with direct enrollment contact links.</p>
+      </div>
+      <div class="feature-card fade-up delay-2">
+        <div class="feature-icon-wrap">🤖</div>
+        <h3>AI MTB Co-Pilot</h3>
+        <p>Ask anything mid-meeting: drug interactions, co-mutation resistance patterns, NCCN guideline references, or literature summaries. The AI co-pilot answers with cited, evidence-graded responses in seconds.</p>
+      </div>
+      <div class="feature-card fade-up delay-3">
+        <div class="feature-icon-wrap">📋</div>
+        <h3>One-Click MTB Report</h3>
+        <p>Export a fully structured Molecular Tumor Board report — case summary, variant analysis, therapy recommendations, trial matches, and AI rationale — ready for clinical documentation and EHR upload.</p>
+      </div>
+    </div>
+
+    <!-- Terminal Card -->
+    <div class="fade-up" style="margin-top: 48px; max-width: 700px; margin-left: auto; margin-right: auto;">
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <span class="terminal-dot t-red"></span>
+          <span class="terminal-dot t-yellow"></span>
+          <span class="terminal-dot t-green"></span>
+          <span class="terminal-title">OncoGAT AI Engine — Live Query</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-prompt">mtb@oncogat:~$</span> <span class="t-cmd">new-case --type "Melanoma Stage IV" --mutations "BRAF V600E, PIK3CA E545K"</span></div>
+          <div style="margin-top:12px;"><span class="t-comment">// OncoGAT AI analyzing case...</span></div>
+          <div><span class="t-output">✓ BRAF p.V600E </span>→ <span class="t-highlight">Tier I-A</span> · Vemurafenib, Dabrafenib+Trametinib (Level 1A)</div>
+          <div><span class="t-output">✓ PIK3CA E545K </span>→ <span class="t-highlight">Tier II-B</span> · Alpelisib candidate · resistance risk flagged</div>
+          <div><span class="t-output">✓ Trials: </span>4 open studies — NCT04390139, NCT03889275 (eligible)</div>
+          <div><span class="t-output">✓ MTB Report </span>→ ready to export (PDF / EHR format)</div>
+          <div style="margin-top:8px;"><span class="t-prompt">mtb@oncogat:~$</span> <span class="t-comment"> ask "What resistance is expected with dabrafenib?"</span><span class="t-cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================
+     DEMO VIDEO
+============================ -->
+<section id="demo">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-label">See It In Action</div>
+      <h2 class="section-title">OncoGAT <span class="gradient-text">Demo</span></h2>
+      <p class="section-subtitle">
+        Watch how OncoGAT transforms a complex genomic report into a complete treatment recommendation in under 60 seconds.
+      </p>
+    </div>
+
+    <div class="demo-container fade-up">
+      <div style="position:relative;">
+        <div class="video-decoration"></div>
+        <a class="video-wrapper"
+           href="https://www.youtube.com/watch?v=O8_Fava1Ajw&t=11s"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Watch OncoGAT demo on YouTube">
+
+          <img class="yt-thumb"
+               src="https://img.youtube.com/vi/O8_Fava1Ajw/maxresdefault.jpg"
+               onerror="this.src='https://img.youtube.com/vi/O8_Fava1Ajw/hqdefault.jpg'"
+               alt="OncoGAT Demo Video" />
+
+          <div class="yt-overlay">
+            <div class="yt-play">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </div>
+            <span class="yt-cta-label">▶&nbsp; Watch on YouTube</span>
+          </div>
+
+          <div class="yt-logo-badge">
+            <svg width="18" height="13" viewBox="0 0 18 13" fill="#FF0000">
+              <path d="M17.6 2.1s-.2-1.3-.8-1.8C16 .1 15.1 0 14.7 0 12.3 0 9 0 9 0S5.7 0 3.3 0C2.9 0 2 .1 1.2.3.6.8.4 2.1.4 2.1S.2 3.6.2 5v1.4c0 1.4.2 2.9.2 2.9s.2 1.3.8 1.8c.8.7 1.8.7 2.2.7C4.8 12 9 12 9 12s3.3 0 5.7-.4c.4-.1 1.4-.5 2.2-1.2.6-.5.8-1.8.8-1.8s.2-1.5.2-2.9V5c0-1.4-.3-2.9-.3-2.9zM7.2 8.3V3.5l5 2.4-5 2.4z"/>
+            </svg>
+            YouTube
+          </div>
+        </a>
+      </div>
+
+      <div class="demo-links">
+        <a href="https://studio--oncoprecisionai.us-central1.hosted.app" target="_blank" class="btn btn-primary btn-lg">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          Try OncoGAT Live
+        </a>
+        <a href="https://github.com/srikarkarri/OncoPrecisionMTBAssistant" target="_blank" class="btn btn-ghost btn-lg">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          View Source Code
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================
+     IMPACT STATS
+============================ -->
+<section id="impact">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-label">Impact</div>
+      <h2 class="section-title">Numbers That <span class="gradient-text">Matter</span></h2>
+      <p class="section-subtitle">
+        Cancer affects millions. OncoGAT is built to make precision medicine accessible to every oncologist, everywhere.
+      </p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card fade-up delay-1">
+        <div class="stat-value"><span class="count-up" data-target="600">0</span>K+</div>
+        <div class="stat-label">New cancer diagnoses in the US annually requiring genomic analysis</div>
+      </div>
+      <div class="stat-card fade-up delay-2">
+        <div class="stat-value"><span class="count-up" data-target="3">0</span>x</div>
+        <div class="stat-label">Faster decision-making compared to manual MTB review processes</div>
+      </div>
+      <div class="stat-card fade-up delay-3">
+        <div class="stat-value"><span class="count-up" data-target="1500">0</span>+</div>
+        <div class="stat-label">Clinically actionable mutations catalogued and analyzed</div>
+      </div>
+      <div class="stat-card fade-up delay-4">
+        <div class="stat-value"><span class="count-up" data-target="40">0</span>%</div>
+        <div class="stat-label">Of cancer patients may benefit from genomically-matched targeted therapy</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================
+     TECH STACK
+============================ -->
+<section id="tech">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-label">Technology</div>
+      <h2 class="section-title">Built With <span class="gradient-text">Cutting-Edge Tech</span></h2>
+      <p class="section-subtitle">
+        OncoGAT is powered by a modern stack combining the latest in AI, cloud infrastructure, and web development.
+      </p>
+    </div>
+
+    <div class="tech-stack fade-up">
+      <span class="tech-pill"><span class="tech-dot" style="background:#000000;"></span>Next.js 14</span>
+      <span class="tech-pill"><span class="tech-dot" style="background:#3178C6;"></span>TypeScript</span>
+      <span class="tech-pill"><span class="tech-dot" style="background:#06B6D4;"></span>Tailwind CSS</span>
+      <span class="tech-pill"><span class="tech-dot" style="background:#FF6F00;"></span>Firebase</span>
+      <span class="tech-pill"><span class="tech-dot" style="background:#4285F4;"></span>Google Cloud</span>
+      <span class="tech-pill"><span class="tech-dot" style="background:#10B981;"></span>Gemini AI</span>
+      <span class="tech-pill"><span class="tech-dot" style="background:#8B5CF6;"></span>Vertex AI</span>
+      <span class="tech-pill"><span class="tech-dot" style="background:#F59E0B;"></span>OncoKB API</span>
+      <span class="tech-pill"><span class="tech-dot" style="background:#EF4444;"></span>ClinVar</span>
+      <span class="tech-pill"><span class="tech-dot" style="background:#60A5FA;"></span>ClinicalTrials.gov</span>
+      <span class="tech-pill"><span class="tech-dot" style="background:#34D399;"></span>COSMIC DB</span>
+      <span class="tech-pill"><span class="tech-dot" style="background:#F97316;"></span>RAG Pipeline</span>
+    </div>
+
+    <!-- Architecture Overview -->
+    <div class="fade-up" style="margin-top: 64px;">
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; max-width:900px; margin:0 auto;">
+        <div style="padding:28px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px; text-align:center; backdrop-filter:blur(10px);">
+          <div style="font-size:32px;margin-bottom:12px;">⚡</div>
+          <h4 style="font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:8px;">Real-Time Processing</h4>
+          <p style="font-size:14px;color:var(--text-secondary);line-height:1.5;">Edge-deployed AI with sub-second genomic analysis using Firebase App Hosting</p>
+        </div>
+        <div style="padding:28px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px; text-align:center; backdrop-filter:blur(10px);">
+          <div style="font-size:32px;margin-bottom:12px;">🧠</div>
+          <h4 style="font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:8px;">LLM + RAG Fusion</h4>
+          <p style="font-size:14px;color:var(--text-secondary);line-height:1.5;">Retrieval-Augmented Generation over curated oncology literature for grounded answers</p>
+        </div>
+        <div style="padding:28px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px; text-align:center; backdrop-filter:blur(10px);">
+          <div style="font-size:32px;margin-bottom:12px;">🌐</div>
+          <h4 style="font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:8px;">Live Data Integration</h4>
+          <p style="font-size:14px;color:var(--text-secondary);line-height:1.5;">Connects to live clinical databases — no stale knowledge, always current</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================
+     TEAM / CREATOR
+============================ -->
+<section id="team">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-label">The Builder</div>
+      <h2 class="section-title">Built by a <span class="gradient-text">Student Developer</span></h2>
+    </div>
+
+    <div class="team-card fade-up">
+      <div class="team-avatar">👨‍💻</div>
+      <h3 class="team-name">Srikar Karri</h3>
+      <p class="team-role">Developer & Researcher — TX District 8</p>
+      <p class="team-bio">
+        A passionate student developer from Texas's 8th Congressional District who combined a deep interest in oncology, genomics, and AI to build a tool that could genuinely improve cancer care. OncoGAT was created to bridge the gap between complex genomic data and actionable clinical decisions — putting precision medicine within reach for every patient.
+      </p>
+      <div style="margin-top:24px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+        <a href="https://github.com/srikarkarri/OncoPrecisionMTBAssistant" target="_blank" class="btn btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="https://studio--oncoprecisionai.us-central1.hosted.app" target="_blank" class="btn btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Live App
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================
+     AWARD
+============================ -->
+<section id="award">
+  <div class="container">
+    <div class="award-card fade-up">
+      <div class="award-trophy">🏆</div>
+      <h3 class="award-title">Congressional App Challenge 2025</h3>
+      <p class="award-desc">
+        OncoGAT was selected as the winning app for <strong style="color:var(--text-primary)">Texas Congressional District 8</strong>, representing our district at the national #HouseOfCode showcase in Washington D.C.
+      </p>
+      <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+        <a href="https://www.congressionalappchallenge.us/25-TX08/"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="award-link">
+          🏛️ View Official Announcement
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+      <div style="margin-top:32px;display:flex;justify-content:center;gap:32px;flex-wrap:wrap;">
+        <div style="text-align:center;">
+          <div style="font-family:var(--font-mono);font-size:13px;color:var(--amber);margin-bottom:4px;">DISTRICT</div>
+          <div style="font-family:var(--font-display);font-size:24px;font-weight:700;">TX-08</div>
+        </div>
+        <div style="width:1px;background:rgba(245,158,11,0.2);"></div>
+        <div style="text-align:center;">
+          <div style="font-family:var(--font-mono);font-size:13px;color:var(--amber);margin-bottom:4px;">YEAR</div>
+          <div style="font-family:var(--font-display);font-size:24px;font-weight:700;">2025</div>
+        </div>
+        <div style="width:1px;background:rgba(245,158,11,0.2);"></div>
+        <div style="text-align:center;">
+          <div style="font-family:var(--font-mono);font-size:13px;color:var(--amber);margin-bottom:4px;">SHOWCASE</div>
+          <div style="font-family:var(--font-display);font-size:24px;font-weight:700;">#HouseOfCode</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================
+     FOOTER
+============================ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3><span class="gradient-text">OncoGAT</span></h3>
+        <p>An AI-powered Oncology Genomic Analysis Tool built to accelerate precision cancer care. Helping Molecular Tumor Boards make better, faster, evidence-based decisions for every patient.</p>
+        <div style="display:flex;gap:12px;">
+          <a href="https://github.com/srikarkarri/OncoPrecisionMTBAssistant" target="_blank" class="btn btn-ghost" style="padding:8px 14px;font-size:13px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.youtube.com/watch?v=O8_Fava1Ajw&t=11s" target="_blank" class="btn btn-ghost" style="padding:8px 14px;font-size:13px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            YouTube
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Project</h4>
+        <ul class="footer-links">
+          <li><a href="https://studio--oncoprecisionai.us-central1.hosted.app" target="_blank">🚀 Live Application</a></li>
+          <li><a href="https://github.com/srikarkarri/OncoPrecisionMTBAssistant" target="_blank">💻 Source Code</a></li>
+          <li><a href="https://www.youtube.com/watch?v=O8_Fava1Ajw&t=11s" target="_blank">🎬 Demo Video</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Recognition</h4>
+        <ul class="footer-links">
+          <li><a href="https://www.congressionalappchallenge.us/25-TX08/" target="_blank">🏆 TX-08 Winner</a></li>
+          <li><a href="https://www.congressionalappchallenge.us/" target="_blank">🏛️ Congressional App Challenge</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 OncoGAT · Built by Srikar Karri · TX-08</span>
+      <span>Congressional App Challenge 2025 <span style="color:var(--amber)">🏆</span></span>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ============================
+     JAVASCRIPT
+============================ -->
+<script>
+// ========================
+// CURSOR GLOW
+// ========================
+const cursorGlow = document.getElementById('cursorGlow');
+document.addEventListener('mousemove', (e) => {
+  cursorGlow.style.left = e.clientX + 'px';
+  cursorGlow.style.top = e.clientY + 'px';
+});
+
+// ========================
+// NAV SCROLL EFFECT
+// ========================
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ========================
+// BACKGROUND PARTICLE SYSTEM
+// ========================
+const bgCanvas = document.getElementById('bgCanvas');
+const bgCtx = bgCanvas.getContext('2d');
+
+function resizeBgCanvas() {
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+}
+resizeBgCanvas();
+window.addEventListener('resize', resizeBgCanvas);
+
+const particles = [];
+const PARTICLE_COUNT = 80;
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * bgCanvas.width;
+    this.y = Math.random() * bgCanvas.height;
+    this.vx = (Math.random() - 0.5) * 0.4;
+    this.vy = (Math.random() - 0.5) * 0.4;
+    this.radius = Math.random() * 2 + 0.5;
+    this.alpha = Math.random() * 0.4 + 0.1;
+    this.color = Math.random() > 0.5 ? '0, 229, 255' : '124, 58, 237';
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > bgCanvas.width) this.vx *= -1;
+    if (this.y < 0 || this.y > bgCanvas.height) this.vy *= -1;
+  }
+  draw() {
+    bgCtx.beginPath();
+    bgCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    bgCtx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+    bgCtx.fill();
+  }
+}
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  particles.push(new Particle());
+}
+
+function drawConnections() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        const alpha = (1 - dist / 120) * 0.12;
+        bgCtx.beginPath();
+        bgCtx.moveTo(particles[i].x, particles[i].y);
+        bgCtx.lineTo(particles[j].x, particles[j].y);
+        bgCtx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
+        bgCtx.lineWidth = 0.5;
+        bgCtx.stroke();
+      }
+    }
+  }
+}
+
+function animateBg() {
+  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  drawConnections();
+  requestAnimationFrame(animateBg);
+}
+animateBg();
+
+// ========================
+// DNA HELIX ANIMATION
+// ========================
+const dnaCanvas = document.getElementById('dnaCanvas');
+if (dnaCanvas) {
+  const dnaCtx = dnaCanvas.getContext('2d');
+  const W = dnaCanvas.width;
+  const H = dnaCanvas.height;
+  let dnaAngle = 0;
+
+  const BASES = ['A', 'T', 'G', 'C'];
+  const BASE_COLORS = {
+    'A': '#00E5FF', 'T': '#7C3AED',
+    'G': '#10B981', 'C': '#F59E0B'
+  };
+
+  function drawDNA() {
+    dnaCtx.clearRect(0, 0, W, H);
+
+    const cx = W / 2;
+    const amplitude = 90;
+    const frequency = 0.018;
+    const numPoints = 30;
+    const spacing = H / numPoints;
+
+    // Draw helical strands and rungs
+    for (let i = 0; i < numPoints; i++) {
+      const y = i * spacing + (dnaAngle % spacing);
+      const phase = i * frequency * 60 + dnaAngle * 0.05;
+
+      const x1 = cx + Math.sin(phase) * amplitude;
+      const x2 = cx + Math.sin(phase + Math.PI) * amplitude;
+
+      // Depth for 3D effect
+      const depth = (Math.sin(phase) + 1) / 2;
+      const alpha = 0.4 + depth * 0.6;
+      const rungAlpha = 0.3 + depth * 0.4;
+
+      // Rung (connecting bar)
+      if (i % 2 === 0) {
+        const base1 = BASES[i % 4];
+        const base2 = BASES[(i + 2) % 4];
+        const midX = (x1 + x2) / 2;
+
+        // Left half rung
+        const grad = dnaCtx.createLinearGradient(x1, y, x2, y);
+        grad.addColorStop(0, BASE_COLORS[base1] + Math.floor(rungAlpha * 255).toString(16).padStart(2, '0'));
+        grad.addColorStop(0.5, 'rgba(255,255,255,0.1)');
+        grad.addColorStop(1, BASE_COLORS[base2] + Math.floor(rungAlpha * 255).toString(16).padStart(2, '0'));
+
+        dnaCtx.beginPath();
+        dnaCtx.moveTo(x1, y);
+        dnaCtx.lineTo(x2, y);
+        dnaCtx.strokeStyle = grad;
+        dnaCtx.lineWidth = 2;
+        dnaCtx.stroke();
+
+        // Base labels
+        dnaCtx.font = 'bold 10px JetBrains Mono, monospace';
+        dnaCtx.fillStyle = BASE_COLORS[base1];
+        dnaCtx.globalAlpha = rungAlpha;
+        dnaCtx.fillText(base1, midX - 18, y + 4);
+        dnaCtx.fillText(base2, midX + 8, y + 4);
+        dnaCtx.globalAlpha = 1;
+      }
+
+      // Node dots
+      const nodeSize = 4 + depth * 4;
+
+      // Strand 1 node
+      const glow1 = dnaCtx.createRadialGradient(x1, y, 0, x1, y, nodeSize * 2);
+      glow1.addColorStop(0, `rgba(0, 229, 255, ${alpha * 0.8})`);
+      glow1.addColorStop(1, 'rgba(0, 229, 255, 0)');
+      dnaCtx.beginPath();
+      dnaCtx.arc(x1, y, nodeSize * 2, 0, Math.PI * 2);
+      dnaCtx.fillStyle = glow1;
+      dnaCtx.fill();
+
+      dnaCtx.beginPath();
+      dnaCtx.arc(x1, y, nodeSize, 0, Math.PI * 2);
+      dnaCtx.fillStyle = `rgba(0, 229, 255, ${alpha})`;
+      dnaCtx.fill();
+
+      // Strand 2 node
+      const glow2 = dnaCtx.createRadialGradient(x2, y, 0, x2, y, nodeSize * 2);
+      glow2.addColorStop(0, `rgba(124, 58, 237, ${alpha * 0.8})`);
+      glow2.addColorStop(1, 'rgba(124, 58, 237, 0)');
+      dnaCtx.beginPath();
+      dnaCtx.arc(x2, y, nodeSize * 2, 0, Math.PI * 2);
+      dnaCtx.fillStyle = glow2;
+      dnaCtx.fill();
+
+      dnaCtx.beginPath();
+      dnaCtx.arc(x2, y, nodeSize, 0, Math.PI * 2);
+      dnaCtx.fillStyle = `rgba(124, 58, 237, ${alpha})`;
+      dnaCtx.fill();
+    }
+
+    // Draw smooth strand paths
+    dnaCtx.beginPath();
+    for (let i = 0; i < numPoints; i++) {
+      const y = i * spacing + (dnaAngle % spacing);
+      const phase = i * frequency * 60 + dnaAngle * 0.05;
+      const x1 = cx + Math.sin(phase) * amplitude;
+      if (i === 0) dnaCtx.moveTo(x1, y);
+      else dnaCtx.lineTo(x1, y);
+    }
+    dnaCtx.strokeStyle = 'rgba(0, 229, 255, 0.4)';
+    dnaCtx.lineWidth = 2.5;
+    dnaCtx.stroke();
+
+    dnaCtx.beginPath();
+    for (let i = 0; i < numPoints; i++) {
+      const y = i * spacing + (dnaAngle % spacing);
+      const phase = i * frequency * 60 + dnaAngle * 0.05;
+      const x2 = cx + Math.sin(phase + Math.PI) * amplitude;
+      if (i === 0) dnaCtx.moveTo(x2, y);
+      else dnaCtx.lineTo(x2, y);
+    }
+    dnaCtx.strokeStyle = 'rgba(124, 58, 237, 0.4)';
+    dnaCtx.lineWidth = 2.5;
+    dnaCtx.stroke();
+
+    dnaAngle += 0.8;
+    requestAnimationFrame(drawDNA);
+  }
+  drawDNA();
+}
+
+// ========================
+// SCROLL-TRIGGERED ANIMATIONS
+// ========================
+const fadeEls = document.querySelectorAll('.fade-up');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+fadeEls.forEach(el => observer.observe(el));
+
+// ========================
+// ANIMATED COUNTERS
+// ========================
+function animateCounter(el, target, duration = 2000, suffix = '') {
+  const start = performance.now();
+  const update = (time) => {
+    const elapsed = time - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = Math.floor(eased * target);
+    el.textContent = value.toLocaleString() + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+    else el.textContent = target.toLocaleString() + suffix;
+  };
+  requestAnimationFrame(update);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !entry.target.dataset.animated) {
+      entry.target.dataset.animated = 'true';
+      const target = parseInt(entry.target.dataset.target);
+      animateCounter(entry.target, target);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.count-up').forEach(el => counterObserver.observe(el));
+
+// Hero stat counters
+document.querySelectorAll('[data-count]').forEach(el => {
+  const heroStatObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.animated) {
+        entry.target.dataset.animated = 'true';
+        const target = parseInt(entry.target.dataset.count);
+        animateCounter(entry.target, target);
+      }
+    });
+  }, { threshold: 0.5 });
+  heroStatObserver.observe(el);
+});
+
+// ========================
+// FLOATING GENOMIC TEXT ANIMATION
+// ========================
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes float-left {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+    25% { transform: translateY(-15px) translateX(10px); opacity: 0.5; }
+    75% { transform: translateY(10px) translateX(-5px); opacity: 0.2; }
+  }
+  @keyframes float-right {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.2; }
+    33% { transform: translateY(20px) translateX(-8px); opacity: 0.4; }
+    66% { transform: translateY(-10px) translateX(5px); opacity: 0.15; }
+  }
+`;
+document.head.appendChild(style);
+
+// ========================
+// SMOOTH SCROLL FOR NAV
+// ========================
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// ========================
+// STEP ITEMS HOVER
+// ========================
+document.querySelectorAll('.step-item').forEach(item => {
+  item.addEventListener('mouseenter', () => {
+    item.querySelector('.step-num').style.transform = 'scale(1.1)';
+  });
+  item.addEventListener('mouseleave', () => {
+    item.querySelector('.step-num').style.transform = 'scale(1)';
+  });
+});
+
+// ========================
+// FEATURE CARD MOUSE TRACKING
+// ========================
+document.querySelectorAll('.feature-card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    card.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(15,30,60,0.9), rgba(10,20,40,0.7))`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.background = '';
+  });
+});
+
+</script>
+</body>
+</html>
+
+  <!-- Navigation script — enables arrow key navigation. Do NOT remove this. -->
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>
