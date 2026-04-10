@@ -956,5 +956,289 @@
       setTimeout(() => burst.remove(), 700);
     });
   </script>
+
+  <!-- ── Enhanced Features ── -->
+  <style>
+    /* Scroll progress bar */
+    #hb-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, #5c3d2e, #c8956c, #5c3d2e);
+      background-size: 200% 100%;
+      animation: progressShimmer 3s linear infinite;
+      z-index: 99999;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    @keyframes progressShimmer {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+
+    /* Grain overlay */
+    #hb-grain {
+      position: fixed;
+      inset: -50%;
+      width: 200%; height: 200%;
+      pointer-events: none;
+      z-index: 99990;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 128px 128px;
+      animation: grainShift 0.08s steps(1) infinite;
+    }
+    @keyframes grainShift {
+      0%  { transform: translate(0, 0); }
+      10% { transform: translate(-2%, -3%); }
+      20% { transform: translate(3%, 1%); }
+      30% { transform: translate(-1%, 4%); }
+      40% { transform: translate(4%, -2%); }
+      50% { transform: translate(-3%, 3%); }
+      60% { transform: translate(2%, -4%); }
+      70% { transform: translate(-4%, 1%); }
+      80% { transform: translate(1%, -1%); }
+      90% { transform: translate(3%, 4%); }
+    }
+
+    /* Ambient mouse orbs */
+    .hb-orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(80px);
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+    body.orbs-ready .hb-orb { opacity: 1; }
+
+    /* Back to top */
+    #hb-top {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #5c3d2e, #c8956c);
+      border: none;
+      color: rgba(245,235,224,0.9);
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      z-index: 9999;
+      box-shadow: 0 4px 20px rgba(92,61,46,0.3);
+      opacity: 0;
+      transform: translateY(12px) scale(0.85);
+      transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out), box-shadow 0.3s;
+    }
+    #hb-top.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    #hb-top:hover {
+      box-shadow: 0 8px 32px rgba(92,61,46,0.45);
+      transform: translateY(-2px) scale(1.06);
+    }
+
+    /* 3D card tilt */
+    .glass-card, .award-glass, .links-card {
+      will-change: transform;
+    }
+
+    /* Magnetic button glow */
+    .btn-primary {
+      position: relative;
+      overflow: visible;
+    }
+
+    /* Hero name char-by-char reveal */
+    .hero h1 .char {
+      display: inline-block;
+      animation: charIn 0.6s var(--ease-out) both;
+    }
+    @keyframes charIn {
+      from { opacity: 0; transform: translateY(20px) rotate(4deg); }
+      to   { opacity: 1; transform: translateY(0) rotate(0); }
+    }
+
+    /* Parallax hero logo subtle float */
+    .hero-logo-bg {
+      transition: transform 0.1s linear, box-shadow 0.4s var(--ease-out);
+    }
+
+    /* Stagger glass-card entrance */
+    .glass-card:nth-child(1) { transition-delay: 0s; }
+    .glass-card:nth-child(2) { transition-delay: 0.08s; }
+    .glass-card:nth-child(3) { transition-delay: 0.16s; }
+
+    /* Feature item hover glow */
+    .feature-item {
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      opacity: 0;
+      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(200,149,108,0.12) 0%, transparent 60%);
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .feature-item:hover::after { opacity: 1; }
+
+    /* Team member glow same */
+    .team-member {
+      position: relative;
+      overflow: hidden;
+    }
+    .team-member::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      opacity: 0;
+      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(200,149,108,0.15) 0%, transparent 60%);
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .team-member:hover::after { opacity: 1; }
+
+    /* Divider label character reveal */
+    .divider-label {
+      overflow: hidden;
+      position: relative;
+    }
+    .section-divider.visible .divider-label {
+      animation: labelReveal 0.5s var(--ease-out) 0.2s both;
+    }
+    @keyframes labelReveal {
+      from { clip-path: inset(0 100% 0 0); }
+      to   { clip-path: inset(0 0% 0 0); }
+    }
+  </style>
+
+  <div id="hb-progress"></div>
+  <div id="hb-grain"></div>
+  <button id="hb-top" aria-label="Back to top">&#8593;</button>
+
+  <script>
+    // Scroll progress
+    const progressBar = document.getElementById('hb-progress');
+    window.addEventListener('scroll', () => {
+      const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+      progressBar.style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
+
+    // Back to top
+    const topBtn = document.getElementById('hb-top');
+    window.addEventListener('scroll', () => {
+      topBtn.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
+    topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Ambient orbs
+    const orbData = [
+      { size: 420, color: 'rgba(200,149,108,0.28)', lag: 0.04 },
+      { size: 320, color: 'rgba(92,61,46,0.14)',   lag: 0.025 },
+      { size: 260, color: 'rgba(200,149,108,0.18)', lag: 0.07 },
+    ];
+    const orbs = orbData.map(({ size, color, lag }) => {
+      const el = document.createElement('div');
+      el.className = 'hb-orb';
+      el.style.cssText = `width:${size}px;height:${size}px;background:${color};`;
+      el.dataset.lag = lag;
+      el._x = window.innerWidth / 2;
+      el._y = window.innerHeight / 2;
+      document.body.appendChild(el);
+      return el;
+    });
+    setTimeout(() => document.body.classList.add('orbs-ready'), 800);
+
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+    // 3D card tilt
+    const tiltEls = document.querySelectorAll('.glass-card, .award-glass, .links-card');
+    tiltEls.forEach(el => {
+      el.addEventListener('mousemove', e => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width  - 0.5;
+        const y = (e.clientY - r.top)  / r.height - 0.5;
+        el.style.transform = `perspective(900px) rotateY(${x * 6}deg) rotateX(${-y * 5}deg) translateY(-2px)`;
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.transition = 'transform 0.6s var(--ease-out), opacity 0.65s var(--ease-out), box-shadow 0.35s ease, border-color 0.35s ease';
+        el.style.transform = '';
+        setTimeout(() => el.style.transition = '', 600);
+      });
+      el.addEventListener('mouseenter', () => {
+        el.style.transition = 'transform 0.12s linear, box-shadow 0.35s ease, border-color 0.35s ease';
+      });
+    });
+
+    // Spotlight glow on feature-item & team-member
+    document.querySelectorAll('.feature-item, .team-member').forEach(el => {
+      el.addEventListener('mousemove', e => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+        el.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100) + '%');
+      });
+    });
+
+    // Magnetic buttons
+    document.querySelectorAll('.btn-primary').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width  / 2)) * 0.28;
+        const dy = (e.clientY - (r.top  + r.height / 2)) * 0.28;
+        btn.style.transform = `translate(${dx}px, ${dy}px) translateY(-2px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transition = 'transform 0.5s var(--spring), box-shadow 0.3s ease';
+        btn.style.transform = '';
+        setTimeout(() => btn.style.transition = '', 500);
+      });
+      btn.addEventListener('mouseenter', () => {
+        btn.style.transition = 'transform 0.15s linear, box-shadow 0.3s ease';
+      });
+    });
+
+    // Hero h1 char-by-char split
+    const h1 = document.querySelector('.hero h1');
+    if (h1) {
+      const text = h1.textContent;
+      h1.innerHTML = text.split('').map((c, i) =>
+        c === ' ' ? ' ' : `<span class="char" style="animation-delay:${0.3 + i * 0.04}s">${c}</span>`
+      ).join('');
+    }
+
+    // Parallax hero logo on scroll
+    const logoWrap = document.querySelector('.hero-logo-bg');
+    window.addEventListener('scroll', () => {
+      if (logoWrap) {
+        const offset = window.scrollY * 0.12;
+        logoWrap.style.transform = `translateY(${-offset}px)`;
+      }
+    }, { passive: true });
+
+    // Main RAF loop: orbs + cursor ring lerp
+    (function raf() {
+      orbs.forEach(orb => {
+        const lag = parseFloat(orb.dataset.lag);
+        orb._x += (mouseX - orb._x) * lag;
+        orb._y += (mouseY - orb._y) * lag;
+        orb.style.left = (orb._x - parseFloat(orb.style.width) / 2) + 'px';
+        orb.style.top  = (orb._y - parseFloat(orb.style.height) / 2) + 'px';
+      });
+      requestAnimationFrame(raf);
+    })();
+  </script>
 </body>
 </html>
