@@ -27,6 +27,6 @@
   },
   "district": "MI-02",
   "state": "MI",
-  "tags": ["phishing", "cybersecurity-awareness", "social-engineering", "email-security", "malware", "spear-phishing", "vishing", "smishing", "security-training", "credential-harvesting", "infosec", "threat-detection", "fraud-prevention", "url-analysis", "spoofing-detection"]
+  "tags": ["phishing", "social-engineering", "community", "email-security", "malware", "security-training", "infosec", "threat-detection"]
   }
 ]
