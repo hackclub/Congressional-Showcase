@@ -769,6 +769,95 @@
     <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
   </footer>
 
+  <style>
+    * { cursor: none !important; }
+
+    #hb-cursor-dot {
+      position: fixed;
+      top: 0; left: 0;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #c8956c;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s ease, opacity 0.2s ease, width 0.2s var(--spring), height 0.2s var(--spring), background 0.2s ease;
+      mix-blend-mode: multiply;
+    }
+
+    #hb-cursor-ring {
+      position: fixed;
+      top: 0; left: 0;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(200, 149, 108, 0.55);
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: width 0.35s var(--spring), height 0.35s var(--spring), border-color 0.25s ease, opacity 0.2s ease;
+      backdrop-filter: none;
+    }
+
+    body:has(a:hover) #hb-cursor-dot,
+    body:has(button:hover) #hb-cursor-dot {
+      width: 10px; height: 10px;
+      background: #5c3d2e;
+    }
+
+    body:has(a:hover) #hb-cursor-ring,
+    body:has(button:hover) #hb-cursor-ring {
+      width: 48px; height: 48px;
+      border-color: rgba(92, 61, 46, 0.35);
+    }
+
+    .hb-click-burst {
+      position: fixed;
+      pointer-events: none;
+      z-index: 99997;
+      transform: translate(-50%, -50%);
+    }
+
+    .hb-click-burst .hb-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      border: 1.5px solid #c8956c;
+      animation: hb-burst-ring 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .hb-click-burst .hb-ring:nth-child(2) {
+      animation-delay: 0.06s;
+      border-color: rgba(200, 149, 108, 0.5);
+    }
+
+    .hb-click-burst .hb-ring:nth-child(3) {
+      animation-delay: 0.13s;
+      border-color: rgba(200, 149, 108, 0.25);
+    }
+
+    .hb-click-burst .hb-particle {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: #c8956c;
+      transform-origin: center;
+      animation: hb-burst-particle 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes hb-burst-ring {
+      0%   { width: 0; height: 0; opacity: 0.9; }
+      100% { width: 64px; height: 64px; opacity: 0; }
+    }
+
+    @keyframes hb-burst-particle {
+      0%   { transform: translate(-50%, -50%) rotate(var(--angle)) translateX(0) scale(1); opacity: 1; }
+      100% { transform: translate(-50%, -50%) rotate(var(--angle)) translateX(28px) scale(0); opacity: 0; }
+    }
+  </style>
+
   <script src="../../assets/js/nav.js" data-root="../../"></script>
   <script>
     const observer = new IntersectionObserver((entries) => {
@@ -805,6 +894,67 @@
 
     const statsStrip = document.querySelector('.stats-strip');
     if (statsStrip) countObserver.observe(statsStrip);
+
+    // Custom cursor
+    const dot = document.createElement('div');
+    dot.id = 'hb-cursor-dot';
+    const ring = document.createElement('div');
+    ring.id = 'hb-cursor-ring';
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
+
+    let mx = -100, my = -100;
+    let rx = -100, ry = -100;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top = my + 'px';
+    });
+
+    document.addEventListener('mouseleave', () => {
+      dot.style.opacity = '0';
+      ring.style.opacity = '0';
+    });
+
+    document.addEventListener('mouseenter', () => {
+      dot.style.opacity = '1';
+      ring.style.opacity = '1';
+    });
+
+    (function lerp() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(lerp);
+    })();
+
+    // Click burst
+    document.addEventListener('click', e => {
+      const burst = document.createElement('div');
+      burst.className = 'hb-click-burst';
+      burst.style.left = e.clientX + 'px';
+      burst.style.top = e.clientY + 'px';
+
+      for (let i = 0; i < 3; i++) {
+        const r = document.createElement('div');
+        r.className = 'hb-ring';
+        burst.appendChild(r);
+      }
+
+      const count = 7;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'hb-particle';
+        p.style.setProperty('--angle', (i * (360 / count)) + 'deg');
+        burst.appendChild(p);
+      }
+
+      document.body.appendChild(burst);
+      setTimeout(() => burst.remove(), 700);
+    });
   </script>
 </body>
 </html>
