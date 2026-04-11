@@ -464,4 +464,19 @@
   "state": "MI",
   "tags": ["health", "ai"]
 }
+  {
+  "slug": "TX-08",
+  "name": "Srikar Karri",
+  "appName": "OncoGAT",
+  "description": "Precision Medicine for Every Patient",
+  "thumbnail": "sites/TX-08/thumbnail.png",
+  "location": {
+    "lat": 29.9386,
+    "lng": -95.7579,
+    "label": "Cypress, TX"
+  },
+  "district": "TX-08",
+  "state": "TX",
+  "tags": ["Health", "AI", "Cancer", "Precision Medicine"]
+}
 ]
