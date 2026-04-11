@@ -471,8 +471,8 @@
   "description": "A platform that allows teen volunteers to provide intergenerational care to older adults",
   "thumbnail": "sites/WI-05/thumbnail.png",
   "location": {
-    "lat": 43.1179,
-    "lng": -88.1834,
+    "lat": 43.1178,
+    "lng": -88.1172,
     "label": "Menomonee Falls, WI"
   },
   "district": "WI-05",
