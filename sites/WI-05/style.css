@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Light blue to white gradient */
+    background: linear-gradient(180deg, #e0f2ff 0%, #ffffff 100%);
+    color: #33475b;
+    text-align: center;
+    min-height: 100vh;
+}
+
+header {
+    padding: 60px 20px;
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #003366, #3399ff);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 51, 102, 0.2);
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 0;
+    color: #003366;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #5da9ff;
+    letter-spacing: 2px;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.tagline {
+    font-size: 1.4rem;
+    margin-top: 15px;
+    font-weight: 300;
+}
+
+.team-section, .app-section {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+h2 {
+    font-size: 2rem;
+    color: #003366;
+    border-bottom: 2px solid #3399ff;
+    display: inline-block;
+    padding-bottom: 5px;
+    margin-bottom: 30px;
+}
+
+.team-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.text-content {
+    flex: 1;
+    text-align: left;
+    padding-right: 20px;
+}
+
+.image-placeholder {
+    width: 200px;
+    height: auto;
+    flex-shrink: 0;
+    background-color: #d1e9ff;
+    border-radius: 10px;
+    border: 2px dashed #3399ff;
+    overflow: hidden;
+}
+
+.image-placeholder img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto 30px;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    background: #000;
+    border-radius: 15px;
+    margin-bottom: 60px;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
