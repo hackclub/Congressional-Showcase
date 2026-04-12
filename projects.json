@@ -463,5 +463,20 @@
   "district": "MI-09",
   "state": "MI",
   "tags": ["health", "ai"]
+},
+  {
+  "slug": "MN-01",
+  "name": "Simon Wilke",
+  "appName": "DermaSight",
+  "description": "Skin health app that combines AI image analysis with environmental and UV information to help users understand skin conditions and sun exposure risks.",
+  "thumbnail": "sites/MN-01/thumbnail.png",
+  "location": {
+    "lat": 44.0192,
+    "lng": -92.4630,
+    "label": "Rochester, MN"
+  },
+  "district": "MN-01",
+  "state": "MN",
+  "tags": ["health", "ai", "accessibility", "skin"]
 }
 ]
