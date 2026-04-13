@@ -73,8 +73,8 @@
     }
     
     .feature-section {
-        padding: 80px 20px;
-        text-align: center;
+      padding: 80px 20px;
+      text-align: center;
     }
 
     .features-section h2 {
@@ -87,6 +87,28 @@
         justify-content: center;
         gap: 30px;
     }
+    
+    /* Tech stack */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .tech-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      background: var(--cac-snow);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--cac-slate);
+      border: 1px solid var(--cac-smoke);
+    }
+    
     /*h2 { font-size: 1.4rem; margin-bottom: 1rem; }*/
     /*p { line-height: 1.7; margin-bottom: 1rem; }*/
 
@@ -145,27 +167,35 @@
     </section>
     
     <!-- <section>-->
-      <!-- features -->
+    <!--   features -->
     <!--  <h2>Features</h2>-->
     <!--  <p></p>-->
     <!--</section>-->
-    <div class="feature-section">
-        <h2>Features</h2>
-        <div class="feature-container">
-            <div class="feature-card">
-                <h3>Emergency Checklist</h3>
-                <p>Know exactly how to prepare with a clear list</p>
-            </div>
-        </div>
+    <!--<div class="feature-section">-->
+    <!--    <h2>Features</h2>-->
+    <!--    <div class="feature-container">-->
+    <!--        <div class="feature-card">-->
+    <!--            <h3>Emergency Checklist</h3>-->
+    <!--            <p>Know exactly how to prepare with a clear list</p>-->
+    <!--        </div>-->
+    <!--    </div>-->
         
-        <div class="feature-container">
-            <div class="feature-card">
-                <h3>Real Time Weather Alerts</h3>
-                <p>Stay updated with live hurricane warnings and alerts.</p>
-            </div>
-        </div>
-    </div>
-    
+    <!--    <div class="feature-container">-->
+    <!--        <div class="feature-card">-->
+    <!--            <h3>Real Time Weather Alerts</h3>-->
+    <!--            <p>Stay updated with live hurricane warnings and alerts.</p>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</div>-->
+    <h2>Features</h2>
+    <div class="tech-grid">
+        <div class="tech-item">React Native</div>
+        <div class="tech-item">Firebase</div>
+        <div class="tech-item">Node.js</div>
+        <div class="tech-item">Chart.js</div>
+     </div>
+
+
     <section>
       <!-- built with -->
       <h2>Built With</h2>
