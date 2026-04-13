@@ -28,6 +28,10 @@
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg transform='rotate(-45 10 12)'%3E%3Cg stroke='white' stroke-width='4' stroke-linecap='round' fill='none'%3E%3Cline x1='7' y1='2' x2='7' y2='8'/%3E%3Cline x1='10' y1='2' x2='10' y2='8'/%3E%3Cline x1='13' y1='2' x2='13' y2='8'/%3E%3Cpath d='M7 8 Q7 11 10 11 Q13 11 13 8'/%3E%3Cline x1='10' y1='11' x2='10' y2='22'/%3E%3C/g%3E%3Cg stroke='%23222' stroke-width='2' stroke-linecap='round' fill='none'%3E%3Cline x1='7' y1='2' x2='7' y2='8'/%3E%3Cline x1='10' y1='2' x2='10' y2='8'/%3E%3Cline x1='13' y1='2' x2='13' y2='8'/%3E%3Cpath d='M7 8 Q7 11 10 11 Q13 11 13 8'/%3E%3Cline x1='10' y1='11' x2='10' y2='22'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") 3 5, auto;
     }
 
+    a, button, [role="button"], label[for], select, .plate-tag, .about-card, .links-list a {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg transform='rotate(-45 10 12)'%3E%3Cg stroke='white' stroke-width='4' stroke-linecap='round' fill='none'%3E%3Cline x1='7' y1='2' x2='7' y2='8'/%3E%3Cline x1='10' y1='2' x2='10' y2='8'/%3E%3Cline x1='13' y1='2' x2='13' y2='8'/%3E%3Cpath d='M7 8 Q7 11 10 11 Q13 11 13 8'/%3E%3Cline x1='10' y1='11' x2='10' y2='22'/%3E%3C/g%3E%3Cg stroke='%23ffd56d' stroke-width='2' stroke-linecap='round' fill='none'%3E%3Cline x1='7' y1='2' x2='7' y2='8'/%3E%3Cline x1='10' y1='2' x2='10' y2='8'/%3E%3Cline x1='13' y1='2' x2='13' y2='8'/%3E%3Cpath d='M7 8 Q7 11 10 11 Q13 11 13 8'/%3E%3Cline x1='10' y1='11' x2='10' y2='22'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") 3 5, pointer;
+    }
+
     body {
       font-family: 'Nunito', system-ui, sans-serif;
       color: var(--text);
@@ -35,7 +39,6 @@
       min-height: 100vh;
     }
 
-    /* ── Hero ── */
     .hero {
       background: radial-gradient(ellipse at 50% 55%, #7af0e0 0%, var(--primary) 60%);
       position: relative;
@@ -158,6 +161,11 @@
       background: #fff3c4;
       border-radius: 999px;
       padding: 0.3rem 0.9rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .plate-tag:hover {
+      background: var(--accent);
+      color: #7a5800;
     }
 
     .hero-particles {
@@ -212,14 +220,22 @@
       100% { transform: translate(0px,  0px) rotate(0deg); }
     }
 
+    @keyframes wobble {
+      0%   { transform: translate(0px,   0px) rotate(0deg); }
+      20%  { transform: translate(2px,  -3px) rotate(0.3deg); }
+      40%  { transform: translate(-2px, -4px) rotate(-0.3deg); }
+      60%  { transform: translate(-3px, -1px) rotate(0.2deg); }
+      80%  { transform: translate(1px,  -3px) rotate(-0.2deg); }
+      100% { transform: translate(0px,   0px) rotate(0deg); }
+    }
+
     @keyframes wave-scroll {
       from { transform: translateX(0); }
       to   { transform: translateX(-50%); }
     }
 
-    /* ── Content ── */
     .container {
-      max-width: 800px;
+      max-width: 1000px;
       margin: 0 auto;
       padding: 2.5rem 2rem 3rem;
     }
@@ -239,6 +255,9 @@
       margin-bottom: 2rem;
       box-shadow: 0 2px 12px rgba(80, 230, 207, 0.15);
       border-top: 3px solid var(--primary);
+    }
+    section:hover {
+      animation: wobble 4s ease-in-out infinite;
     }
 
     h2 {
@@ -278,11 +297,6 @@
       margin-bottom: 0.25rem;
     }
 
-    section.app .section-label,
-    section.links .section-label {
-      color: var(--accent-dark);
-      opacity: 0.7;
-    }
 
     p { line-height: 1.7; margin-bottom: 1rem; }
     p:last-child { margin-bottom: 0; }
@@ -306,7 +320,20 @@
 
     footer a { color: var(--primary-dark); }
 
-    /* ── Section accents ── */
+    .back-to-showcase {
+      background: rgba(29, 184, 162, 0.85);
+      color: var(--white);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+    .back-to-showcase:hover {
+      background: var(--primary-dark);
+      color: var(--white);
+      text-decoration: none;
+    }
+
     section {
       position: relative;
       overflow: hidden;
@@ -318,23 +345,6 @@
     section.links    { border-top-color: var(--accent); }
 
 
-    section.about::after,
-    section.app::after {
-      content: '';
-      position: absolute;
-      bottom: -30px;
-      right: -30px;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: var(--primary-light);
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-    section.app::after {
-      background: #fff8d6;
-    }
 
     .about-body {
       display: flex;
@@ -347,19 +357,19 @@
     }
 
     .about-left p {
-      margin: 0;
+      margin: 0 0 0.75rem;
+    }
+    .about-left p:last-child {
+      margin-bottom: 0;
     }
 
     .about-cards {
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      justify-content: center;
+      gap: 1.1rem;
       flex-shrink: 0;
       width: 180px;
-    }
-
-    .about-card {
-      flex: 1;
     }
 
     .about-card {
@@ -367,6 +377,11 @@
       border-radius: 10px;
       padding: 0.6rem 0.9rem;
       border-left: 3px solid var(--primary);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .about-card:hover {
+      background: var(--primary-light);
+      border-left-color: var(--primary-dark);
     }
 
     .about-card-label {
@@ -410,7 +425,6 @@
   </style>
 </head>
 <body>
-  <!-- Back button — links to the main showcase -->
   <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
 
   <div class="hero">
@@ -447,20 +461,13 @@
   </div>
 
   <div class="container">
-    <header>
-      <!-- TODO: Replace with your name -->
-      <h1>Delancey Zhao</h1>
-      <!-- TODO: Write a short tagline about yourself -->
-      <p>A short tagline about you or your project.</p>
-    </header>
-
     <section class="about">
       <div class="about-body">
         <div class="about-left">
           <p class="section-label">The Head Chef</p>
           <h2>About Me</h2>
-          <p>My name is Delancey Zhao, and I'm a simple person with simple pleasures: art, food, and programming. I've been drawing since my first year of high school, coding since I was 10, and enjoying food since I could physically taste it.<p>
-          <p>The idea for Forkprint was created the day I came across an article <p>
+          <p>My name is Delancey Zhao, and I'm a simple person with simple pleasures: art, food, and programming. I've been drawing since my first year of high school, coding since I was 10, and enjoying food since I could physically taste it.</p>
+          <p>Inspiration for Forkprint came from my discovery on beef production's staggering contributions to carbon levels in the atmosphere. Climate change to most may seem like a constant, inevitable threat looming above our heads every day, and for the longest time, I shared the same sentiment. I want to help people like myself who want to make a difference but feel unsure where to start to come to the realization that their actions have a much, much greater impact than they realize, and to help them along on the journey to reduce their carbon footprint through the food they love.</p>
         </div>
         <div class="about-cards">
           <div class="about-card">
@@ -481,19 +488,19 @@
     </section>
 
     <section class="app">
-
-      <!-- TODO: Tell us about your app -->
       <p class="section-label">The Dish</p>
-      <h2>Forkprint</h2>
-      <p>Describe your app. What does it do? Who is it for? What problem does it solve?</p>
-      <p>What technologies did you use to build it?</p>
+      <h2>How Forkprint Was Made</h2>
+      <p>Forkprint is a web-based app with three main functions: ingredient extraction, carbon swapping, and recipe recommendation. Any recipe that you would like to add can be imported
+        either by url link or an image of the ingredients list from a physical cookbook. From there, you can swap certain ingredients for others that require less carbon to produce. Additionally,
+        Forkprint can recommend new recipes similar to ones you've made before, offering variety while still maintaining your personal preferences.
+      </p>
+      <p>The app runs on Python and Streamlit, and uses HTML and CSS for detailing.
+Recipe data was taken from Our World in Data and Kaggle and cleaned using Google Gemini’s API.
+It utilizes Recipe Scraper and Tesseract OCR to extract ingredients, and recommends them through a FAISS-based embedding.</pp>
     </section>
 
     <section class="video">
-      <!-- TODO: Replace YOUR_VIDEO_ID with your YouTube video ID.
-           For example, if your video URL is https://www.youtube.com/watch?v=abc123
-           then your video ID is "abc123" -->
-      <p class="section-label">The Visual</p>
+      <p class="section-label">The Plating</p>
       <h2>Demo</h2>
       <iframe
         src="https://www.youtube.com/embed/qhkHOm25RI0"
@@ -501,23 +508,13 @@
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
       </iframe>
-
-      <!-- Alternative: Self-hosted video (NOT recommended — use YouTube/Vimeo instead
-           to avoid bloating the repository)
-      <video controls width="100%">
-        <source src="assets/demo.mp4" type="video/mp4">
-        Your browser does not support the video element.
-      </video>
-      -->
     </section>
 
     <section class="links">
-      <!-- TODO: Add any relevant links -->
-      <p class="section-label">Connect</p>
+      <p class="section-label">The Side Dishes</p>
       <h2>Links</h2>
       <div class="links-list">
-        <a href="https://github.com/yourusername/yourrepo">GitHub</a>
-        <a href="https://yourapp.com">Live App</a>
+        <a href="https://github.com/DelanceyGitHub/app">GitHub</a>
       </div>
     </section>
   </div>
@@ -577,7 +574,6 @@
     })();
   </script>
 
-  <!-- Navigation script — enables arrow key navigation. Do NOT remove this. -->
   <script src="../../assets/js/nav.js" data-root="../../"></script>
 </body>
 </html>
