@@ -463,5 +463,20 @@
   "district": "MI-09",
   "state": "MI",
   "tags": ["health", "ai"]
+},
+{
+    "slug": "PA-06",
+    "name": "Delancey Zhao",
+    "appName": "Forkprint",
+    "description": "A carbon-tracking recipe book to make the most out of your everyday meals.",
+    "thumbnail": "sites/PA-06/thumbnail.png",
+    "location": {
+      "lat": 40.075984,
+      "lng": -75.455936,
+      "label": "Chesterbrook, PA"
+    },
+    "district": "PA-06",
+    "state": "PA",
+    "tags": ["environment", "lifestyle", "ai"]
 }
 ]
