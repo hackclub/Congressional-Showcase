@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>BoostT1D | Aaron Prager</title>
+
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #1e05b8;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 3rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .logo {
+      width: 92px;
+      height: 92px;
+      object-fit: contain;
+      margin-bottom: 1.2rem;
+    }
+
+    header h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.6rem;
+    }
+
+    .byline {
+      font-size: 1rem;
+      font-weight: 600;
+      opacity: 0.9;
+      margin-bottom: 0.8rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      opacity: 0.95;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    section {
+      background: #f4f6fd;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 22px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+      color: #1e293b;
+    }
+
+    section h2 {
+      font-size: 1.45rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+    }
+
+    section p {
+      line-height: 1.75;
+      margin-bottom: 1rem;
+      color: #334155;
+    }
+
+    section .highlight {
+      font-size: 1.12rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: #0f172a;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .feature {
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      padding: 1rem;
+      border-radius: 16px;
+      line-height: 1.6;
+      color: #334155;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .feature strong {
+      display: inline-block;
+      margin-bottom: 0.3rem;
+      color: #0f172a;
+    }
+
+    .video iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 14px;
+      background: #e2e8f0;
+    }
+
+    section a:not(.button-link) {
+      color: #1e05b8;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    section .button-link.secondary {
+      background: rgba(30, 5, 184, 0.08);
+      color: #1e05b8;
+      border: 1px solid rgba(30, 5, 184, 0.22);
+    }
+
+    section .button-link.secondary:hover {
+      background: rgba(30, 5, 184, 0.14);
+    }
+
+    .links-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .button-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.9rem 1.2rem;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #1e05b8;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .button-link:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .button-link.secondary {
+      background: rgba(255,255,255,0.12);
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    a {
+      color: #bcd8ff;
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      opacity: 0.78;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding-top: 3.2rem;
+      }
+
+      section {
+        padding: 1.4rem;
+      }
+
+      header p {
+        font-size: 1.05rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <div class="container">
+
+    <header>
+      <img src="./BoostT1D.png" alt="BoostT1D logo" class="logo">
+      <h1>BoostT1D</h1>
+      <div class="byline">by Aaron Prager</div>
+      <p>Turning complex diabetes data into clear, personalized guidance</p>
+    </header>
+
+    <section>
+      <h2>About Me</h2>
+      <p>
+        I'm Aaron, a high school student from Newton, MA, developer, and someone who has lived with Type 1 Diabetes since I was 17 months old.
+        Managing diabetes has been part of my daily life for as long as I can remember, and over time I became deeply interested
+        in using technology to solve the challenges that come with it.
+      </p>
+      <p>
+        BoostT1D brings together my personal experience with diabetes and my passion for computer science to help patients and
+        families better understand their data, feel less overwhelmed, and make more confident daily decisions.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Problem</h2>
+      <p class="highlight">Managing Type 1 Diabetes is a full-time job.</p>
+      <p>
+        Continuous glucose monitors and diabetes devices generate large amounts of data, but interpreting that data is difficult.
+        Patients must constantly make decisions about insulin, food, and activity, often without clear real-time guidance.
+      </p>
+      <p>
+        For newly diagnosed families and people without regular access to specialists, the burden can be overwhelming.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Solution</h2>
+      <p>
+        BoostT1D is a multimodal AI platform that transforms diabetes data into meaningful, personalized insights.
+        Instead of showing users raw numbers alone, it helps interpret patterns and provides clearer guidance—
+        from everyday logging to community connection.
+      </p>
+
+      <div class="features">
+        <div class="feature">
+          <strong>Diabetes Profile</strong><br>
+          Keep your diabetes context in one place: diagnosis and device details, goals, and preferences.
+          That foundation helps the app tailor insights and keep recommendations relevant to how you manage T1D.
+        </div>
+
+        <div class="feature">
+          <strong>Glucose Reading</strong><br>
+          Log and review glucose values alongside CGM data when you want a manual check or a fuller picture
+          of blood sugar over time—so decisions are based on complete information, not scattered numbers.
+        </div>
+
+        <div class="feature">
+          <strong>Carb Estimator</strong><br>
+          Use AI and computer vision to estimate carbohydrates from food photos when labels are not handy,
+          so mealtime insulin decisions can be quicker and less guesswork-heavy.
+        </div>
+
+        <div class="feature">
+          <strong>Therapy Adjustments</strong><br>
+          Explore how patterns in your data relate to therapy choices and trends, with clearer framing for
+          discussions with your care team. Medical decisions always belong with you and your clinician.
+        </div>
+
+        <div class="feature">
+          <strong>Find Your T1D Buddy</strong><br>
+          Match with peers who understand daily life with Type 1 Diabetes—so newly diagnosed users and families
+          can learn from people who have already walked the path.
+        </div>
+
+        <div class="feature">
+          <strong>Find Support</strong><br>
+          Reach resources, encouragement, and practical help when diabetes feels heavy, whether you need
+          tips, reassurance, or a path to the right kind of assistance.
+        </div>
+
+        <div class="feature">
+          <strong>Volunteer</strong><br>
+          Experienced community members can step up as mentors and supporters, offering friendship and guidance
+          to others navigating T1D and strengthening the network for everyone.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Technology</h2>
+      <p>
+        BoostT1D combines multiple technologies into one platform:
+      </p>
+      <p>
+        React and TypeScript for the web app, Swift and SwiftUI for iOS, a Node.js backend, PostgreSQL with Prisma,
+        Nightscout integration, and AI tools for both glucose pattern analysis and food recognition.
+      </p>
+      <p>
+        The goal is not just to collect data, but to make it more understandable, useful, and supportive in real life.
+      </p>
+    </section>
+
+    <section>
+      <h2>Impact</h2>
+      <p class="highlight">Real impact. Real lives.</p>
+      <p>
+        For many families, especially those newly diagnosed, the hardest part of Type 1 Diabetes is not just collecting data,
+        but understanding what it means and what to do next.
+      </p>
+      <p>
+        BoostT1D helps reduce uncertainty, stress, and isolation by turning confusing information into clearer guidance and by
+        building a stronger support network around the user.
+      </p>
+    </section>
+
+
+    <section class="video">
+      <h2>Demo</h2>
+      <iframe
+      src="https://www.youtube.com/embed/7CO-mNGIdww"  
+        title="BoostT1D Demo"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </section>
+
+    <section>
+      <h2>Links</h2>
+      <div class="links-row">
+        <a class="button-link" href="https://www.boostt1d.com" target="_blank" rel="noopener noreferrer">Website</a>
+        <a class="button-link secondary" href="https://apple.co/4rqTWkP" target="_blank" rel="noopener noreferrer">iOS App</a>
+      </div>
+    </section>
+
+    <footer>
+      <p>Congressional App Challenge • Aaron Prager • BoostT1D</p>
+    </footer>
+  </div>
+
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>
