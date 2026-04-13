@@ -13,5 +13,20 @@
     "district": "IA-03",
     "state": "IA",
     "tags": ["veterans", "education", "community"]
+  },
+  {
+    "slug": "ND-00",
+    "name": "Che Yu",
+    "appName": "WaterWise",
+    "description": "WaterWise provides a tool that forecasts soil moisture, enabling proactive crop protection and more efficient irrigation practices.",
+    "thumbnail": "sites/ND-00/thumbnail.jpg",
+    "location":{
+      "lat": 47.925259,
+      "lng": -97.032852,
+      "label": "Grand Forks, ND"
+    },
+    "district":"ND-00",
+    "state":"ND",
+    "tags": ["weather","agriculture"]
   }
 ]
