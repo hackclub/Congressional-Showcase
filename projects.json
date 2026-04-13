@@ -658,5 +658,20 @@
   "district": "CA-07",
   "state": "CA",
   "tags": ["environment", "ai"]
+},
+    {
+  "slug": "NY-18",
+  "name": "Aarna Patel",
+  "appName": "Hudson Connect",
+  "description": "A simple way for residents to find local resources and community services.",
+  "thumbnail": "sites/NY-18/thumbnail.png",
+  "location": {
+    "lat": 41.476662,
+    "lng": -74.023460,
+    "label": "New Windsor, NY"
+  },
+  "district": "NY-18",
+  "state": "NY",
+  "tags": ["community", "resource"]
 }
 ]
