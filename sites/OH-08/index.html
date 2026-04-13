@@ -1,1 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Ripple Effect | Emma Amend</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Palanquin+Dark:wght@600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue1:#3a7bd5;
+  --blue2:#4a9df0;
+  --blue3:#5ab9ff;
+  --bg1:#060b14;
+  --bg2:#0a1a2e;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:Sora,sans-serif;
+  color:white;
+  overflow-x:hidden;
+  background: linear-gradient(120deg, var(--bg1), var(--bg2), #0b2a44);
+  background-size: 300% 300%;
+  animation: bgShift 20s ease infinite;
+}
+
+@keyframes bgShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+.particle{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(90,185,255,.8), transparent);
+  opacity:.4;
+  animation: float 14s infinite ease-in-out;
+  pointer-events:none;
+}
+
+@keyframes float{
+  0%{transform:translateY(0) translateX(0);opacity:.2}
+  50%{opacity:.7;transform:translateY(-60vh) translateX(20px)}
+  100%{transform:translateY(-120vh) translateX(-20px);opacity:0}
+}
+
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:4rem 2rem;
+  position:relative;
+}
+
+.title{
+  font-family:Orbitron;
+  font-size:4.3rem;
+  letter-spacing:2px;
+  text-shadow:0 0 18px rgba(90,185,255,.5),0 0 40px rgba(58,123,213,.3);
+}
+
+.subtitle{
+  margin-top:.8rem;
+  color:var(--blue3);
+  font-size:1.1rem;
+  opacity:.9;
+}
+
+.glass,.card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(90,185,255,.2);
+  padding:2rem;
+  border-radius:20px;
+  backdrop-filter:blur(14px);
+  box-shadow:0 0 30px rgba(58,123,213,.2);
+  max-width:900px;
+  margin:2rem auto;
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 0 45px rgba(90,185,255,.25);
+}
+
+h2{
+  font-family:Palanquin Dark;
+  color:var(--blue3);
+  text-align:center;
+  margin-bottom:1.5rem;
+}
+
+iframe{
+  width:100%;
+  aspect-ratio:16/9;
+  border:none;
+  border-radius:16px;
+  box-shadow:0 0 35px rgba(90,185,255,.25);
+}
+
+.badge{
+  display:inline-block;
+  padding:.35rem .75rem;
+  border:1px solid var(--blue2);
+  border-radius:999px;
+  margin:.25rem;
+  font-size:.78rem;
+  background:rgba(90,185,255,.04);
+}
+
+.footer{
+  text-align:center;
+  padding:3rem;
+  opacity:.65;
+}
+
+.ripple{
+  position:fixed;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  border:1px solid rgba(90,185,255,.45);
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  animation:rippleFade 1.4s ease-out forwards;
+  z-index:9999;
+}
+
+@keyframes rippleFade{
+  0%{opacity:.6;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(6)}
+}
+
+.pulse{
+  position:fixed;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  border:1px solid white;
+  animation:pulseAnim .5s ease-out forwards;
+  pointer-events:none;
+  z-index:9999;
+}
+
+@keyframes pulseAnim{
+  to{transform:scale(14);opacity:0}
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(circle at center, transparent 45%, rgba(0,0,0,.55));
+}
+</style>
+</head>
+
+<body>
+
+<script>
+for(let i=0;i<35;i++){
+  const p=document.createElement("div")
+  p.className="particle"
+  p.style.left=Math.random()*100+"vw"
+  p.style.top=Math.random()*100+"vh"
+  p.style.animationDuration=(10+Math.random()*10)+"s"
+  document.body.appendChild(p)
+}
+
+let last=0
+document.addEventListener("mousemove",e=>{
+  let now=Date.now()
+  if(now-last<35)return
+  last=now
+
+  let r=document.createElement("div")
+  r.className="ripple"
+  r.style.left=e.clientX+"px"
+  r.style.top=e.clientY+"px"
+  document.body.appendChild(r)
+  setTimeout(()=>r.remove(),1400)
+})
+
+document.addEventListener("click",e=>{
+  let p=document.createElement("div")
+  p.className="pulse"
+  p.style.left=e.clientX+"px"
+  p.style.top=e.clientY+"px"
+  document.body.appendChild(p)
+  setTimeout(()=>p.remove(),500)
+})
+</script>
+
+<div class="hero">
+  <div>
+    <div class="title">Ripple Effect</div>
+    <div class="subtitle">Play the Game. Change the World.</div>
+
+    <div class="glass">
+      A gamified kindness platform that turns everyday actions into impact.
+      Like a pebble in water—one action creates expanding waves of change.
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>About the Creator</h2>
+  <div class="card">
+    <p><b>Emma Amend</b> — OH-08 (Warren Davidson)</p>
+    <p>Bishop Fenwick High School • 10th Grade • Liberty Township, Ohio</p>
+    <br>
+    <p>
+      First-year Congressional App Challenge participant focused on gamification and social impact to make kindness more engaging and rewarding.
+    </p>
+
+    <div style="text-align:center;margin-top:1rem">
+      <span class="badge">Gamification</span>
+      <span class="badge">Social Impact</span>
+      <span class="badge">Mental Health</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Inspiration</h2>
+  <div class="card">
+    <p>
+“I was inspired by a disconnect in the people around me. While we’re more digitally connected than ever, loneliness and mental health struggles continue to rise among teens. I wanted to turn kindness into something engaging using game mechanics like points, streaks, and rewards. The ripple effect symbolizes how one small action can create meaningful change.”
+    </p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Demo Video</h2>
+  <div class="card">
+    <iframe src="https://www.youtube.com/embed/_TC027hV_oM"></iframe>
+  </div>
+</div>
+
+<div class="footer">
+  Ripple Effect • Congressional App Challenge 2025
+</div>
+
+</body>
+</html>
+
+  <!-- Navigation script — enables arrow key navigation. Do NOT remove this. -->
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>
