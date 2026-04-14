@@ -458,12 +458,27 @@
   "location": {
     "lat": 42.7355,
     "lng": -83.4192,
-    "label": "Clarkston, MI"
+    "label": "Clarksto, MI"
   },
   "district": "MI-09",
   "state": "MI",
   "tags": ["health", "ai"]
 },
+  {
+  "slug": "NJ-02",
+  "name": "Uchenna Uduma",
+  "appName": "BetterVeteran",
+  "description": "A veteran targeted, neurological assistance web application helping veterans access health screenings and support resources.",
+  "thumbnail": "sites/NJ-02/thumbnail.png",
+  "location": {
+    "lat": 39.383011,
+    "lng": -74.607964,
+    "label": "Egg Harbor Township, NJ"
+  },
+  "district": "NJ-02",
+  "state": "NJ",
+  "tags": ["health", "ai", "neurology", "minority"]
+  },
 {
   "slug": "MN-05",
   "name": "Ved Bastodkar",
