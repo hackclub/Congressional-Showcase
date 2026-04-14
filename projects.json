@@ -658,5 +658,19 @@
   "district": "CA-07",
   "state": "CA",
   "tags": ["environment", "ai"]
+},
+{
+  "slug": "NV-01",
+  "name": "Matthew Caliboso",
+  "appName": "TechMate",
+  "description": "An AI-powered technology companion that helps older Americans navigate technology safely, detect scams, and learn about AI in plain language.",
+  "location": {
+    "lat": 36.1699,
+    "lng": -115.1398,
+    "label": "Las Vegas, NV"
+  },
+  "district": "NV-01",
+  "state": "NV",
+  "tags": ["ai", "accessibility", "education", "safety"]
 }
 ]
