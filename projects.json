@@ -403,13 +403,13 @@
   "district": "OR-01",
   "state": "OR",
   "tags": ["education", "ai"]
-}
+},
   {
   "slug": "TX-08",
   "name": "Srikar Karri",
   "appName": "OncoGAT",
   "description": "Precision Medicine for Every Patient",
-  "thumbnail": "sites/TX-08/thumbnail.png",
+  "thumbnail": "sites/TX-08/Thumbnail.png",
   "location": {
     "lat": 29.9386,
     "lng": -95.7579,
