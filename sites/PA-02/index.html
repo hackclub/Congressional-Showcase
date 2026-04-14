@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NotificationBot | Andrew Kuang</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --indigo: #5865F2;
+      --indigo-dark: #4752C4;
+      --indigo-light: #E0E3FF;
+      --indigo-50: #EEF0FF;
+      --purple: #7C3AED;
+      --teal: #0D9488;
+      --teal-light: #CCFBF1;
+      --white: #FFFFFF;
+      --bg: #F8FAFC;
+      --text: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --border: #E2E8F0;
+      --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+      --discord-dark: #2C2F33;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BACK */
+    .back-nav {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--indigo);
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--card-shadow);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .back-nav:hover { background: var(--indigo-50); border-color: var(--indigo); }
+    .back-nav svg { width: 14px; height: 14px; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 7rem 2rem 4rem;
+      background: linear-gradient(180deg, #EAECFF 0%, var(--indigo-light) 30%, var(--white) 100%);
+      overflow: hidden;
+    }
+
+    /* Discord-inspired floating shapes */
+    .deco-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .deco-bg .shape {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(88, 101, 242, 0.08);
+      border-radius: 50%;
+    }
+    .deco-bg .shape::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(to right, rgba(88,101,242,0.06), transparent);
+      transform-origin: left center;
+    }
+    .deco-bg .shape:nth-child(1) { top: 15%; left: 5%; }
+    .deco-bg .shape:nth-child(1)::after { transform: rotate(30deg); }
+    .deco-bg .shape:nth-child(2) { top: 25%; left: 18%; }
+    .deco-bg .shape:nth-child(2)::after { transform: rotate(-15deg); width: 60px; }
+    .deco-bg .shape:nth-child(3) { top: 10%; right: 15%; }
+    .deco-bg .shape:nth-child(3)::after { transform: rotate(160deg); }
+    .deco-bg .shape:nth-child(4) { top: 40%; right: 8%; }
+    .deco-bg .shape:nth-child(4)::after { transform: rotate(200deg); width: 100px; }
+    .deco-bg .shape:nth-child(5) { bottom: 30%; left: 12%; }
+    .deco-bg .shape:nth-child(5)::after { transform: rotate(-40deg); width: 70px; }
+    .deco-bg .shape:nth-child(6) { bottom: 20%; right: 25%; }
+    .deco-bg .shape:nth-child(6)::after { transform: rotate(140deg); }
+
+    .hero-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-chip {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-secondary);
+    }
+    .hero-chip.indigo { background: var(--indigo-light); color: var(--indigo); border-color: transparent; }
+    .hero-chip.purple { background: #F3E8FF; color: var(--purple); border-color: transparent; }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span { color: var(--indigo); }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 620px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .hero-meta-item {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .hero-meta-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* MAIN */
+    .page-main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    /* DASHBOARD GRID */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 800px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+    .dash-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .dash-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .dash-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    .dash-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .dash-icon.indigo { background: var(--indigo-light); }
+    .dash-icon.purple { background: #F3E8FF; }
+    .dash-icon.teal { background: var(--teal-light); }
+    .dash-card-title {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .dash-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+    .dash-card p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* SECTION HEADING */
+    .section-heading {
+      margin-bottom: 1.5rem;
+    }
+    .section-heading .label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--indigo);
+      margin-bottom: 0.4rem;
+    }
+    .section-heading h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    /* CONTENT PANELS */
+    .content-panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.2rem 2.5rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 3rem;
+    }
+
+    .content-panel p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-secondary);
+    }
+    .content-panel p + p { margin-top: 1rem; }
+
+    /* CREATOR */
+    .creator-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 3rem;
+      max-width: 560px;
+    }
+    .creator-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .creator-avatar {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--white);
+      background: var(--indigo);
+    }
+    .creator-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .creator-role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .creator-card p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+    .creator-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+    }
+    .creator-tag {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.2rem 0.6rem;
+    }
+
+    /* TECH STACK */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    .tech-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .tech-dot {
+      width: 8px; height: 8px;
+      border-radius: 2px;
+    }
+    .tech-dot.indigo { background: var(--indigo); }
+    .tech-dot.purple { background: var(--purple); }
+    .tech-dot.teal { background: var(--teal); }
+    .tech-dot.orange { background: #F59E0B; }
+    .tech-bar-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .tech-bar-role {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    /* VIDEO */
+    .video-panel {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      margin-top: 1rem;
+    }
+    .video-panel iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box {
+      background: linear-gradient(135deg, var(--indigo-50) 0%, #F0F0FF 100%);
+      border: 1px solid rgba(88, 101, 242, 0.1);
+      border-radius: 12px;
+      padding: 2rem 2.2rem;
+      margin-bottom: 3rem;
+    }
+    .highlight-box .quote-mark {
+      font-family: 'Lora', serif;
+      font-size: 3rem;
+      color: var(--indigo);
+      opacity: 0.2;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .highlight-box blockquote {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .highlight-box cite {
+      display: block;
+      margin-top: 0.8rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* LINKS */
+    .links-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .action-btn:hover { transform: translateY(-1px); }
+    .action-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .action-btn.primary {
+      background: var(--indigo);
+      color: var(--white);
+      box-shadow: 0 2px 10px rgba(88,101,242,0.2);
+    }
+    .action-btn.primary:hover { box-shadow: 0 4px 15px rgba(88,101,242,0.3); }
+    .action-btn.outline {
+      background: var(--white);
+      color: var(--indigo);
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--text);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    footer p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+    }
+    footer a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    footer a:hover { color: var(--white); text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1.5rem 3rem; }
+      .page-main { padding: 2rem 1.2rem 3rem; }
+      .content-panel { padding: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-nav">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+    Showcase
+  </a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="deco-bg">
+      <div class="shape"></div><div class="shape"></div><div class="shape"></div>
+      <div class="shape"></div><div class="shape"></div><div class="shape"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-chips">
+        <span class="hero-chip indigo">Accessibility</span>
+        <span class="hero-chip purple">Discord</span>
+        <span class="hero-chip">Automation</span>
+        <span class="hero-chip">PA-02</span>
+      </div>
+      <h1>Notification<span>Bot</span></h1>
+      <p class="hero-desc">Discord application that helps server moderators automatically send announcements and welcome messages using an easy-to-use dashboard.</p>
+      <div class="hero-meta">
+        <span class="hero-meta-item"><strong>Creator:</strong> Andrew Kuang</span>
+        <span class="hero-meta-item"><strong>Location:</strong> Philadelphia, PA</span>
+        <span class="hero-meta-item"><strong>District:</strong> PA-02</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-main">
+
+    <!-- MISSION -->
+    <div class="highlight-box">
+      <div class="quote-mark">"</div>
+      <blockquote>Automates routine Discord server communication &mdash; pulling info from sources and sending clean notifications without manual copy-paste. Eliminates repetitive admin work so moderators can focus on their community.</blockquote>
+      <cite>Project Vision</cite>
+    </div>
+
+    <!-- FEATURE DASHBOARD CARDS -->
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon indigo">&#x1F4E2;</div>
+          <span class="dash-card-title">Notifications</span>
+        </div>
+        <h3>Auto Announcements</h3>
+        <p>Pulls info from sources and sends formatted notifications to your Discord server automatically &mdash; no manual copy-paste needed.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon purple">&#x1F44B;</div>
+          <span class="dash-card-title">Welcome</span>
+        </div>
+        <h3>Custom Welcome System</h3>
+        <p>Personalized greetings for new members that reflect your community's personality, making every newcomer feel at home.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon teal">&#x2699;&#xFE0F;</div>
+          <span class="dash-card-title">Management</span>
+        </div>
+        <h3>Dashboard</h3>
+        <p>Easy-to-use web interface for managing all bot settings, configuring notifications, and customizing welcome messages.</p>
+      </div>
+    </div>
+
+    <!-- CREATOR -->
+    <div class="section-heading">
+      <p class="label">The Builder</p>
+      <h2>About the Creator</h2>
+    </div>
+    <div class="creator-card">
+      <div class="creator-card-header">
+        <div class="creator-avatar">AK</div>
+        <div>
+          <div class="creator-name">Andrew Kuang</div>
+          <div class="creator-role">Philadelphia, PA</div>
+        </div>
+      </div>
+      <p>Started coding from a discord.js tutorial in 2022 and built Discord bots in JavaScript. Later moved to C/C++ low-level development, expanding from high-level bot scripting into systems programming.</p>
+      <div class="creator-tags">
+        <span class="creator-tag">JavaScript</span>
+        <span class="creator-tag">C/C++</span>
+        <span class="creator-tag">Discord Bots</span>
+        <span class="creator-tag">Low-Level Dev</span>
+      </div>
+    </div>
+
+    <!-- APP DESCRIPTION -->
+    <div class="section-heading">
+      <p class="label">The App</p>
+      <h2>How It Works</h2>
+    </div>
+    <div class="content-panel">
+      <p>NotificationBot automates routine Discord server communication by pulling information from various sources and sending clean, formatted notifications without any manual copy-paste. Server moderators can set up automated announcement pipelines through a simple web dashboard.</p>
+      <p>The bot also features a custom welcoming system for new members, allowing communities to create personalized greetings that reflect their unique personality. By eliminating repetitive admin work, NotificationBot lets moderators focus on what matters &mdash; building and engaging with their community.</p>
+    </div>
+
+    <!-- TECH -->
+    <div class="section-heading">
+      <p class="label">Built With</p>
+      <h2>Technology Stack</h2>
+    </div>
+    <div class="tech-stack" style="margin-bottom: 3rem;">
+      <div class="tech-bar"><span class="tech-dot indigo"></span><span class="tech-bar-name">TypeScript</span><span class="tech-bar-role">&middot; Language</span></div>
+      <div class="tech-bar"><span class="tech-dot purple"></span><span class="tech-bar-name">Next.js</span><span class="tech-bar-role">&middot; Dashboard</span></div>
+      <div class="tech-bar"><span class="tech-dot teal"></span><span class="tech-bar-name">Hono.js</span><span class="tech-bar-role">&middot; API</span></div>
+      <div class="tech-bar"><span class="tech-dot indigo"></span><span class="tech-bar-name">discord.js</span><span class="tech-bar-role">&middot; Bot</span></div>
+      <div class="tech-bar"><span class="tech-dot orange"></span><span class="tech-bar-name">PostgreSQL</span><span class="tech-bar-role">&middot; Database</span></div>
+      <div class="tech-bar"><span class="tech-dot teal"></span><span class="tech-bar-name">Kysely</span><span class="tech-bar-role">&middot; Query Builder</span></div>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="section-heading">
+      <p class="label">In Action</p>
+      <h2>Demo Video</h2>
+    </div>
+    <div style="margin-bottom: 3rem;">
+      <div class="video-panel">
+        <iframe
+          src="https://www.youtube.com/embed/qzGNJ4IIiTk"
+          title="NotificationBot Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="section-heading">
+      <p class="label">Explore</p>
+      <h2>Project Links</h2>
+    </div>
+    <div style="margin-bottom: 2rem;">
+      <div class="links-flex">
+        <a href="https://notificationbot.top" class="action-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/></svg>
+          Live Site
+        </a>
+        <a href="https://github.com/decompile1/NotificationBot" class="action-btn outline" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 .2A8 8 0 0 0 5.47 15.79c.4.07.55-.17.55-.38l-.01-1.49c-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48l-.01 2.2c0 .21.15.46.55.38A8 8 0 0 0 8 .2z"/></svg>
+          GitHub
+        </a>
+        <a href="https://www.youtube.com/watch?v=qzGNJ4IIiTk" class="action-btn outline" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 4.5v7l5-3.5-5-3.5z"/></svg>
+          Watch on YouTube
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge 2025 &bull; PA-02 &bull; Philadelphia, PA &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DermaSight | Simon Wilke</title>
+
+  <!-- DO NOT REMOVE -->
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cabinet+Grotesk:wght@300;400;500;700;800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --bg:       #f0eee8;
+      --white:    #ffffff;
+      --ink:      #12100e;
+      --purple:   #5b21b6;
+      --purple2:  #7c3aed;
+      --lilac:    #ede9ff;
+      --stroke:   2px solid var(--ink);
+      --stroke-p: 2px solid var(--purple);
+
+      --f-display: 'Bebas Neue', sans-serif;
+      --f-body:    'Cabinet Grotesk', system-ui, sans-serif;
+      --f-mono:    'Azeret Mono', monospace;
+    }
+
+    body {
+      font-family: var(--f-body);
+      background: var(--bg);
+      color: var(--ink);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── BACK LINK ── */
+    .back-to-showcase {
+      position: fixed;
+      top: 1.2rem; left: 1.2rem;
+      z-index: 300;
+      font-family: var(--f-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink);
+      background: var(--white);
+      border: var(--stroke);
+      padding: 0.45rem 0.9rem;
+      transition: background 0.15s, color 0.15s, transform 0.15s;
+    }
+    .back-to-showcase:hover {
+      background: var(--ink);
+      color: var(--white);
+      transform: translate(-2px, -2px);
+    }
+
+    /* ══════════════════════════════
+       HERO
+    ══════════════════════════════ */
+    .hero {
+      background: var(--white);
+      border-bottom: var(--stroke);
+      overflow: hidden;
+    }
+
+    /* META ROW inside title col */
+    .hero-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+    .mono-muted {
+      font-family: var(--f-mono);
+      font-size: 0.52rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #999;
+    }
+    .hero-tags {
+      display: flex;
+      gap: 0.4rem;
+    }
+    .htag {
+      font-family: var(--f-mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.55rem;
+      border: 1.5px solid var(--ink);
+      color: var(--ink);
+      background: transparent;
+    }
+    .htag.filled {
+      background: var(--purple);
+      border-color: var(--purple);
+      color: var(--white);
+    }
+
+    /* STAGE */
+    .hero-stage {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      border-bottom: var(--stroke);
+    }
+    @media(max-width: 640px) {
+      .hero-stage { grid-template-columns: 1fr; }
+      .hero-graphic { display: none; }
+    }
+
+    .hero-title-col {
+      padding: 3.8rem 1.4rem 1.4rem;
+      border-right: var(--stroke);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    @media(max-width: 640px) {
+      .hero-title-col { border-right: none; }
+    }
+
+    .hero-title {
+      font-family: var(--f-body);
+      font-weight: 800;
+      font-size: clamp(4rem, 12vw, 8.5rem);
+      line-height: 0.9;
+      color: var(--ink);
+    }
+    .hero-title .line1 {
+      display: block;
+      color: var(--ink);
+    }
+    .hero-title .line2 {
+      -webkit-text-stroke: 3px var(--purple);
+      color: transparent;
+      display: block;
+    }
+
+    .hero-desc {
+      font-size: 0.85rem;
+      line-height: 1.75;
+      color: #3a3836;
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: var(--stroke);
+      max-width: 540px;
+    }
+
+    /* GRAPHIC PANEL */
+    .hero-graphic {
+      background: var(--purple);
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-graphic svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0; left: 0;
+    }
+
+    /* STATS */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media(max-width: 480px) {
+      .hero-stats { grid-template-columns: 1fr; }
+      .hstat { border-right: none; border-bottom: var(--stroke); }
+      .hstat:last-child { border-bottom: none; }
+    }
+
+    .hstat {
+      padding: 1rem 1.4rem;
+      border-right: var(--stroke);
+    }
+    .hstat:last-child { border-right: none; }
+
+    .hstat-num {
+      font-family: var(--f-display);
+      font-size: 2.6rem;
+      line-height: 1;
+      color: var(--purple);
+      display: block;
+    }
+    .hstat-label {
+      font-family: var(--f-mono);
+      font-size: 0.48rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #888;
+      margin-top: 0.2rem;
+      display: block;
+    }
+
+    /* ══════════════════════════════
+       ANIMATIONS
+    ══════════════════════════════ */
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+    @keyframes slideInLeft { from { opacity:0; transform:translateX(-18px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes scaleX   { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+
+    .anim-fade-up   { opacity:0; }
+    .anim-fade-in   { opacity:0; }
+    .anim-slide-left{ opacity:0; }
+    .anim-line      { transform:scaleX(0); transform-origin:left; }
+
+    .anim-fade-up.is-visible   { animation: fadeUp   0.55s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .anim-fade-in.is-visible   { animation: fadeIn   0.5s ease forwards; }
+    .anim-slide-left.is-visible{ animation: slideInLeft 0.5s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .anim-line.is-visible      { animation: scaleX   0.6s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+    /* Hero loads immediately — no scroll needed */
+    .hero-title .line1 { animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
+    .hero-title .line2 { animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.22s both; }
+    .hero-desc         { animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.36s both; }
+    .hero-top-bar      { animation: fadeIn 0.4s ease 0.05s both; }
+    .hstat             { animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+    .hstat:nth-child(1){ animation-delay: 0.45s; }
+    .hstat:nth-child(2){ animation-delay: 0.55s; }
+    .hstat:nth-child(3){ animation-delay: 0.65s; }
+
+    /* ══════════════════════════════
+       SECTION PATTERN
+    ══════════════════════════════ */
+    main { max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
+    .gap { height: 5rem; }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 1.2rem;
+      border-bottom: var(--stroke);
+      padding-bottom: 0.6rem;
+      margin-bottom: 2rem;
+    }
+    .section-num {
+      font-family: var(--f-display);
+      font-size: 1.1rem;
+      color: var(--purple);
+      letter-spacing: 0.05em;
+    }
+    .section-name {
+      font-family: var(--f-display);
+      font-size: 2.5rem;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .section-head::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: var(--ink);
+      align-self: center;
+      margin-left: 0.5rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: var(--stroke);
+    }
+    @media(max-width:640px){ .about-grid { grid-template-columns: 1fr; } }
+
+    .about-text {
+      padding: 2.5rem;
+      border-right: var(--stroke);
+    }
+    @media(max-width:640px){ .about-text { border-right: none; border-bottom: var(--stroke); } }
+
+    .about-text p {
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.85;
+      color: #3a3836;
+      margin-bottom: 0.9rem;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .about-right {
+      background: var(--purple);
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .about-name {
+      font-family: var(--f-display);
+      font-size: 4rem;
+      line-height: 0.9;
+      letter-spacing: 0.04em;
+      color: var(--white);
+    }
+    .about-quote {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.65);
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    /* ── PIPELINE ── */
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      border: var(--stroke);
+    }
+    @media(max-width:500px){ .pipeline { grid-template-columns: 1fr; } }
+
+    .pipe-step {
+      padding: 2rem 1.8rem;
+      border-right: var(--stroke);
+      transition: background 0.15s;
+    }
+    .pipe-step:last-child { border-right: none; }
+    .pipe-step:hover { background: var(--lilac); }
+
+    .pipe-num {
+      font-family: var(--f-display);
+      font-size: 5rem;
+      line-height: 1;
+      -webkit-text-stroke: 2px var(--purple);
+      color: transparent;
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+    .pipe-step h3 {
+      font-family: var(--f-display);
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .pipe-step p {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #5a5552;
+    }
+
+    /* ── TECH + GOALS ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: var(--stroke);
+    }
+    @media(max-width:640px){ .two-col { grid-template-columns: 1fr; } }
+
+    .col-panel {
+      padding: 2.5rem;
+      border-right: var(--stroke);
+    }
+    .col-panel:last-child { border-right: none; }
+    @media(max-width:640px){ .col-panel { border-right: none; border-bottom: var(--stroke); } }
+
+    .col-panel h3 {
+      font-family: var(--f-display);
+      font-size: 2rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+      color: var(--ink);
+    }
+    .col-panel p {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: #3a3836;
+      margin-bottom: 0.8rem;
+    }
+    .col-panel p:last-child { margin-bottom: 0; }
+
+    .col-panel.hi { background: var(--ink); }
+    .col-panel.hi h3 { color: var(--white); }
+    .col-panel.hi p  { color: rgba(255,255,255,0.65); }
+
+    /* ── ACCESSIBILITY ── */
+    .access-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: var(--stroke);
+    }
+    @media(max-width:560px){ .access-grid { grid-template-columns: 1fr; } }
+
+    .access-card {
+      padding: 2rem;
+      border-right: var(--stroke);
+      border-bottom: var(--stroke);
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      transition: background 0.15s;
+    }
+    .access-card:nth-child(2)  { border-right: none; }
+    .access-card:nth-child(3)  { border-bottom: none; }
+    .access-card:nth-child(4)  { border-right: none; border-bottom: none; }
+    .access-card:hover         { background: var(--lilac); }
+
+    .access-letter {
+      font-family: var(--f-display);
+      font-size: 3rem;
+      line-height: 1;
+      color: var(--purple);
+      flex-shrink: 0;
+      width: 2.5rem;
+    }
+    .access-card h3 {
+      font-family: var(--f-body);
+      font-weight: 800;
+      font-size: 0.92rem;
+      margin-bottom: 0.4rem;
+      color: var(--ink);
+    }
+    .access-card p {
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: #5a5552;
+    }
+
+    /* ── DEMO ── */
+    .demo-wrap {
+      border: var(--stroke);
+      padding: 2.5rem;
+    }
+    .demo-wrap h3 {
+      font-family: var(--f-display);
+      font-size: 2rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 1.4rem;
+      color: var(--ink);
+    }
+    .vid-outer {
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      border: var(--stroke);
+    }
+    .vid-outer iframe { width: 100%; height: 100%; display: block; border: none; }
+
+    .demo-link {
+      display: inline-block;
+      margin-top: 1rem;
+      font-family: var(--f-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--purple);
+      text-decoration: none;
+      border-bottom: 1px solid var(--purple);
+      padding-bottom: 0.1rem;
+      transition: opacity 0.15s;
+    }
+    .demo-link:hover { opacity: 0.6; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: var(--stroke);
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--ink);
+    }
+    footer p {
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    footer a:hover { color: var(--white); }
+    .footer-mark {
+      font-family: var(--f-display);
+      font-size: 1.8rem;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.12);
+    }
+  </style>
+</head>
+<body>
+
+<!-- DO NOT REMOVE -->
+<a href="../../" class="back-to-showcase">← Showcase</a>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+
+  <div class="hero-stage">
+    <div class="hero-title-col">
+      <div class="hero-meta-row">
+        <span class="mono-muted">Simon Wilke &nbsp;/&nbsp; MN-01 &nbsp;/&nbsp; 2026</span>
+        <div class="hero-tags">
+          <span class="htag">Core ML</span>
+          <span class="htag">Swift</span>
+          <span class="htag filled">On-Device AI</span>
+        </div>
+      </div>
+      <h1 class="hero-title">
+        <span class="line1">DERMA</span><span class="line2">SIGHT</span>
+      </h1>
+      <p class="hero-desc">
+        A skin analysis app that helps you spot potential concerns early, before they become something to worry about. Point, scan, and get a clear result in seconds.
+      </p>
+    </div>
+    <div class="hero-graphic">
+      <svg viewBox="0 0 260 340" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <rect width="260" height="340" fill="#5b21b6"/>
+        <line x1="0" y1="85" x2="260" y2="85" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <line x1="0" y1="170" x2="260" y2="170" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <line x1="0" y1="255" x2="260" y2="255" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <line x1="65" y1="0" x2="65" y2="340" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <line x1="130" y1="0" x2="130" y2="340" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <line x1="195" y1="0" x2="195" y2="340" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <circle cx="220" cy="310" r="140" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+        <circle cx="220" cy="310" r="100" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <circle cx="220" cy="310" r="60" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+        <rect x="22" y="22" width="36" height="36" fill="rgba(255,255,255,0.15)"/>
+        <line x1="0" y1="340" x2="260" y2="0" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <circle cx="50" cy="180" r="3" fill="rgba(255,255,255,0.25)"/>
+        <circle cx="66" cy="196" r="2" fill="rgba(255,255,255,0.15)"/>
+        <circle cx="34" cy="196" r="2" fill="rgba(255,255,255,0.15)"/>
+        <circle cx="50" cy="212" r="3" fill="rgba(255,255,255,0.25)"/>
+        <line x1="22" y1="76" x2="100" y2="76" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hstat">
+      <span class="hstat-num">6</span>
+      <span class="hstat-label">Step analysis pipeline</span>
+    </div>
+    <div class="hstat">
+      <span class="hstat-num">3</span>
+      <span class="hstat-label">Risk levels: low, moderate, high</span>
+    </div>
+    <div class="hstat">
+      <span class="hstat-num">4+</span>
+      <span class="hstat-label">Accessibility features</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ MAIN ══ -->
+<main>
+  <div class="gap"></div>
+
+  <!-- ABOUT -->
+  <div class="section-head anim-fade-in">
+    <span class="section-num">01</span>
+    <span class="section-name">THE BUILDER</span>
+  </div>
+  <div class="about-grid">
+    <div class="about-text anim-fade-up">
+      <p>I'm Simon Wilke, a student developer building AI tools that focus on real-world impact. I believe technology should serve people, not the other way around.</p>
+      <p>DermaSight combines on-device Core ML inference with an optional cloud AI ensemble, fusing multiple model outputs into a single explainable risk score. It is designed to assist, not diagnose, and always encourages professional medical follow-up.</p>
+    </div>
+    <div class="about-right anim-fade-up" style="animation-delay:0.1s;position:relative;overflow:hidden;padding:0;">
+      <svg width="100%" height="100%" viewBox="0 0 260 220" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="display:block;min-height:220px;">
+        <rect width="260" height="220" fill="#5b21b6"/>
+        <text x="130" y="125" text-anchor="middle" dominant-baseline="middle"
+          font-family="'Cabinet Grotesk',system-ui,sans-serif"
+          font-weight="800"
+          font-size="110"
+          fill="none"
+          stroke="rgba(255,255,255,0.2)"
+          stroke-width="2.5"
+          letter-spacing="-6">SW</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="gap"></div>
+
+  <!-- PIPELINE -->
+  <div class="section-head anim-fade-in">
+    <span class="section-num">02</span>
+    <span class="section-name">HOW IT WORKS</span>
+  </div>
+  <div class="pipeline">
+    <div class="pipe-step anim-fade-up" style="animation-delay:0s">
+      <span class="pipe-num">1</span>
+      <h3>Capture &amp; Check</h3>
+      <p>The image is validated, normalized, and scored for quality before any analysis runs. Non-skin photos are rejected immediately.</p>
+    </div>
+    <div class="pipe-step anim-fade-up" style="animation-delay:0.12s">
+      <span class="pipe-num">2</span>
+      <h3>Analyze</h3>
+      <p>A Core ML model runs on-device. Rule-based ABCDE dermatology features are computed. An optional cloud AI ensemble adds a second opinion.</p>
+    </div>
+    <div class="pipe-step anim-fade-up" style="animation-delay:0.24s">
+      <span class="pipe-num">3</span>
+      <h3>Results</h3>
+      <p>All signals are fused into a single risk score (low, moderate, or high) with a confidence rating and plain-language recommendations.</p>
+    </div>
+  </div>
+
+  <div class="gap"></div>
+
+  <!-- TECH + GOALS -->
+  <div class="section-head anim-fade-in">
+    <span class="section-num">03</span>
+    <span class="section-name">UNDER THE HOOD</span>
+  </div>
+  <div class="two-col">
+    <div class="col-panel anim-slide-left">
+      <h3>Architecture</h3>
+      <p>DermaSight runs analysis directly on your device using Apple's built-in machine learning tools. No internet is required for a result. When enabled, it can also consult cloud AI models for a second opinion and combines both perspectives into a single score.</p>
+      <p>Every stage is built to fail gracefully. If one part of the pipeline can't run, the next best option takes over automatically.</p>
+    </div>
+    <div class="col-panel hi anim-fade-up" style="animation-delay:0.12s">
+      <h3>Design Intent</h3>
+      <p>Skin concerns can be stressful, and waiting to see a doctor even more so. DermaSight is built for that in-between moment, giving you something informed to go on without overstating what an app can know.</p>
+      <p>Results are always honest about their confidence, and every output ends the same way: a clear nudge to follow up with a professional.</p>
+    </div>
+  </div>
+
+  <div class="gap"></div>
+
+  <!-- ACCESSIBILITY -->
+  <div class="section-head anim-fade-in">
+    <span class="section-num">04</span>
+    <span class="section-name">ACCESSIBILITY</span>
+  </div>
+  <div class="access-grid">
+    <div class="access-card">
+      <div class="access-letter">L</div>
+      <div>
+        <h3>Localized Language Support</h3>
+        <p>Designed to support multiple languages for broader accessibility.</p>
+      </div>
+    </div>
+    <div class="access-card">
+      <div class="access-letter">V</div>
+      <div>
+        <h3>Voice Guidance</h3>
+        <p>Voice-based feedback helps users navigate and understand results.</p>
+      </div>
+    </div>
+    <div class="access-card">
+      <div class="access-letter">C</div>
+      <div>
+        <h3>High Contrast Mode</h3>
+        <p>UI adapts for visibility and readability in all lighting conditions.</p>
+      </div>
+    </div>
+    <div class="access-card">
+      <div class="access-letter">T</div>
+      <div>
+        <h3>Touch-Friendly Design</h3>
+        <p>Large interactive targets improve usability across all users.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="gap"></div>
+
+  <!-- DEMO -->
+  <div class="section-head anim-fade-in">
+    <span class="section-num">05</span>
+    <span class="section-name">DEMO</span>
+  </div>
+  <div class="demo-wrap anim-fade-up">
+    <h3>Watch It in Action</h3>
+    <div class="vid-outer">
+      <iframe
+        src="https://www.youtube.com/embed/IhzwTzdTgIc"
+        title="DermaSight Demo"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+    <a href="https://www.youtube.com/watch?v=IhzwTzdTgIc" target="_blank" rel="noopener" class="demo-link">Watch on YouTube ↗</a>
+  </div>
+
+</main>
+
+<footer>
+  <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  <span class="footer-mark">DS</span>
+</footer>
+
+<!-- DO NOT REMOVE -->
+<script src="../../assets/js/nav.js" data-root="../../"></script>
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.anim-fade-up, .anim-fade-in, .anim-slide-left, .anim-line')
+    .forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

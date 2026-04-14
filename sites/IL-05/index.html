@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oculare AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0e1210;
+      --surface:  #161c19;
+      --border:   rgba(255,255,255,0.07);
+      --green:    #52796F;
+      --green-lt: #84a98c;
+      --text:     #e8ebe8;
+      --muted:    rgba(232,235,232,0.45);
+      --label:    rgba(232,235,232,0.3);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.65;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      padding: 18px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(14,18,16,0.85);
+      backdrop-filter: blur(12px);
+    }
+    nav a {
+      font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em;
+      text-transform: uppercase; text-decoration: none;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--text); }
+    nav .nav-right { display: flex; gap: 28px; }
+
+    /* HERO */
+    #hero {
+      height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 420px;
+      gap: 60px; align-items: center; width: 100%;
+      max-width: 1100px;
+      position: relative; z-index: 1;
+    }
+    .hero-left { display: flex; flex-direction: column; align-items: flex-start; }
+    .event-label {
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--label); margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 6.5vw, 6.5rem);
+      font-weight: 700; line-height: 0.92;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+    .hero-title .accent { color: var(--green-lt); }
+    .tagline {
+      font-size: 0.97rem; color: var(--muted); max-width: 400px;
+      margin-bottom: 36px; font-weight: 300; line-height: 1.7;
+    }
+    .hero-btns {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 24px; border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.01em;
+      text-decoration: none; cursor: pointer; border: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-solid { background: var(--green); color: #fff; }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .hero-stats {
+      display: flex; gap: 40px;
+      font-size: 0.75rem; color: var(--label); letter-spacing: 0.05em;
+    }
+    .hero-stats span { display: flex; flex-direction: column; gap: 2px; }
+    .hero-stats strong {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 600;
+      color: var(--text); letter-spacing: 0;
+    }
+    /* phone mockups */
+    .hero-right {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .phone-wrap {
+      border-radius: 32px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 40px 90px rgba(0,0,0,0.65);
+    }
+    .phone-wrap img { display: block; width: 100%; height: auto; object-fit: cover; object-position: top; }
+    .phone-main { width: 260px; }
+    .phone-secondary { display: none; }
+    /* faded bg wordmark */
+    .bg-word {
+      position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(8rem, 18vw, 16rem); font-weight: 700;
+      color: rgba(255,255,255,0.02);
+      white-space: nowrap; pointer-events: none; user-select: none;
+      letter-spacing: -0.03em; z-index: 0;
+    }
+
+    /* SECTIONS */
+    .section {
+      max-width: 800px; margin: 0 auto;
+      padding: 80px 40px;
+      border-top: 1px solid var(--border);
+    }
+    .section-row {
+      display: grid; grid-template-columns: 140px 1fr; gap: 40px;
+    }
+    .section-label {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--label);
+      padding-top: 4px;
+    }
+    .section-body h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; font-weight: 600; line-height: 1.2;
+      margin-bottom: 16px; letter-spacing: -0.01em;
+    }
+    .section-body p {
+      color: var(--muted); font-size: 0.92rem; margin-bottom: 12px;
+    }
+    .section-body p:last-child { margin-bottom: 0; }
+
+    /* ABOUT CARD */
+    .about-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      display: flex; gap: 16px; align-items: flex-start;
+      margin-top: 8px;
+    }
+    .about-avatar {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; font-weight: 500; color: #fff;
+    }
+    .about-card p { color: var(--muted); font-size: 0.88rem; margin: 0; }
+
+    /* FEATURE CARDS */
+    .feature-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin-top: 28px;
+    }
+    .feat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 20px;
+    }
+    .feat-icon { font-size: 1.2rem; margin-bottom: 10px; }
+    .feat h4 { font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; }
+    .feat p { font-size: 0.78rem; color: var(--muted); margin: 0; }
+
+    /* TECH TAGS */
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .tag {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 5px 12px;
+      font-size: 0.76rem; color: var(--muted);
+    }
+    .tag.highlight { border-color: var(--green); color: var(--green-lt); }
+
+    /* DEMO */
+    .video-wrap {
+      width: 100%; border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--border); margin-top: 8px;
+      aspect-ratio: 16/9; background: #000;
+      position: relative; display: block; text-decoration: none;
+      cursor: pointer;
+    }
+    .video-wrap img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: opacity 0.2s;
+    }
+    .video-wrap:hover img { opacity: 0.75; }
+    .play-btn {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .play-btn svg {
+      width: 72px; height: 72px; drop-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      filter: drop-shadow(0 4px 20px rgba(0,0,0,0.7));
+    }
+
+    /* LINKS */
+    .links-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+
+    /* FOOTER */
+    footer {
+      max-width: 800px; margin: 0 auto;
+      padding: 40px 40px 60px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    footer p { font-size: 0.75rem; color: var(--label); }
+
+    @media (max-width: 860px) {
+      #hero { padding: 100px 32px 60px; height: auto; min-height: 100vh; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .phone-main { width: 200px; }
+    }
+    @media (max-width: 640px) {
+      .section-row { grid-template-columns: 1fr; gap: 20px; }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+      nav .nav-right { display: none; }
+      footer { flex-direction: column; gap: 12px; }
+      .hero-right { display: none; }
+    }
+    @media (max-width: 420px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#">Oculare AI</a>
+  <div class="nav-right">
+    <a href="#about">About</a>
+    <a href="#platform">Platform</a>
+    <a href="#tech">Tech Stack</a>
+    <a href="#demo">Demo</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="bg-word">Oculare</div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <p class="event-label">Congressional App Challenge 2025 &nbsp;·&nbsp; Built by Arnav Shenoy</p>
+
+      <h1 class="hero-title">
+        Ocu<span class="accent">lare AI</span>
+      </h1>
+
+      <p class="tagline">
+        AI-powered retinal scan analysis for Diabetic Retinopathy, Glaucoma, and Cataracts — right from your phone.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#demo" class="btn btn-solid">Watch Demo</a>
+        <a href="#platform" class="btn btn-ghost">Explore the App</a>
+      </div>
+
+      <div class="hero-stats">
+        <span><strong>3</strong>eye diseases</span>
+        <span><strong>600+</strong>specialists</span>
+        <span><strong>50</strong>US states</span>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="phone-wrap phone-main">
+        <img src="welcome-screen.PNG" alt="Oculare welcome screen" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="section" id="about">
+  <div class="section-row">
+    <span class="section-label">About</span>
+    <div class="section-body">
+      <h2>About me — Arnav Shenoy</h2>
+      <div class="about-card">
+        <div class="about-avatar">A</div>
+        <p>Hi! I'm Arnav Shenoy, a high school senior (incoming CS+Stats major @ UIUC and Comp Neuro/Bio Researcher @ CMU, UCLA) passionate about using AI and ML to solve real healthcare problems. My App Challenge project initially started as a question — why do millions lose their eyesight to diseases that are detectable early? And so in order to answer my own question I built this app Oculare AI, a mobile app that combines a custom-trained neural network, a mobile frontend, and an AI chatbot into one accessible tool.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLATFORM -->
+<div class="section" id="platform">
+  <div class="section-row">
+    <span class="section-label">The Platform</span>
+    <div class="section-body">
+      <h2>Eye care intelligence, in your pocket.</h2>
+      <p>Oculare lets anyone upload or capture a retinal image and receive an instant AI diagnosis — complete with disease probabilities, a plain-language summary, and a confidence rating. No clinic required for a first look.</p>
+      <p>Beyond detection, the app connects users to a curated database of 600+ ophthalmologists across all 50 states, and includes Visionary AI — a Gemini-powered chatbot that answers eye-health questions with context from your own scan history.</p>
+
+      <div class="feature-grid">
+        <div class="feat">
+          <div class="feat-icon">📷</div>
+          <h4>Retinal Capture</h4>
+          <p>Camera or gallery upload with quality guidance and example references.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-icon">🧠</div>
+          <h4>AI Diagnosis</h4>
+          <p>EfficientNetB4 model returns probabilities for DR, Glaucoma, and Cataracts.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-icon">💬</div>
+          <h4>Visionary AI</h4>
+          <p>Gemini-powered chatbot aware of your diagnosis for personalized answers.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-icon">🏥</div>
+          <h4>Specialist Finder</h4>
+          <p>Filter 600+ ophthalmologists by state and condition with biography links.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-icon">📂</div>
+          <h4>Scan History</h4>
+          <p>All scans saved to your private cloud account with encoded metadata.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-icon">🔒</div>
+          <h4>Secure Auth</h4>
+          <p>Supabase authentication with encrypted storage for all user data.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TECH STACK -->
+<div class="section" id="tech">
+  <div class="section-row">
+    <span class="section-label">Tech Stack</span>
+    <div class="section-body">
+      <h2>How it's built</h2>
+      <p>A full-stack mobile system — neural network inference on a Python backend, real-time cloud sync, and a cross-platform React Native frontend.</p>
+      <p style="border-left: 2px solid var(--green); padding-left: 16px; margin-top: 20px;">The AI works by feeding your retinal photo into a model called EfficientNetB4 — think of it as a highly trained visual expert that has studied thousands of real eye scans to learn exactly what Diabetic Retinopathy, Glaucoma, and Cataracts look like. Before analysis, the image goes through several enhancement steps (sharpening contrast, reducing noise, highlighting blood vessels) so the model sees the clearest possible version of your eye. It then outputs a probability for each disease, telling you not just <em>what</em> it detected, but <em>how confident</em> it is.</p>
+      <div class="tags">
+        <span class="tag highlight">React Native</span>
+        <span class="tag highlight">Expo Router</span>
+        <span class="tag highlight">TypeScript</span>
+        <span class="tag highlight">Python</span>
+        <span class="tag highlight">Flask</span>
+        <span class="tag highlight">TensorFlow</span>
+        <span class="tag">EfficientNetB4</span>
+        <span class="tag">OpenCV</span>
+        <span class="tag">Supabase</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">Gemini 1.5 Flash</span>
+        <span class="tag">CLAHE Preprocessing</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DEMO -->
+<div class="section" id="demo">
+  <div class="section-row">
+    <span class="section-label">Demo</span>
+    <div class="section-body">
+      <h2>See Oculare in action</h2>
+      <a class="video-wrap" href="https://www.youtube.com/watch?v=1fMjB6OwmEg" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/1fMjB6OwmEg/maxresdefault.jpg" alt="Oculare AI Demo" />
+        <div class="play-btn">
+          <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="36" cy="36" r="36" fill="rgba(0,0,0,0.55)"/>
+            <polygon points="28,20 56,36 28,52" fill="white"/>
+          </svg>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- LINKS -->
+<div class="section" id="links">
+  <div class="section-row">
+    <span class="section-label">Links</span>
+    <div class="section-body">
+      <h2>Connect + Contact me</h2>
+      <p>Questions, feedback, or collaboration ideas? Feel free to reach out.</p>
+      <div class="links-row">
+        <a href="https://www.youtube.com/watch?v=1fMjB6OwmEg" target="_blank" rel="noopener" class="btn btn-solid">Watch on YouTube</a>
+        <a href="https://github.com/shenoy4365" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
+        <a href="https://www.linkedin.com/in/arnav-shenoy/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn
+        </a>
+        <a href="mailto:arnav.shenoy@gmail.com" class="btn btn-ghost">Email</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Congressional App Challenge 2025 &nbsp;·&nbsp; Built by Arnav Shenoy</p>
+  <p>Oculare is <b>NOT</b> a substitute for professional medical advice.</p>
+</footer>
+
+</body>
+</html>

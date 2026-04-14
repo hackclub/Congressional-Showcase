@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bitview | Saihajbir Singh</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cyan: #06B6D4;
+      --cyan-dark: #0891B2;
+      --cyan-light: #0E2A32;
+      --cyan-glow: rgba(6, 182, 212, 0.15);
+      --green: #10B981;
+      --green-light: #0B2E24;
+      --violet: #8B5CF6;
+      --violet-light: #1E1640;
+      --white: #F1F5F9;
+      --bg: #0B0F14;
+      --bg-card: #111827;
+      --bg-elevated: #1A2332;
+      --text: #F1F5F9;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --border: #1E293B;
+      --border-light: #334155;
+      --card-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BACK */
+    .back-nav {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--cyan);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--card-shadow);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .back-nav:hover { background: var(--bg-elevated); border-color: var(--cyan); }
+    .back-nav svg { width: 14px; height: 14px; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 7rem 2rem 4rem;
+      background: linear-gradient(180deg, #0B1120 0%, #0F1B2D 30%, var(--bg) 100%);
+      overflow: hidden;
+    }
+
+    /* Grid/circuit motif */
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .grid-bg .node {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(6, 182, 212, 0.1);
+      border-radius: 50%;
+    }
+    .grid-bg .node::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(to right, rgba(6,182,212,0.08), transparent);
+      transform-origin: left center;
+    }
+    .grid-bg .node:nth-child(1) { top: 15%; left: 5%; }
+    .grid-bg .node:nth-child(1)::after { transform: rotate(30deg); }
+    .grid-bg .node:nth-child(2) { top: 25%; left: 18%; }
+    .grid-bg .node:nth-child(2)::after { transform: rotate(-15deg); width: 60px; }
+    .grid-bg .node:nth-child(3) { top: 10%; right: 15%; }
+    .grid-bg .node:nth-child(3)::after { transform: rotate(160deg); }
+    .grid-bg .node:nth-child(4) { top: 40%; right: 8%; }
+    .grid-bg .node:nth-child(4)::after { transform: rotate(200deg); width: 100px; }
+    .grid-bg .node:nth-child(5) { bottom: 30%; left: 12%; }
+    .grid-bg .node:nth-child(5)::after { transform: rotate(-40deg); width: 70px; }
+    .grid-bg .node:nth-child(6) { bottom: 20%; right: 25%; }
+    .grid-bg .node:nth-child(6)::after { transform: rotate(140deg); }
+
+    .hero-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-chip {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+    }
+    .hero-chip.cyan { background: var(--cyan-light); color: var(--cyan); border-color: transparent; }
+    .hero-chip.green { background: var(--green-light); color: var(--green); border-color: transparent; }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span { color: var(--cyan); }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 620px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .hero-meta-item {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .hero-meta-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* MAIN */
+    .page-main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    /* DASHBOARD GRID */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 800px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+    .dash-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .dash-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border-color: var(--border-light);
+    }
+    .dash-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    .dash-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .dash-icon.cyan { background: var(--cyan-light); }
+    .dash-icon.green { background: var(--green-light); }
+    .dash-icon.violet { background: var(--violet-light); }
+    .dash-card-title {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .dash-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+    .dash-card p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* SECTION HEADING */
+    .section-heading {
+      margin-bottom: 1.5rem;
+    }
+    .section-heading .label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.4rem;
+    }
+    .section-heading h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    /* CONTENT PANELS */
+    .content-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.2rem 2.5rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 3rem;
+    }
+
+    .content-panel p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-secondary);
+    }
+    .content-panel p + p { margin-top: 1rem; }
+
+    /* CREATOR - single column */
+    .creator-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 3rem;
+    }
+    .creator-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .creator-avatar {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--bg);
+    }
+    .creator-avatar.cyan { background: var(--cyan); }
+    .creator-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .creator-role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .creator-card p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+    .creator-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+    }
+    .creator-tag {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.2rem 0.6rem;
+    }
+
+    /* TECH STACK */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    .tech-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .tech-dot {
+      width: 8px; height: 8px;
+      border-radius: 2px;
+    }
+    .tech-dot.cyan { background: var(--cyan); }
+    .tech-dot.green { background: var(--green); }
+    .tech-dot.violet { background: var(--violet); }
+
+    .tech-bar-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .tech-bar-role {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    /* VIDEO */
+    .video-panel {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      margin-top: 1rem;
+    }
+    .video-panel iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(6,182,212,0.06) 0%, rgba(16,185,129,0.04) 100%);
+      border: 1px solid rgba(6, 182, 212, 0.12);
+      border-radius: 12px;
+      padding: 2rem 2.2rem;
+      margin-bottom: 3rem;
+    }
+    .highlight-box .quote-mark {
+      font-family: 'Lora', serif;
+      font-size: 3rem;
+      color: var(--cyan);
+      opacity: 0.3;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .highlight-box blockquote {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .highlight-box cite {
+      display: block;
+      margin-top: 0.8rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* LINKS */
+    .links-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .action-btn:hover { transform: translateY(-1px); }
+    .action-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .action-btn.primary {
+      background: var(--cyan);
+      color: var(--bg);
+      box-shadow: 0 2px 10px rgba(6,182,212,0.25);
+    }
+    .action-btn.primary:hover { box-shadow: 0 4px 15px rgba(6,182,212,0.35); }
+    .action-btn.outline {
+      background: var(--bg-card);
+      color: var(--cyan);
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow);
+    }
+
+    /* FOOTER */
+    footer {
+      background: #060A0F;
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    footer p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.3);
+    }
+    footer a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    footer a:hover { color: var(--cyan); text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1.5rem 3rem; }
+      .page-main { padding: 2rem 1.2rem 3rem; }
+      .content-panel { padding: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-nav">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+    Showcase
+  </a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="grid-bg">
+      <div class="node"></div><div class="node"></div><div class="node"></div>
+      <div class="node"></div><div class="node"></div><div class="node"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-chips">
+        <span class="hero-chip cyan">Education</span>
+        <span class="hero-chip green">AI</span>
+        <span class="hero-chip">Accessibility</span>
+        <span class="hero-chip">NY-16</span>
+      </div>
+      <h1>Bit<span>view</span></h1>
+      <p class="hero-desc">A platform designed for software engineering interviews that simplifies the process while helping prevent cheating.</p>
+      <div class="hero-meta">
+        <span class="hero-meta-item"><strong>Creator:</strong> Saihajbir Singh</span>
+        <span class="hero-meta-item"><strong>School:</strong> Ardsley High School</span>
+        <span class="hero-meta-item"><strong>District:</strong> NY-16, Westchester, NY</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-main">
+
+    <!-- MISSION -->
+    <div class="highlight-box">
+      <div class="quote-mark">"</div>
+      <blockquote>An interview platform for software engineers with built-in video calling and an integrated code editor, designed to reduce cheating risks and improve interview authenticity.</blockquote>
+      <cite>Mission Statement</cite>
+    </div>
+
+    <!-- FEATURE DASHBOARD CARDS -->
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon cyan">&#x1F4F9;</div>
+          <span class="dash-card-title">Communication</span>
+        </div>
+        <h3>Video Calling</h3>
+        <p>Built-in real-time video for remote interviews, enabling face-to-face interaction between recruiters and candidates.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon green">&#x1F4BB;</div>
+          <span class="dash-card-title">Assessment</span>
+        </div>
+        <h3>Code Editor</h3>
+        <p>Integrated coding environment for live technical assessments, allowing candidates to demonstrate skills in real time.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon violet">&#x1F6E1;</div>
+          <span class="dash-card-title">Integrity</span>
+        </div>
+        <h3>Anti-Cheat</h3>
+        <p>Measures to prevent cheating and ensure interview authenticity, giving recruiters confidence in candidate evaluations.</p>
+      </div>
+    </div>
+
+    <!-- CREATOR -->
+    <div class="section-heading">
+      <p class="label">The Builder</p>
+      <h2>About the Creator</h2>
+    </div>
+    <div class="creator-card">
+      <div class="creator-card-header">
+        <div class="creator-avatar cyan">SS</div>
+        <div>
+          <div class="creator-name">Saihajbir Singh</div>
+          <div class="creator-role">Senior, Ardsley High School</div>
+        </div>
+      </div>
+      <p>A senior at Ardsley High School, passionate about building applications that tackle real-world challenges. Self-taught through online learning, Saihajbir brings a hands-on approach to software development and problem-solving.</p>
+      <div class="creator-tags">
+        <span class="creator-tag">Self-Taught</span>
+        <span class="creator-tag">Problem Solver</span>
+        <span class="creator-tag">Software Engineering</span>
+      </div>
+    </div>
+
+    <!-- APP DESCRIPTION -->
+    <div class="section-heading">
+      <p class="label">The Platform</p>
+      <h2>How It Works</h2>
+    </div>
+    <div class="content-panel">
+      <p>Bitview is an interview platform built for software engineers that combines video calling with an integrated code editor. It targets both recruiters and candidates by reducing cheating risks and improving the authenticity of technical interviews.</p>
+      <p>The platform features real-time communication frameworks for seamless video calls, interactive coding tools for live assessments, and anti-cheat measures that help ensure honest evaluations. Built with TypeScript, WebRTC, and modern web technologies, Bitview streamlines the entire technical interview process.</p>
+    </div>
+
+    <!-- TECH -->
+    <div class="section-heading">
+      <p class="label">Built With</p>
+      <h2>Technology Stack</h2>
+    </div>
+    <div class="tech-stack" style="margin-bottom: 3rem;">
+      <div class="tech-bar"><span class="tech-dot cyan"></span><span class="tech-bar-name">TypeScript</span><span class="tech-bar-role">&middot; Language</span></div>
+      <div class="tech-bar"><span class="tech-dot green"></span><span class="tech-bar-name">WebRTC</span><span class="tech-bar-role">&middot; Real-Time Comms</span></div>
+      <div class="tech-bar"><span class="tech-dot violet"></span><span class="tech-bar-name">Code Editor</span><span class="tech-bar-role">&middot; Interactive IDE</span></div>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="section-heading">
+      <p class="label">In Action</p>
+      <h2>Demo Video</h2>
+    </div>
+    <div style="margin-bottom: 3rem;">
+      <div class="video-panel">
+        <iframe
+          src="https://www.youtube.com/embed/8pJdNTNf7e4"
+          title="Bitview Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="section-heading">
+      <p class="label">Explore</p>
+      <h2>Project Links</h2>
+    </div>
+    <div style="margin-bottom: 2rem;">
+      <div class="links-flex">
+        <a href="https://bitview1.netlify.app/" class="action-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/></svg>
+          Try Bitview
+        </a>
+        <a href="https://www.youtube.com/watch?v=8pJdNTNf7e4" class="action-btn outline" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 4.5v7l5-3.5-5-3.5z"/></svg>
+          Watch on YouTube
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge 2025 &bull; NY-16 &bull; Westchester, NY &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

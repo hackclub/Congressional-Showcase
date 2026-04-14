@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="OrIginal-creator"
+            content="pkncoder - Kia Preston - alex.h.preston@gmail.com"
+        />
+
+        <link rel="stylesheet" href="../../assets/css/shared.css" />
+        <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+
+        <title>Light Teachings | HouseOfCode 2026</title>
+
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+            rel="stylesheet"
+        />
+
+        <link href="./index.css" rel="stylesheet" />
+    </head>
+    <body>
+        <canvas id="three-bg"></canvas>
+
+        <div class="hero-graphics">
+            <div class="ray-pattern"></div>
+            <div class="ray-line" style="left: 10%"></div>
+            <div class="ray-line" style="left: 60%; animation-delay: 2s"></div>
+        </div>
+
+        <nav class="navbar navbar-dark py-4">
+            <div class="container">
+                <a class="navbar-brand" href="#"></a>
+                <span class="badge-house"
+                    >2026 Congressional App Challenge Winner</span
+                >
+            </div>
+        </nav>
+
+        <header class="container text-center py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <h1>Light Teachings</h1>
+                    <p
+                        class="lead text-secondary mx-auto mb-5"
+                        style="max-width: 750px"
+                    >
+                        Demystifying the physics of light through real-time ray
+                        tracing and interactive GPU rendering on MacOS.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-11">
+                    <div class="video-wrapper ratio ratio-16x9">
+                        <iframe
+                            src="https://www.youtube.com/embed/MmOsopj8NXY"
+                            title="Light Teachings Demo"
+                            allowfullscreen
+                        ></iframe>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="container mb-0">
+            <div class="row g-4">
+                <section class="container mb-5">
+                    <div class="row g-5">
+                        <div class="col-lg-7">
+                            <section class="glass-card d-flex flex-column">
+                                <div>
+                                    <h2 class="text-primary fw-bold mb-4">
+                                        The Vision
+                                    </h2>
+                                    <p class="fs-5">
+                                        Computer graphics often feel like a
+                                        "black box" to students.
+                                        <strong>Light Teachings</strong> bridges
+                                        that gap by providing a hands-on
+                                        environment to manipulate 3D scenes
+                                        using Metal, Apple's high-performance
+                                        graphics framework.
+                                    </p>
+                                    <p class="text-secondary">
+                                        Users can instantly visualize how light
+                                        rays interact with different
+                                        materials—reflecting off polished
+                                        surfaces, refracting through transparent
+                                        objects, and casting soft shadows in
+                                        real-time. Paired with a custom 5-part
+                                        educational series, it transforms
+                                        complex physics into an intuitive visual
+                                        experience.
+                                    </p>
+                                </div>
+
+                                <div class="mt-auto pt-4">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="vision-tag">
+                                            <span class="tag-dot"></span> Simple
+                                        </span>
+                                        <span class="vision-tag">
+                                            <span class="tag-dot"></span>
+                                            Educational
+                                        </span>
+                                        <span class="vision-tag">
+                                            <span class="tag-dot"></span> Visual
+                                        </span>
+                                        <span class="vision-tag">
+                                            <span class="tag-dot"></span>
+                                            Hands-On
+                                        </span>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="col-lg-5">
+                            <div class="glass-card creator-card">
+                                <div class="profile-hex">KP</div>
+                                <h3 class="h4 fw-bold text-white mb-1">
+                                    <a
+                                        class="no-text-decoration"
+                                        href="mailto:alex.h.preston@gmail.com"
+                                    >
+                                        Kia Preston &#128232;
+                                    </a>
+                                </h3>
+                                <p class="text-primary small fw-semibold mb-4">
+                                    Developer & Graphics Enthusiast
+                                </p>
+
+                                <p class="small text-secondary">
+                                    I am a <strong>17-Year-Old</strong> student
+                                    at <strong>Perkins High School</strong>.
+                                    Outside of developing, I enjoy
+                                    <strong>Robotics (FIRST & Personal)</strong>
+                                    and
+                                    <strong>Band-Related Activities</strong>. My
+                                    goal is to make computer science more
+                                    accessible through visual tools.
+                                </p>
+
+                                <hr class="my-4 opacity-10" />
+
+                                <div class="d-flex gap-3">
+                                    <div class="text-center flex-fill">
+                                        <div class="h5 mb-0 text-white">
+                                            Ohio
+                                        </div>
+                                        <div class="small text-secondary">
+                                            District 9
+                                        </div>
+                                    </div>
+                                    <div class="vr opacity-20"></div>
+                                    <div class="text-center flex-fill">
+                                        <div class="h5 mb-0 text-white">
+                                            2026
+                                        </div>
+                                        <div class="small text-secondary">
+                                            CAC Winner
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="col-12 mb-0 pb-0">
+                    <section class="pt-5 mt-5">
+                        <div class="container">
+                            <div class="row mb-5 glass-card">
+                                <div class="col-12 text-center">
+                                    <h2 class="display-5 fw-bold mb-3">
+                                        Under the Hood
+                                    </h2>
+                                    <p
+                                        class="text-secondary mx-auto"
+                                        style="max-width: 600px"
+                                    >
+                                        Engineering high-performance graphics
+                                        requires a marriage of mathematical
+                                        precision and hardware optimization.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row g-4 mb-5">
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-card glass-card">
+                                        <span class="stat-number">3,000+</span>
+                                        <span class="stat-label"
+                                            >Lines of Source Code</span
+                                        >
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-card glass-card">
+                                        <span class="stat-number">300+</span>
+                                        <span class="stat-label"
+                                            >R&D Hours Invested</span
+                                        >
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-card glass-card">
+                                        <span class="stat-number">60</span>
+                                        <span class="stat-label"
+                                            >Target Framerate (FPS)</span
+                                        >
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-card glass-card">
+                                        <span class="stat-number">5</span>
+                                        <span class="stat-label"
+                                            >Shading Integrators</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-4">
+                                <div class="col-lg-4">
+                                    <div class="tech-feature-card glass-card">
+                                        <div class="icon-box-float icon-engine">
+                                            ⚡
+                                        </div>
+                                        <div class="tech-content">
+                                            <h3 class="h5 fw-bold text-white">
+                                                Proprietary Engine
+                                            </h3>
+                                            <p
+                                                class="small text-secondary tech-description mb-0"
+                                            >
+                                                A purpose-built light transport
+                                                engine designed specifically for
+                                                the Metal framework. It
+                                                optimizes ray-primitive
+                                                intersections to deliver
+                                                specular reflections and
+                                                transparency in real-time,
+                                                maintaining high performance
+                                                even as scene complexity scales.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="tech-feature-card glass-card">
+                                        <div class="icon-box-float icon-viz">
+                                            ⚙️
+                                        </div>
+                                        <div class="tech-content">
+                                            <h3 class="h5 fw-bold text-white">
+                                                Algorithm Visualization
+                                            </h3>
+                                            <p
+                                                class="small text-secondary tech-description mb-0"
+                                            >
+                                                Enables users to toggle
+                                                industry-standard CGI techniques
+                                                dynamically. This interactive
+                                                approach provides a visual
+                                                comparative analysis of how
+                                                individual light transport paths
+                                                and mechanical logic contribute
+                                                to the final high-fidelity
+                                                render.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="tech-feature-card glass-card">
+                                        <div
+                                            class="icon-box-float icon-physics"
+                                        >
+                                            💎
+                                        </div>
+                                        <div class="tech-content">
+                                            <h3 class="h5 fw-bold text-white">
+                                                Physically Based Rendering
+                                            </h3>
+                                            <p
+                                                class="small text-secondary tech-description mb-0"
+                                            >
+                                                Implementation of custom BRDF
+                                                models for materials. It
+                                                utilizes Fresnel equations to
+                                                accurately simulate refractive
+                                                indices for glass and high-gloss
+                                                specular responses for metallic
+                                                surfaces based on real-world
+                                                light physics.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-5">
+                                    <div class="col-12">
+                                        <div
+                                            class="glass-card py-3 px-4 d-flex flex-wrap justify-content-center gap-4"
+                                        >
+                                            <div class="small">
+                                                <span
+                                                    class="text-primary fw-bold"
+                                                    >Language:</span
+                                                >
+                                                Swift 6.0
+                                            </div>
+                                            <div class="small">
+                                                <span
+                                                    class="text-primary fw-bold"
+                                                    >API:</span
+                                                >
+                                                Metal (MSL 3.1)
+                                            </div>
+                                            <div class="small">
+                                                <span
+                                                    class="text-primary fw-bold"
+                                                    >UI Framework:</span
+                                                >
+                                                SwiftUI
+                                            </div>
+                                            <div class="small">
+                                                <span
+                                                    class="text-primary fw-bold"
+                                                    >Hardware:</span
+                                                >
+                                                Apple Silicon Optimization
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="row mb-0 pb-5">
+                <div class="col-12 text-center">
+                    <h2>Explore the Project</h2>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a
+                            href="https://github.com/pkncoder/Light-Teachings"
+                            class="glass-btn btn-custom"
+                            >GitHub Repository</a
+                        >
+                        <a
+                            href="https://www.youtube.com/playlist?list=PLHfBfCN_zWLxamu8B6hRqdhhFYa-0K01a"
+                            class="glass-btn btn-custom"
+                            >Educational Videos</a
+                        >
+                        <a
+                            href="https://www.shadertoy.com/view/tXyXRc"
+                            class="glass-btn btn-custom"
+                            >Online Engine Demo</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer
+            class="container text-center py-1 border-top border-secondary"
+            style="--bs-border-opacity: 0.2"
+        >
+            <p class="text-secondary small">
+                &copy; 2026 Kia Preston. Built for the House of Code. <br />
+                Representing Ohio's 9th District.
+            </p>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+                }
+            }
+        </script>
+
+        <script type="module">
+            import * as THREE from "three";
+
+            const canvas = document.querySelector("#three-bg");
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                1000,
+            );
+            const renderer = new THREE.WebGLRenderer({
+                canvas,
+                antialias: true,
+                alpha: true,
+            });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // --- The Ray-Tracing "Core" ---
+            const group = new THREE.Group();
+            scene.add(group);
+
+            // Inner glowing sphere
+            const coreGeom = new THREE.SphereGeometry(1.6, 64, 64);
+            const coreMat = new THREE.MeshStandardMaterial({
+                color: 0x007aff,
+                emissive: 0x004477,
+                emissiveIntensity: 2,
+                roughness: 1,
+                metalness: 1,
+            });
+            const core = new THREE.Mesh(coreGeom, coreMat);
+            group.add(core);
+
+            // Outer "Fresnel" Wireframe (Simulating light paths)
+            const wireGeom = new THREE.IcosahedronGeometry(2.0, 2); // Techy triangular look
+            const wireMat = new THREE.MeshBasicMaterial({
+                color: 0x007aff,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.15,
+            });
+            const wireframe = new THREE.Mesh(wireGeom, wireMat);
+            group.add(wireframe);
+
+            // --- Space/Particle Field ---
+            const particlesCount = 2000;
+            const coords = new Float32Array(particlesCount * 3);
+            for (let i = 0; i < particlesCount * 3; i++) {
+                coords[i] = (Math.random() - 0.5) * 20;
+            }
+            const partGeom = new THREE.BufferGeometry();
+            partGeom.setAttribute(
+                "position",
+                new THREE.BufferAttribute(coords, 3),
+            );
+            const partMat = new THREE.PointsMaterial({
+                size: 0.03,
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.5,
+            });
+            const stars = new THREE.Points(partGeom, partMat);
+            scene.add(stars);
+
+            // --- Lighting ---
+            const light = new THREE.PointLight(0x007aff, 50);
+            light.position.set(5, 5, 5);
+            scene.add(light);
+            scene.add(new THREE.AmbientLight(0xffffff, 0.2));
+
+            camera.position.z = 6;
+
+            // --- Animation Logic ---
+            let mouseY = 0;
+            let mouseX = 0;
+            let scrollY = window.scrollY;
+
+            window.addEventListener("mousemove", (e) => {
+                mouseY = e.clientY / window.innerHeight - 0.5;
+                mouseX = e.clientX / window.innerWidth - 0.5;
+            });
+
+            window.addEventListener("scroll", () => {
+                scrollY = window.scrollY;
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                // Slow rotation
+                group.rotation.y += 0.003;
+                wireframe.rotation.x += 0.001;
+                stars.rotation.y += 0.0002;
+
+                // Mouse Parallax
+                group.position.y = THREE.MathUtils.lerp(
+                    group.position.y,
+                    -mouseY * 1.5,
+                    0.05,
+                );
+
+                // Extra movement left/right with the mouseX value
+                group.position.x = THREE.MathUtils.lerp(
+                    group.position.x,
+                    mouseX * 1.5,
+                    0.05,
+                );
+
+                // Scroll Interaction: Sphere moves down and scales slightly as you read
+                const scrollTarget = -scrollY * 0.003;
+                group.position.z = THREE.MathUtils.lerp(
+                    group.position.z,
+                    scrollTarget,
+                    0.05,
+                );
+
+                renderer.render(scene, camera);
+            }
+
+            window.addEventListener("resize", () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            animate();
+        </script>
+    </body>
+</html>
