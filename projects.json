@@ -418,5 +418,260 @@
   "district": "TX-08",
   "state": "TX",
   "tags": ["Health", "AI", "Cancer", "Precision Medicine"]
+    },
+    {
+  "slug": "NJ-06",
+  "name": "Eric Dai and Vaibhav Sitaraman",
+  "appName": "RoadWatch",
+  "description": "RoadWatch is a software and hardware ecosystem that uses dashcam footage to automatically detect road anomalies and report them to the government to improve road maintenance.",
+  "thumbnail": "sites/NJ-06/thumbnail.png",
+  "location": {
+    "lat": 40.5169,
+    "lng": -74.4063,
+    "label": "Edison, NJ"
+  },
+  "district": "NJ-06",
+  "state": "NJ",
+  "tags": ["ai", "community"]
+},
+{
+  "slug": "VA-11",
+  "name": "Amrik Majumdar & Atiksh Gupta",
+  "appName": "SAFEY",
+  "description": "A stealth-mode Progressive Web App that helps people experiencing domestic violence access safety tools discreetly, even without internet.",
+  "thumbnail": "sites/VA-11/thumbnail.png",
+  "location": {
+    "lat": 38.8816,
+    "lng": -77.1674,
+    "label": "Chantilly, VA"
+  },
+  "district": "VA-11",
+  "state": "VA",
+  "tags": ["safety", "health", "privacy", "pwa"]
+},
+{
+  "slug": "MP-00",
+  "name": "ZongYao Huang, Fiona Zhu, Boying Lin, Brianna Paraiso",
+  "appName": "IslaGo",
+  "description": "A comprehensive mobile transit application for bus arrival estimation in the CNMI to improve island mobility in Saipan through real-time bus tracking, personalized ride assistance, and a curated guide to local attractions.",
+  "thumbnail": "sites/MP-00/thumbnail.png",
+  "location": {
+    "lat": 15.1869,
+    "lng": 145.7499,
+    "label": "Saipan, MP"
+  },
+  "district": "MP-00",
+  "state": "MP",
+  "tags": ["environment", "civic", "accessibility"]
+},
+{
+  "slug": "MI-09",
+  "name": "Shivansh Sahni and Shivika Sahni",
+  "appName": "Find My Trial",
+  "description": "A platform that helps patients identify clinical trials matching their conditions using NLP-powered medical chart analysis.",
+  "thumbnail": "sites/MI-09/thumbnail.png",
+  "location": {
+    "lat": 42.7355,
+    "lng": -83.4192,
+    "label": "Clarkston, MI"
+  },
+  "district": "MI-09",
+  "state": "MI",
+  "tags": ["health", "ai"]
+},
+{
+  "slug": "MN-05",
+  "name": "Ved Bastodkar",
+  "appName": "Bread Head",
+  "description": "A teen-centered app that gives every teenager the financial literacy and real-world money skills to budget, save, and build wealth.",
+  "thumbnail": "sites/MN-05/thumbnail.png",
+  "location": {
+    "lat": 44.9778,
+    "lng": -93.2650,
+    "label": "Minneapolis, MN"
+  },
+  "district": "MN-05",
+  "state": "MN",
+  "tags": ["education", "social", "games", "accessibility", "finance"]
+},
+{
+  "slug": "CA-26",
+  "name": "Kevin Fei",
+  "appName": "Motio",
+  "description": "An app that uses cell phone GPS and accelerometer data to improve the user's driving.",
+  "thumbnail": "sites/CA-26/thumbnail.png",
+  "location": {
+    "lat": 34.1706,
+    "lng": -118.8376,
+    "label": "Thousand Oaks, CA"
+  },
+  "district": "CA-26",
+  "state": "CA",
+  "tags": ["civic", "social"]
+},
+{
+  "slug": "NC-10",
+  "name": "Roshan Naik",
+  "appName": "NationVitals",
+  "description": "A data-driven platform combining public health and socioeconomic data into a clear-to-understand atlas with interactive county-level insights.",
+  "thumbnail": "sites/NC-10/thumbnail.png",
+  "location": {
+    "lat": 35.5849,
+    "lng": -80.8101,
+    "label": "Mooresville, NC"
+  },
+  "district": "NC-10",
+  "state": "NC",
+  "tags": ["health", "civic", "social", "ai", "accessibility"]
+},
+{
+  "slug": "NJ-10",
+  "name": "Shashank Madala",
+  "appName": "Kora",
+  "description": "An AI-powered app that uses computer vision to interpret and communicate emotions for children with autism.",
+  "thumbnail": "sites/NJ-10/thumbnail.png",
+  "location": {
+    "lat": 40.2206,
+    "lng": -74.5947,
+    "label": "Robbinsville, NJ"
+  },
+  "district": "NJ-10",
+  "state": "NJ",
+  "tags": ["education", "health", "ai", "accessibility"]
+},
+{
+  "slug": "VA-10",
+  "name": "Jacob Percy, Gautam Annamalai, Saurish Tripathi",
+  "appName": "ElectConnect",
+  "description": "A civic engagement app providing unbiased news, political fact checking, and connecting users with their legislators.",
+  "thumbnail": "sites/VA-10/thumbnail.png",
+  "location": {
+    "lat": 38.8048,
+    "lng": -77.0469,
+    "label": "Alexandria, VA"
+  },
+  "district": "VA-10",
+  "state": "VA",
+  "tags": ["civic", "ai"]
+},
+{
+  "slug": "WA-01",
+  "name": "Hiya Pandey, Isabella Li, Anya Mehta",
+  "appName": "AnemoDx",
+  "description": "An app that helps users assess anemia risk using noninvasive fingernail imaging and machine learning.",
+  "thumbnail": "sites/WA-01/thumbnail.png",
+  "location": {
+    "lat": 47.6740,
+    "lng": -122.1215,
+    "label": "Redmond, WA"
+  },
+  "district": "WA-01",
+  "state": "WA",
+  "tags": ["health", "ai"]
+},
+{
+  "slug": "TX-37",
+  "name": "Vihaan Gandra, Shivank Ahuja, Viraj Velur, Pranav Kulshrestha",
+  "appName": "CareLoop",
+  "description": "A comprehensive iOS platform empowering caregivers by streamlining task coordination, health tracking, and daily scheduling.",
+  "thumbnail": "sites/TX-37/thumbnail.png",
+  "location": {
+    "lat": 30.2672,
+    "lng": -97.7431,
+    "label": "Austin, TX"
+  },
+  "district": "TX-37",
+  "state": "TX",
+  "tags": ["health", "social"]
+},
+{
+  "slug": "NJ-08",
+  "name": "Sarah Ji",
+  "appName": "GreenAI",
+  "description": "Use energy smarter, not less: reduce up to 35% of household carbon emissions with AI-powered carbon intensity forecasting.",
+  "thumbnail": "sites/NJ-08/thumbnail.png",
+  "location": {
+    "lat": 40.7178,
+    "lng": -74.0431,
+    "label": "Jersey City, NJ"
+  },
+  "district": "NJ-08",
+  "state": "NJ",
+  "tags": ["environment", "ai", "accessibility"]
+},
+{
+  "slug": "MI-06",
+  "name": "Srihan Sankepalle, Abhinav Mosra, Nihit Yeruva",
+  "appName": "EcoTrack",
+  "description": "A cross-platform app that helps users track their real-time carbon footprint, learn sustainability through challenges and trivia, and connect with local environmental events.",
+  "thumbnail": "sites/MI-06/thumbnail.png",
+  "location": {
+    "lat": 42.4311,
+    "lng": -83.4833,
+    "label": "Northville, MI"
+  },
+  "district": "MI-06",
+  "state": "MI",
+  "tags": ["education", "environment", "ai"]
+},
+{
+  "slug": "WA-06",
+  "name": "Garner Hall and Andrew Zhang",
+  "appName": "JourneyKeep",
+  "description": "JourneyKeep turns real-world habits into daily sidequests that help teens reduce doomscrolling and build intentional screen-time routines.",
+  "thumbnail": "sites/WA-06/thumbnail.jpg",
+  "location": {
+    "lat": 47.2529,
+    "lng": -122.4443,
+    "label": "Tacoma, WA"
+  },
+  "district": "WA-06",
+  "state": "WA",
+  "tags": ["health", "productivity", "habits", "wellness"]
+},
+{
+  "slug": "NC-07",
+  "name": "Edward Burton, Tilghman Reiss, and Bentley Burton",
+  "appName": "Remember When",
+  "description": "Remember When addresses an evergrowing problem with our aging community by providing companionship and comfort to the elderly.",
+  "thumbnail": "sites/NC-07/Assets/RWLogo.jpg",
+  "location": {
+    "lat": 34.225727,
+    "lng": -77.944710,
+    "label": "Wilmington, NC"
+  },
+  "district": "NC-07",
+  "state": "NC",
+  "tags": ["accessibility", "ai"]
+},
+{
+  "slug": "ND-00",
+  "name": "Che Yu",
+  "appName": "WaterWise",
+  "description": "WaterWise provides a tool that forecasts soil moisture, enabling proactive crop protection and more efficient irrigation practices.",
+  "thumbnail": "sites/ND-00/thumbnail.jpg",
+  "location": {
+    "lat": 47.9253,
+    "lng": -97.0329,
+    "label": "Grand Forks, ND"
+  },
+  "district": "ND-00",
+  "state": "ND",
+  "tags": ["weather", "agriculture"]
+},
+{
+  "slug": "CA-07",
+  "name": "Omar Ahmad & Preston Chang",
+  "appName": "RecycleRightCA",
+  "description": "RecycleRightCA uses intelligent scanning to identify your waste and awards you points for making the right choice.",
+  "thumbnail": "sites/CA-07/thumbnail.png",
+  "location": {
+    "lat": 38.3882,
+    "lng": -121.4354,
+    "label": "Elk Grove, CA"
+  },
+  "district": "CA-07",
+  "state": "CA",
+  "tags": ["environment", "ai"]
 }
 ]

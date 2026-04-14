@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoadWatch | Congressional App Challenge Showcase</title>
+
+  <!-- Shared styles — gives you navigation arrows and CAC CSS variables -->
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+  
+  <!-- Google Fonts - Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Neo-brutalist design system */
+    :root {
+      --background: #ffffff;
+      --foreground: #1a1a1a;
+      --primary: #ff7700;
+      --accent: #ffd700;
+      --muted: #f5f5f5;
+      --muted-foreground: #666666;
+      --card: #ffffff;
+      --destructive: #dc2626;
+      
+      --shadow-brutal-sm: 3px 3px 0 #1a1a1a;
+      --shadow-brutal-md: 6px 6px 0 #1a1a1a;
+      --shadow-brutal-lg: 10px 10px 0 #1a1a1a;
+      --shadow-brutal-orange: 6px 6px 0 #ff7700;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    body {
+      font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      color: var(--foreground);
+      background: var(--background);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Back to showcase link */
+    .back-to-showcase {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: var(--background);
+      border: 3px solid var(--foreground);
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--foreground);
+      box-shadow: var(--shadow-brutal-sm);
+      transition: all 0.2s ease;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .back-to-showcase:hover {
+      background: var(--primary);
+      transform: translate(2px, 2px);
+      box-shadow: none;
+    }
+
+    /* Hero Section - Road Design */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, var(--primary) 100%);
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(0,0,0,.08) 35px, rgba(0,0,0,.08) 70px),
+        repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,0,0,.04) 35px, rgba(0,0,0,.04) 70px);
+      pointer-events: none;
+      animation: patternMove 20s linear infinite;
+    }
+
+    @keyframes patternMove {
+      from { background-position: 0 0; }
+      to { background-position: 100px 100px; }
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent, transparent);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      padding: 0 2rem;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .logo-box {
+      width: 80px;
+      height: 80px;
+      background: var(--card);
+      border: 4px solid var(--foreground);
+      box-shadow: var(--shadow-brutal-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+    }
+
+    .logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 700;
+      color: var(--foreground);
+    }
+
+    /* Road-style tagline box */
+    .road-tagline {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      margin: 2rem auto;
+    }
+
+    .road-tagline-inner {
+      background: var(--foreground);
+      border: 4px solid var(--foreground);
+      padding: 2rem 4rem;
+      position: relative;
+    }
+
+    .road-tagline-inner::before,
+    .road-tagline-inner::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+      background: var(--accent);
+    }
+
+    .road-tagline-inner::before { left: -12px; }
+    .road-tagline-inner::after { right: -12px; }
+
+    /* Road lane markings */
+    .road-lane {
+      position: relative;
+      padding: 1rem 0;
+      border-bottom: 4px dashed var(--background);
+    }
+
+    .road-lane:last-child {
+      border-bottom: none;
+    }
+
+    .road-lane-text {
+      font-size: clamp(1.5rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--background);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .road-lane-arrow {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--background);
+      opacity: 0.7;
+    }
+
+    /* Pothole decorations */
+    .pothole-decor {
+      position: absolute;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,0.3);
+    }
+
+    .pothole-decor-1 {
+      width: 80px;
+      height: 60px;
+      bottom: 1rem;
+      left: 1rem;
+    }
+
+    .pothole-decor-2 {
+      width: 100px;
+      height: 70px;
+      top: 1rem;
+      right: 1rem;
+    }
+
+    /* Hero wave bottom */
+    .hero-wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .hero-wave svg {
+      display: block;
+      width: 100%;
+      height: 60px;
+      transform: rotate(180deg);
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    /* Sections */
+    section {
+      background: var(--card);
+      border: 4px solid var(--foreground);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-brutal-lg);
+      position: relative;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-icon {
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      border: 3px solid var(--foreground);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section-icon svg {
+      width: 28px;
+      height: 28px;
+      color: var(--foreground);
+    }
+
+    section h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    section p {
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      color: var(--foreground);
+    }
+
+    section p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Team Section - Enhanced */
+    .team-section {
+      background: var(--card);
+      border: 4px solid var(--foreground);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-brutal-lg);
+    }
+
+    .team-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .team-header .section-icon {
+      background: var(--primary);
+    }
+
+    .team-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .team-intro {
+      background: var(--accent);
+      border: 4px solid var(--foreground);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-brutal-sm);
+    }
+
+    .team-intro p {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .team-card {
+      background: var(--muted);
+      border: 4px solid var(--foreground);
+      box-shadow: var(--shadow-brutal-md);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .team-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 12px 12px 0 var(--foreground);
+    }
+
+    .team-card-header {
+      background: var(--primary);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border: 4px solid var(--foreground);
+    }
+
+    .team-avatar {
+      width: 60px;
+      height: 60px;
+      background: var(--background);
+      border: 3px solid var(--foreground);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--foreground);
+    }
+
+    .team-name {
+      color: var(--foreground);
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .team-role {
+      color: var(--foreground);
+      font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0.8;
+    }
+
+    .team-card-body {
+      padding: 1.5rem;
+      background: var(--background);
+    }
+
+    .team-card-body p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted-foreground);
+    }
+
+    .team-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .skill-tag {
+      background: var(--primary);
+      border: 2px solid var(--foreground);
+      padding: 0.25rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* ROAD System */
+    .road-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 700px) {
+      .road-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .road-step {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      background: var(--muted);
+      border: 3px solid var(--foreground);
+      box-shadow: var(--shadow-brutal-sm);
+    }
+
+    .road-letter {
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      border: 3px solid var(--foreground);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--background);
+      margin: 0 auto 0.75rem;
+    }
+
+    .road-step h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .road-step p {
+      font-size: 0.85rem;
+      color: var(--muted-foreground);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Highlight boxes */
+    .highlight-box {
+      background: var(--accent);
+      border: 3px solid var(--foreground);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      box-shadow: var(--shadow-brutal-sm);
+    }
+
+    .highlight-box p {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    /* Tech stack - compact */
+    .tech-section {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 3px dashed var(--foreground);
+    }
+
+    .tech-section h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tech-tag {
+      background: var(--foreground);
+      color: var(--background);
+      padding: 0.35rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 2px solid var(--foreground);
+    }
+
+    /* Video Section */
+    .video-section iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 4px solid var(--foreground);
+      box-shadow: var(--shadow-brutal-md);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--foreground);
+      color: var(--background);
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    footer p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <!-- Back button -->
+  <a href="../../" class="back-to-showcase">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Back to Showcase
+  </a>
+
+  <!-- Hero Section - Road Design -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="logo-container">
+        <div class="logo-box">
+          <img src="https://thumbs2.imgbox.com/4b/96/arGYXnnA_t.png" alt="RoadWatch Logo" />
+        </div>
+        <h1>RoadWatch</h1>
+      </div>
+      
+      <!-- Road-style tagline -->
+      <div class="road-tagline">
+        <div class="road-tagline-inner">
+          <!-- Pothole decorations -->
+          <div class="pothole-decor pothole-decor-1"></div>
+          <div class="pothole-decor pothole-decor-2"></div>
+          
+          <div class="road-lane">
+            <span class="road-lane-text">Driving Towards</span>
+          </div>
+          <div class="road-lane">
+            <span class="road-lane-text">Safer Roads</span>
+            <div class="road-lane-arrow">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v16m0 0l-6-6m6 6l6-6"/>
+                <path d="M12 10H6V6"/>
+              </svg>
+            </div>
+          </div>
+          <div class="road-lane">
+            <span class="road-lane-text">For Everyone</span>
+            <div class="road-lane-arrow">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v16m0 0l-6-6m6 6l6-6"/>
+                <path d="M12 10h6V6"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave bottom -->
+    <div class="hero-wave">
+      <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#FFFFFF"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- About the Team - Enhanced -->
+    <section class="team-section">
+      <div class="team-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <h2>Meet The Team</h2>
+      </div>
+      
+      <div class="team-intro">
+        <p>We are high school students passionate about using technology to solve real-world problems. After witnessing the dangers of poorly maintained roads, we decided to take action and build something that makes a difference.</p>
+      </div>
+
+      <div class="team-grid">
+          <div class="team-card-header">
+            <div class="team-avatar">ED</div>
+            <div>
+              <div class="team-name">Eric Dai</div>
+              <div class="team-role">Junior @ Edison Academy</div>
+            </div>
+          </div>
+          
+
+          <div class="team-card-header">
+            <div class="team-avatar">VS</div>
+            <div>
+              <div class="team-name">Vaibhav Sitaraman</div>
+              <div class="team-role">Sophomore @ Edison Academy</div>
+            </div>
+          </div>
+          
+      </div>
+    </section>
+
+    <!-- About the App -->
+    <section>
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+        </div>
+        <h2>What is RoadWatch?</h2>
+      </div>
+      
+      <p>
+        RoadWatch is an AI-powered mobile application that transforms any dashcam into a road anomaly detection system. Using advanced machine learning, the app automatically identifies potholes, cracks, debris, animals, malfunctioning traffic lights, and other road hazards in real-time as you drive.
+      </p>
+      
+      <div class="highlight-box">
+        <p>Every detection is logged, mapped, and automatically reported to local government agencies - creating a crowdsourced network of road safety monitoring that scales with the community.</p>
+      </div>
+
+      <p>
+        The app is designed to be accessible to everyone. Users can connect modern dashcams via Bluetooth, or use our affordable $50 Raspberry Pi solution. Setup takes just minutes, and from then on, every drive contributes to safer roads.
+      </p>
+
+      <!-- Technologies - Compact section -->
+      <div class="tech-section">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="16 18 22 12 16 6"/>
+            <polyline points="8 6 2 12 8 18"/>
+          </svg>
+          Built With
+        </h3>
+        <div class="tech-list">
+          <span class="tech-tag">YOLO Ensemble</span>
+          <span class="tech-tag">React Native</span>
+          <span class="tech-tag">Next.js</span>
+          <span class="tech-tag">TypeScript</span>
+          <span class="tech-tag">Raspberry Pi</span>
+          <span class="tech-tag">GPS Mapping</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- The R.O.A.D. System -->
+    <section>
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/
+            <path d="M12 16v-4"/>
+            <path d="M12 8h.01"/>
+          </svg>
+        </div>
+        <h2>The R.O.A.D. System</h2>
+      </div>
+      
+      <p>
+        Our core technology follows the R.O.A.D. framework - a systematic approach to transforming raw dashcam footage into actionable infrastructure reports.
+      </p>
+
+      <div class="road-grid">
+        <div class="road-step">
+          <div class="road-letter">R</div>
+          <h4>Recognize</h4>
+          <p>Anomalies on the road through dashcam footage</p>
+        </div>
+        <div class="road-step">
+          <div class="road-letter">O</div>
+          <h4>Observe</h4>
+          <p>Their location and severity in real-time</p>
+        </div>
+        <div class="road-step">
+          <div class="road-letter">A</div>
+          <h4>Analyze</h4>
+          <p>Data holistically with machine learning</p>
+        </div>
+        <div class="road-step">
+          <div class="road-letter">D</div>
+          <h4>Deliver</h4>
+          <p>Structured reports to government agencies</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo Video -->
+    <section class="video-section">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+        </div>
+        <h2>Demo Video</h2>
+      </div>
+      <iframe
+        src="https://www.youtube.com/embed/7xBYVLS6vmc"
+        title="RoadWatch Demo Video"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </section>
+  </div>
+
+  <footer>
+    <p>RoadWatch - Driving Towards Safer Roads For Everyone</p>
+    <p>Congressional App Challenge</p>
+    <p><a href="../../">Back to Showcase</a></p>
+  </footer>
+
+  <!-- Navigation script -->
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>

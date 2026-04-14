@@ -3,255 +3,219 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HeartAngel | Catherine Wang | CA-49</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <title>HeartAngel | Catherine Wang</title>
+
   <link rel="stylesheet" href="../../assets/css/shared.css">
+
   <style>
     :root {
-      --bg-dark: #020617;
-      --accent-blue: #60a5fa;
-      --accent-coral: #f87171;
-      --glass-bg: rgba(15, 23, 42, 0.6);
-      --glass-border: rgba(255, 255, 255, 0.08);
+      --bg-white: #ffffff;
+      --accent-red: #e11d48; /* Vibrant Emergency Red */
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-light: #f1f5f9;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    ::-webkit-scrollbar { 
-      width: 8px; 
-    }
-    ::-webkit-scrollbar-track { 
-      background: var(--bg-dark); 
-    }
-    ::-webkit-scrollbar-thumb { 
-      background: linear-gradient(var(--accent-blue), var(--accent-coral)); 
-      border-radius: 10px; 
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; cursor: none; }
 
     body {
-      font-family: 'Inter', sans-serif;
-      color: #f1f5f9;
-      background: linear-gradient(-45deg, #020617, #0f172a, #1e3a8a, #020617);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--text-main);
+      background-color: var(--bg-white);
       min-height: 100vh;
-      overflow-x: hidden;
+      line-height: 1.6;
     }
 
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    #cursor-dot {
+      width: 6px; height: 6px; background: var(--accent-red);
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999;
+    }
+    #cursor-outline {
+      width: 30px; height: 30px; border: 1.5px solid var(--accent-red);
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 9998;
+      transition: transform 0.15s ease-out;
     }
 
     .container {
-      max-width: 1000px;
+      max-width: 850px;
       margin: 0 auto;
-      padding: 8rem 2rem 5rem;
+      padding: 6rem 2rem;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 6rem;
+    header { text-align: center; margin-bottom: 4rem; }
+
+    /* The Logo Container */
+    .app-logo {
+      width: 140px;
+      height: auto;
+      margin: 0 auto 1.5rem;
+      display: block;
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
     }
 
-    header h1 {
-      font-size: clamp(3rem, 10vw, 5rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      margin-bottom: 1rem;
-      background: linear-gradient(to right, var(--accent-blue), #fff, var(--accent-coral));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 0 30px rgba(96, 165, 250, 0.3));
+    header h1 { 
+      font-size: 3.5rem; 
+      font-weight: 800; 
+      letter-spacing: -0.05em;
+      color: var(--text-main);
+      margin-bottom: 0.5rem; 
     }
 
-    .header-subtitle {
-      font-size: 1.5rem;
-      font-weight: 300;
-      letter-spacing: 0.2rem;
-      text-transform: uppercase;
-      color: #cbd5e1;
-      margin-bottom: 0.5rem;
-    }
-
-    .district-tag {
-      display: inline-block;
-      padding: 0.5rem 1.5rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--glass-border);
-      border-radius: 100px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--accent-blue);
-      box-shadow: 0 0 20px rgba(96, 165, 250, 0.1);
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 500;
     }
 
     section {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
+      background: white;
+      border: 1px solid var(--border-light);
       border-radius: 24px;
       padding: 3rem;
-      margin-bottom: 3rem;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      position: relative;
-      overflow: hidden;
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
     }
 
     section:hover {
-      transform: translateY(-10px) scale(1.02);
-      border-color: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+      border-color: var(--accent-red);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
     }
 
-    h2 {
-      font-size: 1.8rem;
-      color: var(--accent-blue);
+    h2 { 
+      font-size: 0.85rem; 
+      text-transform: uppercase; 
+      letter-spacing: 0.2em; 
+      color: var(--accent-red); 
       margin-bottom: 1.5rem;
+      font-weight: 700;
     }
 
-    p {
-      font-size: 1.1rem;
-      color: #94a3b8;
-      line-height: 1.8;
-      margin-bottom: 1.5rem;
-    }
+    p { margin-bottom: 1.2rem; font-size: 1.15rem; color: #334155; }
+    
+    strong { color: var(--text-main); font-weight: 700; }
+    em { font-style: normal; font-weight: 700; color: var(--accent-red); }
 
-    em { color: var(--accent-coral); font-style: normal; font-weight: 600; }
-    strong { color: #fff; }
-
-    .tech-pill {
-      display: inline-block;
-      padding: 0.3rem 0.8rem;
-      background: rgba(96, 165, 250, 0.1);
-      color: var(--accent-blue);
-      border-radius: 6px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-top: 1rem;
-    }
-
-    .video-container {
-      position: relative;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--glass-border);
-    }
-
-    iframe {
+    .video iframe {
       width: 100%;
       aspect-ratio: 16 / 9;
-      display: block;
       border: none;
+      border-radius: 16px;
     }
 
-    .app-link {
+    .btn-primary {
       display: inline-flex;
       align-items: center;
-      padding: 1rem 2rem;
-      background: linear-gradient(45deg, var(--accent-blue), #2563eb);
+      padding: 1.2rem 3rem;
+      background: var(--text-main);
       color: white !important;
-      border-radius: 12px;
+      border-radius: 100px;
       font-weight: 700;
       text-decoration: none;
       transition: 0.3s;
     }
 
-    .app-link:hover {
+    .btn-primary:hover {
+      background: var(--accent-red);
       transform: scale(1.05);
-      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.4);
     }
 
     .back-to-showcase {
       position: fixed;
-      top: 2rem;
-      left: 2rem;
-      background: var(--glass-bg);
-      backdrop-filter: blur(10px);
-      padding: 0.7rem 1.2rem;
-      border-radius: 12px;
-      border: 1px solid var(--glass-border);
-      color: white !important;
+      top: 2rem; left: 2rem;
+      color: var(--text-muted) !important;
       font-weight: 600;
-      z-index: 100;
       text-decoration: none;
+      z-index: 100;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-light);
     }
 
     footer {
       text-align: center;
-      padding: 5rem 0;
-      opacity: 0.5;
-    }
-
-    @media (min-width: 768px) {
-      .grid-layout {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-      }
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
 
-  <a href="../../" class="back-to-showcase">← Showcase</a>
+  <div id="cursor-dot"></div>
+  <div id="cursor-outline"></div>
+
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
 
   <div class="container">
-    
     <header>
-      <div class="header-subtitle">Catherine Wang Presents</div>
+      <img src="image_2e43bd.png" alt="HeartAngel Logo" class="app-logo">
       <h1>HeartAngel</h1>
-      <span class="district-tag">CA-49 District Winner</span>
+      <p class="subtitle">By Catherine Wang • CA-49 District Winner</p>
     </header>
 
-    <div class="grid-layout">
-      <section>
-        <h2>About Me</h2>
-        <p>I am a high school student bridging the gap between <strong>Medicine and Computer Science</strong>. HeartAngel is the result of my mission to make life-saving response accessible to everyone.</p>
-      </section>
-
-      <section>
-        <h2>The Vision</h2>
-        <p><em>Giving Life Another Chance.</em></p>
-        <p>A mobile tool providing real-time CPR guidance and connecting bystanders to the nearest AED devices.</p>
-        <span class="tech-pill">Flutter / Dart</span>
-      </section>
-    </div>
-
     <section>
-      <h2>Innovation</h2>
-      <p>HeartAngel uses real-time haptic and visual feedback to ensure CPR depth and speed are accurate. This bridges the gap of bystander unreadiness, ensuring that anyone can save a life during a cardiac emergency.</p>
+      <h2>About Me</h2>
+      <p>Hi, I am Catherine, a high school student passionate about science, medicine, and technology. I enjoy combining coding and healthcare to create projects that can make a real-world impact. HeartAngel was developed from my desire to improve emergency response and help people take action during critical moments by providing real-time CPR guidance and connecting them to life-saving resources.</p>
     </section>
 
     <section>
+      <h2>About the App</h2>
+      <p><em>Giving Life A Second Chance.</em></p>
+     <p>HeartAngel is a mobile application designed to assist users during real-life cardiac arrest emergencies, while also offering a substantial tool for practicing CPR on a day-to-day basis with live compression feedback based on depth and speed accuracy. </p>
+      <p>This app is designed for anyone — especially bystanders who may not have formal medical training — so they can confidently take action in an emergency. It also aims to support a connected response system by linking users to nearby trained responders and AED devices during a real-life emergency. All together, HeartAngel bridges the gap of bystander unreadiness, limited access to emergency tools, and the need for faster, more coordinated responses during life-threatening situations. </p>
+      <p>HeartAngel was built using Flutter and Dart, allowing it to run across different platforms while providing a smooth and responsive user experience.</p>
+    </section>
+
+    <section class="video">
       <h2>App Demo</h2>
-      <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/l6hRitE_LRQ" allowfullscreen></iframe>
-      </div>
+      <iframe
+        src="https://www.youtube.com/embed/l6hRitE_LRQ"
+        title="HeartAngel Demo"
+        allowfullscreen>
+      </iframe>
     </section>
 
-    <section style="text-align: center;">
-      <h2>Ready to Save Lives?</h2>
-      <p>Download the official application today.</p>
-      <a href="https://apps.apple.com/us/app/heartangel/id6743984944" class="app-link" target="_blank">
-        Download on App Store →
+    <section style="text-align: center; border: none; background: transparent;">
+      <a href="https://apps.apple.com/us/app/heartangel/id6743984944" class="btn-primary" target="_blank">
+        Download on App Store &rarr;
       </a>
     </section>
-
   </div>
 
   <footer>
-    <p>Congressional App Challenge &bull; <a href="../../" style="color: inherit; text-decoration: none;">Return Home</a></p>
+    <p>Congressional App Challenge &bull; 2026</p>
   </footer>
 
   <script src="../../assets/js/nav.js" data-root="../../"></script>
 
+  <script>
+    const dot = document.getElementById('cursor-dot');
+    const outline = document.getElementById('cursor-outline');
+
+    window.addEventListener('mousemove', (e) => {
+      dot.style.left = `${e.clientX}px`;
+      dot.style.top = `${e.clientY}px`;
+      
+      outline.animate({
+        left: `${e.clientX - 15}px`,
+        top: `${e.clientY - 15}px`
+      }, { duration: 400, fill: "forwards" });
+    });
+
+    document.querySelectorAll('a, section, .btn-primary').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        outline.style.transform = 'scale(1.8)';
+        outline.style.background = 'rgba(225, 29, 72, 0.05)';
+      });
+      el.addEventListener('mouseleave', () => {
+        outline.style.transform = 'scale(1)';
+        outline.style.background = 'transparent';
+      });
+    });
+  </script>
 </body>
-</html>
+</html> 

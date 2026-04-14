@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Remember When | Edward Burton, Tilghman Reiss, & Bentley Burton</title>
+
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* IMPROVEMENT #4 — smooth scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    :root {
+      --royal-deep:      #0d0a1e;
+      --royal-purple:    #1e1040;
+      --royal-surface:   #261452;
+      --royal-gold:      #c9a84c;
+      --royal-gold-lt:   #e8c96a;
+      --royal-crimson:   #8b1a2f;
+      --royal-sapphire:  #1a3a7a;
+      --royal-ivory:     #f5f0e8;
+      --royal-parchment: #d4ccb0; /* IMPROVEMENT #3 — bumped for WCAG AA contrast */
+      --royal-border:    rgba(201,168,76,0.25);
+      --royal-shadow:    0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Jost', system-ui, sans-serif;
+      font-weight: 300;
+      color: var(--royal-ivory);
+      background: var(--royal-purple);
+      background-image:
+        radial-gradient(ellipse at 20% 0%,   rgba(139,26,47,0.18)  0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(26,58,122,0.2)   0%, transparent 60%);
+      min-height: 100vh;
+    }
+
+    /* IMPROVEMENT #2 — sticky back button */
+    .back-to-showcase {
+      position: fixed !important;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      background: rgba(13,10,30,0.85);
+      border-radius: 4px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--royal-gold) !important;
+      font-size: 0.85rem;
+      z-index: 999;
+      border: 1px solid var(--royal-border);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .back-to-showcase:hover {
+      background: rgba(30,16,64,0.95);
+      border-color: rgba(201,168,76,0.5);
+      letter-spacing: 0.02em;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 2rem 3rem;
+    }
+
+    /* ─────────────────────────────────────
+       IMPROVEMENT #1 — HERO SECTION
+    ───────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 3.5rem 2rem 3rem;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    .hero::after {
+      content: '';
+      display: block;
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--royal-gold), transparent);
+      margin: 2rem auto 0;
+    }
+    .hero-logo {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      margin-bottom: 1.25rem;
+      filter: drop-shadow(0 4px 16px rgba(201,168,76,0.35));
+      animation: picFadeIn 1s ease both;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 3.4rem;
+      font-weight: 700;
+      color: var(--royal-ivory);
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, var(--royal-ivory) 40%, var(--royal-gold-lt) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-tagline {
+      font-size: 1.05rem;
+      color: var(--royal-parchment);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      font-style: italic;
+    }
+    .hero-ornament {
+      display: block;
+      color: var(--royal-gold);
+      font-size: 1rem;
+      letter-spacing: 0.5em;
+      opacity: 0.5;
+      margin-bottom: 1rem;
+    }
+
+    /* ─────────────────────────────────────
+       FADE-UP ON SCROLL
+    ───────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* IMPROVEMENT #6 — extended stagger through nth-child(10) */
+    .reveal:nth-child(2)  { transition-delay: 0.1s; }
+    .reveal:nth-child(3)  { transition-delay: 0.2s; }
+    .reveal:nth-child(4)  { transition-delay: 0.3s; }
+    .reveal:nth-child(5)  { transition-delay: 0.4s; }
+    .reveal:nth-child(6)  { transition-delay: 0.5s; }
+    .reveal:nth-child(7)  { transition-delay: 0.6s; }
+    .reveal:nth-child(8)  { transition-delay: 0.7s; }
+    .reveal:nth-child(9)  { transition-delay: 0.8s; }
+    .reveal:nth-child(10) { transition-delay: 0.9s; }
+
+    /* ─────────────────────────────────────
+       GOLD DIVIDER
+    ───────────────────────────────────── */
+    .divider {
+      text-align: center;
+      margin: 0 0 3rem;
+      color: var(--royal-gold);
+      letter-spacing: 0.4em;
+      font-size: 0.7rem;
+      opacity: 0.6;
+    }
+    .divider::before { content: '────── ✦ ──────'; }
+
+    /* ─────────────────────────────────────
+       PERSON HEADER
+    ───────────────────────────────────── */
+    .person header {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+
+    .profile-pic {
+      width: 115px;
+      height: 115px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 3px solid var(--royal-gold);
+      box-shadow: 0 0 0 6px rgba(201,168,76,0.12), var(--royal-shadow);
+      background: var(--royal-surface);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      animation: picFadeIn 0.9s ease both;
+    }
+    .profile-pic:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 8px rgba(201,168,76,0.22), 0 12px 40px rgba(0,0,0,0.6);
+    }
+
+    @keyframes picFadeIn {
+      from { opacity: 0; transform: scale(0.88); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .profile-pic-placeholder {
+      width: 115px;
+      height: 115px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 2px dashed var(--royal-gold);
+      background: rgba(201,168,76,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--royal-parchment);
+      text-align: center;
+      line-height: 1.5;
+      padding: 0.5rem;
+    }
+
+    .person header h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--royal-ivory);
+      letter-spacing: 0.02em;
+      margin-bottom: 0.35rem;
+    }
+    .person header p {
+      color: var(--royal-parchment);
+      font-size: 0.95rem;
+      margin-bottom: 0;
+    }
+
+    /* ─────────────────────────────────────
+       CARDS
+    ───────────────────────────────────── */
+    section {
+      background: linear-gradient(135deg, rgba(38,20,82,0.9) 0%, rgba(30,16,64,0.95) 100%);
+      border: 1px solid var(--royal-border);
+      border-radius: 4px;
+      padding: 2rem 2.25rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--royal-shadow), inset 0 1px 0 rgba(201,168,76,0.1);
+      position: relative;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+    section:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.6), inset 0 1px 0 rgba(201,168,76,0.15);
+      border-color: rgba(201,168,76,0.45);
+    }
+    section::before {
+      content: '✦';
+      position: absolute;
+      top: 0.75rem;
+      right: 1rem;
+      color: var(--royal-gold);
+      opacity: 0.35;
+      font-size: 0.65rem;
+    }
+
+    /* ─────────────────────────────────────
+       HEADINGS
+    ───────────────────────────────────── */
+    h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--royal-gold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--royal-border);
+    }
+
+    p {
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      color: var(--royal-ivory);
+      font-weight: 300;
+    }
+
+    /* ─────────────────────────────────────
+       IMPROVEMENT #5 — TECH STACK BADGES
+    ───────────────────────────────────── */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    .tech-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.3rem 0.75rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--royal-gold-lt);
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 999px;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .tech-badge:hover {
+      background: rgba(201,168,76,0.18);
+      border-color: rgba(201,168,76,0.7);
+      color: #fff;
+    }
+
+    /* ─────────────────────────────────────
+       SCREENSHOTS
+    ───────────────────────────────────── */
+    .screenshots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .screenshot img {
+      width: 100%;
+      border-radius: 4px;
+      object-fit: cover;
+      border: 1px solid var(--royal-border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .screenshot img:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+    }
+    .screenshot-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border-radius: 4px;
+      border: 1px dashed var(--royal-gold);
+      background: rgba(201,168,76,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--royal-parchment);
+      text-align: center;
+      padding: 1rem;
+    }
+    .screenshot figcaption {
+      font-size: 0.78rem;
+      color: var(--royal-parchment);
+      margin-top: 0.4rem;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─────────────────────────────────────
+       VIDEO
+    ───────────────────────────────────── */
+    .video iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 4px;
+      box-shadow: var(--royal-shadow);
+    }
+
+    /* ─────────────────────────────────────
+       LINKS
+    ───────────────────────────────────── */
+    a {
+      color: var(--royal-gold-lt);
+      text-decoration: none;
+      transition: color 0.2s, letter-spacing 0.2s;
+    }
+    a:hover {
+      color: #fff;
+      letter-spacing: 0.04em;
+    }
+
+    /* ─────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 2.5rem 2rem;
+      color: var(--royal-parchment);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--royal-border);
+      margin-top: 2rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─────────────────────────────────────
+       GOLD SHIMMER on h2 on hover
+    ───────────────────────────────────── */
+    section:hover h2 {
+      background: linear-gradient(90deg, var(--royal-gold), var(--royal-gold-lt), var(--royal-gold));
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 2s linear infinite;
+    }
+    @keyframes shimmer {
+      from { background-position: 0% center; }
+      to   { background-position: 200% center; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- IMPROVEMENT #2 — fixed sticky back button -->
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <div class="container">
+
+    <!-- IMPROVEMENT #1 — HERO SECTION -->
+    <div class="hero reveal">
+      <span class="hero-ornament">✦ &nbsp; ✦ &nbsp; ✦</span>
+      <img src="assets/RWLOGO.jpg" alt="Remember When Logo" class="hero-logo">
+      <h1>Remember When</h1>
+      <p class="hero-tagline">Remember When addresses an evergrowing problem with our aging community by providing companionship and comfort to the elderly</p>
+    </div>
+
+    <!-- ══════════════ EDWARD ══════════════ -->
+    <div class="person reveal">
+      <header>
+        <img src="assets/Edward.jpeg" alt="Edward Burton" class="profile-pic" style="object-position: center 35%;">
+        <div>
+          <h1>Edward Burton</h1>
+          <p>16 Yr old who loves anything relating to robotics, coding, and surfing!</p>
+        </div>
+      </header>
+      <section>
+        <h2>About Me</h2>
+        <p>I'm a sophomore at E. A. Laney High School who loves building things. I got into programming mostly through
+          YouTube and from friends, just teaching myself as I went. I'm also the CAD Lead on my FRC robotics team, where
+          I get to design and 3D model robot parts. When I am not coding or CAD'ing, you can find me outside either
+          riding bikes, surfing, or playing with my brother!</p>
+      </section>
+    </div>
+
+    <div class="divider reveal"></div>
+
+    <!-- ══════════════ BENTLEY ══════════════ -->
+    <div class="person reveal">
+      <header>
+        <img src="assets/Bentley.png" alt="Bentley Burton" class="profile-pic" style="object-position: center 35%;">
+        <div>
+          <h1>Bentley Burton</h1>
+          <p>15-year-old math enthusiast, problem solver, and athlete</p>
+        </div>
+      </header>
+      <section>
+        <h2>About Me</h2>
+        <p>I'm a freshman at E.A. Laney High School who loves competing, whether that's at competitions with my math
+          team, with FIRST robotics, or on the soccer field with my club team. I'm always up for a challenge, and I like
+          finding the strategy behind things, whether it's a tough math problem, or anticipating and executing on the
+          soccer field. I intend to continue creating apps to help other people live better lives.</p>
+      </section>
+    </div>
+
+    <div class="divider reveal"></div>
+
+    <!-- ══════════════ TILGHMAN ══════════════ -->
+    <div class="person reveal">
+      <header>
+        <img src="assets/IMG_9135.jpeg" alt="Tilghman Reiss" class="profile-pic" style="object-position: center 35%; fill: 290%;">
+        <div>
+          <h1>Tilghman Reiss</h1>
+          <p>16 year old sophomore at New Hanover High School who enjoys soccer, tennis, and coding.</p>
+        </div>
+      </header>
+      <section>
+        <h2>About Me</h2>
+        <p>I started programming self-taught, trying to figure out how to make small projects, however my experience on
+          my FRC robotics team has taught me many new skills. I look forward to creating more projects like these in the
+          future and to improve my coding skills even more!</p>
+      </section>
+    </div>
+
+    <div class="divider reveal"></div>
+
+    <!-- ══════════════ APP DESCRIPTION ══════════════ -->
+    <section class="reveal">
+      <h2>Remember When</h2>
+      <p>Remember When addresses an ever-growing problem with our aging community by providing companionship and comfort
+        to the elderly. Our app starts a conversation with the user, and continuously prompts him or her to keep
+        talking, guiding the user in the right direction, and documenting everything. Remember When is great for people
+        who are lonely or who are suffering from memory loss by providing a source of stimulation and interaction. To
+        use the app, the user simply presses the button in the center of the homepage and begins talking. The app
+        listens for the user to finish talking, saves the recorded audio and text files, records new details about
+        people the user has identified, and verbally prompts the user to keep the conversation going. All the
+        information Remember When records can be accessed in several tabs: "The Record" tab keeps a library of all
+        recorded audio files, preserving the user's voice and allowing it to be heard forever; "The Journal" tab keeps a
+        written transcript of every story told by the user, creating a book of memories; and the "Family Tree" tab keeps
+        detailed bios of every person the user mentioned as part of his or her life.</p>
+      <p>Remember When is not only a great companion for the elderly, but it is also an amazing tool for their loved
+        ones who want to have a record of their stories forever.</p>
+      <h2>How We Did It</h2>
+      <p>Our code integrates with OpenAI's API in order to create a human-like companion. Our code records the user's
+        voice, stopping when it detects the user not talking. It takes that audio file and uses OpenAI's Whisper to
+        transcribe the audio into text which our code appends to "The Journal" tab. The text file is also used alongside
+        stored relevant information to use OpenAI's gpt-4o to generate a response. The response includes information
+        about any people the user mentioned, which updates the "Family Tree" tab. The response is then fed through
+        OpenAI's tts-1 model to create an audio file, which our code plays aloud to the user. When the user clicks on
+        either the "Family Tree" or "The Journal" tabs, OpenAI's gpt-3.5-turbo combs through the text files, formatting
+        and removing filler words and redundancies based on our coded instructions.</p>
+
+      <!-- IMPROVEMENT #5 — tech stack badges -->
+      <div class="tech-stack">
+        <span class="tech-badge">React Native</span>
+        <span class="tech-badge">OpenAI GPT-4o</span>
+        <span class="tech-badge">Whisper TTS-1</span>
+        <span class="tech-badge">GPT-3.5-Turbo</span>
+        <span class="tech-badge">Expo Go</span>
+      </div>
+    </section>
+
+    <!-- ══════════════ DEMO VIDEO ══════════════ -->
+    <section class="video reveal">
+      <h2>Our App</h2>
+      <iframe src="https://www.youtube.com/embed/vpc_jrvL5fQ" title="App Demo Video"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </section>
+
+    <!-- ══════════════ LINKS ══════════════ 
+    <section class="reveal">
+      <h2>Links</h2>
+      <p>
+        <a href="https://github.com/yourusername/yourrepo">GitHub</a> &bull;
+        <a href="https://yourapp.com">Live App</a>
+      </p>
+    </section>
+-->
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge &nbsp;✦&nbsp; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+
+  <script>
+    // ── Scroll-triggered fade-up ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target); // fire once
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+
+</html>
