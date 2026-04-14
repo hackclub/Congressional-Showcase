@@ -658,5 +658,20 @@
   "district": "CA-07",
   "state": "CA",
   "tags": ["environment", "ai"]
+},
+{
+  "slug": "IL-05",
+  "name": "Arnav Shenoy",
+  "appName": "Oculare AI",
+  "description": "Oculare AI is a mobile app that uses a custom-trained neural network algorithm to analyze deadly retinal diseases",
+  "thumbnail": "sites/IL-05/thumbnail.png",
+  "location": {
+    "lat": 42.110409,
+    "lng": -88.043770,
+    "label": "Palatine, IL"
+  },
+  "district": "IL-05",
+  "state": "IL",
+  "tags": ["adaptive health", "eye diseases", "ai", "machine learning", "neural networks", "computer vision", "accessibilty"]
 }
 ]
