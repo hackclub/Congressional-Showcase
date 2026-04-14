@@ -661,8 +661,8 @@
 },
 {
   "slug": "OH-09",
-  "name": "Alexander Preston",
-  "appName": "Kia Preston",
+  "name": "Kia Preston",
+  "appName": "Light Teachings",
   "description": "Demystifying the physics of light through real-time ray tracing and interactive GPU rendering on MacOS.",
   "thumbnail": "sites/OH-09/thumbnail.png",
   "location": {
