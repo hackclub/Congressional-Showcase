@@ -658,5 +658,260 @@
   "district": "CA-07",
   "state": "CA",
   "tags": ["environment", "ai"]
+},
+{
+  "slug": "TX-30",
+  "name": "Jonathan Oyekola, Jason Oyekola, James Umoeka, Peter Ngo",
+  "appName": "Watts Up!",
+  "description": "An e-bike aggregator app that combines all e-bike services in one place, helping urban travelers reduce carbon emissions.",
+  "thumbnail": "sites/TX-30/thumbnail.png",
+  "location": {
+    "lat": 32.7459,
+    "lng": -96.9978,
+    "label": "Grand Prairie, TX"
+  },
+  "district": "TX-30",
+  "state": "TX",
+  "tags": ["environment", "accessibility"]
+},
+{
+  "slug": "TX-04",
+  "name": "Vedant Dutta, Beckham Speiden",
+  "appName": "Piggy Pal",
+  "description": "A mobile budgeting app that helps users manage finances by calculating after-tax income, tracking expenses, and promoting healthy spending habits.",
+  "thumbnail": "sites/TX-04/thumbnail.png",
+  "location": {
+    "lat": 33.1507,
+    "lng": -96.8236,
+    "label": "Frisco, TX"
+  },
+  "district": "TX-04",
+  "state": "TX",
+  "tags": ["finance"]
+},
+{
+  "slug": "CA-11",
+  "name": "Rahul Hira",
+  "appName": "UHS",
+  "description": "A student-built app bringing together announcements, clubs, calendars, lunch menus, and school resources in one place.",
+  "thumbnail": "sites/CA-11/thumbnail.png",
+  "location": {
+    "lat": 37.7749,
+    "lng": -122.4194,
+    "label": "San Francisco, CA"
+  },
+  "district": "CA-11",
+  "state": "CA",
+  "tags": ["education"]
+},
+{
+  "slug": "CA-47",
+  "name": "Jiarui Jackie Li",
+  "appName": "ReadWell",
+  "description": "An accessibility-focused iOS app helping students improve reading fluency through personalized practice, text-to-speech, and shareable progress reports.",
+  "thumbnail": "sites/CA-47/thumbnail.png",
+  "location": {
+    "lat": 33.6846,
+    "lng": -117.8265,
+    "label": "Irvine, CA"
+  },
+  "district": "CA-47",
+  "state": "CA",
+  "tags": ["education", "social", "ai", "accessibility"]
+},
+{
+  "slug": "CA-12",
+  "name": "Adan Allen",
+  "appName": "StayReady",
+  "description": "A disaster preparedness platform using real risk data and AI-powered guidance to help people understand their risk and stay safe.",
+  "thumbnail": "sites/CA-12/thumbnail.png",
+  "location": {
+    "lat": 37.8044,
+    "lng": -122.2712,
+    "label": "Oakland, CA"
+  },
+  "district": "CA-12",
+  "state": "CA",
+  "tags": ["health", "environment", "accessibility"]
+},
+{
+  "slug": "NC-12",
+  "name": "Max Bao-Dai, Bereket Zelalem, Sujay Datla",
+  "appName": "Pathfolio",
+  "description": "A mobile app helping high school students track graduation progress, understand state requirements, and plan academic and career paths.",
+  "thumbnail": "sites/NC-12/thumbnail.png",
+  "location": {
+    "lat": 35.2271,
+    "lng": -80.8431,
+    "label": "Charlotte, NC"
+  },
+  "district": "NC-12",
+  "state": "NC",
+  "tags": ["education", "accessibility"]
+},
+{
+  "slug": "FL-03",
+  "name": "Saharsh Pothu",
+  "appName": "Pickleball Coach AI",
+  "description": "Helps pickleball players improve technique and stay safe using an Arduino wrist sensor for real-time coaching and injury detection.",
+  "thumbnail": "sites/FL-03/thumbnail.png",
+  "location": {
+    "lat": 29.6516,
+    "lng": -82.3248,
+    "label": "Gainesville, FL"
+  },
+  "district": "FL-03",
+  "state": "FL",
+  "tags": ["health", "ai"]
+},
+{
+  "slug": "KY-05",
+  "name": "Ava Hatfield, Liam Mason Baldwin, Gunner Dotson, Riley Romero",
+  "appName": "SafeLink",
+  "description": "A mobile app helping people during natural disasters with safe check-ins, help requests, live maps, and responder messaging for rural communities.",
+  "thumbnail": "sites/KY-05/thumbnail.png",
+  "location": {
+    "lat": 37.6934,
+    "lng": -82.2693,
+    "label": "Belfry, KY"
+  },
+  "district": "KY-05",
+  "state": "KY",
+  "tags": ["health", "environment"]
+},
+{
+  "slug": "MA-08",
+  "name": "Isaac Wu, Santiago Cofiño",
+  "appName": "Inspect",
+  "description": "An interactive game teaching users to detect AI-generated disinformation by distinguishing truth from falsehood in headlines and videos.",
+  "thumbnail": "sites/MA-08/thumbnail.png",
+  "location": {
+    "lat": 42.2498,
+    "lng": -71.0662,
+    "label": "Milton, MA"
+  },
+  "district": "MA-08",
+  "state": "MA",
+  "tags": ["education", "civic", "social", "ai", "games"]
+},
+{
+  "slug": "PA-02",
+  "name": "Andrew Kuang",
+  "appName": "NotificationBot",
+  "description": "A Discord application that helps server moderators automatically send announcements and welcome messages via an easy-to-use dashboard.",
+  "thumbnail": "sites/PA-02/thumbnail.png",
+  "location": {
+    "lat": 39.9526,
+    "lng": -75.1652,
+    "label": "Philadelphia, PA"
+  },
+  "district": "PA-02",
+  "state": "PA",
+  "tags": ["accessibility"]
+},
+{
+  "slug": "VA-08",
+  "name": "Deepthi Kumar",
+  "appName": "EquiLense",
+  "description": "Uses AI and NLP to analyze news and social media for bias, helping people see whose voices are missing and where bias exists.",
+  "thumbnail": "sites/VA-08/thumbnail.png",
+  "location": {
+    "lat": 38.8048,
+    "lng": -77.0469,
+    "label": "Alexandria, VA"
+  },
+  "district": "VA-08",
+  "state": "VA",
+  "tags": ["civic", "social", "ai"]
+},
+{
+  "slug": "CO-02",
+  "name": "Rishabh Kapoor",
+  "appName": "RxMind",
+  "description": "An app that scans hospital discharge papers to generate personalized medication schedules, recovery checklists, reminders, and progress tracking.",
+  "thumbnail": "sites/CO-02/thumbnail.png",
+  "location": {
+    "lat": 40.5853,
+    "lng": -105.0844,
+    "label": "Fort Collins, CO"
+  },
+  "district": "CO-02",
+  "state": "CO",
+  "tags": ["health", "ai", "accessibility"]
+},
+{
+  "slug": "PA-12",
+  "name": "Jeffery Zhang",
+  "appName": "Isomer Enumerator",
+  "description": "An application that models molecules and generates all valid structural isomers based on bonding rules and formal charge constraints.",
+  "thumbnail": "sites/PA-12/thumbnail.png",
+  "location": {
+    "lat": 40.4406,
+    "lng": -79.9959,
+    "label": "Pittsburgh, PA"
+  },
+  "district": "PA-12",
+  "state": "PA",
+  "tags": ["education"]
+},
+{
+  "slug": "NY-16",
+  "name": "Saihajbir Singh",
+  "appName": "Bitview",
+  "description": "A platform for software engineering interviews with built-in video calling, integrated code editor, and anti-cheat measures.",
+  "thumbnail": "sites/NY-16/thumbnail.png",
+  "location": {
+    "lat": 41.0101,
+    "lng": -73.8365,
+    "label": "Westchester, NY"
+  },
+  "district": "NY-16",
+  "state": "NY",
+  "tags": ["education", "ai", "accessibility"]
+},
+{
+  "slug": "TX-02",
+  "name": "Amruth Achanta, Rohit Patel, Ryan Li",
+  "appName": "SEVA",
+  "description": "A platform that automates volunteer management with scheduling, geolocation verification, hours tracking, and AI analytics.",
+  "thumbnail": "sites/TX-02/thumbnail.png",
+  "location": {
+    "lat": 30.1658,
+    "lng": -95.4613,
+    "label": "The Woodlands, TX"
+  },
+  "district": "TX-02",
+  "state": "TX",
+  "tags": ["education", "social", "ai", "accessibility"]
+},
+{
+  "slug": "NJ-04",
+  "name": "Ava Obara, Abigail Riddle, Skye Huang",
+  "appName": "Food Fight",
+  "description": "An app providing access to school nutritional information with daily menus, peer reviews, and personalized allergen alerts.",
+  "thumbnail": "sites/NJ-04/thumbnail.png",
+  "location": {
+    "lat": 40.1520,
+    "lng": -74.0579,
+    "label": "Wall, NJ"
+  },
+  "district": "NJ-04",
+  "state": "NJ",
+  "tags": ["education", "health"]
+},
+{
+  "slug": "OK-03",
+  "name": "Rachel Kim",
+  "appName": "Memory Buddy",
+  "description": "An app for people with memory loss featuring medicine checklists, brain games, and one-tap family calls in one simple place.",
+  "thumbnail": "sites/OK-03/thumbnail.png",
+  "location": {
+    "lat": 36.1156,
+    "lng": -97.0584,
+    "label": "Stillwater, OK"
+  },
+  "district": "OK-03",
+  "state": "OK",
+  "tags": ["health", "accessibility"]
 }
 ]

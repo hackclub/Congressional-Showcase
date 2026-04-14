@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Buddy | Rachel Kim</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink: #E11D73;
+      --pink-dark: #BE185D;
+      --pink-light: #FCE7F3;
+      --pink-50: #FDF2F8;
+      --rose: #F43F5E;
+      --warm: #D97706;
+      --warm-light: #FEF3C7;
+      --white: #FFFFFF;
+      --bg: #FFFBF9;
+      --text: #1C1017;
+      --text-secondary: #6B4F5A;
+      --text-muted: #A38490;
+      --border: #F0DDE5;
+      --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BACK */
+    .back-nav {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--pink);
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--card-shadow);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .back-nav:hover { background: var(--pink-50); border-color: var(--pink); }
+    .back-nav svg { width: 14px; height: 14px; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 7rem 2rem 4rem;
+      background: linear-gradient(180deg, #FDF2F8 0%, #FCE7F3 30%, var(--white) 100%);
+      overflow: hidden;
+    }
+
+    /* Soft heart/care motif - subtle floating shapes */
+    .care-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .care-bg .node {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(225, 29, 115, 0.08);
+      border-radius: 50%;
+    }
+    .care-bg .node::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(to right, rgba(225,29,115,0.06), transparent);
+      transform-origin: left center;
+    }
+    .care-bg .node:nth-child(1) { top: 15%; left: 5%; }
+    .care-bg .node:nth-child(1)::after { transform: rotate(30deg); }
+    .care-bg .node:nth-child(2) { top: 25%; left: 18%; }
+    .care-bg .node:nth-child(2)::after { transform: rotate(-15deg); width: 60px; }
+    .care-bg .node:nth-child(3) { top: 10%; right: 15%; }
+    .care-bg .node:nth-child(3)::after { transform: rotate(160deg); }
+    .care-bg .node:nth-child(4) { top: 40%; right: 8%; }
+    .care-bg .node:nth-child(4)::after { transform: rotate(200deg); width: 100px; }
+    .care-bg .node:nth-child(5) { bottom: 30%; left: 12%; }
+    .care-bg .node:nth-child(5)::after { transform: rotate(-40deg); width: 70px; }
+    .care-bg .node:nth-child(6) { bottom: 20%; right: 25%; }
+    .care-bg .node:nth-child(6)::after { transform: rotate(140deg); }
+
+    .hero-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-chip {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-secondary);
+    }
+    .hero-chip.pink { background: var(--pink-light); color: var(--pink); border-color: transparent; }
+    .hero-chip.warm { background: var(--warm-light); color: var(--warm); border-color: transparent; }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span { color: var(--pink); }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 620px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .hero-meta-item {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .hero-meta-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* MAIN */
+    .page-main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    /* DASHBOARD GRID */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 800px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+    .dash-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .dash-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .dash-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    .dash-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .dash-icon.pink { background: var(--pink-light); }
+    .dash-icon.warm { background: var(--warm-light); }
+    .dash-icon.rose { background: #FFE4E6; }
+    .dash-card-title {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .dash-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+    .dash-card p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* SECTION HEADING */
+    .section-heading {
+      margin-bottom: 1.5rem;
+    }
+    .section-heading .label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 0.4rem;
+    }
+    .section-heading h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    /* CONTENT PANELS */
+    .content-panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.2rem 2.5rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 3rem;
+    }
+
+    .content-panel p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-secondary);
+    }
+    .content-panel p + p { margin-top: 1rem; }
+
+    /* CREATOR - single card */
+    .creator-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 3rem;
+    }
+    .creator-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .creator-avatar {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--white);
+      background: var(--pink);
+    }
+    .creator-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .creator-role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .creator-card p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+    .creator-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+    }
+    .creator-tag {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.2rem 0.6rem;
+    }
+
+    /* TECH STACK - bar style */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    .tech-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .tech-dot {
+      width: 8px; height: 8px;
+      border-radius: 2px;
+    }
+    .tech-dot.pink { background: var(--pink); }
+    .tech-dot.warm { background: var(--warm); }
+    .tech-dot.rose { background: var(--rose); }
+    .tech-bar-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .tech-bar-role {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    /* VIDEO */
+    .video-panel {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      margin-top: 1rem;
+    }
+    .video-panel iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box {
+      background: linear-gradient(135deg, var(--pink-50) 0%, #FFF1F2 100%);
+      border: 1px solid rgba(225, 29, 115, 0.1);
+      border-radius: 12px;
+      padding: 2rem 2.2rem;
+      margin-bottom: 3rem;
+    }
+    .highlight-box .quote-mark {
+      font-family: 'Lora', serif;
+      font-size: 3rem;
+      color: var(--pink);
+      opacity: 0.2;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .highlight-box blockquote {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .highlight-box cite {
+      display: block;
+      margin-top: 0.8rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* LINKS */
+    .links-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .action-btn:hover { transform: translateY(-1px); }
+    .action-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .action-btn.primary {
+      background: var(--pink);
+      color: var(--white);
+      box-shadow: 0 2px 10px rgba(225,29,115,0.2);
+    }
+    .action-btn.primary:hover { box-shadow: 0 4px 15px rgba(225,29,115,0.3); }
+    .action-btn.outline {
+      background: var(--white);
+      color: var(--pink);
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--text);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    footer p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+    }
+    footer a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    footer a:hover { color: var(--white); text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1.5rem 3rem; }
+      .page-main { padding: 2rem 1.2rem 3rem; }
+      .content-panel { padding: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-nav">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+    Showcase
+  </a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="care-bg">
+      <div class="node"></div><div class="node"></div><div class="node"></div>
+      <div class="node"></div><div class="node"></div><div class="node"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-chips">
+        <span class="hero-chip pink">Health</span>
+        <span class="hero-chip warm">Accessibility</span>
+        <span class="hero-chip">OK-03</span>
+      </div>
+      <h1>Memory <span>Buddy</span></h1>
+      <p class="hero-desc">An app that makes life easier for people who forget things by putting medicine checklists, brain games, and quick family calls all in one simple place.</p>
+      <div class="hero-meta">
+        <span class="hero-meta-item"><strong>Creator:</strong> Rachel Kim</span>
+        <span class="hero-meta-item"><strong>School:</strong> Stillwater Middle School, Stillwater OK</span>
+        <span class="hero-meta-item"><strong>District:</strong> OK-03</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-main">
+
+    <!-- MISSION -->
+    <div class="highlight-box">
+      <div class="quote-mark">&ldquo;</div>
+      <blockquote>A caring companion app that brings together medicine tracking, brain exercises, and family connections to support individuals with memory loss and make daily life a little easier.</blockquote>
+      <cite>Mission Statement</cite>
+    </div>
+
+    <!-- FEATURE DASHBOARD CARDS -->
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon pink">&#x1F48A;</div>
+          <span class="dash-card-title">Tracking</span>
+        </div>
+        <h3>Medicine Tracking</h3>
+        <p>Checklists for medications and meals so nothing important gets missed throughout the day.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon warm">&#x1F9E0;</div>
+          <span class="dash-card-title">Cognitive</span>
+        </div>
+        <h3>Brain Games</h3>
+        <p>Cognitive exercises designed to keep minds active and engaged through fun, accessible challenges.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon rose">&#x1F4DE;</div>
+          <span class="dash-card-title">Connection</span>
+        </div>
+        <h3>Family Connect</h3>
+        <p>One-tap shortcuts to call family members, keeping loved ones just a single touch away.</p>
+      </div>
+    </div>
+
+    <!-- CREATOR -->
+    <div class="section-heading">
+      <p class="label">The Builder</p>
+      <h2>About the Creator</h2>
+    </div>
+    <div class="creator-card">
+      <div class="creator-card-header">
+        <div class="creator-avatar">RK</div>
+        <div>
+          <div class="creator-name">Rachel Kim</div>
+          <div class="creator-role">6th Grade, Stillwater Middle School</div>
+        </div>
+      </div>
+      <p>A 6th grader with interests in art, robotics, and engineering. Rachel was introduced to coding through robotics and Minecraft, and is motivated by creating apps that enhance people's comfort and quality of life.</p>
+      <div class="creator-tags">
+        <span class="creator-tag">Art</span>
+        <span class="creator-tag">Robotics</span>
+        <span class="creator-tag">Engineering</span>
+        <span class="creator-tag">Minecraft</span>
+      </div>
+    </div>
+
+    <!-- APP DESCRIPTION -->
+    <div class="section-heading">
+      <p class="label">The App</p>
+      <h2>How It Works</h2>
+    </div>
+    <div class="content-panel">
+      <p>Memory Buddy serves individuals with memory loss, particularly those experiencing early-stage dementia or Alzheimer's. The app brings together medicine and meal tracking checklists, cognitive games, note-taking capabilities, family contact shortcuts, music access, and photo storage &mdash; all in one streamlined interface.</p>
+      <p>Designed with simplicity at its core, Memory Buddy's clean and intuitive layout benefits not only those with memory challenges but anyone who prefers simplified organization in their daily routine.</p>
+    </div>
+
+    <!-- TECH -->
+    <div class="section-heading">
+      <p class="label">Built With</p>
+      <h2>Technology</h2>
+    </div>
+    <div class="tech-stack" style="margin-bottom: 3rem;">
+      <div class="tech-bar"><span class="tech-dot pink"></span><span class="tech-bar-name">Mobile Development</span><span class="tech-bar-role">&middot; Platform</span></div>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="section-heading">
+      <p class="label">In Action</p>
+      <h2>Demo Video</h2>
+    </div>
+    <div style="margin-bottom: 3rem;">
+      <div class="video-panel">
+        <iframe
+          src="https://www.youtube.com/embed/bIWYjkkK4M0"
+          title="Memory Buddy Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="section-heading">
+      <p class="label">Explore</p>
+      <h2>Project Links</h2>
+    </div>
+    <div style="margin-bottom: 2rem;">
+      <div class="links-flex">
+        <a href="https://www.youtube.com/watch?v=bIWYjkkK4M0" class="action-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 4.5v7l5-3.5-5-3.5z"/></svg>
+          Watch on YouTube
+        </a>
+        <a href="../../" class="action-btn outline">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+          Back to Showcase
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge 2025 &bull; OK-03 &bull; Stillwater, OK &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>
