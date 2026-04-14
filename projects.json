@@ -664,6 +664,7 @@
   "name": "Matthew Caliboso",
   "appName": "TechMate",
   "description": "An AI-powered technology companion that helps older Americans navigate technology safely, detect scams, and learn about AI in plain language.",
+  "thumbnail": "sites/NV-01/thumbnail.png",
   "location": {
     "lat": 36.1699,
     "lng": -115.1398,
