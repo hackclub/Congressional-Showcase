@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BetterVeteran | Uchenna Uduma</title>
+  <title>BetterVeteran | Showcase</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,11 +13,22 @@
   <style>
     :root {
       --bg-light: #ffffff;
+      --bg-dark: #020617;
       --accent-blue: #0ea5e9;
+      --accent-purple: #8b5cf6;
       --text-main: #0f172a;
       --text-muted: #64748b;
-      --glass: rgba(255, 255, 255, 0.8);
-      --border: rgba(0, 0, 0, 0.05);
+      --glass: rgba(255, 255, 255, 0.7);
+      --border-grad: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+      --particle-color: rgba(15, 23, 42, 0.15);
+    }
+
+    /* Dark Mode Variables */
+    body.dark-theme {
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --glass: rgba(15, 23, 42, 0.8);
+      --particle-color: rgba(139, 92, 246, 0.4);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,6 +39,27 @@
       background-color: var(--bg-light);
       overflow-x: hidden;
       line-height: 1.6;
+      transition: background-color 1s ease, color 0.5s ease;
+    }
+
+    /* Animated Wave Background */
+    .bg-wrapper {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -2;
+      background: linear-gradient(120deg, #ffffff 0%, #e0f2fe 50%, #ffffff 100%);
+      background-size: 200% 200%;
+      animation: waveFlow 15s ease infinite;
+    }
+
+    body.dark-theme .bg-wrapper {
+      background: linear-gradient(120deg, #020617 0%, #0f172a 50%, #020617 100%);
+    }
+
+    @keyframes waveFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     #bg-canvas {
@@ -35,7 +67,6 @@
       top: 0; left: 0; width: 100%; height: 100%;
       z-index: -1;
       pointer-events: none;
-      background: var(--bg-light);
     }
 
     /* Hero Section */
@@ -46,9 +77,28 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      background: white;
       position: relative;
       z-index: 10;
+      padding: 0 2rem;
+    }
+
+    /* Flowing Gradient Text Logic */
+    .flow-text {
+      background: linear-gradient(90deg, #0f172a, #0ea5e9, #8b5cf6, #0f172a);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textFlow 5s linear infinite;
+    }
+
+    body.dark-theme .flow-text {
+      background: linear-gradient(90deg, #f8fafc, #38bdf8, #a78bfa, #f8fafc);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+    }
+
+    @keyframes textFlow {
+      to { background-position: 300% center; }
     }
 
     .hero h1 {
@@ -56,9 +106,6 @@
       font-weight: 800;
       letter-spacing: -4px;
       line-height: 0.85;
-      background: linear-gradient(135deg, #0f172a 0%, #38bdf8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
       opacity: 0;
       transform: translateY(20px);
       animation: titleFadeIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
@@ -68,8 +115,31 @@
       margin-top: 1.5rem;
       font-size: 1.25rem;
       color: var(--text-muted);
+      max-width: 600px;
       opacity: 0;
       animation: titleFadeIn 1.2s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    /* Mandatory Tags */
+    .submission-info {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0;
+      animation: titleFadeIn 1.2s 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .tag {
+      background: rgba(14, 165, 233, 0.1);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      border: 1px solid rgba(14, 165, 233, 0.2);
     }
 
     @keyframes titleFadeIn {
@@ -84,12 +154,12 @@
       z-index: 5;
     }
 
-    /* Smooth Scroll Reveal */
+    /* Smooth Scroll Reveal Boxes */
     .reveal {
       opacity: 0;
       transform: translateY(40px);
       transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-      margin-bottom: 3rem;
+      margin-bottom: 4rem;
     }
 
     .reveal.active {
@@ -101,39 +171,41 @@
       background: var(--glass);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
       border-radius: 32px;
       padding: 3.5rem;
+      position: relative;
+      /* Gradient Border Hack */
+      border: 2px solid transparent;
+      background-clip: padding-box;
     }
 
-    .profile-img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 2px solid var(--accent-blue);
-      margin-bottom: 1.5rem;
-      object-fit: cover;
+    section::before {
+      content: "";
+      position: absolute;
+      top: -2px; left: -2px; right: -2px; bottom: -2px;
+      z-index: -1;
+      border-radius: 34px;
+      background: var(--border-grad);
+      opacity: 0.3;
     }
 
     h2 {
-      font-size: 1.8rem;
-      font-weight: 600;
+      font-size: 2.2rem;
+      font-weight: 800;
       margin-bottom: 1.5rem;
-      color: var(--text-main);
-      letter-spacing: -0.5px;
+      letter-spacing: -1px;
     }
 
-    p { margin-bottom: 1.5rem; font-size: 1.05rem; color: #475569; font-weight: 300; }
+    p { margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--text-muted); font-weight: 400; }
 
-    .tech-grid { display: flex; flex-wrap: wrap; gap: 10px; }
     .tech-card {
-      background: #f1f5f9;
-      border: 1px solid var(--border);
+      background: rgba(14, 165, 233, 0.1);
       padding: 8px 18px;
       border-radius: 100px;
       font-size: 0.8rem;
       font-weight: 600;
       color: var(--accent-blue);
+      border: 1px solid rgba(14, 165, 233, 0.2);
     }
 
     .video iframe {
@@ -141,51 +213,53 @@
       aspect-ratio: 16 / 9;
       border: none;
       border-radius: 20px;
-      margin-top: 1rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
     }
-
-    .links-container a {
-      color: var(--accent-blue);
-      text-decoration: none;
-      font-weight: 600;
-      margin-right: 20px;
-      transition: 0.3s;
-    }
-
-    .links-container a:hover { color: var(--text-main); }
 
     footer {
       text-align: center;
       padding: 5rem 2rem;
-      opacity: 0.5;
-      font-size: 0.8rem;
+      opacity: 0.6;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
   
+  <div class="bg-wrapper"></div>
   <canvas id="bg-canvas"></canvas>
 
   <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
 
   <div class="hero" id="hero-section">
-    <h1>Better<span>Veteran</span></h1>
+    <h1 class="flow-text">Better<span>Veteran</span></h1>
+    
+    <p class="flow-text" style="font-weight: 800; font-size: 1.5rem; margin-top: 10px;">Uchenna Uduma</p>
+
     <p class="tagline">Computational Neurology & Accessibility for NJ Veterans.</p>
+    
+    <div class="submission-info">
+      <div class="district-badge" style="font-weight: 600; letter-spacing: 1px;">NJ-02 &bull; Congressional App Challenge 2025</div>
+      <div class="category-tags" style="display:flex; gap:10px; margin-top:10px;">
+        <span class="tag">Health</span>
+        <span class="tag">Neurology</span>
+        <span class="tag">Minority</span>
+      </div>
+    </div>
   </div>
 
   <div class="container">
     <section class="reveal">
-      <img src="your-photo.jpg" alt="Uchenna Uduma" class="profile-img">
-      <h2>About Me</h2>
+      <h2 class="flow-text">About Me</h2>
       <p>I am a highschool junior in Egg Harbor Township, New Jersey. From a young age, I took an extreme liking to computer science and the brain. I realized that giving the power of being remembered to those who feel forgotten matters so much more. This is exactly what got me into computational neurology!</p>
       <p>I absolutely love to program for minorities, but I also enjoy writing poetry, where I am regionally and nationally recognized. I hope to continue advocating for the underrepresented voices in the world through my art, writing, and programming!</p>
     </section>
 
     <section class="reveal">
-      <h2>BetterVeteran</h2>
-      <p>BetterVeteran is a no-barrier medical consultation assistant designed to support New Jersey veterans suffering from TBIs, Intracranial hemorrhages, and PTSD. Inspired by my late grandfather, I built this to bridge the gap in neuro-tech accessibility.</p>
+      <h2 class="flow-text">BetterVeteran</h2>
+      <p>BetterVeteran is a no-barrier medical consultation assistant designed to support New Jersey veterans suffering from TBIs, Intracranial hemorrhages, and PTSD. Inspired by a late grandfather, I built this to bridge the gap in neuro-tech accessibility.</p>
       
-      <div class="tech-grid">
+      <div class="tech-grid" style="display:flex; flex-wrap:wrap; gap:10px;">
         <div class="tech-card">Gradio</div>
         <div class="tech-card">CNN</div>
         <div class="tech-card">Python</div>
@@ -194,75 +268,91 @@
     </section>
 
     <section class="reveal video">
-      <h2>BetterVeteran Demo Video</h2>
+      <h2 class="flow-text">Demo Video</h2>
       <iframe src="https://www.youtube.com/embed/4wSE0cgHKoU" title="Demo" allowfullscreen></iframe>
     </section>
 
     <section class="reveal">
-      <h2>Links</h2>
-      <div class="links-container">
-        <a href="https://github.com/dizmull">GitHub</a>
-        <a href="https://huggingface.co/spaces/dizu/betterva">Alpha Version</a>
+      <h2 class="flow-text">Links</h2>
+      <div class="links-container" style="display:flex; gap:20px;">
+        <a href="https://github.com/dizmull" style="color:var(--accent-blue); text-decoration:none; font-weight:700;">GitHub Source</a>
+        <a href="https://huggingface.co/spaces/dizu/betterva" style="color:var(--accent-blue); text-decoration:none; font-weight:700;">Alpha Version</a>
       </div>
     </section>
   </div>
 
   <footer>
-    <p>Congressional App Challenge &bull; <a href="../../" style="color:inherit">Back to Showcase</a></p>
+    <p>Congressional App Challenge 2025 &bull; <a href="../../" style="color:inherit">Back to Showcase</a></p>
   </footer>
 
   <script>
-    // 1. Inverted Constellation Background (Black lines on White)
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
+    let isDark = false;
 
     function init() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       particles = [];
-      for (let i = 0; i < 80; i++) {
+      for (let i = 0; i < 90; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: Math.random() * 2,
-          speedX: (Math.random() - 0.5) * 0.3,
-          speedY: (Math.random() - 0.5) * 0.3
+          size: Math.random() * 2 + 1,
+          speedX: (Math.random() - 0.5) * 0.4,
+          speedY: (Math.random() - 0.5) * 0.4
         });
       }
     }
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Get the current particle color based on theme
+      const colorBase = getComputedStyle(document.body).getPropertyValue('--particle-color');
+
       particles.forEach(p => {
         p.x += p.speedX; p.y += p.speedY;
         if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
         if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
         
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.2)'; 
+        ctx.fillStyle = colorBase; 
         ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
         
         particles.forEach(p2 => {
           const dx = p.x - p2.x; const dy = p.y - p2.y;
           const dist = Math.sqrt(dx*dx + dy*dy);
-          if (dist < 120) {
-            ctx.strokeStyle = `rgba(15, 23, 42, ${0.12 - dist/1000})`;
-            ctx.lineWidth = 0.5;
+          if (dist < 150) {
+            ctx.strokeStyle = colorBase.replace('0.15', (0.1 - dist/1500).toString()).replace('0.4', (0.2 - dist/1500).toString());
+            ctx.lineWidth = 0.6;
             ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
           }
         });
       });
       requestAnimationFrame(animate);
     }
-    init(); animate();
 
-    // 2. Hero Fade Out
+    // Theme Switch Logic on Scroll
     window.addEventListener('scroll', () => {
-      const hero = document.getElementById('hero-section');
-      hero.style.opacity = 1 - (window.scrollY / 700);
+      const scrollPos = window.scrollY;
+      const heroHeight = window.innerHeight * 0.5;
+
+      if (scrollPos > heroHeight && !isDark) {
+        document.body.classList.add('dark-theme');
+        isDark = true;
+      } else if (scrollPos <= heroHeight && isDark) {
+        document.body.classList.remove('dark-theme');
+        isDark = false;
+      }
+
+      // Hero Fade
+      document.getElementById('hero-section').style.opacity = 1 - (scrollPos / 800);
     });
 
-    // 3. Smooth Scroll Fade-In
+    init(); animate();
+    window.addEventListener('resize', init);
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('active');
