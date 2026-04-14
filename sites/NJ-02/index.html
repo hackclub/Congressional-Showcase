@@ -8,11 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
   <style>
     :root {
       --bg-light: #ffffff;
-      --bg-content: #f8fafc;
       --accent-blue: #0ea5e9;
       --text-main: #0f172a;
       --text-muted: #64748b;
@@ -30,7 +30,6 @@
       line-height: 1.6;
     }
 
-    /* Constellation Canvas - Inverted */
     #bg-canvas {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -39,7 +38,7 @@
       background: var(--bg-light);
     }
 
-    /* Hero Section - Pure White Cover */
+    /* Hero Section */
     .hero {
       height: 100vh;
       display: flex;
@@ -50,7 +49,6 @@
       background: white;
       position: relative;
       z-index: 10;
-      transition: opacity 0.6s ease;
     }
 
     .hero h1 {
@@ -66,10 +64,6 @@
       animation: titleFadeIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
-    @keyframes titleFadeIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     .hero .tagline {
       margin-top: 1.5rem;
       font-size: 1.25rem;
@@ -78,9 +72,12 @@
       animation: titleFadeIn 1.2s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
-    /* Main Container */
+    @keyframes titleFadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .container {
-      max-width: 900px;
+      max-width: 850px;
       margin: 0 auto;
       padding: 4rem 2rem;
       position: relative;
@@ -92,7 +89,7 @@
       opacity: 0;
       transform: translateY(40px);
       transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-      margin-bottom: 4rem;
+      margin-bottom: 3rem;
     }
 
     .reveal.active {
@@ -102,105 +99,90 @@
 
     section {
       background: var(--glass);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border);
-      border-radius: 40px;
-      padding: 4rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+      border-radius: 32px;
+      padding: 3.5rem;
     }
 
     .profile-img {
-      width: 100px;
-      height: 100px;
-      border-radius: 30px;
-      margin-bottom: 2rem;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-blue);
+      margin-bottom: 1.5rem;
       object-fit: cover;
-      filter: grayscale(20%);
     }
 
     h2 {
-      font-size: 2rem;
-      font-weight: 800;
+      font-size: 1.8rem;
+      font-weight: 600;
       margin-bottom: 1.5rem;
-      letter-spacing: -1px;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
     }
 
-    p { margin-bottom: 1.5rem; font-size: 1.1rem; color: #475569; }
+    p { margin-bottom: 1.5rem; font-size: 1.05rem; color: #475569; font-weight: 300; }
 
-    /* Modern Tech Tags */
-    .tech-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+    .tech-grid { display: flex; flex-wrap: wrap; gap: 10px; }
     .tech-card {
       background: #f1f5f9;
-      padding: 10px 22px;
-      border-radius: 14px;
-      font-size: 0.85rem;
+      border: 1px solid var(--border);
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 0.8rem;
       font-weight: 600;
-      color: var(--text-main);
-      transition: 0.3s ease;
+      color: var(--accent-blue);
     }
-    .tech-card:hover { background: var(--accent-blue); color: white; }
 
     .video iframe {
       width: 100%;
       aspect-ratio: 16 / 9;
       border: none;
-      border-radius: 28px;
+      border-radius: 20px;
+      margin-top: 1rem;
     }
 
     .links-container a {
-      display: inline-block;
-      padding: 12px 28px;
-      background: var(--text-main);
-      color: white;
+      color: var(--accent-blue);
       text-decoration: none;
-      border-radius: 100px;
       font-weight: 600;
-      margin-right: 15px;
-      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      margin-right: 20px;
+      transition: 0.3s;
     }
 
-    .links-container a:hover { transform: scale(1.05); }
+    .links-container a:hover { color: var(--text-main); }
 
     footer {
       text-align: center;
-      padding: 6rem 2rem;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    .back-link {
-      position: absolute;
-      top: 40px;
-      left: 40px;
-      text-decoration: none;
-      color: var(--text-muted);
-      font-weight: 600;
-      z-index: 100;
+      padding: 5rem 2rem;
+      opacity: 0.5;
+      font-size: 0.8rem;
     }
   </style>
 </head>
 <body>
+  
+  <canvas id="bg-canvas"></canvas>
 
-  <a href="../../" class="back-link">&larr; Back</a>
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
 
   <div class="hero" id="hero-section">
-    <h1>BetterVeteran</h1>
+    <h1>Better<span>Veteran</span></h1>
     <p class="tagline">Computational Neurology & Accessibility for NJ Veterans.</p>
   </div>
-
-  <canvas id="bg-canvas"></canvas>
 
   <div class="container">
     <section class="reveal">
       <img src="your-photo.jpg" alt="Uchenna Uduma" class="profile-img">
-      <h2>The Mission</h2>
-      <p>I am a high school junior in Egg Harbor Township, New Jersey. From a young age, I took an extreme liking to computer science and the brain. I realized that giving the power of being remembered to those who feel forgotten matters so much more.</p>
-      <p>I absolutely love to program for minorities, but I also enjoy writing poetry, where I am nationally recognized. I hope to continue advocating for underrepresented voices through art and code.</p>
+      <h2>About Me</h2>
+      <p>I am a highschool junior in Egg Harbor Township, New Jersey. From a young age, I took an extreme liking to computer science and the brain. I realized that giving the power of being remembered to those who feel forgotten matters so much more. This is exactly what got me into computational neurology!</p>
+      <p>I absolutely love to program for minorities, but I also enjoy writing poetry, where I am regionally and nationally recognized. I hope to continue advocating for the underrepresented voices in the world through my art, writing, and programming!</p>
     </section>
 
     <section class="reveal">
-      <h2>The Project</h2>
+      <h2>BetterVeteran</h2>
       <p>BetterVeteran is a no-barrier medical consultation assistant designed to support New Jersey veterans suffering from TBIs, Intracranial hemorrhages, and PTSD. Inspired by my late grandfather, I built this to bridge the gap in neuro-tech accessibility.</p>
       
       <div class="tech-grid">
@@ -212,25 +194,25 @@
     </section>
 
     <section class="reveal video">
-      <h2>Project Demo</h2>
+      <h2>BetterVeteran Demo Video</h2>
       <iframe src="https://www.youtube.com/embed/4wSE0cgHKoU" title="Demo" allowfullscreen></iframe>
     </section>
 
     <section class="reveal">
-      <h2>Access & Source</h2>
+      <h2>Links</h2>
       <div class="links-container">
         <a href="https://github.com/dizmull">GitHub</a>
-        <a href="https://huggingface.co/spaces/dizu/betterva" style="background: var(--accent-blue);">Alpha Version</a>
+        <a href="https://huggingface.co/spaces/dizu/betterva">Alpha Version</a>
       </div>
     </section>
   </div>
 
   <footer>
-    <p>Congressional App Challenge &bull; © 2026 Uchenna Uduma</p>
+    <p>Congressional App Challenge &bull; <a href="../../" style="color:inherit">Back to Showcase</a></p>
   </footer>
 
   <script>
-    // 1. Constellation Background (Inverted: Black on White)
+    // 1. Inverted Constellation Background (Black lines on White)
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -239,13 +221,13 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       particles = [];
-      for (let i = 0; i < 70; i++) {
+      for (let i = 0; i < 80; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: Math.random() * 2 + 1,
-          speedX: (Math.random() - 0.5) * 0.2,
-          speedY: (Math.random() - 0.5) * 0.2
+          size: Math.random() * 2,
+          speedX: (Math.random() - 0.5) * 0.3,
+          speedY: (Math.random() - 0.5) * 0.3
         });
       }
     }
@@ -257,15 +239,15 @@
         if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
         if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
         
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.15)'; // Dark dots
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.2)'; 
         ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
         
         particles.forEach(p2 => {
           const dx = p.x - p2.x; const dy = p.y - p2.y;
           const dist = Math.sqrt(dx*dx + dy*dy);
-          if (dist < 150) {
-            ctx.strokeStyle = `rgba(15, 23, 42, ${0.1 - dist/1500})`; // Dark lines
-            ctx.lineWidth = 0.8;
+          if (dist < 120) {
+            ctx.strokeStyle = `rgba(15, 23, 42, ${0.12 - dist/1000})`;
+            ctx.lineWidth = 0.5;
             ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
           }
         });
@@ -273,23 +255,23 @@
       requestAnimationFrame(animate);
     }
     init(); animate();
-    window.addEventListener('resize', init);
 
-    // 2. Hero Fade Out on Scroll
+    // 2. Hero Fade Out
     window.addEventListener('scroll', () => {
       const hero = document.getElementById('hero-section');
-      const scrollPos = window.scrollY;
-      hero.style.opacity = 1 - (scrollPos / 600);
+      hero.style.opacity = 1 - (window.scrollY / 700);
     });
 
-    // 3. Smooth Scroll Reveal
+    // 3. Smooth Scroll Fade-In
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('active');
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.1 });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
+
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
 </body>
 </html>
