@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechMate | Matthew Caliboso</title>
+
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── TOKENS ─────────────────────────────────────── */
+    :root {
+      --white:   #ffffff;
+      --bg:      #f9fafb;
+      --bg-alt:  #f3f4f6;
+      --ink:     #0f172a;
+      --ink-2:   #374151;
+      --muted:   #6b7280;
+      --border:  #e5e7eb;
+      --border-2:#d1d5db;
+      --blue:    #2563eb;
+      --blue-dk: #1d4ed8;
+      --blue-lt: #eff6ff;
+      --blue-md: #dbeafe;
+      --blue-ring:#bfdbfe;
+      --radius:  1.25rem;
+      --radius-lg:2rem;
+      --shadow:  0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-md:0 4px 16px rgba(0,0,0,0.06), 0 12px 32px rgba(0,0,0,0.04);
+      --shadow-lg:0 8px 24px rgba(0,0,0,0.05), 0 24px 56px rgba(0,0,0,0.06);
+    }
+
+    /* ── RESET ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--white);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── REVEAL ─────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── BACK BUTTON ────────────────────────────────── */
+    .back-to-showcase {
+      position: fixed;
+      top: 1.25rem;
+      left: 1.5rem;
+      z-index: 100;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      color: var(--ink-2);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .back-to-showcase:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* ══════════════════════════════════════════════════
+       HERO — SPLIT SCREEN
+    ══════════════════════════════════════════════════ */
+    .hero {
+      min-height: 100dvh;
+      display: grid;
+      grid-template-columns: 58% 42%;
+      align-items: center;
+      padding: 5rem 5% 4rem 8%;
+      gap: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* subtle background blobs */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #dbeafe 0%, transparent 70%);
+      border-radius: 50%;
+      top: -200px; right: -100px;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #eff6ff 0%, transparent 70%);
+      border-radius: 50%;
+      bottom: -150px; left: 30%;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .hero-left { position: relative; z-index: 1; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--blue-lt);
+      border: 1px solid var(--blue-ring);
+      color: var(--blue-dk);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-headline {
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+    }
+    .hero-headline em {
+      font-style: normal;
+      color: var(--blue);
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.2rem;
+      margin-bottom: 2.25rem;
+    }
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.875rem;
+      color: var(--ink-2);
+      font-weight: 500;
+    }
+    .hero-meta-item .dot {
+      width: 5px; height: 5px;
+      background: var(--blue);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--blue);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.75rem 1.75rem;
+      border-radius: 999px;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--blue-dk);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(37,99,235,0.35);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--ink-2);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-2);
+      background: var(--white);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* ── UI MOCKUP ──────────────────────────────────── */
+    .hero-right {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mockup-frame {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 420px;
+      overflow: hidden;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    .mockup-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .mockup-bar .mac-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .mac-dot.red   { background: #ff5f57; }
+    .mac-dot.yellow{ background: #febc2e; }
+    .mac-dot.green { background: #28c840; }
+    .mockup-url {
+      margin-left: 0.5rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.2rem 0.75rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      flex: 1;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .mockup-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .mockup-logo {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--blue);
+      letter-spacing: -0.02em;
+    }
+    .mockup-navlinks {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .mockup-navlink {
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-weight: 500;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+    }
+    .mockup-navlink.active {
+      background: var(--blue-md);
+      color: var(--blue-dk);
+    }
+
+    .mockup-chat {
+      padding: 1.25rem 1.25rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .chat-bubble {
+      max-width: 86%;
+      border-radius: 1rem;
+      padding: 0.65rem 1rem;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .chat-bubble.user {
+      align-self: flex-end;
+      background: var(--blue);
+      color: #fff;
+      border-bottom-right-radius: 0.25rem;
+    }
+    .chat-bubble.ai {
+      align-self: flex-start;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      border-bottom-left-radius: 0.25rem;
+    }
+    .chat-steps {
+      margin-top: 0.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .chat-step {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+    }
+    .step-num {
+      width: 16px; height: 16px;
+      background: var(--blue-md);
+      color: var(--blue-dk);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .mockup-input {
+      margin: 0.75rem 1.25rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.5rem 0.75rem 0.5rem 1rem;
+    }
+    .mockup-input span {
+      flex: 1;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    .mic-icon {
+      width: 24px; height: 24px;
+      background: var(--blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════════════════
+       STATS BAND
+    ══════════════════════════════════════════════════ */
+    .stats-section {
+      background: var(--ink);
+      padding: 4rem 8%;
+    }
+
+    .stats-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .stat-item {
+      padding: 1.5rem 2.5rem;
+      position: relative;
+    }
+    .stat-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 20%; bottom: 20%;
+      width: 1px;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .stat-number {
+      font-size: clamp(2.2rem, 4vw, 3.25rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .stat-number span { color: var(--blue-ring); }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    .stats-quote {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 2.5rem 0;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.6);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.7;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* ══════════════════════════════════════════════════
+       SHARED SECTION STYLES
+    ══════════════════════════════════════════════════ */
+    .section {
+      padding: 5.5rem 8%;
+    }
+    .section-alt {
+      background: var(--bg);
+    }
+
+    .section-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.9rem, 3.5vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.12;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+
+    .section-body {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 560px;
+    }
+
+    /* ══════════════════════════════════════════════════
+       STORY — EDITORIAL TIMELINE
+    ══════════════════════════════════════════════════ */
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 5rem;
+      align-items: start;
+      margin-top: 0;
+    }
+
+    .story-heading-col { position: sticky; top: 6rem; }
+
+    .story-list {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--border);
+    }
+
+    .story-item {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr;
+      gap: 1.25rem;
+      padding: 1.75rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .story-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--blue);
+      padding-top: 0.2rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .story-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.01em;
+    }
+    .story-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ══════════════════════════════════════════════════
+       FEATURES — BENTO GRID
+    ══════════════════════════════════════════════════ */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+
+    .bento-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: box-shadow 0.25s, border-color 0.25s, transform 0.25s;
+    }
+    .bento-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--blue-ring);
+      transform: translateY(-2px);
+    }
+
+    /* Featured card spans 2 cols */
+    .bento-card.featured {
+      grid-column: span 2;
+      background: var(--blue-lt);
+      border-color: var(--blue-md);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    /* Wide card spans full width */
+    .bento-card.wide {
+      grid-column: span 3;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .bento-icon {
+      font-size: 1.75rem;
+      margin-bottom: 0.85rem;
+    }
+    .wide .bento-icon { margin-bottom: 0; padding-top: 0.1rem; }
+
+    .bento-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.35rem;
+    }
+    .featured .bento-label { color: var(--blue-dk); }
+
+    .bento-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .bento-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .featured .bento-desc { color: var(--ink-2); }
+
+    /* Featured illustration side */
+    .featured-visual {
+      background: var(--white);
+      border: 1px solid var(--blue-ring);
+      border-radius: 1rem;
+      padding: 1rem 1.25rem;
+      font-size: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .fv-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .fv-q {
+      background: var(--blue);
+      color: #fff;
+      border-radius: 0.75rem 0.75rem 0.75rem 0.15rem;
+      padding: 0.35rem 0.65rem;
+      font-size: 0.7rem;
+      line-height: 1.4;
+      align-self: flex-end;
+      margin-left: auto;
+    }
+    .fv-a {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      border-radius: 0.75rem 0.75rem 0.75rem 0.15rem;
+      padding: 0.35rem 0.65rem;
+      font-size: 0.7rem;
+      line-height: 1.4;
+      max-width: 85%;
+    }
+
+    /* Accessibility pills */
+    .access-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .access-pill {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--ink-2);
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .access-pill .tick {
+      color: #16a34a;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    /* ══════════════════════════════════════════════════
+       VIDEO
+    ══════════════════════════════════════════════════ */
+    .video-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      margin-top: 2.5rem;
+    }
+    .video-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* ══════════════════════════════════════════════════
+       TECH STACK
+    ══════════════════════════════════════════════════ */
+    .tech-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 2rem;
+    }
+    .tech-tag {
+      background: var(--white);
+      border: 1px solid var(--border-2);
+      color: var(--ink-2);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .tech-tag:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* ══════════════════════════════════════════════════
+       CTA SECTION
+    ══════════════════════════════════════════════════ */
+    .cta-section {
+      background: var(--ink);
+      padding: 5rem 8%;
+      text-align: center;
+    }
+    .cta-section .eyebrow { color: var(--blue-ring); }
+    .cta-section .section-title { color: #fff; margin: 0 auto 1rem; }
+    .cta-section .section-body {
+      color: rgba(255,255,255,0.5);
+      margin: 0 auto 2.5rem;
+    }
+    .cta-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #fff;
+      color: var(--ink);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.8rem 1.75rem;
+      border-radius: 999px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255,255,255,0.15);
+    }
+    .btn-outline-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: rgba(255,255,255,0.75);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.8rem 1.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline-white:hover {
+      border-color: rgba(255,255,255,0.5);
+      color: #fff;
+    }
+
+    /* ══════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════ */
+    footer {
+      padding: 1.75rem 8%;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--blue); }
+    footer a:hover { text-decoration: underline; }
+
+    /* ══════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 6rem 6% 3rem;
+        min-height: auto;
+      }
+      .hero-right { display: none; }
+      .story-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .story-heading-col { position: static; }
+      .stats-inner { grid-template-columns: 1fr; }
+      .stat-item::after { display: none; }
+      .stat-item { padding: 1.25rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    }
+
+    @media (max-width: 700px) {
+      .hero { padding: 5.5rem 5% 3rem; }
+      .section { padding: 4rem 5%; }
+      .stats-section, .cta-section { padding: 3.5rem 5%; }
+      .stats-quote { padding: 1.75rem 0 0; }
+      .bento { grid-template-columns: 1fr; }
+      .bento-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+      .featured-visual { display: none; }
+      .bento-card.wide { grid-column: span 1; grid-template-columns: auto 1fr; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <!-- ═══════════════════════════════════════════════
+       HERO
+  ════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="badge">&#9733; 2025 Congressional App Challenge &mdash; National Winner</div>
+
+      <h1 class="hero-headline">
+        Technology for<br><em>every</em> American.
+      </h1>
+
+      <p class="hero-sub">
+        TechMate is an AI-powered companion that helps older Americans navigate
+        technology safely, understand scams before they strike, and learn
+        about AI in plain language.
+      </p>
+
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <div class="dot"></div>
+          Matthew Caliboso
+        </div>
+        <div class="hero-meta-item">
+          <div class="dot"></div>
+          NV-01 &mdash; Las Vegas, Nevada
+        </div>
+        <div class="hero-meta-item">
+          <div class="dot"></div>
+          Coral Academy of Science
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <a href="https://techmateai.org" target="_blank" rel="noopener" class="btn-primary">
+          Visit TechMate &#8594;
+        </a>
+        <a href="https://github.com/mcaliboso" target="_blank" rel="noopener" class="btn-ghost">
+          View on GitHub
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <div class="mac-dot red"></div>
+          <div class="mac-dot yellow"></div>
+          <div class="mac-dot green"></div>
+          <div class="mockup-url">techmateai.org</div>
+        </div>
+        <div class="mockup-nav">
+          <div class="mockup-logo">TechMate</div>
+          <div class="mockup-navlinks">
+            <div class="mockup-navlink active">Ask Anything</div>
+            <div class="mockup-navlink">Scam Check</div>
+            <div class="mockup-navlink">Learn</div>
+          </div>
+        </div>
+        <div class="mockup-chat">
+          <div class="chat-bubble user">How do I update my iPhone?</div>
+          <div class="chat-bubble ai">
+            Here&rsquo;s how to update your iPhone:
+            <div class="chat-steps">
+              <div class="chat-step"><div class="step-num">1</div> Open the Settings app</div>
+              <div class="chat-step"><div class="step-num">2</div> Tap <strong>General</strong></div>
+              <div class="chat-step"><div class="step-num">3</div> Tap <strong>Software Update</strong></div>
+              <div class="chat-step"><div class="step-num">4</div> Tap <strong>Install Now</strong></div>
+            </div>
+          </div>
+          <div class="chat-bubble user">That text message looks suspicious</div>
+          <div class="chat-bubble ai">
+            I can check that for you. Paste the message and I&rsquo;ll analyze it for scam patterns right away.
+          </div>
+        </div>
+        <div class="mockup-input">
+          <span>Ask a technology question&hellip;</span>
+          <div class="mic-icon">&#127908;</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       STATS
+  ════════════════════════════════════════════════ -->
+  <section class="stats-section reveal">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-number"><span>$</span>37B</div>
+        <div class="stat-label">Lost every year by seniors to tech-enabled scams and fraud</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">17<span>M</span></div>
+        <div class="stat-label">Older Americans victimized by digital fraud annually</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">1<span> in 3</span></div>
+        <div class="stat-label">Seniors who feel isolated by technology they don&rsquo;t understand</div>
+      </div>
+    </div>
+    <div class="stats-quote">
+      &ldquo;Technology should empower everyone &mdash; not just those who grew up with it.
+      The people who built this country deserve to participate in its digital future.&rdquo;
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       MY STORY
+  ════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="story-grid reveal">
+        <div class="story-heading-col">
+          <div class="eyebrow">My Story</div>
+          <h2 class="section-title">From family frustration to a national solution</h2>
+          <p class="section-body">
+            TechMate wasn&rsquo;t born in a classroom. It came from years of
+            watching the people I love most become targets simply because
+            technology left them behind.
+          </p>
+        </div>
+
+        <div class="story-list">
+          <div class="story-item reveal">
+            <div class="story-num">01</div>
+            <div>
+              <div class="story-title">The Spark &mdash; A Family Scammed</div>
+              <div class="story-desc">My grandparents were repeatedly scammed online. Fake tech support calls, phishing emails, fraudulent links &mdash; they couldn&rsquo;t distinguish real from dangerous. As their go-to tech helper, I realized I couldn&rsquo;t be there for every senior in America.</div>
+            </div>
+          </div>
+
+          <div class="story-item reveal">
+            <div class="story-num">02</div>
+            <div>
+              <div class="story-title">Taking Action &mdash; Senior Center Visits</div>
+              <div class="story-desc">Before writing a single line of code, I took my ideas directly to the community. I hosted technology education presentations at senior living facilities across Las Vegas, learning firsthand what older adults struggled with most.</div>
+            </div>
+          </div>
+
+          <div class="story-item reveal">
+            <div class="story-num">03</div>
+            <div>
+              <div class="story-title">Building the Curriculum</div>
+              <div class="story-desc">The community response was overwhelming. I used what I heard to build a plain-language AI curriculum &mdash; zero jargon, zero condescension &mdash; designed from the ground up for older adults encountering digital technology for the first time.</div>
+            </div>
+          </div>
+
+          <div class="story-item reveal">
+            <div class="story-num">04</div>
+            <div>
+              <div class="story-title">TechMate Is Born</div>
+              <div class="story-desc">I expanded those presentations into a full AI-powered platform. TechMate answers technology questions in plain language, catches scams before they cause damage, explains confusing screens from photos, and teaches seniors how AI actually works.</div>
+            </div>
+          </div>
+
+          <div class="story-item reveal">
+            <div class="story-num">05</div>
+            <div>
+              <div class="story-title">Capitol Hill &mdash; National Winner</div>
+              <div class="story-desc">TechMate was named a 2025 Congressional App Challenge National Winner. I am honored to present it here at the Capitol &mdash; and deeply grateful to the seniors of Las Vegas whose stories made it real. The work is just beginning.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       FEATURES — BENTO
+  ════════════════════════════════════════════════ -->
+  <section class="section section-alt">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="eyebrow">What TechMate Does</div>
+        <h2 class="section-title">Five tools.<br>One mission.</h2>
+      </div>
+
+      <div class="bento">
+
+        <!-- Featured: Ask Anything -->
+        <div class="bento-card featured reveal">
+          <div>
+            <div class="bento-icon">&#128172;</div>
+            <div class="bento-label">Core Feature</div>
+            <div class="bento-title">Ask Anything</div>
+            <div class="bento-desc">Type or speak any technology question. TechMate asks clarifying questions, then walks you through the answer step by step in plain, friendly language &mdash; no jargon, ever.</div>
+          </div>
+          <div class="featured-visual">
+            <div class="fv-row"><div class="fv-q">Why does my laptop run slow?</div></div>
+            <div class="fv-row">
+              <div class="fv-a">There are a few common reasons. Let me ask: how old is the laptop and is it plugged in?</div>
+            </div>
+            <div class="fv-row"><div class="fv-q">About 4 years, usually plugged in</div></div>
+            <div class="fv-row">
+              <div class="fv-a">Got it! Here are 3 quick fixes to speed it up&hellip;</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screenshot Helper -->
+        <div class="bento-card reveal">
+          <div class="bento-icon">&#128247;</div>
+          <div class="bento-label">Visual Help</div>
+          <div class="bento-title">Screenshot Helper</div>
+          <div class="bento-desc">Upload a photo of any confusing screen. TechMate analyzes it and explains exactly what you&rsquo;re looking at &mdash; and what to do next.</div>
+        </div>
+
+        <!-- Scam Checker -->
+        <div class="bento-card reveal">
+          <div class="bento-icon">&#128737;</div>
+          <div class="bento-label">Safety</div>
+          <div class="bento-title">Scam Checker</div>
+          <div class="bento-desc">Paste a suspicious text, email, or link. TechMate scans for fraud patterns, assigns a risk level, and tells you exactly what to watch for.</div>
+        </div>
+
+        <!-- Learn About AI -->
+        <div class="bento-card reveal">
+          <div class="bento-icon">&#127891;</div>
+          <div class="bento-label">Education</div>
+          <div class="bento-title">Learn About AI</div>
+          <div class="bento-desc">A structured 6-unit curriculum covering what AI is, what it can and can&rsquo;t do, and how to stay safe. Built directly from senior community feedback.</div>
+        </div>
+
+        <!-- AI Chat -->
+        <div class="bento-card wide reveal">
+          <div class="bento-icon">&#129302;</div>
+          <div>
+            <div class="bento-label">Practice Space</div>
+            <div class="bento-title">AI Chat &mdash; Zero Pressure</div>
+            <div class="bento-desc">A friendly conversational AI for seniors to get comfortable with technology at their own pace. Trivia, recipes, jokes, and general conversation in a warm, welcoming environment.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Accessibility -->
+      <div class="reveal">
+        <div class="access-row">
+          <div class="access-pill"><span class="tick">&#10003;</span> Adjustable Text Size</div>
+          <div class="access-pill"><span class="tick">&#10003;</span> High Contrast Mode</div>
+          <div class="access-pill"><span class="tick">&#10003;</span> Dark Mode</div>
+          <div class="access-pill"><span class="tick">&#10003;</span> Reduced Motion</div>
+          <div class="access-pill"><span class="tick">&#10003;</span> English &amp; Spanish</div>
+          <div class="access-pill"><span class="tick">&#10003;</span> Voice Input &amp; Output</div>
+          <div class="access-pill"><span class="tick">&#10003;</span> Full Keyboard Navigation</div>
+          <div class="access-pill"><span class="tick">&#10003;</span> ARIA Accessible</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       DEMO VIDEO
+  ════════════════════════════════════════════════ -->
+  <section class="section reveal">
+    <div class="section-inner">
+      <div class="eyebrow">See It In Action</div>
+      <h2 class="section-title">TechMate Demo</h2>
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube.com/embed/Ke112uNRb04"
+          title="TechMate Demo Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       TECH STACK
+  ════════════════════════════════════════════════ -->
+  <section class="section section-alt reveal">
+    <div class="section-inner">
+      <div class="eyebrow">Technology</div>
+      <h2 class="section-title">Built with modern tools,<br>designed for real people.</h2>
+      <p class="section-body">A production-grade platform engineered for performance, accessibility, and reliability.</p>
+      <div class="tech-row">
+        <div class="tech-tag">Next.js</div>
+        <div class="tech-tag">TypeScript</div>
+        <div class="tech-tag">Tailwind CSS</div>
+        <div class="tech-tag">OpenAI GPT-4o</div>
+        <div class="tech-tag">Firebase</div>
+        <div class="tech-tag">Framer Motion</div>
+        <div class="tech-tag">Radix UI</div>
+        <div class="tech-tag">Web Speech API</div>
+        <div class="tech-tag">Vercel</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       CTA
+  ════════════════════════════════════════════════ -->
+  <section class="cta-section reveal">
+    <div class="eyebrow">Try It Today</div>
+    <h2 class="section-title">TechMate is live and free.</h2>
+    <p class="section-body">Share it with a senior in your life.</p>
+    <div class="cta-btns">
+      <a href="https://techmateai.org" target="_blank" rel="noopener" class="btn-white">
+        &#127758;&nbsp; Visit techmateai.org
+      </a>
+      <a href="https://github.com/mcaliboso" target="_blank" rel="noopener" class="btn-outline-white">
+        View on GitHub
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════════ -->
+  <footer>
+    <span>Congressional App Challenge &bull; NV-01 &bull; Matthew Caliboso</span>
+    <a href="../../">&#8592; Back to Showcase</a>
+  </footer>
+
+  <script>
+    (function () {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>
