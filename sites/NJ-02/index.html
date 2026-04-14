@@ -8,62 +8,91 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/shared.css">
-
+  
   <style>
     :root {
-      --bg-dark: #020617;
-      --accent-blue: #38bdf8;
-      --soft-blue: #bae6fd;
-      --glass: rgba(15, 23, 42, 0.6);
-      --border: rgba(255, 255, 255, 0.1);
+      --bg-light: #ffffff;
+      --bg-content: #f8fafc;
+      --accent-blue: #0ea5e9;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --glass: rgba(255, 255, 255, 0.8);
+      --border: rgba(0, 0, 0, 0.05);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Inter', sans-serif;
-      color: #f8fafc;
-      background-color: var(--bg-dark);
+      color: var(--text-main);
+      background-color: var(--bg-light);
       overflow-x: hidden;
       line-height: 1.6;
     }
 
+    /* Constellation Canvas - Inverted */
     #bg-canvas {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       z-index: -1;
       pointer-events: none;
+      background: var(--bg-light);
     }
 
-    /* Floating Brains */
-    .floating-brain {
-      position: fixed;
-      width: 150px;
-      height: auto;
-      opacity: 0.3;
-      filter: drop-shadow(0 0 15px var(--accent-blue));
-      z-index: -1;
-      animation: float 6s ease-in-out infinite;
-      pointer-events: none;
+    /* Hero Section - Pure White Cover */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: white;
+      position: relative;
+      z-index: 10;
+      transition: opacity 0.6s ease;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(5deg); }
+    .hero h1 {
+      font-size: clamp(3.5rem, 12vw, 7rem);
+      font-weight: 800;
+      letter-spacing: -4px;
+      line-height: 0.85;
+      background: linear-gradient(135deg, #0f172a 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: titleFadeIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
+    @keyframes titleFadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero .tagline {
+      margin-top: 1.5rem;
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      opacity: 0;
+      animation: titleFadeIn 1.2s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    /* Main Container */
     .container {
-      max-width: 850px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 8rem 2rem;
+      padding: 4rem 2rem;
+      position: relative;
+      z-index: 5;
     }
 
-    /* Scroll Reveal State */
+    /* Smooth Scroll Reveal */
     .reveal {
       opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform: translateY(40px);
+      transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+      margin-bottom: 4rem;
     }
 
     .reveal.active {
@@ -71,121 +100,107 @@
       transform: translateY(0);
     }
 
-    header { margin-bottom: 6rem; text-align: left; }
-    
-    header h1 { 
-      font-size: clamp(3rem, 10vw, 5rem); 
-      font-weight: 800; 
-      letter-spacing: -3px;
-      line-height: 0.9;
-      margin-bottom: 1.5rem;
-    }
-    
-    header h1 span { color: var(--accent-blue); }
-
-    .tagline {
-      font-size: 1.25rem;
-      color: #94a3b8;
-      max-width: 600px;
-      font-weight: 300;
-    }
-
-    /* Profile Image Style */
-    .profile-img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 2px solid var(--accent-blue);
-      margin-bottom: 1.5rem;
-      object-fit: cover;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
-    }
-
     section {
       background: var(--glass);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border);
-      border-radius: 32px;
-      padding: 3.5rem;
-      margin-bottom: 3rem;
+      border-radius: 40px;
+      padding: 4rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.03);
     }
 
-    h2 { 
-      font-size: 1.8rem; 
-      font-weight: 600;
-      margin-bottom: 1.5rem; 
-      color: var(--soft-blue);
-      letter-spacing: -0.5px;
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 30px;
+      margin-bottom: 2rem;
+      object-fit: cover;
+      filter: grayscale(20%);
     }
 
-    p { margin-bottom: 1.5rem; font-size: 1.05rem; color: #cbd5e1; font-weight: 300; }
-
-    .tech-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      letter-spacing: -1px;
     }
 
+    p { margin-bottom: 1.5rem; font-size: 1.1rem; color: #475569; }
+
+    /* Modern Tech Tags */
+    .tech-grid { display: flex; flex-wrap: wrap; gap: 12px; }
     .tech-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      padding: 8px 18px;
-      border-radius: 100px;
-      font-size: 0.8rem;
+      background: #f1f5f9;
+      padding: 10px 22px;
+      border-radius: 14px;
+      font-size: 0.85rem;
       font-weight: 600;
-      color: var(--accent-blue);
+      color: var(--text-main);
+      transition: 0.3s ease;
     }
+    .tech-card:hover { background: var(--accent-blue); color: white; }
 
     .video iframe {
       width: 100%;
       aspect-ratio: 16 / 9;
       border: none;
-      border-radius: 20px;
-      margin-top: 1rem;
+      border-radius: 28px;
     }
 
     .links-container a {
-      color: var(--accent-blue);
+      display: inline-block;
+      padding: 12px 28px;
+      background: var(--text-main);
+      color: white;
       text-decoration: none;
+      border-radius: 100px;
       font-weight: 600;
-      margin-right: 20px;
-      transition: 0.3s;
+      margin-right: 15px;
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    .links-container a:hover { color: white; }
+    .links-container a:hover { transform: scale(1.05); }
 
     footer {
       text-align: center;
-      padding: 5rem 2rem;
-      opacity: 0.5;
-      font-size: 0.8rem;
+      padding: 6rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .back-link {
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      z-index: 100;
     }
   </style>
 </head>
 <body>
+
+  <a href="../../" class="back-link">&larr; Back</a>
+
+  <div class="hero" id="hero-section">
+    <h1>BetterVeteran</h1>
+    <p class="tagline">Computational Neurology & Accessibility for NJ Veterans.</p>
+  </div>
+
   <canvas id="bg-canvas"></canvas>
 
-  <img src="your-brain-image.png" class="floating-brain" style="top: 20%; right: 5%;" alt="">
-  <img src="your-brain-image.png" class="floating-brain" style="bottom: 10%; left: 5%; animation-delay: -3s;" alt="">
-
-  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
-
   <div class="container">
-    <header class="reveal">
-      <h1>Better<span>Veteran</span></h1>
-      <p class="tagline">Computational Neurology & Accessibility for NJ Veterans.</p>
-    </header>
-
     <section class="reveal">
       <img src="your-photo.jpg" alt="Uchenna Uduma" class="profile-img">
-      <h2>About Me</h2>
-      <p>I am a highschool junior in Egg Harbor Township, New Jersey. From a young age, I took an extreme liking to computer science and the brain. I realized that giving the power of being remembered to those who feel forgotten matters so much more. This is exactly what got me into computational neurology!</p>
-      <p>I absolutely love to program for minorities, but I also enjoy writing poetry, where I am regionally and nationally recognized. I hope to continue advocating for the underrepresented voices in the world through my art, writing, and programming!</p>
+      <h2>The Mission</h2>
+      <p>I am a high school junior in Egg Harbor Township, New Jersey. From a young age, I took an extreme liking to computer science and the brain. I realized that giving the power of being remembered to those who feel forgotten matters so much more.</p>
+      <p>I absolutely love to program for minorities, but I also enjoy writing poetry, where I am nationally recognized. I hope to continue advocating for underrepresented voices through art and code.</p>
     </section>
 
     <section class="reveal">
-      <h2>BetterVeteran</h2>
+      <h2>The Project</h2>
       <p>BetterVeteran is a no-barrier medical consultation assistant designed to support New Jersey veterans suffering from TBIs, Intracranial hemorrhages, and PTSD. Inspired by my late grandfather, I built this to bridge the gap in neuro-tech accessibility.</p>
       
       <div class="tech-grid">
@@ -197,43 +212,40 @@
     </section>
 
     <section class="reveal video">
-      <h2>BetterVeteran Demo Video</h2>
+      <h2>Project Demo</h2>
       <iframe src="https://www.youtube.com/embed/4wSE0cgHKoU" title="Demo" allowfullscreen></iframe>
     </section>
 
     <section class="reveal">
-      <h2>Links</h2>
+      <h2>Access & Source</h2>
       <div class="links-container">
         <a href="https://github.com/dizmull">GitHub</a>
-        <a href="https://huggingface.co/spaces/dizu/betterva">Alpha Version</a>
+        <a href="https://huggingface.co/spaces/dizu/betterva" style="background: var(--accent-blue);">Alpha Version</a>
       </div>
     </section>
   </div>
 
   <footer>
-    <p>Congressional App Challenge &bull; <a href="../../" style="color:white">Back to Showcase</a></p>
+    <p>Congressional App Challenge &bull; © 2026 Uchenna Uduma</p>
   </footer>
 
   <script>
-    // 1. Constellation Background
+    // 1. Constellation Background (Inverted: Black on White)
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    const mouse = { x: null, y: null, radius: 150 };
-
-    window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
 
     function init() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       particles = [];
-      for (let i = 0; i < 80; i++) {
+      for (let i = 0; i < 70; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: Math.random() * 2,
-          speedX: (Math.random() - 0.5) * 0.3,
-          speedY: (Math.random() - 0.5) * 0.3
+          size: Math.random() * 2 + 1,
+          speedX: (Math.random() - 0.5) * 0.2,
+          speedY: (Math.random() - 0.5) * 0.2
         });
       }
     }
@@ -244,14 +256,16 @@
         p.x += p.speedX; p.y += p.speedY;
         if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
         if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-        ctx.fillStyle = 'rgba(56, 189, 248, 0.3)';
+        
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.15)'; // Dark dots
         ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+        
         particles.forEach(p2 => {
           const dx = p.x - p2.x; const dy = p.y - p2.y;
           const dist = Math.sqrt(dx*dx + dy*dy);
-          if (dist < 120) {
-            ctx.strokeStyle = `rgba(56, 189, 248, ${0.15 - dist/800})`;
-            ctx.lineWidth = 0.5;
+          if (dist < 150) {
+            ctx.strokeStyle = `rgba(15, 23, 42, ${0.1 - dist/1500})`; // Dark lines
+            ctx.lineWidth = 0.8;
             ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
           }
         });
@@ -259,22 +273,23 @@
       requestAnimationFrame(animate);
     }
     init(); animate();
+    window.addEventListener('resize', init);
 
-    // 2. Scroll Fade-In Logic
-    const observerOptions = { threshold: 0.1 };
+    // 2. Hero Fade Out on Scroll
+    window.addEventListener('scroll', () => {
+      const hero = document.getElementById('hero-section');
+      const scrollPos = window.scrollY;
+      hero.style.opacity = 1 - (scrollPos / 600);
+    });
+
+    // 3. Smooth Scroll Reveal
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-        } else {
-          entry.target.classList.remove('active'); // Optional: removes fade when scrolling back up
-        }
+        if (entry.isIntersecting) entry.target.classList.add('active');
       });
-    }, observerOptions);
+    }, { threshold: 0.15 });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
-
-  <script src="../../assets/js/nav.js" data-root="../../"></script>
 </body>
 </html>
