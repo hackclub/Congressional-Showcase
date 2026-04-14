@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LunchAhead | Aahana Ashok & Natnicha Kusalasi</title>
+
+    <!-- Keep this line for shared site styles -->
+    <link rel="stylesheet" href="../../shared.css" />
+
+    <style>
+      :root {
+        --bg: #fffdf8;
+        --card: #ffffff;
+        --text: #1f2937;
+        --muted: #5f6b7a;
+        --accent: #2563eb;
+        --accent2: #059669;
+        --border: #e8e3d9;
+        --shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+        --radius: 20px;
+        --maxw: 1100px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 24%),
+          radial-gradient(circle at top right, rgba(5, 150, 105, 0.08), transparent 22%),
+          var(--bg);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: var(--maxw);
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      .hero {
+        padding: 64px 0 28px;
+      }
+
+      .hero-card,
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .hero-card {
+        padding: 40px;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(5, 150, 105, 0.08));
+      }
+
+      .eyebrow {
+        display: inline-block;
+        font-size: 0.92rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 14px;
+      }
+
+      h1, h2, h3 {
+        line-height: 1.15;
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(2.5rem, 6vw, 4.3rem);
+        margin-bottom: 12px;
+      }
+
+      h2 {
+        margin-bottom: 14px;
+      }
+
+      .subtitle {
+        font-size: 1.18rem;
+        color: var(--muted);
+        max-width: 760px;
+        margin-bottom: 24px;
+      }
+
+      .credit-line {
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 8px 0 20px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .btn {
+        display: inline-block;
+        text-decoration: none;
+        font-weight: 700;
+        padding: 12px 18px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: white;
+      }
+
+      .btn-secondary {
+        background: white;
+        color: var(--text);
+        border-color: var(--border);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 26px;
+      }
+
+      .stat {
+        background: rgba(255,255,255,0.82);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 18px;
+      }
+
+      .stat strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      section {
+        padding: 18px 0;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 24px;
+      }
+
+      .card {
+        padding: 28px;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .pill {
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: #eef4ff;
+        border: 1px solid #d9e5ff;
+        font-size: 0.92rem;
+        font-weight: 700;
+      }
+
+      .feature-list {
+        display: grid;
+        gap: 14px;
+      }
+
+      .feature {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px 18px;
+      }
+
+      .feature h3 {
+        font-size: 1.03rem;
+        margin-bottom: 8px;
+      }
+
+      .video-wrap {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        background: #000;
+      }
+
+      .video-wrap iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      .note {
+        color: var(--muted);
+      }
+
+      .footer-note {
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.95rem;
+        padding: 22px 0 42px;
+      }
+
+      a {
+        color: var(--accent);
+      }
+
+      @media (max-width: 860px) {
+        .grid,
+        .stats {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-card,
+        .card {
+          padding: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <section class="hero">
+        <div class="hero-card">
+          <div class="eyebrow">2025 Congressional App Challenge Winner • Michigan’s 11th District</div>
+          <h1>LunchAhead</h1>
+          <p class="subtitle">
+            A student-focused app that makes school lunch more efficient, fair, healthy, and sustainable.
+          </p>
+
+          <p class="credit-line">
+            Built by <strong>Aahana Ashok</strong> and <strong>Natnicha Kusalasi</strong>
+          </p>
+
+          <p class="note">
+            We developed LunchAhead as a team project. I’m representing our work at HouseOfCode, and this page reflects our shared effort, ideas, and development.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#demo">Watch Demo</a>
+            <a class="btn btn-secondary" href="#about">About the Project</a>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>Team</strong>
+              Aahana Ashok & Natnicha Kusalasi
+            </div>
+            <div class="stat">
+              <strong>Focus</strong>
+              Lunch efficiency, nutrition, and food waste reduction
+            </div>
+            <div class="stat">
+              <strong>Built For</strong>
+              Students and schools
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="grid">
+          <div class="card">
+            <h2>About the Project</h2>
+            <p>
+              LunchAhead was inspired by our own experiences with long cafeteria lines, limited time to eat, and food running out before some students even reached the front. We wanted to create a solution that helps students get the meals they want more efficiently while also helping schools better manage lunch service.
+            </p>
+            <p>
+              Our app goes beyond lunch logistics. LunchAhead also helps students build healthier eating habits by tracking weekly nutrition patterns and using AI to identify gaps in a student’s diet. When a student is falling behind in certain food categories, the app can provide practical suggestions that encourage more balanced choices over time.
+            </p>
+            <p>
+              By combining smarter lunch planning with personalized nutrition insights, LunchAhead is designed to improve the student experience, support healthier decisions, and reduce food waste in schools.
+            </p>
+
+            <div class="pill-row">
+              <span class="pill">Education</span>
+              <span class="pill">Student Wellness</span>
+              <span class="pill">AI</span>
+              <span class="pill">Sustainability</span>
+            </div>
+          </div>
+		  
+			<!-- Tech stack -->
+			<div class="card">
+			  <h2><span class="icon">&#128736;</span> Built With</h2>
+			  <div class="tech-grid">
+				<div class="tech-item">Swift</div>
+				<div class="tech-item">ChatGPT</div>
+				<div class="tech-item">Xcode</div>
+				<div class="tech-item">ios</div>
+			  </div>
+			</div>
+
+          <div class="card">
+            <h2>Team</h2>
+            <p><strong>Aahana Ashok</strong></p>
+            <p><strong>Natnicha Kusalasi</strong></p>
+            <p class="note">
+              LunchAhead was developed collaboratively as a two-person team project. Although only Aahana is attending HouseOfCode in Washington, DC, the app reflects the combined work of both team members.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="card">
+          <h2>What Problem Does LunchAhead Solve?</h2>
+          <div class="feature-list">
+            <div class="feature">
+              <h3>Long cafeteria lines</h3>
+              <p>
+                Students often spend too much of their lunch period waiting, leaving less time to actually eat and recharge.
+              </p>
+            </div>
+
+            <div class="feature">
+              <h3>Food availability and fairness</h3>
+              <p>
+                Students with later lunch periods may find that meals they want are no longer available by the time they reach the front.
+              </p>
+            </div>
+
+            <div class="feature">
+              <h3>Nutrition awareness</h3>
+              <p>
+                It can be hard for students to notice when their meals are becoming unbalanced across an entire week. LunchAhead helps surface those patterns and suggests better choices.
+              </p>
+            </div>
+
+            <div class="feature">
+              <h3>Food waste</h3>
+              <p>
+                Schools can overprepare food that ends up being thrown away. Better planning helps align supply with actual demand.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="grid">
+          <div class="card">
+            <h2>How It Works</h2>
+            <div class="feature-list">
+              <div class="feature">
+                <h3>Smarter lunch planning</h3>
+                <p>
+                  LunchAhead helps make lunch service more efficient and predictable for students and schools.
+                </p>
+              </div>
+
+              <div class="feature">
+                <h3>AI-powered nutrition insights</h3>
+                <p>
+                  The app reviews weekly meal patterns and flags areas where a student may need more balance, then offers practical recommendations.
+                </p>
+              </div>
+
+              <div class="feature">
+                <h3>Student-centered design</h3>
+                <p>
+                  The app was shaped by real student experiences, especially limited lunch time and unequal access to meal options.
+                </p>
+              </div>
+
+              <div class="feature">
+                <h3>Sustainability benefits</h3>
+                <p>
+                  Better planning can reduce unnecessary overproduction and help schools cut food waste.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Why This Matters</h2>
+            <p>
+              LunchAhead is designed to solve an everyday school problem in a meaningful way. It improves convenience for students, supports healthier habits, and helps schools operate more sustainably.
+            </p>
+            <p>
+              We wanted to build technology that feels practical, student-centered, and useful in real life.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="demo">
+        <div class="card">
+          <h2>Demo Video</h2>
+          <p>Watch our project demo below.</p>
+
+          <div class="video-wrap">
+            <iframe
+              src="https://www.youtube.com/embed/nZk0G4o_NQg"
+              title="LunchAhead Demo Video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="grid">
+          <div class="card">
+            <h2>Links</h2>
+            <p><a href="https://youtu.be/nZk0G4o_NQg" target="_blank" rel="noreferrer">Live Demo</a></p>
+            <p><a href="https://www.congressionalappchallenge.us/25-MI11/" target="_blank" rel="noreferrer">Congressional App Challenge Winner Page</a></p>
+            <p><a href="https://www.linkedin.com/in/aahana-ashok-82693b2b6/" target="_blank" rel="noreferrer">Contact / LinkedIn</a></p>
+          </div>
+
+          <div class="card">
+            <h2>About Us</h2>
+            <p>
+              We are students from Novi High School and winners of the 2025 Congressional App Challenge for Michigan’s 11th District. Through LunchAhead, we wanted to create a solution that improves daily student life while supporting healthier and more sustainable school lunch systems.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <p class="footer-note">Built for the Congressional App Challenge Showcase.</p>
+    </main>
+
+    <!-- Keep this line for shared site navigation -->
+    <script src="../../nav.js"></script>
+  </body>
+</html>
