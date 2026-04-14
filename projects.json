@@ -1108,5 +1108,20 @@
   "district": "NJ-09",
   "state": "NJ",
   "tags": ["social", "accessibility"]
+},
+  {
+  "slug": "MI-11",
+  "name": "Aahana Ashok & Natnicha Kusalasi",
+  "appName": "LunchAhead",
+  "description": "A student-focused app that improves school lunch through smarter planning, healthier choices, and reduced food waste.",
+  "thumbnail": "sites/MI-11/thumbnail.png",
+  "location": {
+    "lat": 42.4806,
+    "lng": -83.4755,
+    "label": "Novi, MI"
+  },
+  "district": "MI-11",
+  "state": "MI",
+  "tags": ["education", "ai", "student wellness", "sustainability"]
 }
 ]
