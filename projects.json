@@ -1108,5 +1108,20 @@
   "district": "NJ-09",
   "state": "NJ",
   "tags": ["social", "accessibility"]
+},
+{
+  "slug": "RI-02",
+  "name": "AraOluwa Adetunji",
+  "appName": "MinPlan",
+  "description": "A college planner application to help students stay organized",
+  "thumbnail": "sites/RI-02/Thumbnail.png",
+  "location": {
+    "lat": 41.6343,
+    "lng": 71.5130,
+    "label": "East Greenwich, RI"
+  },
+  "district": "RI-02",
+  "state": "RI",
+  "tags": ["education", "students"]
 }
 ]
