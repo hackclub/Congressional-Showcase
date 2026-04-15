@@ -1108,5 +1108,19 @@
   "district": "NJ-09",
   "state": "NJ",
   "tags": ["social", "accessibility"]
+},
+{
+  "slug": "AZ-03",
+  "name": "Antoni Gonzalez, Grey Ricker, Sean Collay",
+  "appName": "NaviCare",
+  "description": "An easy-to-navigate Health Hub accessible to all.",
+  "thumbnail": "sites/AZ-03/Logo-NC+-01.png",
+  "location": {
+    "lat": 33.4483,
+    "lng": 112.0725,
+    "label": "Phoenix, AZ"
+  },
+  "district": "AZ-03",
+  "state": "AZ",
+  "tags": ["Health", "Organization"]
 }
-]
