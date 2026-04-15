@@ -40,21 +40,29 @@
         nextUrl = root + 'sites/' + projects[nextIndex].slug + '/';
       }
 
-      // Inject arrow buttons
-      var prevArrow = document.createElement('a');
-      prevArrow.className = 'nav-arrow prev';
+      // Reuse existing arrows if present, otherwise create new ones
+      var prevArrow = document.querySelector('.nav-arrow.prev');
+      var nextArrow = document.querySelector('.nav-arrow.next');
+
+      if (!prevArrow) {
+        prevArrow = document.createElement('a');
+        prevArrow.className = 'nav-arrow prev';
+        prevArrow.setAttribute('aria-label', 'Previous page');
+        prevArrow.textContent = '\u2190';
+        document.body.appendChild(prevArrow);
+      }
+
+      if (!nextArrow) {
+        nextArrow = document.createElement('a');
+        nextArrow.className = 'nav-arrow next';
+        nextArrow.setAttribute('aria-label', 'Next page');
+        nextArrow.textContent = '\u2192';
+        document.body.appendChild(nextArrow);
+      }
+
+      // Update hrefs with accurate data from projects.json
       prevArrow.href = prevUrl;
-      prevArrow.setAttribute('aria-label', 'Previous page');
-      prevArrow.textContent = '\u2190';
-
-      var nextArrow = document.createElement('a');
-      nextArrow.className = 'nav-arrow next';
       nextArrow.href = nextUrl;
-      nextArrow.setAttribute('aria-label', 'Next page');
-      nextArrow.textContent = '\u2192';
-
-      document.body.appendChild(prevArrow);
-      document.body.appendChild(nextArrow);
 
       // Keyboard navigation
       document.addEventListener('keydown', function (e) {
