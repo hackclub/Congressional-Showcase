@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Advocate | Jonah Sanabria</title>
+
+
+  <!-- If youre reading this I hope it isnt too different -->
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
+  <!-- Google Fonts: Figtree -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --teal: #1EE8DD;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Figtree', system-ui, sans-serif;
+      color: #333;
+      background: #f9fafc;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 2rem 3rem;
+    }
+
+    header { text-align: center; margin-bottom: 3rem; }
+    header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--teal); }
+
+    section {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border-left: 4px solid var(--teal);
+    }
+
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; color: var(--teal); }
+    p { line-height: 1.7; margin-bottom: 1rem; }
+
+    .video iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    footer a { color: var(--cac-red); }
+
+    a { color: var(--teal); }
+  </style>
+</head>
+<body>
+  <!-- Back button — links to the main showcase -->
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <div class="container">
+    <header>
+      <h1>Jonah Sanabria</h1>
+      <p>This app helps with doctor appointments, making sure everything is understood and remembered</p>
+    </header>
+
+    <section>
+      <h2>About Me</h2>
+      <p>Hi, my name is Jonah, and I am a sophomore at Monument Mountain high school. I am originally from Brooklyn, but I moved to western Massachusetts a few years ago. I enjoy skiing, frisbee, cooking, photography, and videography. The app that I made is also going to be released on the iOS app store soon, most likely under the name Joji, so look out for it! </p>
+    </section>
+
+    <section>
+      <h2>Patient Advocate</h2>
+      <p>This app is for anyone who has ever forgotten something at a doctor's appointment. Before the appointment, the app prepares what you are going to say, and during the appointment, it makes sure everything is asked, and it leaves you with a good understanding at the end of your appointment. </p>
+      <p>I built the app using React,Tailwind and other libraries.</p>
+    </section>
+  
+    <section class="video">
+      <h2>Demo</h2>
+      <iframe
+        src="https://www.youtube.com/embed/-6YBr19PFBc"
+        
+        title="App Demo Video"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+  <!-- Navigation script — enables arrow key navigation. Do NOT remove this. -->
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>
