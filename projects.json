@@ -1108,5 +1108,20 @@
   "district": "NJ-09",
   "state": "NJ",
   "tags": ["social", "accessibility"]
+},
+{
+  "slug": "MA-01",
+  "name": "Jonah Sanabria",
+  "appName": "Healthcare Advocate",
+  "description": "This app acts as a personal assistant for doctor appointments, making sure that everything is communicated and nothing is forgotten ",
+  "thumbnail": "sites/MA-01/thumbnail.png",
+  "location": {
+    "lat": 42.193810,
+    "lng": -73.362878,
+    "label": "Great Barrington, MA"
+  },
+  "district": "MA-01",
+  "state": "MA",
+  "tags": ["Healthcare", "Assistant"]
 }
 ]
