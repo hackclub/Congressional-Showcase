@@ -1108,5 +1108,20 @@
   "district": "NJ-09",
   "state": "NJ",
   "tags": ["social", "accessibility"]
+},
+{
+  "slug": "CA-27",
+  "name": "Gautham Korrapati, Eric Lee",
+  "appName": "Mathviz",
+  "description": "An app that helps bridge the gap for learning mathematics with verified proof checkers and compilers",
+  "thumbnail": "sites/CA-27/thumbnail.png",
+  "location": {
+    "lat": "34.198",
+    "lng": "-118.261",
+    "label": "Los Angeles, CA"
+  },
+  "district": "CA-27",
+  "state": "CA",
+  "tags": ["community", "social"]
 }
 ]
