@@ -1108,5 +1108,20 @@
   "district": "NJ-09",
   "state": "NJ",
   "tags": ["social", "accessibility"]
+},
+{
+  "slug": "TX-34",
+  "name": "Max Moyle",
+  "appName": "Heatwave",
+  "description": "A pedestrian-first navigation app that routes you through shade, away from high-speed roads, and off the car-centric paths every other map defaults to.",
+  "thumbnail": "sites/TX-34/thumbnail.png",
+  "location": {
+    "lat": 26.1906,
+    "lng": -97.6961,
+    "label": "Harlingen, TX"
+  },
+  "district": "TX-34",
+  "state": "TX",
+  "tags": ["navigation", "environment"]
 }
 ]
