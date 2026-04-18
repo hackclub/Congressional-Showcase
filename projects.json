@@ -1108,5 +1108,22 @@
   "district": "NJ-09",
   "state": "NJ",
   "tags": ["social", "accessibility"]
+},
+
+  {
+  "slug": "IL-11",
+  "name": "Ishaanvi Vemula",
+  "appName": "InsureLit",
+  "description": "An all-inclusive health insurance literacy app that turns complex coverage information into clear guidance.",
+  "thumbnail": "sites/IL-11/thumbnail.png",
+  "location": {
+    "lat": 41.755268,
+    "lng": -88.309509,
+    "label": "Aurora, IL"
+  },
+  "district": "IL-11",
+  "state": "IL",
+  "tags": ["health", "inclusivity", "literacy"]
 }
+  
 ]
