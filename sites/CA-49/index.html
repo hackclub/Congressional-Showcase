@@ -9,14 +9,13 @@
 
   <style>
     :root {
-      --bg-white: #ffffff;
-      --accent-red: #e11d48; /* Vibrant Emergency Red */
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border-light: #f1f5f9;
-    }
+  --bg-white: #EEEDEA;
+  --accent-red: #e11d48;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-light: #f1f5f9;
+  } 
 
-    * { box-sizing: border-box; margin: 0; padding: 0; cursor: none; }
 
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -24,16 +23,6 @@
       background-color: var(--bg-white);
       min-height: 100vh;
       line-height: 1.6;
-    }
-
-    #cursor-dot {
-      width: 6px; height: 6px; background: var(--accent-red);
-      position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999;
-    }
-    #cursor-outline {
-      width: 30px; height: 30px; border: 1.5px solid var(--accent-red);
-      position: fixed; border-radius: 50%; pointer-events: none; z-index: 9998;
-      transition: transform 0.15s ease-out;
     }
 
     .container {
@@ -145,14 +134,11 @@
 </head>
 <body>
 
-  <div id="cursor-dot"></div>
-  <div id="cursor-outline"></div>
-
   <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
 
   <div class="container">
     <header>
-      <img src="image_2e43bd.png" alt="HeartAngel Logo" class="app-logo">
+      <img src="logo.png" alt="HeartAngel Logo" class="app-logo">
       <h1>HeartAngel</h1>
       <p class="subtitle">By Catherine Wang • CA-49 District Winner</p>
     </header>
@@ -193,29 +179,7 @@
   <script src="../../assets/js/nav.js" data-root="../../"></script>
 
   <script>
-    const dot = document.getElementById('cursor-dot');
-    const outline = document.getElementById('cursor-outline');
 
-    window.addEventListener('mousemove', (e) => {
-      dot.style.left = `${e.clientX}px`;
-      dot.style.top = `${e.clientY}px`;
-      
-      outline.animate({
-        left: `${e.clientX - 15}px`,
-        top: `${e.clientY - 15}px`
-      }, { duration: 400, fill: "forwards" });
-    });
-
-    document.querySelectorAll('a, section, .btn-primary').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        outline.style.transform = 'scale(1.8)';
-        outline.style.background = 'rgba(225, 29, 72, 0.05)';
-      });
-      el.addEventListener('mouseleave', () => {
-        outline.style.transform = 'scale(1)';
-        outline.style.background = 'transparent';
-      });
-    });
   </script>
 </body>
 </html> 
