@@ -1108,5 +1108,20 @@
   "district": "NJ-09",
   "state": "NJ",
   "tags": ["social", "accessibility"]
+},
+{
+  "slug": "TX-10",
+  "name": "Aarjit Adhikari, Namish Joshi, Jovan Nadar",
+  "appName": "FocusAI",
+  "description": "A productivity application to help fight digital distractions.",
+  "thumbnail": "sites/TX-10/thumbnail.png",
+  "location": {
+    "lat": 30.508789,
+    "lng": -97.679970,
+    "label": "Round Rock, TX"
+},
+  "district": "TX-10",
+  "state": "TX",
+  "tags": ["productivity", "AI"]
 }
 ]

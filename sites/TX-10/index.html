@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FocusAI | Aarjit Adhikari, Namish Joshi, Jovan Nadar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --navy:        #000f63;
+    --navy-dim:    #0a1a70;
+    --ink:         #12132b;
+    --accent:      #4560b3;
+    --glow:        #7b93ff;
+    --muted:       #6b6b8a;
+    --border:      rgba(69, 96, 179, 0.14);
+    --surface:     #ffffff;
+    --bg:          #f4f5fa;
+    --rule:        rgba(0, 15, 99, 0.12);
+  }
+
+  /* ── BASE ────────────────────────────── */
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ────────────────────────────── */
+  .hero {
+    background: var(--navy);
+    padding: 5.5rem 2rem 5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(123,147,255,0.13) 0%, transparent 68%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.5);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.2rem, 7vw, 5.5rem);
+    color: #fff;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 em {
+    color: var(--glow);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .hero .tagline {
+    color: rgba(255,255,255,0.5);
+    font-size: 1.05rem;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-authors {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* rule-separated names */
+  .hero-authors span {
+    color: rgba(255,255,255,0.55);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+
+  .hero-authors span:not(:last-child)::after {
+    content: '—';
+    margin: 0 0.65rem;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* ── PAGE LAYOUT ─────────────────────── */
+  .container {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* thin rule between sections */
+  .section-rule {
+    height: 1px;
+    background: var(--rule);
+    margin: 2.25rem 0;
+  }
+
+  /* ── SECTION ─────────────────────────── */
+  .section {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 0.35rem;
+    line-height: 1.4;
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  .section-label strong {
+    display: block;
+    font-size: 22px;
+    font-weight: 400;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+    text-transform: none;
+  }
+
+  .section-body h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .section-body p {
+    color: var(--muted);
+    font-weight: 300;
+    font-size: 0.97rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .section-body p:last-child { margin-bottom: 0; }
+
+  /* ── FEATURES LIST ───────────────────── */
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .feature-row {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 0.9rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+
+  .feature-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    padding-top: 3px;
+  }
+
+  .feature-row h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+
+  .feature-row p {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* ── TECH STACK ──────────────────────── */
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .stack-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--accent);
+    background: rgba(69, 96, 179, 0.07);
+    border: 1px solid rgba(69, 96, 179, 0.18);
+    padding: 4px 12px;
+    border-radius: 2px;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── VIDEO ───────────────────────────── */
+  .video-wrapper {
+    margin-top: 1.5rem;
+    border-radius: 6px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    box-shadow: 0 8px 40px rgba(0, 15, 99, 0.15);
+  }
+
+  .video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* ── TEAM ────────────────────────────── */
+  .team-list {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .team-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .team-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .team-role {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── LINKS ───────────────────────────── */
+  .link-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 22px;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    transition: opacity 0.18s;
+  }
+
+  .link-btn.primary {
+    background: var(--navy);
+    color: #fff;
+  }
+
+  .link-btn.secondary {
+    border: 1px solid var(--rule);
+    color: var(--navy);
+    background: transparent;
+  }
+
+  .link-btn:hover { opacity: 0.72; }
+
+  /* ── FOOTER ──────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  footer a {
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  footer a:hover { text-decoration: underline; }
+
+  /* ── RESPONSIVE ──────────────────────── */
+  @media (max-width: 620px) {
+    .section {
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+
+    .section-label {
+      position: static;
+    }
+
+    .section-label strong {
+      display: inline;
+      font-size: 18px;
+      margin-right: 0.5rem;
+    }
+
+    .hero { padding: 3.5rem 1.25rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ───────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-badge">Congressional App Challenge</div>
+  <h1>Focus<em>AI</em></h1>
+  <p class="tagline">Productivity made intentional — not just restricted.</p>
+  <div class="hero-authors">
+    <span>Aarjit Adhikari</span>
+    <span>Namish Joshi</span>
+    <span>Jovan Nadar</span>
+  </div>
+</div>
+
+<!-- ── CONTENT ────────────────────────────────────── -->
+<div class="container">
+
+  <!-- THE PROBLEM -->
+  <div class="section">
+    <div class="section-label">
+      <strong>01</strong>
+      The Problem
+    </div>
+    <div class="section-body">
+      <h2>Students are drowning in distractions</h2>
+      <p>In today's world, staying focused is harder than ever. Between social media, YouTube, and constant notifications, students lose hours of productive time daily — and most existing tools just block websites without addressing the root habit.</p>
+      <p>We built FocusAI because we've lived this problem. We're students who needed something better.</p>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <!-- THE APP -->
+  <div class="section">
+    <div class="section-label">
+      <strong>02</strong>
+      The App
+    </div>
+    <div class="section-body">
+      <h2>What FocusAI does</h2>
+      <p>FocusAI is a productivity application that combines intelligent website blocking with intentional task management — helping students stay accountable, organized, and actually get things done.</p>
+
+      <div class="features">
+        <div class="feature-row">
+          <div class="feature-num">01</div>
+          <div>
+            <h3>Smart blocking</h3>
+            <p>A Chrome extension blocks distracting sites during focus sessions, keeping you in the work you've committed to.</p>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-num">02</div>
+          <div>
+            <h3>Task management</h3>
+            <p>Organize exactly what needs to get done before you start a session — so you always know what you're working toward.</p>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-num">03</div>
+          <div>
+            <h3>Habit building</h3>
+            <p>Track focus streaks and build lasting discipline over time, not just one-off bursts of motivation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <span class="stack-tag">React</span>
+        <span class="stack-tag">JavaScript</span>
+        <span class="stack-tag">HTML</span>
+        <span class="stack-tag">CSS</span>
+        <span class="stack-tag">Chrome Extension API</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <!-- DEMO -->
+  <div class="section">
+    <div class="section-label">
+      <strong>03</strong>
+      Demo
+    </div>
+    <div class="section-body">
+      <h2>See it in action</h2>
+      <div class="video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/mSLOP1fOvmo"
+          title="FocusAI Demo — Congressional App Challenge"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <!-- THE TEAM -->
+  <div class="section">
+    <div class="section-label">
+      <strong>04</strong>
+      The Team
+    </div>
+    <div class="section-body">
+      <h2>Who we are</h2>
+      <p>We're a team of students passionate about technology and solving real problems. From athletics to music to creative exploration — we bring different perspectives to everything we build.</p>
+
+      <div class="team-list">
+        <div class="team-row">
+          <span class="team-name">Aarjit Adhikari</span>
+          <span class="team-role">Developer &amp; Designer</span>
+        </div>
+        <div class="team-row">
+          <span class="team-name">Namish Joshi</span>
+          <span class="team-role">Developer &amp; Designer</span>
+        </div>
+        <div class="team-row">
+          <span class="team-name">Jovan Nadar</span>
+          <span class="team-role">Developer &amp; Designer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <!-- LINKS -->
+  <div class="section">
+    <div class="section-label">
+      <strong>05</strong>
+      Links
+    </div>
+    <div class="section-body">
+      <h2>Explore the project</h2>
+      <div class="link-row">
+        <a href="#" class="link-btn primary">GitHub (coming soon)</a>
+        <a href="focusai.appwrite.network" class="link-btn secondary">Live app</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+</footer>
+
+<!-- Navigation script — enables arrow key navigation. Do NOT remove this. -->
+<script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>
