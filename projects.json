@@ -12,7 +12,12 @@
     },
     "district": "IA-01",
     "state": "IA",
-    "tags": ["environment", "water", "mapping", "science"]
+    "tags": [
+      "environment",
+      "water",
+      "mapping",
+      "science"
+    ]
   },
   {
     "slug": "IA-03",
@@ -27,7 +32,11 @@
     },
     "district": "IA-03",
     "state": "IA",
-    "tags": ["veterans", "education", "community"]
+    "tags": [
+      "veterans",
+      "education",
+      "community"
+    ]
   },
   {
     "slug": "CO-08",
@@ -42,7 +51,10 @@
     },
     "district": "CO-08",
     "state": "CO",
-    "tags": ["healthcare", "teen-education"]
+    "tags": [
+      "healthcare",
+      "teen-education"
+    ]
   },
   {
     "slug": "ID-01",
@@ -57,7 +69,10 @@
     },
     "district": "ID-01",
     "state": "ID",
-    "tags": ["aviation", "geography"]
+    "tags": [
+      "aviation",
+      "geography"
+    ]
   },
   {
     "slug": "VA-04",
@@ -72,7 +87,10 @@
     },
     "district": "VA-04",
     "state": "VA",
-    "tags": ["health", "ai"]
+    "tags": [
+      "health",
+      "ai"
+    ]
   },
   {
     "slug": "FL-19",
@@ -87,7 +105,10 @@
     },
     "district": "FL-19",
     "state": "FL",
-    "tags": ["social", "ai"]
+    "tags": [
+      "social",
+      "ai"
+    ]
   },
   {
     "slug": "LA-01",
@@ -102,7 +123,12 @@
     },
     "district": "LA-01",
     "state": "LA",
-    "tags": ["education", "health", "ai", "games"]
+    "tags": [
+      "education",
+      "health",
+      "ai",
+      "games"
+    ]
   },
   {
     "slug": "FL-17",
@@ -117,7 +143,12 @@
     },
     "district": "FL-17",
     "state": "FL",
-    "tags": ["health", "social", "ai", "accessibility"]
+    "tags": [
+      "health",
+      "social",
+      "ai",
+      "accessibility"
+    ]
   },
   {
     "slug": "NJ-03",
@@ -132,7 +163,11 @@
     },
     "district": "NJ-03",
     "state": "NJ",
-    "tags": ["health", "ai", "safety"]
+    "tags": [
+      "health",
+      "ai",
+      "safety"
+    ]
   },
   {
     "slug": "DC-01",
@@ -147,7 +182,11 @@
     },
     "district": "DC-01",
     "state": "DC",
-    "tags": ["education", "finance", "games"]
+    "tags": [
+      "education",
+      "finance",
+      "games"
+    ]
   },
   {
     "slug": "MI-08",
@@ -162,7 +201,10 @@
     },
     "district": "MI-08",
     "state": "MI",
-    "tags": ["health", "ai"]
+    "tags": [
+      "health",
+      "ai"
+    ]
   },
   {
     "slug": "NE-02",
@@ -177,7 +219,10 @@
     },
     "district": "NE-02",
     "state": "NE",
-    "tags": ["education", "civic"]
+    "tags": [
+      "education",
+      "civic"
+    ]
   },
   {
     "slug": "TX-14",
@@ -192,7 +237,11 @@
     },
     "district": "TX-14",
     "state": "TX",
-    "tags": ["health", "accessibility", "ai"]
+    "tags": [
+      "health",
+      "accessibility",
+      "ai"
+    ]
   },
   {
     "slug": "TX-09",
@@ -207,7 +256,11 @@
     },
     "district": "TX-09",
     "state": "TX",
-    "tags": ["health", "ai", "science"]
+    "tags": [
+      "health",
+      "ai",
+      "science"
+    ]
   },
   {
     "slug": "VA-09",
@@ -222,7 +275,10 @@
     },
     "district": "VA-09",
     "state": "VA",
-    "tags": ["education", "social"]
+    "tags": [
+      "education",
+      "social"
+    ]
   },
   {
     "slug": "CA-33",
@@ -237,7 +293,11 @@
     },
     "district": "CA-33",
     "state": "CA",
-    "tags": ["health", "environment", "ai"]
+    "tags": [
+      "health",
+      "environment",
+      "ai"
+    ]
   },
   {
     "slug": "MI-04",
@@ -252,7 +312,10 @@
     },
     "district": "MI-04",
     "state": "MI",
-    "tags": ["education", "ai"]
+    "tags": [
+      "education",
+      "ai"
+    ]
   },
   {
     "slug": "VA-06",
@@ -267,7 +330,10 @@
     },
     "district": "VA-06",
     "state": "VA",
-    "tags": ["education", "ai"]
+    "tags": [
+      "education",
+      "ai"
+    ]
   },
   {
     "slug": "NY-23",
@@ -282,7 +348,11 @@
     },
     "district": "NY-23",
     "state": "NY",
-    "tags": ["education", "ai", "finance"]
+    "tags": [
+      "education",
+      "ai",
+      "finance"
+    ]
   },
   {
     "slug": "OH-14",
@@ -297,7 +367,10 @@
     },
     "district": "OH-14",
     "state": "OH",
-    "tags": ["health", "games"]
+    "tags": [
+      "health",
+      "games"
+    ]
   },
   {
     "slug": "PR-00",
@@ -312,7 +385,9 @@
     },
     "district": "PR-00",
     "state": "PR",
-    "tags": ["health"]
+    "tags": [
+      "health"
+    ]
   },
   {
     "slug": "NC-02",
@@ -1369,5 +1444,18 @@
   "thumbnail": "sites/MI-11/thumbnail.png",
   "location": { "lat": 42.4806, "lng": -83.4755, "label": "Novi, MI" },
   "district": "MI-11", "state": "MI", "tags": ["education", "ai"]
+},
+{
+  "slug": "NJ-01",
+  "name": "Patrick Oberholzer, David Watts",
+  "appName": "Draftly",
+  "description": "A way to integrate paper notes, text documents, images, and scanned pages in one place",
+  "thumbnail": "sites/NJ-01/assets/logo.png",
+  "location": {
+    "lat": 39.9011,
+    "lng": -75.0264,
+    "label": "Haddonfield, NJ"
+  },
+  "district": "NJ-01"
 }
 ]

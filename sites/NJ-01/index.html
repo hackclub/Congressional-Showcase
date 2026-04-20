@@ -1,4 +1,188 @@
 <!DOCTYPE html>
-<body style="margin: 0;">
-  <iframe src="https://draftly-notes.com" style="width: 100vw; height: 100vh;"></iframe>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Draftly — Congressional App Challenge</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <img src="assets/logo.png" alt="Draftly logo" class="nav-logo-img" onerror="this.style.display='none'" />
+      </div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#demo">Demo</a></li>
+        <li><a href="#screenshots">Screenshots</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#links" class="btn-nav">Get the App</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <header class="hero">
+    <div class="hero-badge">
+      <span class="badge-label">Congressional App Challenge</span>
+      <span class="badge-district">District: <strong>NJ-01</strong></span>
+    </div>
+    <div class="hero-logo">
+      <img src="assets/logo.png" alt="Draftly" onerror="this.style.display='none'" />
+    </div>
+    <h1 class="hero-title">Draftly</h1>
+    <p class="hero-tagline">
+      <!-- One-sentence description of your app -->
+      Providing a way to integrate paper notes, text documents, images, and scanned pages into one easy-to-use app.
+    </p>
+    <div class="hero-cta">
+      <a href="#demo" class="btn-primary">Watch Demo</a>
+      <a href="#links" class="btn-secondary">Download</a>
+    </div>
+    <div class="hero-scroll-hint">↓</div>
+  </header>
+
+  <!-- ── ABOUT THE APP ── -->
+  <section id="about" class="section section-light">
+    <div class="container">
+      <div class="section-label">About the App</div>
+      <h2 class="section-title">What is Draftly?</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            <!-- Replace with your app description -->
+            Draftly is an all-in-one integrated place to keep and work with
+            your notes, even if they're split between paper and the digital world.
+            It does everything it can to stay out of your way so that you can work
+            as quickly and unburdened as possible. Just take 20 seconds to scan
+            some notes after class, and never worry about losing them again.
+          </p>
+        </div>
+        <div class="about-built">
+          <h3>Built With</h3>
+          <ul class="tech-list">
+            <!-- Add/remove tech tags as needed -->
+            <li class="tech-tag">Flutter</li>
+            <li class="tech-tag">Rust</li>
+            <li class="tech-tag">Docker</li>
+            <li class="tech-tag">PostgreSQL</li>
+            <li class="tech-tag">Google ML Kit</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DEMO VIDEO ── -->
+  <section id="demo" class="section section-dark">
+    <div class="container">
+      <div class="section-label">Demo</div>
+      <h2 class="section-title">See It in Action</h2>
+      <div class="video-wrapper">
+        <iframe width="1881" height="754" src="https://www.youtube.com/embed/qXP8nL0geng" title="Draftly" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SCREENSHOTS ── -->
+  <section id="screenshots" class="section section-light">
+    <div class="container">
+      <div class="section-label">Screenshots</div>
+      <h2 class="section-title">App Preview</h2>
+      <div class="screenshots-grid">
+        <figure class="screenshot-card">
+          <img src="assets/screenshots/screen1.jpg" alt="Screenshot 1" />
+          <figcaption>Scanner</figcaption>
+        </figure>
+        <figure class="screenshot-card">
+          <img src="assets/screenshots/screen2.jpg" alt="Screenshot 2" />
+          <figcaption>Image Cleanup</figcaption>
+        </figure>
+        <figure class="screenshot-card">
+          <img src="assets/screenshots/screen3.jpg" alt="Screenshot 3" />
+          <figcaption>Annotation</figcaption>
+        </figure>
+        <figure class="screenshot-card">
+          <img src="assets/screenshots/screen4.jpg" alt="Screenshot 4" />
+          <figcaption>Home Page</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TEAM ── -->
+  <section id="team" class="section section-mid">
+    <div class="container">
+      <div class="section-label">The Team</div>
+      <h2 class="section-title">Who Built This</h2>
+      <p class="team-intro">
+        <!-- Optional intro about the team -->
+        David Watts and Patrick Oberholzer from Haddonfield New Jersey. Both juniors passionate about computer science and engineering and good friends and students.
+      </p>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">
+            <img src="assets/team/patrick.png" alt="Patrick" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="team-avatar-fallback">PO</div>
+          </div>
+          <div class="team-info">
+            <h3>Patrick Oberholzer</h3>
+            <p>Backend and Architectural Engineer</p>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">
+            <img src="assets/team/david.png" alt="David" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="team-avatar-fallback">DW</div>
+          </div>
+          <div class="team-info">
+            <h3>David Watts</h3>
+            <p>Frontend Designer and Developer</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LINKS ── -->
+  <section id="links" class="section section-dark">
+    <div class="container links-container">
+      <div class="section-label">Links</div>
+      <h2 class="section-title">Get Draftly</h2>
+      <div class="links-grid">
+        <a href="https://draftly-notes.com" class="link-card" target="_blank" rel="noopener">
+          <span class="link-icon">◉</span>
+          <span class="link-label">Website</span>
+          <span class="link-arrow">→</span>
+        </a>
+        <a href="https://github.com/pati08/hybrid-notes-flutter" class="link-card" target="_blank" rel="noopener">
+          <span class="link-icon">◈</span>
+          <span class="link-label">Frontend GitHub</span>
+          <span class="link-arrow">→</span>
+        </a>
+        <a href="https://github.com/pati08/hybrid-notes" class="link-card" target="_blank" rel="noopener">
+          <span class="link-icon">◈</span>
+          <span class="link-label">Backend GitHub</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="container footer-inner">
+      <span>Draftly &mdash; Congressional App Challenge &mdash; District <strong>NJ-01</strong></span>
+      <span class="footer-year">2026</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
+</html>
