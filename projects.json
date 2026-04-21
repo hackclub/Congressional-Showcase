@@ -1369,5 +1369,14 @@
   "thumbnail": "sites/MI-11/thumbnail.png",
   "location": { "lat": 42.4806, "lng": -83.4755, "label": "Novi, MI" },
   "district": "MI-11", "state": "MI", "tags": ["education", "ai"]
+},
+{
+  "slug": "NY-07",
+  "name": "Eduardo Almeyda",
+  "appName": "LearnIT",
+  "description": "An app designed to help student learn topics better, keep progress, and answer questions to improve learning with the use of AI.",
+  "thumbnail": "sites/NY-07/logo.png",
+  "location": { "lat": 40.7455, "lng": -73.9060, "label": "New York, NY" },
+  "district": "NY-07", "state": "NY", "tags": ["ai", "education"]
 }
 ]
