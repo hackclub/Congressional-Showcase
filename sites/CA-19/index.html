@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LeftoSense | Saumit Pathak</title>
+
+<link rel="stylesheet" href="../../assets/css/shared.css">
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  color: #1a1a1a;
+  background: linear-gradient(135deg, #f5f7ff, #eef2ff);
+}
+
+/* BACK BUTTON */
+.back-to-showcase {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 5rem 2rem 3rem;
+}
+
+.hero h1 {
+  font-size: 3.2rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #4560b3, #7b8cff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-top: 0.8rem;
+}
+
+.hero .badge {
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #2f4590;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* CARD */
+section {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+
+section:hover {
+  transform: translateY(-4px);
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  line-height: 1.7;
+  color: #444;
+}
+
+/* FEATURES */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.feature {
+  background: #f6f8ff;
+  padding: 1.2rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8ff;
+}
+
+.feature h3 {
+  color: #2c3e94;
+  margin-bottom: 0.5rem;
+}
+
+/* VIDEO */
+.video iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+}
+
+/* LINKS */
+.links a {
+  display: inline-block;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  background: #4560b3;
+  color: white;
+  transition: 0.2s;
+}
+
+.links a:hover {
+  background: #2f4590;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+}
+</style>
+</head>
+
+<body>
+
+<a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+<div class="hero">
+  <h1>LeftoSense</h1>
+  <p>Reduce Food Waste with AI Technology</p>
+<div>
+
+<div class="container">
+
+<section>
+<h2>About Me</h2>
+<p><strong>Saumit Pathak</strong> is a passionate high school student from Silver Creek High School in San Jose, California, driven by a deep commitment to addressing food waste and helping his community through innovative technology.</p>
+
+<p>His love for food and concern about the global food waste crisis inspired him to combine his interests in artificial intelligence and computer science to create LeftoSense. This AI-powered solution helps individuals and families make informed decisions about food freshness, ultimately reducing waste and supporting local food banks.</p>
+
+<p>Through LeftoSense, Saumit aims to empower communities with technology that makes a real difference, demonstrating how young innovators can tackle critical environmental and social challenges.</p>
+</section>
+
+<section>
+<h2>Why This Matters</h2>
+<p>
+Food waste is one of the biggest global challenges today — nearly one-third of all food produced is wasted. This leads to environmental damage, financial loss, and missed opportunities to feed communities in need.
+</p>
+
+<p>
+LeftoSense brings AI into everyday life, helping people make smarter food decisions and reduce unnecessary waste.
+</p>
+</section>
+
+<section>
+<h2>About LeftoSense</h2>
+<p>
+LeftoSense is an AI-powered application that helps users determine food freshness and reduce waste through intelligent image analysis and real-time insights.
+</p>
+
+<div class="features">
+  <div class="feature">
+    <h3>AI-Powered Scanning</h3>
+    <p>Advanced CNN models analyze produce quality and detect spoilage instantly.</p>
+  </div>
+
+  <div class="feature">
+    <h3>Reduce Waste</h3>
+    <p>Make informed decisions about food safety and extend shelf life.</p>
+  </div>
+
+  <div class="feature">
+    <h3>Community Impact</h3>
+    <p>Find donation centers and help reduce food insecurity.</p>
+  </div>
+</div>
+</section>
+
+<section>
+<h2>Impact</h2>
+<p>
+LeftoSense empowers individuals and families to reduce waste, save money, and support their communities.
+</p>
+
+<div class="features">
+  <div class="feature">
+    <h3>Environmental</h3>
+    <p>Reduces landfill waste and carbon footprint.</p>
+  </div>
+
+  <div class="feature">
+    <h3>Economic</h3>
+    <p>Helps households save money by using food efficiently.</p>
+  </div>
+
+  <div class="feature">
+    <h3>Social</h3>
+    <p>Encourages donations and strengthens communities.</p>
+  </div>
+</div>
+</section>
+
+<section class="video">
+<h2>Demo</h2>
+<iframe
+  src="https://www.youtube.com/embed/BVPAs-c_RV0"
+  title="LeftoSense Demo Video"
+  allowfullscreen>
+</iframe>
+</section>
+
+<section>
+<h2>Links</h2>
+<div class="links">
+  <a href="https://www.youtube.com/watch?v=BVPAs-c_RV0" target="_blank">YouTube Demo</a>
+  <a href="https://leftosense.org/" target="_blank">Live Website</a>
+  <a href="#">GitHub</a>
+</div>
+</section>
+
+</div>
+
+<footer>
+<p>Congressional App Challenge • Saumit Pathak • LeftoSense</p>
+</footer>
+
+<script src="../../assets/js/nav.js" data-root="../../"></script>
+
+</body>
+</html>
