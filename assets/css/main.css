@@ -59,6 +59,11 @@ img {
   height: auto;
 }
 
+/* Leaflet tiles need native sizing — the global img rule above breaks tile alignment */
+.leaflet-container img {
+  max-width: none;
+}
+
 /* Hero — light background so dark navy logo pops */
 .hero {
   color: var(--cac-navy);

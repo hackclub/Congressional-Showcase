@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MotionBloom | Aharshi Bhattacharjee</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --lavender: #7c3aed;
+      --lavender-light: #c4b5fd;
+      --lavender-pale: #ede9fe;
+      --lavender-bg: #f5f3ff;
+      --green-soft: #6ee7b7;
+      --green-mid: #34d399;
+      --green-deep: #059669;
+      --green-pale: #ecfdf5;
+      --bloom-pink: #f9a8d4;
+      --cream: #fafaf9;
+      --text-dark: #1e1b4b;
+      --text-body: #3b3662;
+      --text-muted: #7c7998;
+      --mesh-1: #f5f3ff;
+      --mesh-2: #ecfdf5;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Albert Sans', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* -- BACK BUTTON -- */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      text-decoration: none;
+      background: rgba(30,27,75,0.9);
+      color: var(--lavender-light);
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      backdrop-filter: blur(8px);
+      transition: transform 0.2s;
+      box-shadow: 0 2px 12px rgba(124,58,237,0.2);
+    }
+    .back-link::before { content: '\2190'; font-size: 0.95rem; }
+    .back-link:hover { transform: translateY(-2px); }
+
+    /* -- HERO -- */
+    .hero {
+      position: relative;
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 2rem 4rem;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 25% 50%, rgba(124,58,237,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 75% 50%, rgba(110,231,183,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 80%, rgba(249,168,212,0.08) 0%, transparent 50%),
+        linear-gradient(180deg, #f5f3ff 0%, #ecfdf5 50%, #fafaf9 100%);
+    }
+
+    /* Blooming petals */
+    .petal {
+      position: absolute;
+      border-radius: 50% 0 50% 0;
+      pointer-events: none;
+    }
+
+    .petal-1 {
+      width: 120px; height: 120px;
+      top: 15%; left: 10%;
+      background: radial-gradient(ellipse, rgba(124,58,237,0.08), transparent);
+      animation: driftA 12s ease-in-out infinite;
+    }
+    .petal-2 {
+      width: 90px; height: 90px;
+      top: 25%; right: 12%;
+      background: radial-gradient(ellipse, rgba(110,231,183,0.1), transparent);
+      animation: driftB 10s ease-in-out infinite;
+      border-radius: 0 50% 0 50%;
+    }
+    .petal-3 {
+      width: 150px; height: 150px;
+      bottom: 20%; left: 20%;
+      background: radial-gradient(ellipse, rgba(249,168,212,0.08), transparent);
+      animation: driftA 14s ease-in-out infinite;
+    }
+    .petal-4 {
+      width: 80px; height: 80px;
+      bottom: 30%; right: 18%;
+      background: radial-gradient(ellipse, rgba(124,58,237,0.06), transparent);
+      animation: driftB 11s ease-in-out infinite;
+      border-radius: 0 50% 0 50%;
+    }
+    .petal-5 {
+      width: 60px; height: 60px;
+      top: 40%; left: 35%;
+      background: radial-gradient(ellipse, rgba(110,231,183,0.08), transparent);
+      animation: driftA 9s ease-in-out infinite;
+    }
+
+    @keyframes driftA {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(12px, -8px) rotate(5deg); }
+    }
+
+    @keyframes driftB {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-10px, 10px) rotate(-4deg); }
+    }
+
+    /* Hand with tracking dots */
+    .hero-hand {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .tracking-dots {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .tracking-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--lavender);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .tracking-dot:nth-child(2) { background: var(--green-mid); animation-delay: 0.3s; }
+    .tracking-dot:nth-child(3) { background: var(--bloom-pink); animation-delay: 0.6s; }
+    .tracking-dot:nth-child(4) { background: var(--lavender); animation-delay: 0.9s; }
+    .tracking-dot:nth-child(5) { background: var(--green-mid); animation-delay: 1.2s; }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.5); opacity: 1; }
+    }
+
+    .hero-cats {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .cat-pill {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 6px;
+      background: rgba(124,58,237,0.1);
+      color: var(--lavender);
+      border: 1px solid rgba(124,58,237,0.2);
+    }
+
+    .cat-pill.green {
+      background: rgba(110,231,183,0.15);
+      color: var(--green-deep);
+      border-color: rgba(5,150,105,0.2);
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(2.8rem, 8vw, 5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--text-dark);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero h1 .bloom {
+      color: var(--lavender);
+      font-weight: 600;
+    }
+
+    .hero-sub {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 400;
+      color: var(--text-muted);
+      max-width: 550px;
+      text-align: center;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-meta {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    .hero-meta strong { color: var(--text-dark); font-weight: 700; }
+
+    /* -- ORGANIC DIVIDER -- */
+    .organic-div {
+      height: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .organic-div::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lavender-light), var(--green-soft), transparent);
+      border-radius: 1px;
+    }
+
+    /* -- MAIN LAYOUT -- */
+    .content-wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 1.5rem 3rem;
+    }
+
+    /* -- SECTIONS -- */
+    .block {
+      margin-bottom: 3.5rem;
+    }
+
+    .label {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--lavender);
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+      font-weight: 500;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+
+    p {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-body);
+      margin-bottom: 1rem;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* -- ORGANIC CARD -- */
+    .organic-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2.2rem 2.4rem;
+      border: 1px solid var(--lavender-pale);
+      box-shadow:
+        0 4px 20px rgba(124,58,237,0.05),
+        0 1px 4px rgba(0,0,0,0.03);
+    }
+
+    /* -- DATA READOUT CARD -- */
+    .data-panel {
+      background: var(--text-dark);
+      border-radius: 12px;
+      padding: 1.8rem 2rem;
+      color: #fff;
+      font-family: 'Albert Sans', sans-serif;
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .data-cell {
+      text-align: center;
+    }
+
+    .data-cell .data-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--green-soft);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .data-cell .data-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* -- FEATURE CARDS -- */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+
+    @media (max-width: 600px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    .feature-item {
+      background: #fff;
+      border-radius: 14px;
+      padding: 1.5rem;
+      border: 1px solid var(--lavender-pale);
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(124,58,237,0.1);
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .feature-icon.purple { background: var(--lavender-pale); }
+    .feature-icon.green { background: var(--green-pale); }
+
+    .feature-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+    .feature-icon.purple svg { stroke: var(--lavender); }
+    .feature-icon.green svg { stroke: var(--green-deep); }
+
+    .feature-text h3 {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.2rem;
+    }
+
+    .feature-text p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* -- TECH -- */
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 1rem;
+    }
+
+    .tech-chip {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.55rem 1.2rem;
+      border-radius: 10px;
+      background: var(--lavender-pale);
+      color: var(--lavender);
+    }
+
+    .tech-chip.alt {
+      background: var(--green-pale);
+      color: var(--green-deep);
+    }
+
+    /* -- VIDEO -- */
+    .video-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(124,58,237,0.1);
+      margin-top: 1.2rem;
+      border: 2px solid var(--lavender-pale);
+    }
+
+    .video-wrap iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* -- BLOOM QUOTE -- */
+    .bloom-quote {
+      background: linear-gradient(145deg, var(--text-dark), #2d2860);
+      border-radius: 16px;
+      padding: 2.8rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      margin: 3rem 0;
+    }
+
+    .bloom-quote::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(124,58,237,0.15), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .bloom-quote::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -30px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(110,231,183,0.1), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .bloom-quote blockquote {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.1rem, 2.3vw, 1.4rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.92);
+      position: relative;
+      z-index: 1;
+    }
+
+    .bloom-quote cite {
+      display: block;
+      margin-top: 1.2rem;
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.72rem;
+      font-style: normal;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--lavender-light);
+    }
+
+    /* -- LINKS -- */
+    .links-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 1.2rem;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      padding: 0.7rem 1.4rem;
+      border-radius: 10px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(124,58,237,0.15); }
+
+    .action-btn.purple {
+      background: var(--lavender);
+      color: #fff;
+    }
+    .action-btn.dark {
+      background: var(--text-dark);
+      color: var(--lavender-light);
+    }
+
+    .action-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* -- FOOTER -- */
+    footer {
+      background: var(--text-dark);
+      color: #fff;
+      text-align: center;
+      padding: 2.2rem 1.5rem;
+    }
+
+    footer p {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6) !important;
+    }
+
+    footer a {
+      color: var(--lavender-light) !important;
+      text-decoration: underline;
+    }
+
+    /* -- RESPONSIVE -- */
+    @media (max-width: 600px) {
+      .hero { min-height: auto; padding: 5rem 1.5rem 3rem; }
+      .organic-card { padding: 1.5rem; }
+      .bloom-quote { padding: 2rem 1.5rem; }
+      .data-panel { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-link">Back to Showcase</a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <!-- Blooming petals -->
+    <div class="petal petal-1"></div>
+    <div class="petal petal-2"></div>
+    <div class="petal petal-3"></div>
+    <div class="petal petal-4"></div>
+    <div class="petal petal-5"></div>
+
+    <div class="hero-hand">
+      <div class="tracking-dots">
+        <span class="tracking-dot"></span>
+        <span class="tracking-dot"></span>
+        <span class="tracking-dot"></span>
+        <span class="tracking-dot"></span>
+        <span class="tracking-dot"></span>
+      </div>
+    </div>
+
+    <div class="hero-cats">
+      <span class="cat-pill">Health</span>
+      <span class="cat-pill">AI</span>
+      <span class="cat-pill green">Accessibility</span>
+    </div>
+
+    <h1>Motion<span class="bloom">Bloom</span></h1>
+    <p class="hero-sub">
+      AI-driven therapy that tracks hand tremors in real time and uses interactive video gating to help patients improve motor control.
+    </p>
+    <p class="hero-meta">
+      NC-02 &bull; Morrisville, NC &bull; Built by <strong>Aharshi Bhattacharjee</strong>
+    </p>
+  </header>
+
+  <div class="organic-div"></div>
+
+  <!-- CONTENT -->
+  <div class="content-wrap">
+
+    <!-- Quote -->
+    <div class="bloom-quote block" style="margin-top: 0;">
+      <blockquote>
+        MotionBloom creates a biofeedback loop where movement directly controls the experience &mdash; video playback responds to tremor intensity, gently encouraging patients toward smoother, more stable motion over time.
+      </blockquote>
+      <cite>&mdash; Aharshi Bhattacharjee, MotionBloom</cite>
+    </div>
+
+    <!-- About the Creator -->
+    <section class="block">
+      <p class="label">The Creator</p>
+      <h2>Meet Aharshi Bhattacharjee</h2>
+      <div class="organic-card">
+        <p>
+          Aharshi is a high school junior from North Carolina with a deep focus on neuroscience and artificial intelligence. She has conducted neuroscience research, built AI-powered tools, and developed medical and accessibility software &mdash; all driven by the belief that technology should make meaningful, tangible differences in people's lives.
+        </p>
+      </div>
+    </section>
+
+    <!-- About the App -->
+    <section class="block">
+      <p class="label">The App</p>
+      <h2>What is MotionBloom?</h2>
+      <div class="organic-card">
+        <p>
+          MotionBloom is designed for patients with Parkinson's disease and tremor disorders. Using the device camera, it employs computer vision and machine learning to track hand movement in real time and classify tremor severity.
+        </p>
+        <p>
+          The core innovation is movement-responsive video gating: video playback pauses when tremor increases or movement becomes unstable, creating a natural biofeedback loop that encourages motor stabilization without explicit instruction. Sensitivity thresholds are fully adjustable to accommodate a wide range of patient needs.
+        </p>
+      </div>
+
+      <!-- Data readout panel -->
+      <div class="data-panel">
+        <div class="data-cell">
+          <span class="data-value">Real-Time</span>
+          <span class="data-label">Tracking Speed</span>
+        </div>
+        <div class="data-cell">
+          <span class="data-value">CV + ML</span>
+          <span class="data-label">Detection Engine</span>
+        </div>
+        <div class="data-cell">
+          <span class="data-value">Adaptive</span>
+          <span class="data-label">Sensitivity</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="block">
+      <p class="label">Core Capabilities</p>
+      <h2>Key Features</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <div class="feature-icon purple">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div class="feature-text">
+            <h3>Hand Tracking</h3>
+            <p>Camera-based real-time hand position and movement analysis.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon green">
+            <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div class="feature-text">
+            <h3>Tremor Classification</h3>
+            <p>ML-powered severity detection and movement pattern analysis.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon purple">
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div class="feature-text">
+            <h3>Video Gating</h3>
+            <p>Playback responds to movement stability as biofeedback.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon green">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          </div>
+          <div class="feature-text">
+            <h3>Adjustable Thresholds</h3>
+            <p>Custom sensitivity levels for different severity stages.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="organic-div"></div>
+
+    <!-- Tech Stack -->
+    <section class="block">
+      <p class="label">Built With</p>
+      <h2>Technology</h2>
+      <div class="tech-list">
+        <span class="tech-chip">Computer Vision</span>
+        <span class="tech-chip alt">Machine Learning</span>
+        <span class="tech-chip">Camera-Based Tracking</span>
+        <span class="tech-chip alt">Tremor Classification</span>
+      </div>
+    </section>
+
+    <!-- Demo Video -->
+    <section class="block">
+      <p class="label">See It In Action</p>
+      <h2>Demo Video</h2>
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube.com/embed/Wa3fRuTOna0"
+          title="MotionBloom App Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </section>
+
+    <!-- Links -->
+    <section class="block">
+      <p class="label">Explore</p>
+      <h2>Links</h2>
+      <div class="links-flex">
+        <a href="https://github.com/h3clinic/motionbloom" class="action-btn dark" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          GitHub Repository
+        </a>
+        <a href="https://www.youtube.com/watch?v=Wa3fRuTOna0" class="action-btn purple" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/>
+          </svg>
+          Watch Demo
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge &mdash; NC-02 &bull; Health / AI / Accessibility &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

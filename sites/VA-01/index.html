@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TroopCompanion | Faribah Nuha, Jay Chauhan, Obaloluwa Ogunade &amp; Jack Gardner</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #4D7C0F;
+      --primary-dark: #3F6212;
+      --primary-light: #ECFCCB;
+      --primary-50: #F7FEE7;
+      --secondary: #65A30D;
+      --secondary-light: #D9F99D;
+      --accent: #4F46E5;
+      --white: #FFFFFF;
+      --bg: #F8FAFC;
+      --text: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --border: #E2E8F0;
+      --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Outfit', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+    .back-nav { position: fixed; top: 1.2rem; left: 1.4rem; z-index: 100; text-decoration: none; font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; color: var(--primary); background: var(--white); border: 1px solid var(--border); padding: 0.5rem 1.1rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; box-shadow: var(--card-shadow); transition: background 0.2s, border-color 0.2s; }
+    .back-nav:hover { background: var(--primary-50); border-color: var(--primary); }
+    .back-nav svg { width: 14px; height: 14px; }
+
+    .hero { position: relative; padding: 7rem 2rem 4rem; background: linear-gradient(180deg, #F7FEE7 0%, #ECFCCB 30%, var(--white) 100%); overflow: hidden; }
+    .neural-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .neural-bg .node { position: absolute; width: 6px; height: 6px; background: rgba(77,124,15,0.08); border-radius: 50%; }
+    .neural-bg .node::after { content: ''; position: absolute; top: 3px; left: 3px; width: 80px; height: 1px; background: linear-gradient(to right, rgba(77,124,15,0.06), transparent); transform-origin: left center; }
+    .neural-bg .node:nth-child(1) { top: 15%; left: 5%; } .neural-bg .node:nth-child(1)::after { transform: rotate(30deg); }
+    .neural-bg .node:nth-child(2) { top: 25%; left: 18%; } .neural-bg .node:nth-child(2)::after { transform: rotate(-15deg); width: 60px; }
+    .neural-bg .node:nth-child(3) { top: 10%; right: 15%; } .neural-bg .node:nth-child(3)::after { transform: rotate(160deg); }
+    .neural-bg .node:nth-child(4) { top: 40%; right: 8%; } .neural-bg .node:nth-child(4)::after { transform: rotate(200deg); width: 100px; }
+    .neural-bg .node:nth-child(5) { bottom: 30%; left: 12%; } .neural-bg .node:nth-child(5)::after { transform: rotate(-40deg); width: 70px; }
+    .neural-bg .node:nth-child(6) { bottom: 20%; right: 25%; } .neural-bg .node:nth-child(6)::after { transform: rotate(140deg); }
+
+    .hero-inner { max-width: 800px; margin: 0 auto; position: relative; z-index: 2; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .hero-chip { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; padding: 0.3rem 0.8rem; border-radius: 6px; border: 1px solid var(--border); background: var(--white); color: var(--text-secondary); }
+    .hero-chip.olive { background: var(--primary-light); color: var(--primary); border-color: transparent; }
+    .hero-chip.lime { background: var(--secondary-light); color: var(--secondary); border-color: transparent; }
+
+    .hero h1 { font-family: 'Outfit', sans-serif; font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 700; color: var(--text); line-height: 1.15; margin-bottom: 1rem; }
+    .hero h1 span { color: var(--primary); }
+    .hero-desc { font-size: 1.1rem; font-weight: 400; color: var(--text-secondary); line-height: 1.7; max-width: 620px; margin-bottom: 2rem; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .hero-meta-item { font-size: 0.82rem; color: var(--text-muted); }
+    .hero-meta-item strong { color: var(--text); font-weight: 600; }
+
+    .page-main { max-width: 1080px; margin: 0 auto; padding: 3rem 2rem 4rem; }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-bottom: 3rem; }
+    @media (max-width: 800px) { .dashboard-grid { grid-template-columns: 1fr; } }
+    .dash-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.8rem; box-shadow: var(--card-shadow); transition: transform 0.2s, box-shadow 0.2s; }
+    .dash-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .dash-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+    .dash-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .dash-icon.olive { background: var(--primary-light); }
+    .dash-icon.lime { background: var(--secondary-light); }
+    .dash-icon.indigo { background: #EEF2FF; }
+    .dash-card-title { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+    .dash-card h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 0.6rem; }
+    .dash-card p { font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); }
+
+    .section-heading { margin-bottom: 1.5rem; }
+    .section-heading .label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary); margin-bottom: 0.4rem; }
+    .section-heading h2 { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--text); line-height: 1.25; }
+
+    .content-panel { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 2.2rem 2.5rem; box-shadow: var(--card-shadow); margin-bottom: 3rem; }
+    .content-panel p { font-size: 1rem; line-height: 1.85; color: var(--text-secondary); }
+    .content-panel p + p { margin-top: 1rem; }
+
+    .creators-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 3rem; }
+    @media (max-width: 650px) { .creators-grid { grid-template-columns: 1fr; } }
+    .creator-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; box-shadow: var(--card-shadow); }
+    .creator-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
+    .creator-avatar { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: var(--white); }
+    .creator-avatar.olive { background: var(--primary); }
+    .creator-avatar.lime { background: var(--secondary); }
+    .creator-avatar.indigo { background: var(--accent); }
+    .creator-avatar.teal { background: #0D9488; }
+    .creator-name { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+    .creator-role { font-size: 0.75rem; color: var(--text-muted); }
+    .creator-card p { font-size: 0.9rem; line-height: 1.75; color: var(--text-secondary); }
+    .creator-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.8rem; }
+    .creator-tag { font-size: 0.68rem; font-weight: 500; color: var(--text-muted); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.2rem 0.6rem; }
+
+    .tech-stack { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+    .tech-bar { display: flex; align-items: center; gap: 8px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 1rem; box-shadow: var(--card-shadow); }
+    .tech-dot { width: 8px; height: 8px; border-radius: 2px; }
+    .tech-dot.olive { background: var(--primary); }
+    .tech-dot.lime { background: var(--secondary); }
+    .tech-dot.indigo { background: var(--accent); }
+    .tech-dot.orange { background: #F59E0B; }
+    .tech-bar-name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .tech-bar-role { font-size: 0.68rem; color: var(--text-muted); }
+
+    .video-panel { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-top: 1rem; }
+    .video-panel iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: none; }
+
+    .highlight-box { background: linear-gradient(135deg, var(--primary-50) 0%, #F0FDF4 100%); border: 1px solid rgba(77,124,15,0.1); border-radius: 12px; padding: 2rem 2.2rem; margin-bottom: 3rem; }
+    .highlight-box .quote-mark { font-family: 'Lora', serif; font-size: 3rem; color: var(--primary); opacity: 0.2; line-height: 1; margin-bottom: 0.5rem; }
+    .highlight-box blockquote { font-family: 'Lora', serif; font-size: 1.1rem; font-style: italic; color: var(--text); line-height: 1.7; }
+    .highlight-box cite { display: block; margin-top: 0.8rem; font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-style: normal; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+
+    .links-flex { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1rem; }
+    .action-btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 600; padding: 0.7rem 1.4rem; border-radius: 8px; transition: transform 0.15s, box-shadow 0.2s; }
+    .action-btn:hover { transform: translateY(-1px); }
+    .action-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .action-btn.primary { background: var(--primary); color: var(--white); box-shadow: 0 2px 10px rgba(77,124,15,0.2); }
+    .action-btn.primary:hover { box-shadow: 0 4px 15px rgba(77,124,15,0.3); }
+    .action-btn.outline { background: var(--white); color: var(--primary); border: 1px solid var(--border); box-shadow: var(--card-shadow); }
+
+    footer { background: var(--text); padding: 2.5rem 2rem; text-align: center; }
+    footer p { font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 500; color: rgba(255,255,255,0.4); }
+    footer a { color: rgba(255,255,255,0.6); text-decoration: none; font-weight: 600; }
+    footer a:hover { color: var(--white); text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1.5rem 3rem; }
+      .page-main { padding: 2rem 1.2rem 3rem; }
+      .content-panel { padding: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-nav">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+    Showcase
+  </a>
+
+  <header class="hero">
+    <div class="neural-bg"><div class="node"></div><div class="node"></div><div class="node"></div><div class="node"></div><div class="node"></div><div class="node"></div></div>
+    <div class="hero-inner">
+      <div class="hero-chips">
+        <span class="hero-chip olive">Health</span>
+        <span class="hero-chip lime">Civic</span>
+        <span class="hero-chip">AI</span>
+        <span class="hero-chip">Accessibility</span>
+        <span class="hero-chip">VA-01</span>
+      </div>
+      <h1>Troop<span>Companion</span></h1>
+      <p class="hero-desc">A veteran mental health app providing 24/7 PTSD support via an AI therapist, breathing exercises, and medication tracking for those who served.</p>
+      <div class="hero-meta">
+        <span class="hero-meta-item"><strong>Creators:</strong> Faribah Nuha, Jay Chauhan, Obaloluwa Ogunade &amp; Jack Gardner</span>
+        <span class="hero-meta-item"><strong>Location:</strong> Glen Allen, VA</span>
+        <span class="hero-meta-item"><strong>District:</strong> VA-01</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-main">
+    <div class="highlight-box">
+      <div class="quote-mark">"</div>
+      <blockquote>Providing our veterans with accessible, always-available mental health support through AI-powered therapy, guided exercises, and comprehensive medication management.</blockquote>
+      <cite>Mission Statement</cite>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <div class="dash-card-header"><div class="dash-icon olive">&#x1F916;</div><span class="dash-card-title">AI Therapy</span></div>
+        <h3>24/7 PTSD Support</h3>
+        <p>An AI-powered therapist available around the clock, providing empathetic conversation and evidence-based coping strategies for PTSD.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header"><div class="dash-icon lime">&#x1F4A8;</div><span class="dash-card-title">Wellness</span></div>
+        <h3>Breathing Exercises</h3>
+        <p>Guided breathing exercises and mindfulness techniques designed specifically for veterans dealing with anxiety and stress.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header"><div class="dash-icon indigo">&#x1F48A;</div><span class="dash-card-title">Medication</span></div>
+        <h3>Medication Tracker</h3>
+        <p>Track medication schedules, set reminders, and maintain a comprehensive record of prescriptions and dosages.</p>
+      </div>
+    </div>
+
+    <div class="section-heading"><p class="label">The Builders</p><h2>About the Creators</h2></div>
+    <div class="creators-grid">
+      <div class="creator-card">
+        <div class="creator-card-header">
+          <div class="creator-avatar olive">FN</div>
+          <div><div class="creator-name">Faribah Nuha</div><div class="creator-role">Glen Allen, VA</div></div>
+        </div>
+        <p>Dedicated to leveraging AI for veteran mental health support and creating accessible wellness tools.</p>
+        <div class="creator-tags"><span class="creator-tag">AI</span><span class="creator-tag">Health</span></div>
+      </div>
+      <div class="creator-card">
+        <div class="creator-card-header">
+          <div class="creator-avatar lime">JC</div>
+          <div><div class="creator-name">Jay Chauhan</div><div class="creator-role">Glen Allen, VA</div></div>
+        </div>
+        <p>Focused on building reliable backend systems that keep veteran support available 24/7.</p>
+        <div class="creator-tags"><span class="creator-tag">Backend</span><span class="creator-tag">Systems</span></div>
+      </div>
+      <div class="creator-card">
+        <div class="creator-card-header">
+          <div class="creator-avatar indigo">OO</div>
+          <div><div class="creator-name">Obaloluwa Ogunade</div><div class="creator-role">Glen Allen, VA</div></div>
+        </div>
+        <p>Passionate about creating intuitive user experiences that make mental health tools welcoming and easy to use.</p>
+        <div class="creator-tags"><span class="creator-tag">Frontend</span><span class="creator-tag">UX</span></div>
+      </div>
+      <div class="creator-card">
+        <div class="creator-card-header">
+          <div class="creator-avatar teal">JG</div>
+          <div><div class="creator-name">Jack Gardner</div><div class="creator-role">Glen Allen, VA</div></div>
+        </div>
+        <p>Committed to ensuring the app meets the real needs of veterans through research and community engagement.</p>
+        <div class="creator-tags"><span class="creator-tag">Research</span><span class="creator-tag">Community</span></div>
+      </div>
+    </div>
+
+    <div class="section-heading"><p class="label">The App</p><h2>How It Works</h2></div>
+    <div class="content-panel">
+      <p>TroopCompanion is a comprehensive mental health app designed specifically for veterans. At its core is an AI-powered therapist that provides 24/7 support for PTSD, offering empathetic conversations and evidence-based coping strategies whenever veterans need help.</p>
+      <p>The app also includes guided breathing exercises for anxiety management, a medication tracker with reminders, and wellness monitoring tools. By combining AI therapy with practical health management features, TroopCompanion provides holistic support for veteran mental health.</p>
+    </div>
+
+    <div class="section-heading"><p class="label">Built With</p><h2>Technology Stack</h2></div>
+    <div class="tech-stack" style="margin-bottom: 3rem;">
+      <div class="tech-bar"><span class="tech-dot olive"></span><span class="tech-bar-name">React</span><span class="tech-bar-role">&middot; Frontend</span></div>
+      <div class="tech-bar"><span class="tech-dot lime"></span><span class="tech-bar-name">AI/NLP</span><span class="tech-bar-role">&middot; Therapy</span></div>
+      <div class="tech-bar"><span class="tech-dot indigo"></span><span class="tech-bar-name">Node.js</span><span class="tech-bar-role">&middot; Backend</span></div>
+      <div class="tech-bar"><span class="tech-dot orange"></span><span class="tech-bar-name">Firebase</span><span class="tech-bar-role">&middot; Database</span></div>
+    </div>
+
+    <div class="section-heading"><p class="label">In Action</p><h2>Demo Video</h2></div>
+    <div style="margin-bottom: 3rem;">
+      <div class="video-panel">
+        <iframe src="https://www.youtube.com/embed/NUIK8kFSut0" title="TroopCompanion Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+    </div>
+
+    <div class="section-heading"><p class="label">Explore</p><h2>Project Links</h2></div>
+    <div style="margin-bottom: 2rem;">
+      <div class="links-flex">
+        <a href="https://github.com/JayChauhan2/CAC.git" class="action-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+        <a href="https://www.youtube.com/watch?v=NUIK8kFSut0" class="action-btn outline" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 4.5v7l5-3.5-5-3.5z"/></svg>
+          Watch on YouTube
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge 2025 &bull; VA-01 &bull; Glen Allen, VA &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delta Protein Atlas | Adel Sisy</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-deep: #060B18;
+      --bg-panel: #0C1428;
+      --bg-card: #101D38;
+      --cyan: #00E5FF;
+      --cyan-dim: #0097A7;
+      --magenta: #E040FB;
+      --magenta-dim: #9C27B0;
+      --text-primary: #E8EDF5;
+      --text-secondary: #8A9BBF;
+      --text-muted: #4A5A7A;
+      --border: rgba(0,229,255,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Exo 2', 'Segoe UI', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BACK ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      text-decoration: none;
+      background: var(--bg-panel);
+      color: var(--cyan);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      transition: border-color 0.2s, transform 0.15s;
+      box-shadow: 0 0 20px rgba(0,229,255,0.08);
+    }
+    .back-link:hover { border-color: var(--cyan); transform: translateX(-2px); }
+    .back-link::before { content: '<'; font-size: 0.9rem; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--bg-deep);
+      position: relative;
+      overflow: hidden;
+      padding: 7rem 2rem 5rem;
+      text-align: center;
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* DNA Helix animation */
+    .dna-helix {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 100%;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+
+    .dna-strand {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .dna-strand circle {
+      animation: helixPulse 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes helixPulse {
+      from { opacity: 0.3; }
+      to { opacity: 1; }
+    }
+
+    /* Grid background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: linear-gradient(to top, var(--bg-deep), transparent);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--cyan-dim);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 .glow-cyan {
+      color: var(--cyan);
+      text-shadow: 0 0 30px rgba(0,229,255,0.4);
+    }
+
+    .hero h1 .glow-magenta {
+      color: var(--magenta);
+      text-shadow: 0 0 30px rgba(224,64,251,0.4);
+    }
+
+    .hero-sub {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-secondary);
+      max-width: 650px;
+      margin: 1rem auto 2.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Stat readouts */
+    .stat-readout {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-item {
+      text-align: center;
+      min-width: 140px;
+    }
+
+    .stat-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--cyan);
+      text-shadow: 0 0 12px rgba(0,229,255,0.3);
+      display: block;
+    }
+
+    .stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+      display: block;
+    }
+
+    /* ── MAIN ── */
+    .main-content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    /* ── SECTIONS ── */
+    .content-section {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-tag::before { content: '// '; color: var(--text-muted); }
+
+    h2 {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1.2rem;
+      line-height: 1.25;
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── PANELS ── */
+    .data-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem 2.2rem;
+      position: relative;
+    }
+
+    .data-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta), transparent);
+    }
+
+    /* Terminal-style header */
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(0,229,255,0.08);
+    }
+
+    .panel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .panel-dot.red { background: #FF5F56; }
+    .panel-dot.yellow { background: #FFBD2E; }
+    .panel-dot.green { background: #27C93F; }
+
+    .panel-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-left: 0.5rem;
+    }
+
+    /* ── TECH GRID — wireframe style ── */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .tech-node {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1.2rem 1.4rem;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+
+    .tech-node:hover {
+      border-color: var(--cyan);
+    }
+
+    .tech-node::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .tech-node-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .tech-node-role {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ── VIDEO ── */
+    .video-wrapper {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 1.2rem;
+      position: relative;
+      box-shadow: 0 0 40px rgba(0,229,255,0.06);
+    }
+
+    .video-wrapper iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* ── LINKS ── */
+    .link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.7rem 1.5rem;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .link-btn.cyan {
+      background: transparent;
+      color: var(--cyan);
+      border: 1px solid var(--cyan);
+    }
+    .link-btn.cyan:hover {
+      background: var(--cyan);
+      color: var(--bg-deep);
+      box-shadow: 0 0 20px rgba(0,229,255,0.3);
+    }
+
+    .link-btn svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), var(--magenta-dim), var(--border), transparent);
+      margin: 2rem 0 3rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg-panel);
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      text-align: center;
+      padding: 2rem;
+    }
+
+    footer p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted) !important;
+    }
+
+    footer a {
+      color: var(--cyan) !important;
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      .hero { padding: 5rem 1.5rem 3.5rem; min-height: auto; }
+      .stat-readout { gap: 1.2rem; }
+      .stat-item { min-width: 100px; }
+      .main-content { padding: 2rem 1.5rem 4rem; }
+      .data-panel { padding: 1.5rem; }
+      .tech-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-link">Back to Showcase</a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <p class="hero-label">Congressional App Challenge &bull; TX-09 &bull; Houston, TX</p>
+    <h1><span class="glow-cyan">Delta</span> <span class="glow-magenta">Protein</span> Atlas</h1>
+    <p class="hero-sub">A novel computational framework mapping diseases to protein sequences, structures, and mutation functions.</p>
+
+    <div class="stat-readout">
+      <div class="stat-item">
+        <span class="stat-value">1.2B</span>
+        <span class="stat-label">SNPs Processed</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">223,450</span>
+        <span class="stat-label">Variants Mapped</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">13,314</span>
+        <span class="stat-label">Diseases</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">ESM3 7B</span>
+        <span class="stat-label">Model</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- About -->
+    <section class="content-section">
+      <p class="section-tag">Researcher Profile</p>
+      <h2>Adel Sisy</h2>
+      <div class="data-panel">
+        <div class="panel-header">
+          <span class="panel-dot red"></span>
+          <span class="panel-dot yellow"></span>
+          <span class="panel-dot green"></span>
+          <span class="panel-title">about.txt</span>
+        </div>
+        <p>
+          Co-founder of Online Knowledge LLC and InspiredK.org, a 501(c)(3) nonprofit focused on AI and science education for students and young adults. My work bridges the intersection of artificial intelligence, computational biology, and education, aiming to make advanced scientific tools accessible to the next generation of researchers.
+        </p>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- App -->
+    <section class="content-section">
+      <p class="section-tag">System Overview</p>
+      <h2>Disease-to-Mutation Computational Framework</h2>
+      <div class="data-panel">
+        <div class="panel-header">
+          <span class="panel-dot red"></span>
+          <span class="panel-dot yellow"></span>
+          <span class="panel-dot green"></span>
+          <span class="panel-title">delta_atlas --describe</span>
+        </div>
+        <p>
+          Delta Protein Atlas is a computational framework that integrates variant databases, deep learning protein structure prediction, and binding site analysis to connect diseases to specific proteins and mutations. The platform processes 1.2 billion SNPs, maps 223,450 variants across 13,314 genetic diseases, and uses ESM3 7B for structure prediction.
+        </p>
+        <p>
+          By unifying disease-gene associations with protein-level structural analysis, researchers can trace the functional impact of mutations from clinical phenotype through protein sequence all the way to three-dimensional structure and binding site disruption.
+        </p>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Tech Stack -->
+    <section class="content-section">
+      <p class="section-tag">Dependencies</p>
+      <h2>Technology Stack</h2>
+      <div class="tech-grid">
+        <div class="tech-node">
+          <span class="tech-node-name">ESM3 7B</span>
+          <span class="tech-node-role">Structure Prediction</span>
+        </div>
+        <div class="tech-node">
+          <span class="tech-node-name">Deep Learning</span>
+          <span class="tech-node-role">AI/ML Pipeline</span>
+        </div>
+        <div class="tech-node">
+          <span class="tech-node-name">Variant DBs</span>
+          <span class="tech-node-role">SNP Data Sources</span>
+        </div>
+        <div class="tech-node">
+          <span class="tech-node-name">Binding Analysis</span>
+          <span class="tech-node-role">Structural Biology</span>
+        </div>
+        <div class="tech-node">
+          <span class="tech-node-name">Python</span>
+          <span class="tech-node-role">Core Language</span>
+        </div>
+        <div class="tech-node">
+          <span class="tech-node-name">Disease Ontology</span>
+          <span class="tech-node-role">Classification</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Demo -->
+    <section class="content-section">
+      <p class="section-tag">Demo</p>
+      <h2>See It In Action</h2>
+      <div class="video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/0Ykcy1snpCA"
+          title="Delta Protein Atlas Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Links -->
+    <section class="content-section">
+      <p class="section-tag">External</p>
+      <h2>Links</h2>
+      <div class="link-row">
+        <a href="https://www.onlineknowledge.net/science-research" class="link-btn cyan" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/>
+          </svg>
+          Research Website
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Congressional App Challenge 2025 &bull; TX-09 &bull; Health &bull; AI &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

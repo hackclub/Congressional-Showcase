@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRISM | Diya Ramakrishnan</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white: #ffffff;
+      --off-white: #f8f9fc;
+      --gray-50: #f1f3f7;
+      --gray-100: #e4e7ee;
+      --gray-300: #b0b8c9;
+      --gray-600: #5a6478;
+      --gray-900: #1a1d27;
+      --prism-red: #ff4d4d;
+      --prism-orange: #ff8c42;
+      --prism-yellow: #ffd54f;
+      --prism-green: #4cdd8a;
+      --prism-cyan: #4dd0e1;
+      --prism-blue: #42a5f5;
+      --prism-violet: #ab47bc;
+      --spectrum: linear-gradient(90deg,
+        var(--prism-red),
+        var(--prism-orange),
+        var(--prism-yellow),
+        var(--prism-green),
+        var(--prism-cyan),
+        var(--prism-blue),
+        var(--prism-violet)
+      );
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Sora', 'Segoe UI', sans-serif;
+      background: var(--white);
+      color: var(--gray-900);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BACK */
+    .back-link {
+      position: fixed;
+      top: 1rem;
+      left: 1.2rem;
+      z-index: 200;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--gray-600);
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .back-link::before { content: '\2190'; font-size: 0.8rem; }
+    .back-link:hover { color: var(--gray-900); border-color: var(--gray-300); }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: var(--gray-900);
+      position: relative;
+      overflow: hidden;
+      padding: 7rem 2rem 5rem;
+      text-align: center;
+    }
+
+    /* Prismatic refraction lines */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        rgba(255,77,77,0.08) 30deg,
+        transparent 60deg,
+        rgba(255,140,66,0.06) 90deg,
+        transparent 120deg,
+        rgba(255,213,79,0.06) 150deg,
+        transparent 180deg,
+        rgba(76,221,138,0.06) 210deg,
+        transparent 240deg,
+        rgba(66,165,245,0.08) 270deg,
+        transparent 300deg,
+        rgba(171,71,188,0.06) 330deg,
+        transparent 360deg
+      );
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Fine grid pattern (medical/technical) */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray-300);
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 800;
+      line-height: 0.85;
+      letter-spacing: 0.15em;
+      color: transparent;
+      background: var(--spectrum);
+      -webkit-background-clip: text;
+      background-clip: text;
+      margin-bottom: 1.2rem;
+    }
+
+    /* Spectrum bar under title */
+    .spectrum-bar {
+      width: 200px;
+      height: 3px;
+      background: var(--spectrum);
+      margin: 0 auto 1.5rem;
+      border-radius: 2px;
+    }
+
+    .hero-subtitle {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+    }
+
+    .hero-details {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .hero-detail {
+      text-align: center;
+    }
+
+    .hero-detail-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 0.2rem;
+    }
+
+    .hero-detail-value {
+      font-family: 'Sora', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* ===== SPECTRUM DIVIDER ===== */
+    .spectrum-divider {
+      height: 3px;
+      background: var(--spectrum);
+    }
+
+    /* ===== CONTENT ===== */
+    .content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 4rem;
+    }
+
+    .block {
+      margin-bottom: 3.5rem;
+    }
+
+    .block-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray-300);
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 1.2rem;
+      line-height: 1.2;
+    }
+
+    /* Cards */
+    .prism-card {
+      background: var(--off-white);
+      border: 1px solid var(--gray-100);
+      border-radius: 8px;
+      padding: 2.2rem 2.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prism-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--spectrum);
+    }
+
+    .prism-card p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--gray-600);
+      margin-bottom: 0.8rem;
+    }
+    .prism-card p:last-child { margin-bottom: 0; }
+
+    /* Two-column layout for about */
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    @media (max-width: 650px) {
+      .split-layout { grid-template-columns: 1fr; }
+    }
+
+    .stat-card {
+      background: var(--off-white);
+      border: 1px solid var(--gray-100);
+      border-radius: 8px;
+      padding: 1.3rem 1.5rem;
+      border-left: 3px solid;
+    }
+
+    .stat-card:nth-child(1) { border-left-color: var(--prism-red); }
+    .stat-card:nth-child(2) { border-left-color: var(--prism-blue); }
+    .stat-card:nth-child(3) { border-left-color: var(--prism-green); }
+    .stat-card:nth-child(4) { border-left-color: var(--prism-violet); }
+
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gray-300);
+      margin-bottom: 0.2rem;
+    }
+
+    .stat-value {
+      font-family: 'Sora', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+
+    /* Mission block */
+    .mission-block {
+      background: var(--gray-900);
+      border-radius: 8px;
+      padding: 2.5rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mission-block::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--spectrum);
+    }
+
+    .mission-block blockquote {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .mission-block cite {
+      display: block;
+      margin-top: 1.2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      font-style: normal;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* TECH */
+    .tech-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .tech-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: var(--off-white);
+      border: 1px solid var(--gray-100);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+    }
+
+    .tech-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .tech-pill:nth-child(1) .tech-dot { background: var(--prism-red); }
+    .tech-pill:nth-child(2) .tech-dot { background: var(--prism-yellow); }
+    .tech-pill:nth-child(3) .tech-dot { background: var(--prism-cyan); }
+    .tech-pill:nth-child(4) .tech-dot { background: var(--prism-violet); }
+
+    .tech-info .tech-name {
+      font-family: 'Sora', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      display: block;
+    }
+
+    .tech-info .tech-role {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-300);
+    }
+
+    /* VIDEO */
+    .video-wrap {
+      margin-top: 1.2rem;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--gray-100);
+      position: relative;
+    }
+
+    .video-wrap::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--spectrum);
+      z-index: 1;
+    }
+
+    .video-wrap iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* LINKS */
+    .link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Sora', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.7rem 1.5rem;
+      border-radius: 6px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .link-btn:hover { transform: translateY(-1px); }
+
+    .link-btn.primary {
+      background: var(--gray-900);
+      color: #fff;
+      border: none;
+    }
+    .link-btn.primary:hover { box-shadow: 0 4px 16px rgba(26,29,39,0.2); }
+
+    .link-btn svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--gray-900);
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--spectrum);
+    }
+
+    footer p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5) !important;
+    }
+
+    footer a {
+      color: rgba(255,255,255,0.75) !important;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 5.5rem 1.2rem 3.5rem; }
+      .content { padding: 2.5rem 1.2rem 3rem; }
+      .prism-card { padding: 1.5rem 1.5rem; }
+      .hero-details { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-link">Back to Showcase</a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">MI-08 &middot; Congressional App Challenge &middot; Saginaw, MI</p>
+      <h1>PRISM</h1>
+      <div class="spectrum-bar"></div>
+      <p class="hero-subtitle">
+        AI-guided surgical precision for pancreatic operations. Splitting complexity into clarity.
+      </p>
+      <div class="hero-details">
+        <div class="hero-detail">
+          <div class="hero-detail-label">Creator</div>
+          <div class="hero-detail-value">Diya Ramakrishnan</div>
+        </div>
+        <div class="hero-detail">
+          <div class="hero-detail-label">Category</div>
+          <div class="hero-detail-value">Health / AI</div>
+        </div>
+        <div class="hero-detail">
+          <div class="hero-detail-label">Year</div>
+          <div class="hero-detail-value">2025</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="spectrum-divider"></div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- Mission -->
+    <div class="block">
+      <div class="mission-block">
+        <blockquote>
+          A surgical AI tool designed to guide pancreatic surgeons, addressing complication rates exceeding 40% through intelligent pre-operative planning and real-time mixed-reality assistance.
+        </blockquote>
+        <cite>-- Mission Statement // PRISM</cite>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="block">
+      <span class="block-label">// creator</span>
+      <h2>About Diya</h2>
+      <div class="prism-card">
+        <p>
+          Diya Ramakrishnan is a junior at Saginaw Arts and Sciences Academy. She is passionate about computer science, engineering, and biology, with aspirations toward a career in biomedical engineering.
+        </p>
+        <p>
+          PRISM represents the intersection of her interests -- using cutting-edge technology to solve real medical challenges and improve patient outcomes in one of the most complex areas of surgery.
+        </p>
+      </div>
+      <div class="split-layout" style="margin-top: 1rem;">
+        <div class="stat-card">
+          <div class="stat-label">School</div>
+          <div class="stat-value">Saginaw Arts & Sciences Academy</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Grade</div>
+          <div class="stat-value">Junior (11th)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Focus</div>
+          <div class="stat-value">Biomedical Engineering</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Interests</div>
+          <div class="stat-value">CS, Engineering, Biology</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Description -->
+    <div class="block">
+      <span class="block-label">// application</span>
+      <h2>About PRISM</h2>
+      <div class="prism-card">
+        <p>
+          PRISM addresses pancreatic surgery complications (exceeding 40% rates) through a dual-component system. The pre-operative software handles tumor segmentation and surgical planning, while the mixed-reality headset software detects 10+ critical organs and blood vessels in real-time during surgery.
+        </p>
+        <p>
+          By combining advanced image segmentation with augmented reality guidance, PRISM gives surgeons unprecedented visibility during complex procedures. Surgeons estimate a potential 10-30% reduction in complication rates when using the system.
+        </p>
+      </div>
+    </div>
+
+    <!-- Tech Stack -->
+    <div class="block">
+      <span class="block-label">// stack</span>
+      <h2>Technology</h2>
+      <div class="tech-row">
+        <div class="tech-pill">
+          <div class="tech-dot"></div>
+          <div class="tech-info"><span class="tech-name">Python</span><span class="tech-role">Core Language</span></div>
+        </div>
+        <div class="tech-pill">
+          <div class="tech-dot"></div>
+          <div class="tech-info"><span class="tech-name">U-Net</span><span class="tech-role">Segmentation</span></div>
+        </div>
+        <div class="tech-pill">
+          <div class="tech-dot"></div>
+          <div class="tech-info"><span class="tech-name">YOLO</span><span class="tech-role">Object Detection</span></div>
+        </div>
+        <div class="tech-pill">
+          <div class="tech-dot"></div>
+          <div class="tech-info"><span class="tech-name">Mixed Reality</span><span class="tech-role">Headset Software</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo Video -->
+    <div class="block">
+      <span class="block-label">// demonstration</span>
+      <h2>Demo</h2>
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube.com/embed/RWk1lVdsA7M"
+          title="PRISM App Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Links -->
+    <div class="block">
+      <span class="block-label">// links</span>
+      <h2>Explore</h2>
+      <div class="link-row">
+        <a href="https://www.youtube.com/watch?v=RWk1lVdsA7M" class="link-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/>
+          </svg>
+          Watch on YouTube
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge &middot; MI-08 &middot; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

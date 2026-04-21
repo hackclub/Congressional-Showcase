@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- TODO: Change the title to your app name and your name -->
+  <title>My App Name | Your Name</title>
+
+  <!-- Shared styles — gives you navigation arrows and CAC CSS variables -->
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DisasterReady — About</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #EEF3FB; color: #0d1f3c; }
+    .page { max-width: 940px; margin: 0 auto; padding: 0 1.25rem 5rem; }
+
+    /* HERO */
+    .hero { position: relative; overflow: hidden; background: #1155CC; border-radius: 28px; padding: 3rem 2.5rem; margin: 1.5rem 0; }
+    .hero-blob1 { position: absolute; width: 320px; height: 320px; border-radius: 50%; background: #4A90D9; opacity: 0.22; top: -100px; right: -80px; pointer-events: none; }
+    .hero-blob2 { position: absolute; width: 180px; height: 180px; border-radius: 50%; background: #74B7F5; opacity: 0.18; bottom: -60px; left: 80px; pointer-events: none; }
+    .hero-blob3 { position: absolute; width: 90px; height: 90px; border-radius: 50%; background: #A0CFFF; opacity: 0.25; top: 30px; left: 43%; pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 2.2rem; flex-wrap: wrap; }
+    .app-logo { width: 100px; height: 100px; border-radius: 22px; flex-shrink: 0; overflow: hidden; border: 3px solid rgba(255,255,255,0.3); }
+    .app-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-text h1 { font-size: 2.5rem; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 0.35rem; line-height: 1.1; }
+    .hero-text h1 span { color: #A8D4FF; }
+    .hero-tagline { font-size: 1.05rem; color: #C8E2FF; line-height: 1.65; max-width: 500px; margin-bottom: 1rem; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .badge { font-size: 11.5px; font-weight: 600; padding: 5px 13px; border-radius: 20px; }
+    .b-white { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.25); }
+    .b-sky { background: #0D3D7A; color: #7ECBFF; border: 1px solid #1a5faa; }
+    .b-green { background: #0B3320; color: #6EE7B7; }
+    .b-amber { background: #3D1F00; color: #FCD34D; }
+
+    /* SECTION LABEL */
+    .sec-label { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; margin-bottom: 1rem; }
+    .sdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* WHAT IS */
+    .what-is { background: #fff; border-radius: 24px; padding: 2.5rem; margin-bottom: 1.5rem; border: 1.5px solid #D0E4F7; position: relative; overflow: hidden; }
+    .wi-deco1 { position: absolute; top: -50px; right: -50px; width: 220px; height: 220px; border-radius: 50%; background: #EAF3FD; pointer-events: none; }
+    .wi-deco2 { position: absolute; bottom: -40px; left: 30px; width: 120px; height: 120px; border-radius: 50%; background: #E8F5EE; pointer-events: none; }
+    .wi-inner { position: relative; z-index: 1; }
+    .wi-inner h2 { font-size: 1.65rem; font-weight: 800; color: #0d1f3c; letter-spacing: -0.5px; margin-bottom: 0.75rem; }
+    .wi-inner h2 span { color: #1155CC; }
+    .wi-body { font-size: 0.98rem; color: #4a5e7a; line-height: 1.8; margin-bottom: 1.5rem; max-width: 660px; }
+    .stat-row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+    .scard { border-radius: 16px; padding: 1.1rem 1.25rem; }
+    .scard-blue { background: #EAF3FD; }
+    .scard-teal { background: #E8F5F0; }
+    .scard-sky { background: #FFF8E1; }
+    .snum { font-size: 1.75rem; font-weight: 800; margin-bottom: 2px; }
+    .scard-blue .snum { color: #1155CC; }
+    .scard-teal .snum { color: #0A7A55; }
+    .scard-sky .snum { color: #C47A00; }
+    .slabel { font-size: 12px; font-weight: 600; }
+    .scard-blue .slabel { color: #1A6BD4; }
+    .scard-teal .slabel { color: #0A7A55; }
+    .scard-sky .slabel { color: #C47A00; }
+
+    /* VIDEO */
+    .vsec { background: #fff; border-radius: 24px; padding: 2rem; margin-bottom: 1.5rem; border: 1.5px solid #D0E4F7; }
+    .vwrap { position: relative; width: 100%; padding-bottom: 56.25%; border-radius: 16px; overflow: hidden; border: 1.5px solid #D0E4F7; background: #EAF3FD; }
+    .vwrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+    /* FEATURES */
+    .fsec { background: #fff; border-radius: 24px; padding: 2rem; margin-bottom: 1.5rem; border: 1.5px solid #D0E4F7; }
+    .fgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px,1fr)); gap: 10px; }
+    .fc { border-radius: 16px; padding: 1.1rem; border: 1.5px solid transparent; }
+    .fc1 { background: #EAF3FD; border-color: #BDD8F5; }
+    .fc2 { background: #E8F5F0; border-color: #A0DCC0; }
+    .fc3 { background: #FFF8E1; border-color: #FAD96A; }
+    .fc4 { background: #FDF0F8; border-color: #F5B8E0; }
+    .fc5 { background: #EEF0FF; border-color: #C5CAF5; }
+    .fc6 { background: #FFF4EC; border-color: #FACBA0; }
+    .ficon { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 9px; }
+    .fc1 .ficon { background: #C5DFF7; }
+    .fc2 .ficon { background: #B0DFC5; }
+    .fc3 .ficon { background: #FAE68A; }
+    .fc4 .ficon { background: #F5C6E8; }
+    .fc5 .ficon { background: #C5CAF5; }
+    .fc6 .ficon { background: #FAD0A8; }
+    .ficon svg { width: 16px; height: 16px; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+    .fc1 .ficon svg { stroke: #1155CC; }
+    .fc2 .ficon svg { stroke: #0A7A55; }
+    .fc3 .ficon svg { stroke: #C47A00; }
+    .fc4 .ficon svg { stroke: #B03080; }
+    .fc5 .ficon svg { stroke: #3A40C0; }
+    .fc6 .ficon svg { stroke: #B05A10; }
+    .fc h3 { font-size: 13.5px; font-weight: 700; margin-bottom: 4px; }
+    .fc1 h3 { color: #0A3A8C; }
+    .fc2 h3 { color: #074D35; }
+    .fc3 h3 { color: #7A4A00; }
+    .fc4 h3 { color: #6B1A50; }
+    .fc5 h3 { color: #1E2480; }
+    .fc6 h3 { color: #6B3000; }
+    .fc p { font-size: 12px; line-height: 1.55; }
+    .fc1 p { color: #1A5FAA; }
+    .fc2 p { color: #0A7A55; }
+    .fc3 p { color: #9A6A00; }
+    .fc4 p { color: #9A2060; }
+    .fc5 p { color: #2A30A0; }
+    .fc6 p { color: #9A4000; }
+
+    /* TWO COL */
+    .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1.5rem; margin-bottom: 1.5rem; }
+
+    /* TEAM */
+    .tsec { background: #fff; border-radius: 24px; padding: 2rem; border: 1.5px solid #D0E4F7; }
+    .tgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px,1fr)); gap: 10px; }
+    .tcard { border-radius: 16px; padding: 1.25rem 1rem 1.1rem; text-align: center; border: 1.5px solid; }
+    .tcard:nth-child(1) { background: #EAF3FD; border-color: #BDD8F5; }
+    .tcard:nth-child(2) { background: #E8F5F0; border-color: #A0DCC0; }
+    .tcard:nth-child(3) { background: #FDF0F8; border-color: #F5B8E0; }
+    .tcard:nth-child(4) { background: #FFF8E1; border-color: #FAD96A; }
+    .tavatar { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; margin: 0 auto 10px; }
+    .tcard:nth-child(1) .tavatar { background: #BDD8F5; color: #0A3A8C; }
+    .tcard:nth-child(2) .tavatar { background: #A0DCC0; color: #074D35; }
+    .tcard:nth-child(3) .tavatar { background: #F5B8E0; color: #6B1A50; }
+    .tcard:nth-child(4) .tavatar { background: #FAD96A; color: #7A4A00; }
+    .tname { font-size: 13.5px; font-weight: 700; margin-bottom: 3px; }
+    .tcard:nth-child(1) .tname { color: #0A3A8C; }
+    .tcard:nth-child(2) .tname { color: #074D35; }
+    .tcard:nth-child(3) .tname { color: #6B1A50; }
+    .tcard:nth-child(4) .tname { color: #7A4A00; }
+    .trole { font-size: 11.5px; font-weight: 500; }
+    .tcard:nth-child(1) .trole { color: #1155CC; }
+    .tcard:nth-child(2) .trole { color: #0A7A55; }
+    .tcard:nth-child(3) .trole { color: #B03080; }
+    .tcard:nth-child(4) .trole { color: #C47A00; }
+
+    /* INFO */
+    .isec { background: #fff; border-radius: 24px; padding: 2rem; border: 1.5px solid #D0E4F7; }
+    .igrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px,1fr)); gap: 10px; }
+    .icard { background: #EAF3FD; border-radius: 14px; padding: 1rem 1.1rem; border: 1px solid #C5DFF7; }
+    .ilabel { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #1A6BD4; margin-bottom: 5px; }
+    .ival { font-size: 14px; font-weight: 600; color: #0d1f3c; }
+    .ival a { color: #1155CC; text-decoration: none; }
+    .ival a:hover { text-decoration: underline; }
+
+    /* TECH */
+    .tech { background: #0d1f3c; border-radius: 24px; padding: 2rem; border: 1.5px solid #1A3A6A; position: relative; overflow: hidden; }
+    .tech-b1 { position: absolute; top: -60px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: #1155CC; opacity: 0.12; pointer-events: none; }
+    .tech-b2 { position: absolute; bottom: -30px; left: 42%; width: 110px; height: 110px; border-radius: 50%; background: #4A90D9; opacity: 0.1; pointer-events: none; }
+    .tech-inner { position: relative; z-index: 1; }
+    .tpill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: 8px; }
+    .tpill { border-radius: 20px; padding: 7px 14px; text-align: center; font-size: 12.5px; font-weight: 600; }
+    .tpill-blue { background: #1A3A6A; color: #7ECBFF; border: 1px solid #2A5AAA; }
+    .tpill-sky { background: #0d2d4d; color: #A8D4FF; border: 1px solid #1155CC; }
+    .tpill-amber { background: #3D2500; color: #FCD34D; border: 1px solid #6A4000; }
+    .tpill-gray { background: #1A2A40; color: #94B8D8; border: 1px solid #2A3A55; }
+
+    /* CTA */
+    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.5rem; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 24px; font-size: 14px; font-weight: 700; text-decoration: none; transition: opacity 0.15s; cursor: pointer; }
+    .btn:hover { opacity: 0.82; }
+    .btn-primary { background: #1155CC; color: #fff; }
+    .btn-github { background: #1A3A6A; color: #7ECBFF; border: 1.5px solid #2A5AAA; }
+
+    .footer-bar { text-align: center; padding-top: 2rem; font-size: 12px; color: #6A8AAA; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-blob1"></div>
+    <div class="hero-blob2"></div>
+    <div class="hero-blob3"></div>
+    <div class="hero-inner">
+      <div class="app-logo">
+        <img src="logo.png" alt="DisasterReady" />
+      </div>
+      <div class="hero-text">
+        <h1>Disaster<span>Ready</span></h1>
+        <p class="hero-tagline">AI-powered disaster preparedness for every household — real-time alerts, smart risk assessment, and emergency planning all in one place.</p>
+        <div class="badge-row">
+          <span class="badge b-white">AI Powered</span>
+          <span class="badge b-sky">React + TypeScript</span>
+          <span class="badge b-amber">Oklahoma City, OK</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT IS -->
+  <div class="what-is">
+    <div class="wi-deco1"></div>
+    <div class="wi-deco2"></div>
+    <div class="wi-inner">
+      <div class="sec-label" style="color:#1155CC;">
+        <div class="sdot" style="background:#1155CC;"></div>What is DisasterReady?
+      </div>
+      <h2>Preparing for disasters,<br><span>before they happen</span></h2>
+      <p class="wi-body">DisasterReady is an AI-assisted web application that helps families and individuals build real disaster preparedness — not just awareness. It pulls live data from weather services, FEMA, and the National Weather Service to give you a real-time picture of risk in your area, then guides you through personalized emergency plans, supply checklists, evacuation routes, and household management tools. Everything is built for reliability it's available exactly when you need it most.</p>
+      <div class="stat-row">
+        <div class="scard scard-blue">
+          <div class="snum">6+</div>
+          <div class="slabel">Disaster types covered</div>
+        </div>
+        <div class="scard scard-teal">
+          <div class="snum">Live</div>
+          <div class="slabel">Real-time weather data</div>
+        </div>
+        <div class="scard scard-sky">
+          <div class="snum">Powered by</div>
+          <div class="slabel">Gemini</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIDEO -->
+  <div class="vsec">
+    <div class="sec-label" style="color:#0A7A55;">
+      <div class="sdot" style="background:#0A7A55;"></div>Demo Video
+    </div>
+    <div class="vwrap">
+      <iframe src="https://player.vimeo.com/video/1132293386?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479"
+        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+        title="DisasterReady Demo"></iframe>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="fsec">
+    <div class="sec-label" style="color:#0A7A55;">
+      <div class="sdot" style="background:#0A7A55;"></div>Key Features
+    </div>
+    <div class="fgrid">
+      <div class="fc fc1">
+        <div class="ficon">
+          <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3>Real-Time Alerts</h3>
+        <p>OpenWeatherMap + NWS feeds with active emergency notifications.</p>
+      </div>
+      <div class="fc fc2">
+        <div class="ficon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Risk Assessment</h3>
+        <p>AI-driven local risk scoring from weather and forecast data.</p>
+      </div>
+      <div class="fc fc3">
+        <div class="ficon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h3>Interactive Maps</h3>
+        <p>Shelters, medical facilities, and evacuation routes via Google Maps.</p>
+      </div>
+      <div class="fc fc4">
+        <div class="ficon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <h3>Emergency Planning</h3>
+        <p>Custom plans for earthquakes, floods, wildfires, and hurricanes.</p>
+      </div>
+      <div class="fc fc5">
+        <div class="ficon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        </div>
+        <h3>Household Management</h3>
+        <p>Track supplies, pets, and medical needs for every member.</p>
+      </div>
+      <div class="fc fc6">
+        <div class="ficon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <h3>Powered by Gemini</h3>
+        <p>Uses Gemini API for reliable service.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM + INFO -->
+  <div class="two-col">
+    <div class="tsec">
+      <div class="sec-label" style="color:#B03080;">
+        <div class="sdot" style="background:#B03080;"></div>Meet the Team
+      </div>
+      <div class="tgrid">
+        <div class="tcard">
+          <div class="tavatar">SB</div>
+          <div class="tname">Samaksh Bhargav</div>
+
+        </div>
+        <div class="tcard">
+          <div class="tavatar">AS</div>
+          <div class="tname">Amogh Sheth</div>
+        </div>
+        <div class="tcard">
+          <div class="tavatar">JC</div>
+          <div class="tname">Jiya Chopra</div>
+        </div>
+        <div class="tcard">
+          <div class="tavatar">KA</div>
+          <div class="tname">Karthika</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="isec">
+      <div class="sec-label" style="color:#1155CC;">
+        <div class="sdot" style="background:#1155CC;"></div>Project Info
+      </div>
+      <div class="igrid">
+        <div class="icard">
+          <div class="ilabel">Location</div>
+          <div class="ival">Oklahoma City, Oklahoma</div>
+        </div>
+        <div class="icard">
+          <div class="ilabel">District</div>
+          <div class="ival">OK-05 · Rep. Stephanie Bice</div>
+        </div>
+        <div class="icard">
+          <div class="ilabel">Live App</div>
+          <div class="ival"><a href="https://disasterready.vercel.app" target="_blank">disasterready.vercel.app ↗</a></div>
+        </div>
+        <div class="icard">
+          <div class="ilabel">Source Code</div>
+          <div class="ival"><a href="https://github.com/AmoghSheth/DisasterReady" target="_blank">GitHub ↗</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TECH -->
+  <div class="tech">
+    <div class="tech-b1"></div>
+    <div class="tech-b2"></div>
+    <div class="tech-inner">
+      <div class="sec-label">
+        <div class="sdot" style="background:#7ECBFF;"></div>
+        <span style="color:#7ECBFF;">Built With · Technology · JavaScript</span>
+      </div>
+      <div class="tpill-grid">
+        <div class="tpill tpill-sky">JavaScript</div>
+        <div class="tpill tpill-sky">TypeScript</div>
+        <div class="tpill tpill-blue">React 18</div>
+        <div class="tpill tpill-blue">Vite</div>
+        <div class="tpill tpill-blue">Tailwind CSS</div>
+        <div class="tpill tpill-blue">shadcn/ui</div>
+        <div class="tpill tpill-amber">OpenWeatherMap</div>
+        <div class="tpill tpill-amber">Google Maps API</div>
+        <div class="tpill tpill-amber">FEMA API</div>
+        <div class="tpill tpill-amber">NWS API</div>
+        <div class="tpill tpill-gray">LocalStorage</div>
+        <div class="tpill tpill-gray">Vercel</div>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://disasterready.vercel.app" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Open Live App
+        </a>
+        <a class="btn btn-github" href="https://github.com/AmoghSheth/DisasterReady" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+          </svg>
+          View on GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">DisasterReady · Oklahoma City, OK · Congressional District OK-05 · Rep. Stephanie Bice</div>
+
+</div>
+<script src="https://player.vimeo.com/api/player.js"></script>
+
+
+  
+  <!-- Navigation script — enables arrow key navigation. Do NOT remove this. -->
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>

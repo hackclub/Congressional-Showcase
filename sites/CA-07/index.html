@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RecycleRightCA | Omar Ahmad & Preston Chang</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;900&family=Lexend:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
+  <style>
+    :root {
+      --earth-green: #1b4332;
+      --vibrant-leaf: #40916c;
+      --neon-sprout: #b7e4c7;
+      --sky-glow: #d8f3dc;
+      --glass-green: rgba(27, 67, 50, 0.85);
+      --gold: #f1c40f;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      background: #081c15;
+      color: var(--sky-glow);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* --- ANIMATED NATURE BACKGROUND --- */
+    .nature-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at 50% 50%, #1b4332 0%, #081c15 100%);
+    }
+
+    .leaf-particle {
+      position: absolute;
+      color: var(--vibrant-leaf);
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: -1;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+      20% { opacity: 0.6; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* --- HERO HEADER --- */
+    header {
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+    }
+
+    .hero-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(3rem, 12vw, 6rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      background: linear-gradient(to bottom, var(--neon-sprout), var(--vibrant-leaf));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+      letter-spacing: -2px;
+    }
+
+    .author-tag {
+      font-size: 1.1rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--neon-sprout);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 1rem;
+    }
+
+    /* --- LAYOUT --- */
+    .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+
+    section {
+      background: var(--glass-green);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 40px;
+      padding: 3.5rem;
+      margin-bottom: 4rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+
+    section.active { opacity: 1; transform: translateY(0); }
+
+    h2 {
+      font-family: 'Unbounded', sans-serif;
+      color: var(--neon-sprout);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    /* --- BUILT WITH SECTION --- */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .tech-pill {
+      background: rgba(255,255,255,0.1);
+      padding: 10px 20px;
+      border-radius: 50px;
+      border: 1px solid var(--vibrant-leaf);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .tech-pill:hover { background: var(--vibrant-leaf); transform: translateY(-3px); }
+    .tech-pill i { color: var(--neon-sprout); }
+
+    /* --- SCREENSHOTS SECTION --- */
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 2rem;
+    }
+
+    .mockup-container {
+      background: #111;
+      border: 8px solid #222;
+      border-radius: 35px;
+      aspect-ratio: 9 / 19.5;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    .mockup-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .placeholder-img {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1b4332, #081c15);
+      color: var(--vibrant-leaf);
+      text-align: center;
+      padding: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    /* --- VIDEO --- */
+    .video-wrapper {
+      border-radius: 30px;
+      overflow: hidden;
+      border: 4px solid var(--vibrant-leaf);
+    }
+    iframe { width: 100%; aspect-ratio: 16/9; border: none; display: block; }
+
+    /* --- BUTTONS --- */
+    .btn-group { display: flex; gap: 20px; justify-content: center; margin-top: 2rem; }
+    .btn {
+      padding: 1.2rem 2.5rem;
+      border-radius: 100px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.4s;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.8rem;
+    }
+    .btn-primary { background: var(--vibrant-leaf); color: white; }
+    .btn-primary:hover { background: var(--neon-sprout); color: var(--earth-green); transform: scale(1.05); }
+
+    .back-to-showcase {
+      position: fixed;
+      top: 30px; left: 30px;
+      z-index: 1000;
+      background: var(--glass-green);
+      padding: 10px 20px;
+      border-radius: 50px;
+      color: var(--neon-sprout) !important;
+      text-decoration: none;
+      border: 1px solid var(--vibrant-leaf);
+    }
+
+    footer { text-align: center; padding: 4rem; opacity: 0.6; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+
+  <div class="nature-bg" id="leaf-field"></div>
+
+  <a href="../../" class="back-to-showcase"><i class="fa-solid fa-arrow-left"></i> SHOWCASE</a>
+
+  <div class="container">
+    <header>
+      <div class="author-tag">
+        <i class="fa-solid fa-seedling"></i> Omar Ahmad & Preston Chang
+      </div>
+      <h1 class="hero-title">Recycle<br>Right CA</h1>
+      <p style="font-size: 1.3rem; margin-top: 1.5rem; max-width: 800px; margin-inline: auto;">
+        Gamifying the green revolution in California. Level up your impact and save the planet, one scan at a time.
+      </p>
+    </header>
+
+    <section>
+      <h2><i class="fa-solid fa-gamepad"></i> The Gameplay</h2>
+      <p>Why is recycling confusing? We decided to fix it by making it a game. <strong>RecycleRightCA</strong> uses intelligent scanning to identify your waste and awards you points for making the right choice. It's an interactive quest for a cleaner California.</p>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 2rem;">
+        <div style="text-align: center; padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 20px;">
+          <i class="fa-solid fa-camera" style="font-size: 2rem; color: var(--gold);"></i>
+          <h4 style="margin-top: 10px;">AI Scanner</h4>
+        </div>
+        <div style="text-align: center; padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 20px;">
+          <i class="fa-solid fa-trophy" style="font-size: 2rem; color: var(--gold);"></i>
+          <h4 style="margin-top: 10px;">Leaderboards</h4>
+        </div>
+        <div style="text-align: center; padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 20px;">
+          <i class="fa-solid fa-map-pin" style="font-size: 2rem; color: var(--gold);"></i>
+          <h4 style="margin-top: 10px;">Local Specs</h4>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2><i class="fa-solid fa-mobile-screen-button"></i> App Gallery</h2>
+      <div class="screenshot-grid">
+        <div class="mockup-container">
+          <img src="HomeScreen.png" />
+        </div>
+        <div class="mockup-container">
+          <img src="Map.png" />
+        </div>
+        <div class="mockup-container">
+          <img src="RewardsScreen.png" />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2><i class="fa-solid fa-microchip"></i> Tech Arsenal</h2>
+      <div class="tech-stack">
+        <div class="tech-pill"><i class="fa-brands fa-js"></i> JavaScript</div>
+        <div class="tech-pill"><i class="fa-brands fa-html5"></i> HTML5</div>
+        <div class="tech-pill"><i class="fa-brands fa-css3-alt"></i> CSS3</div>
+        <div class="tech-pill"><i class="fa-solid fa-brain"></i> Machine Learning</div>
+        <div class="tech-pill"><i class="fa-brands fa-github"></i> GitHub Pages</div>
+        <div class="tech-pill"><i class="fa-solid fa-fire"></i> Firebase API</div>
+      </div>
+    </section>
+
+    <section>
+      <h2><i class="fa-solid fa-play"></i> Watch the Demo</h2>
+      <div class="video-wrapper">
+        <iframe src="https://www.youtube.com/embed/W8oCgQ0U3w8?si=z8mEbrXdvEQicNk8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <section>
+      <h2><i class="fa-solid fa-user-group"></i> The Minds</h2>
+      <p>We are two student developers from <strong>Franklin High School</strong>. This project was born from our shared belief that technology should be the primary tool for environmental preservation. By combining gamification with real-world recycling data, we've created a platform that empowers our community.</p>
+      
+      <div class="btn-group">
+        <a href="https://unknowncode08.github.io/RecycleRightCA" class="btn btn-primary">LAUNCH APP</a>
+        <a href="https://github.com/unknowncode08/RecycleRightCA" class="btn" style="border: 1px solid var(--vibrant-leaf);">VIEW CODE</a>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    &copy; 2026 Omar Ahmad & Preston Chang &bull; Franklin High School &bull; Congressional App Challenge
+  </footer>
+
+  <script>
+    // Falling Leaf Particle System
+    const bg = document.getElementById('leaf-field');
+    const leafIcons = ['fa-leaf', 'fa-seedling', 'fa-wind'];
+    
+    function createLeaf() {
+      const leaf = document.createElement('i');
+      leaf.className = `fa-solid ${leafIcons[Math.floor(Math.random()*leafIcons.length)]} leaf-particle`;
+      leaf.style.left = Math.random() * 100 + 'vw';
+      leaf.style.animationDuration = (Math.random() * 10 + 10) + 's';
+      leaf.style.fontSize = (Math.random() * 1.5 + 0.5) + 'rem';
+      bg.appendChild(leaf);
+      setTimeout(() => leaf.remove(), 15000);
+    }
+    setInterval(createLeaf, 700);
+
+    // Scroll Reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('active');
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('section').forEach(s => observer.observe(s));
+  </script>
+
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>

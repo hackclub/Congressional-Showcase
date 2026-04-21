@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeartAngel | Catherine Wang</title>
+
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
+  <style>
+    :root {
+  --bg-white: #EEEDEA;
+  --accent-red: #e11d48;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-light: #f1f5f9;
+  } 
+
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--text-main);
+      background-color: var(--bg-white);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    header { text-align: center; margin-bottom: 4rem; }
+
+    /* The Logo Container */
+    .app-logo {
+      width: 140px;
+      height: auto;
+      margin: 0 auto 1.5rem;
+      display: block;
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+    }
+
+    header h1 { 
+      font-size: 3.5rem; 
+      font-weight: 800; 
+      letter-spacing: -0.05em;
+      color: var(--text-main);
+      margin-bottom: 0.5rem; 
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    section {
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 24px;
+      padding: 3rem;
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+    }
+
+    section:hover {
+      border-color: var(--accent-red);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 { 
+      font-size: 0.85rem; 
+      text-transform: uppercase; 
+      letter-spacing: 0.2em; 
+      color: var(--accent-red); 
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+
+    p { margin-bottom: 1.2rem; font-size: 1.15rem; color: #334155; }
+    
+    strong { color: var(--text-main); font-weight: 700; }
+    em { font-style: normal; font-weight: 700; color: var(--accent-red); }
+
+    .video iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 16px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: var(--text-main);
+      color: white !important;
+      border-radius: 100px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-red);
+      transform: scale(1.05);
+    }
+
+    .back-to-showcase {
+      position: fixed;
+      top: 2rem; left: 2rem;
+      color: var(--text-muted) !important;
+      font-weight: 600;
+      text-decoration: none;
+      z-index: 100;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-light);
+    }
+
+    footer {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <div class="container">
+    <header>
+      <img src="logo.png" alt="HeartAngel Logo" class="app-logo">
+      <h1>HeartAngel</h1>
+      <p class="subtitle">By Catherine Wang • CA-49 District Winner</p>
+    </header>
+
+    <section>
+      <h2>About Me</h2>
+      <p>Hi, I am Catherine, a high school student passionate about science, medicine, and technology. I enjoy combining coding and healthcare to create projects that can make a real-world impact. HeartAngel was developed from my desire to improve emergency response and help people take action during critical moments by providing real-time CPR guidance and connecting them to life-saving resources.</p>
+    </section>
+
+    <section>
+      <h2>About the App</h2>
+      <p><em>Giving Life A Second Chance.</em></p>
+     <p>HeartAngel is a mobile application designed to assist users during real-life cardiac arrest emergencies, while also offering a substantial tool for practicing CPR on a day-to-day basis with live compression feedback based on depth and speed accuracy. </p>
+      <p>This app is designed for anyone — especially bystanders who may not have formal medical training — so they can confidently take action in an emergency. It also aims to support a connected response system by linking users to nearby trained responders and AED devices during a real-life emergency. All together, HeartAngel bridges the gap of bystander unreadiness, limited access to emergency tools, and the need for faster, more coordinated responses during life-threatening situations. </p>
+      <p>HeartAngel was built using Flutter and Dart, allowing it to run across different platforms while providing a smooth and responsive user experience.</p>
+    </section>
+
+    <section class="video">
+      <h2>App Demo</h2>
+      <iframe
+        src="https://www.youtube.com/embed/l6hRitE_LRQ"
+        title="HeartAngel Demo"
+        allowfullscreen>
+      </iframe>
+    </section>
+
+    <section style="text-align: center; border: none; background: transparent;">
+      <a href="https://apps.apple.com/us/app/heartangel/id6743984944" class="btn-primary" target="_blank">
+        Download on App Store &rarr;
+      </a>
+    </section>
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge &bull; 2026</p>
+  </footer>
+
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+
+  <script>
+
+  </script>
+</body>
+</html> 

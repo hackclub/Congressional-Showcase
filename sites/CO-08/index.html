@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClearMind for Teens | CO-08 | Aditi Muthukumar</title>
+
+  <!-- Shared styles — gives you navigation arrows and CAC CSS variables -->
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,700;1,9..144,900&family=Cabinet+Grotesk:wght@300;400;500;700;800&family=Instrument+Mono:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --void:   #060d07;
+      --forest: #0b1c0d;
+      --moss:   #153318;
+      --pine:   #0f6b44;
+      --fern:   #1db974;
+      --lime:   #a8f04a;
+      --chalk:  #f2f5ee;
+      --fog:    rgba(242,245,238,0.55);
+      --mist:   rgba(242,245,238,0.22);
+      --gold:   #c8a84b;
+
+      --f-display: 'Fraunces', Georgia, serif;
+      --f-body:    'Cabinet Grotesk', system-ui, sans-serif;
+      --f-mono:    'Instrument Mono', monospace;
+
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--f-body);
+      background: var(--void);
+      color: var(--chalk);
+      overflow-x: hidden;
+      cursor: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Cursor ── */
+    #cur-ball {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--lime);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      margin: -5px 0 0 -5px;
+      mix-blend-mode: difference;
+      transition: width .3s var(--ease-back), height .3s var(--ease-back), margin .3s var(--ease-back);
+    }
+    #cur-ring {
+      position: fixed;
+      width: 42px; height: 42px;
+      border: 1px solid rgba(168,240,74,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      margin: -21px 0 0 -21px;
+    }
+    body.hov #cur-ball { width: 52px; height: 52px; margin: -26px 0 0 -26px; }
+    body.hov #cur-ring { border-color: transparent; }
+
+    /* ── Particle canvas ── */
+    #pcvs {
+      position: fixed; inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* ── Back link ── */
+    .back-to-showcase {
+      position: fixed;
+      top: 1.4rem; left: 1.8rem;
+      z-index: 200;
+      font-family: var(--f-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--lime);
+      text-decoration: none;
+      padding: .45rem 1.1rem;
+      border: 1px solid rgba(168,240,74,0.22);
+      border-radius: 100px;
+      backdrop-filter: blur(20px);
+      background: rgba(6,13,7,0.75);
+      transition: background .2s, border-color .2s, transform .3s var(--ease-back);
+    }
+    .back-to-showcase:hover {
+      background: rgba(168,240,74,0.09);
+      border-color: rgba(168,240,74,0.55);
+      transform: translateX(-2px);
+    }
+
+    /* ════════════════════════
+       HERO
+    ════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 9rem 2rem 6rem;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .glow-a {
+      position: absolute;
+      width: 1000px; height: 1000px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(29,185,116,0.13) 0%, transparent 58%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -53%);
+      pointer-events: none;
+      transition: transform .1s linear;
+    }
+    .glow-b {
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(168,240,74,0.08) 0%, transparent 65%);
+      bottom: -150px; right: -150px;
+      pointer-events: none;
+      animation: driftB 20s ease-in-out infinite;
+    }
+    @keyframes driftB {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%      { transform: translate(-50px,-70px) scale(1.1); }
+    }
+
+    /* Horizontal hairline at hero bottom */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 5%; right: 5%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(168,240,74,0.2), transparent);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 1050px;
+    }
+
+    /* Badge */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .7rem;
+      font-family: var(--f-mono);
+      font-size: 0.67rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 2.4rem;
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--lime);
+      border-radius: 50%;
+      animation: breathe 2.4s ease-in-out infinite;
+    }
+    .badge-rule { display: block; width: 28px; height: 1px; background: rgba(168,240,74,.4); }
+    @keyframes breathe {
+      0%,100% { box-shadow: 0 0 0 0 rgba(168,240,74,.6); }
+      50%      { box-shadow: 0 0 0 7px rgba(168,240,74,0); }
+    }
+
+    /* Giant title */
+    .hero-title {
+      font-family: var(--f-display);
+      font-size: clamp(4.5rem, 14vw, 12rem);
+      font-weight: 900;
+      line-height: 0.86;
+      letter-spacing: -0.03em;
+    }
+
+    .hw { display: block; overflow: hidden; }
+    .hw span {
+      display: block;
+    }
+    .hw2 span { color: var(--lime); font-style: italic; }
+    .hw3 span { font-size: 0.55em; letter-spacing: -0.01em; color: var(--fog); font-weight: 300; font-style: normal; }
+
+    /* Drawn underline */
+    .hero-line {
+      display: block;
+      height: 3px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--lime), var(--fern), transparent);
+      width: 42%;
+      margin: .4em auto 0;
+    }
+
+    .hero-sub {
+      font-size: clamp(.95rem, 1.8vw, 1.18rem);
+      font-weight: 300;
+      color: var(--fog);
+      max-width: 540px;
+      margin: 2.5rem auto 0;
+      line-height: 1.85;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+    }
+
+    .btn-fill {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      position: relative;
+      overflow: hidden;
+      font-family: var(--f-body);
+      font-weight: 700;
+      font-size: .88rem;
+      letter-spacing: .03em;
+      text-decoration: none;
+      padding: 1rem 2.2rem;
+      border-radius: 100px;
+      cursor: none;
+      background: var(--lime);
+      color: var(--void);
+      transition: transform .3s var(--ease-back), box-shadow .3s;
+    }
+    .btn-fill:hover { transform: scale(1.05); box-shadow: 0 16px 48px rgba(168,240,74,0.28); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: var(--f-body);
+      font-weight: 500;
+      font-size: .88rem;
+      letter-spacing: .03em;
+      text-decoration: none;
+      padding: 1rem 2.2rem;
+      border-radius: 100px;
+      border: 1px solid rgba(168,240,74,0.25);
+      color: var(--chalk);
+      cursor: none;
+      transition: border-color .2s, background .2s, transform .3s var(--ease-back);
+    }
+    .btn-ghost:hover { border-color: var(--lime); background: rgba(168,240,74,.07); transform: scale(1.03); }
+
+    /* Scroll cue */
+    .scroll-cue {
+      position: absolute;
+      bottom: 2.2rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+    }
+    .sc-label {
+      font-family: var(--f-mono);
+      font-size: .58rem;
+      letter-spacing: .2em;
+      color: rgba(168,240,74,.3);
+      text-transform: uppercase;
+    }
+    .sc-track {
+      width: 1px; height: 50px;
+      background: rgba(168,240,74,.12);
+      border-radius: 1px;
+      overflow: hidden;
+      position: relative;
+    }
+    .sc-fill {
+      position: absolute; top: -100%; left: 0; right: 0; height: 100%;
+      background: var(--lime);
+      animation: scFill 2s 1.5s ease-in-out infinite;
+    }
+    @keyframes scFill {
+      0%  { top:-100%; } 60% { top:100%; } 100% { top:100%; }
+    }
+
+    /* ════════════════════════
+       MARQUEE
+    ════════════════════════ */
+    .marquee {
+      position: relative; z-index: 1;
+      border-top: 1px solid rgba(168,240,74,.09);
+      border-bottom: 1px solid rgba(168,240,74,.09);
+      overflow: hidden;
+      padding: .9rem 0;
+      background: rgba(168,240,74,.02);
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    .m {
+      display: inline-flex;
+      align-items: center;
+      gap: 2rem;
+      padding: 0 2rem;
+      font-family: var(--f-mono);
+      font-size: .68rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(168,240,74,.3);
+      white-space: nowrap;
+    }
+    .m::after { content: '✦'; font-size: .45rem; color: rgba(168,240,74,.18); }
+
+    /* ════════════════════════
+       MAIN
+    ════════════════════════ */
+    main {
+      position: relative; z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 1.5rem 9rem;
+    }
+
+    .gap { height: 5.5rem; }
+
+    /* Section labels */
+    .sl {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: var(--f-mono);
+      font-size: .62rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(168,240,74,.45);
+      margin-bottom: 1rem;
+    }
+    .sl::before { content: attr(data-n); color: rgba(168,240,74,.2); }
+    .sl::after  { content: ''; flex:1; height:1px; background: rgba(168,240,74,.08); }
+
+    /* ── Panel ── */
+    .panel {
+      position: relative;
+      background: rgba(11,28,13,0.55);
+      border: 1px solid rgba(168,240,74,.07);
+      border-radius: 28px;
+      padding: 3rem;
+      margin-bottom: 1.4rem;
+      backdrop-filter: blur(28px);
+      overflow: hidden;
+      transition: border-color .3s;
+    }
+    .panel:hover { border-color: rgba(168,240,74,.14); }
+
+    /* Corner shimmer */
+    .panel::after {
+      content: '';
+      position: absolute;
+      top:0; right:0;
+      width:180px; height:180px;
+      background: radial-gradient(circle at top right, rgba(168,240,74,.05), transparent 65%);
+      border-radius: 0 28px 0 0;
+      pointer-events: none;
+    }
+
+    .panel h2 {
+      font-family: var(--f-display);
+      font-size: clamp(2rem, 4vw, 3.1rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -.025em;
+      margin-bottom: 1.2rem;
+    }
+    .panel p {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--fog);
+      line-height: 1.88;
+      margin-bottom: 1rem;
+    }
+    .panel p:last-child { margin-bottom:0; }
+
+    /* ── About split ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      align-items: center;
+    }
+    @media(max-width:620px){ .about-grid { grid-template-columns:1fr; } }
+
+    .monogram {
+      width: 150px; height: 150px;
+      flex-shrink: 0;
+      border-radius: 38% 62% 44% 56% / 56% 44% 62% 38%;
+      background: conic-gradient(from 200deg, var(--pine), var(--fern), var(--lime), var(--fern), var(--pine));
+      display: grid;
+      place-items: center;
+      font-family: var(--f-display);
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--void);
+      animation: morphMono 16s ease-in-out infinite;
+      box-shadow: 0 0 80px rgba(29,185,116,0.22), 0 0 160px rgba(29,185,116,.08);
+    }
+    @keyframes morphMono {
+      0%,100% { border-radius: 38% 62% 44% 56% / 56% 44% 62% 38%; }
+      33%      { border-radius: 56% 44% 62% 38% / 38% 62% 44% 56%; }
+      66%      { border-radius: 44% 56% 38% 62% / 62% 38% 56% 44%; }
+    }
+
+    /* ── Quote ── */
+    .quote-panel {
+      position: relative;
+      border-radius: 28px;
+      padding: 4.5rem 3.5rem;
+      margin-bottom: 1.4rem;
+      background: linear-gradient(135deg, rgba(29,185,116,.1) 0%, rgba(168,240,74,.04) 100%);
+      border: 1px solid rgba(168,240,74,.13);
+      overflow: hidden;
+    }
+    .qmark {
+      position: absolute;
+      top: -1.5rem; left: 2.5rem;
+      font-family: var(--f-display);
+      font-size: 16rem;
+      line-height: 1;
+      color: var(--lime);
+      opacity: .06;
+      pointer-events: none;
+      user-select: none;
+    }
+    .quote-text {
+      font-family: var(--f-display);
+      font-size: clamp(1.25rem, 3vw, 1.95rem);
+      font-weight: 700;
+      font-style: italic;
+      line-height: 1.45;
+      color: var(--chalk);
+      position: relative; z-index:1;
+    }
+    .quote-attr {
+      margin-top: 1.5rem;
+      font-family: var(--f-mono);
+      font-size: .68rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(168,240,74,.45);
+      position: relative; z-index:1;
+    }
+
+    /* ── Stats band ── */
+    .stats-band {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+    }
+    @media(max-width:560px){ .stats-band { grid-template-columns:1fr; } }
+
+    .stat-tile {
+      position: relative;
+      background: rgba(11,28,13,.5);
+      border: 1px solid rgba(168,240,74,.09);
+      border-radius: 22px;
+      padding: 2.2rem 1.6rem;
+      text-align: center;
+      overflow: hidden;
+      transition: border-color .25s, transform .3s var(--ease-back);
+    }
+    .stat-tile:hover { border-color: rgba(168,240,74,.28); transform: translateY(-5px); }
+    .stat-tile::after {
+      content:'';
+      position:absolute; bottom:0; left:20%; right:20%;
+      height:1px;
+      background: linear-gradient(90deg,transparent,rgba(168,240,74,.25),transparent);
+    }
+    .stat-head {
+      font-family: var(--f-display);
+      font-size: 1.65rem;
+      font-weight: 900;
+      font-style: italic;
+      color: var(--lime);
+      line-height: 1.1;
+      margin-bottom: .5rem;
+    }
+    .stat-desc {
+      font-size: .78rem;
+      font-weight: 400;
+      color: rgba(242,245,238,.35);
+      line-height: 1.55;
+    }
+
+    /* ── Bento features ── */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1rem;
+      margin: 2rem 0 1.8rem;
+    }
+    @media(max-width:680px){ .bento { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:420px){ .bento { grid-template-columns: 1fr; } }
+
+    .bc {
+      background: rgba(6,13,7,.65);
+      border: 1px solid rgba(168,240,74,.07);
+      border-radius: 18px;
+      padding: 1.6rem 1.4rem;
+      transition: border-color .22s, transform .3s var(--ease-back), background .22s;
+    }
+    .bc:hover {
+      border-color: rgba(168,240,74,.22);
+      background: rgba(21,51,24,.55);
+      transform: translateY(-5px);
+    }
+    .bc-icon { font-size: 1.5rem; margin-bottom: .75rem; display: block; }
+    .bc-title {
+      font-family: var(--f-body);
+      font-weight: 700; font-size: .93rem;
+      color: var(--chalk);
+      margin-bottom: .35rem;
+      letter-spacing: -.01em;
+    }
+    .bc-desc {
+      font-size: .79rem;
+      color: rgba(242,245,238,.37);
+      line-height: 1.65;
+    }
+
+    /* ── Chips ── */
+    .chips {
+      display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.8rem;
+    }
+    .chip {
+      font-family: var(--f-mono);
+      font-size: .68rem; letter-spacing: .08em;
+      padding: .32rem .85rem;
+      border-radius: 100px;
+      border: 1px solid rgba(168,240,74,.2);
+      color: rgba(168,240,74,.65);
+      background: rgba(168,240,74,.04);
+      transition: background .2s, color .2s, border-color .2s, transform .2s var(--ease-back);
+    }
+    .chip:hover {
+      background: rgba(168,240,74,.12);
+      color: var(--lime);
+      border-color: rgba(168,240,74,.5);
+      transform: translateY(-2px);
+    }
+
+    /* ── Matters list ── */
+    .matters {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.6rem;
+      list-style: none;
+    }
+    @media(max-width:580px){ .matters { grid-template-columns:1fr; } }
+
+    .mi {
+      display: flex; gap: .85rem; align-items: flex-start;
+      background: rgba(6,13,7,.55);
+      border: 1px solid rgba(168,240,74,.07);
+      border-radius: 18px;
+      padding: 1.4rem;
+      transition: border-color .22s, transform .3s var(--ease-back);
+    }
+    .mi:hover { border-color: rgba(168,240,74,.2); transform: translateY(-4px); }
+    .mi-icon { color: var(--lime); opacity: .65; flex-shrink: 0; margin-top: .2rem; }
+    .mi-text { font-size: .9rem; font-weight: 300; color: rgba(242,245,238,.62); line-height: 1.72; }
+
+    /* ── Video ── */
+    .vid-wrap {
+      position: relative;
+      width: 100%; aspect-ratio: 16/9;
+      border-radius: 18px; overflow: hidden;
+      margin-top: 1.6rem;
+      border: 1px solid rgba(168,240,74,.1);
+    }
+    .vid-wrap iframe { width:100%; height:100%; border:none; display:block; }
+    /* scanlines */
+    .vid-wrap::after {
+      content:'';
+      position:absolute; inset:0;
+      background: repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(6,13,7,.03) 3px,rgba(6,13,7,.03) 4px);
+      pointer-events:none; border-radius:inherit;
+    }
+
+    /* ── Links ── */
+    .link-row { display:flex; flex-wrap:wrap; gap:1rem; margin-top:1.6rem; }
+    .lp {
+      display: inline-flex; align-items:center; gap:.6rem;
+      font-family: var(--f-body); font-weight: 600; font-size: .9rem;
+      text-decoration: none;
+      padding: .9rem 1.8rem;
+      border-radius: 100px;
+      border: 1px solid rgba(168,240,74,.22);
+      color: var(--chalk);
+      background: rgba(11,28,13,.55);
+      backdrop-filter: blur(10px);
+      cursor: none;
+      transition: border-color .22s, background .22s, color .22s, transform .3s var(--ease-back), box-shadow .22s;
+    }
+    .lp:hover {
+      border-color: var(--lime);
+      background: rgba(168,240,74,.08);
+      color: var(--lime);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 36px rgba(168,240,74,.12);
+    }
+    .lp svg { width:14px; height:14px; opacity:.55; flex-shrink:0; }
+
+    /* ── Footer ── */
+    footer {
+      position: relative; z-index:1;
+      text-align:center; padding: 3.5rem 2rem;
+      border-top: 1px solid rgba(168,240,74,.07);
+    }
+    footer p {
+      font-family: var(--f-mono);
+      font-size: .65rem; letter-spacing: .14em;
+      color: rgba(168,240,74,.22);
+      text-transform: uppercase;
+    }
+    footer a { color: rgba(168,240,74,.45); text-decoration:none; }
+    footer a:hover { color: var(--lime); }
+
+  </style>
+</head>
+<body>
+
+  <div id="cur-ball"></div>
+  <div id="cur-ring"></div>
+  <canvas id="pcvs"></canvas>
+
+  <a href="../../" class="back-to-showcase">← Showcase</a>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="glow-a" id="glowA"></div>
+    <div class="glow-b"></div>
+
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span class="badge-rule"></span>
+        Congressional App Challenge · CO-08 · 2025
+        <span class="badge-rule"></span>
+      </div>
+
+      <h1 class="hero-title" aria-label="ClearMind for Teens">
+        <span class="hw hw1"><span>Clear</span></span>
+        <span class="hw hw2"><span>Mind</span></span>
+        <span class="hw hw3"><span>for Teens</span></span>
+        <span class="hero-line"></span>
+      </h1>
+
+      <p class="hero-sub">
+        A data-driven cannabis education platform built for teens, parents, and schools —
+        powered by real Colorado youth survey data.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="https://www.clearmindforteens.com/" target="_blank" class="btn-fill">Visit ClearMind →</a>
+        <a href="#about" class="btn-ghost">Meet the Builder</a>
+      </div>
+    </div>
+
+    <div class="scroll-cue">
+      <div class="sc-track"><div class="sc-fill"></div></div>
+      <span class="sc-label">Scroll</span>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="m">Cannabis Education</span><span class="m">Teen Health Literacy</span>
+      <span class="m">Colorado Youth Data</span><span class="m">Risk Reduction</span>
+      <span class="m">Parent Resources</span><span class="m">School Tools</span>
+      <span class="m">Credible Science</span><span class="m">Aditi Muthukumar</span>
+      <span class="m">Public Health</span><span class="m">Prevention</span>
+      <!-- duplicate -->
+      <span class="m">Cannabis Education</span><span class="m">Teen Health Literacy</span>
+      <span class="m">Colorado Youth Data</span><span class="m">Risk Reduction</span>
+      <span class="m">Parent Resources</span><span class="m">School Tools</span>
+      <span class="m">Credible Science</span><span class="m">Aditi Muthukumar</span>
+      <span class="m">Public Health</span><span class="m">Prevention</span>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    <div class="gap"></div>
+
+    <!-- 01 ABOUT -->
+    <div class="sl" data-n="01">The Builder</div>
+    <div id="about" class="panel">
+      <div class="about-grid">
+        <div>
+          <h2>Aditi Muthukumar</h2>
+          <p>I'm a high school student passionate about using technology and health literacy to make a real difference for teens. I'm a HOSA competitor, a ClearMind founder, and a firm believer that credible information — presented well — can change lives.</p>
+          <p>I built ClearMind because I saw a gap: teens were getting incomplete or biased information about cannabis, while parents and schools had no reliable hub to turn to. I wanted to fix that.</p>
+        </div>
+        <div class="monogram" aria-hidden="true">AM</div>
+      </div>
+    </div>
+
+    <!-- QUOTE -->
+    <div class="quote-panel">
+      <span class="qmark" aria-hidden="true">"</span>
+      <p class="quote-text">Fast, credible tools to understand effects, reduce risks, and start better conversations — powered by real data for what's actually happening in schools.</p>
+      <p class="quote-attr">— Mission Statement, ClearMind for Teens</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-band">
+      <div class="stat-tile">
+        <div class="stat-head">Data-Driven</div>
+        <div class="stat-desc">Built on real Colorado youth survey insights</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-head">Teen-Focused</div>
+        <div class="stat-desc">Designed for clarity, trust &amp; action</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-head">Public Impact</div>
+        <div class="stat-desc">Supports schools &amp; prevention efforts</div>
+      </div>
+    </div>
+
+    <div class="gap"></div>
+
+    <!-- 02 THE APP -->
+    <div class="sl" data-n="02">The App</div>
+    <div class="panel">
+      <h2>ClearMind for Teens</h2>
+      <p>ClearMind is a cannabis education hub designed specifically for teens, parents, and schools. It cuts through misinformation by surfacing evidence-based content alongside real Colorado youth survey data — so users see not just the science, but what's actually happening in their communities.</p>
+      <p>The platform is structured around six practical pathways — teens, parents, schools, analytics, safety briefings, and crisis resources — so each audience finds relevant guidance fast, without wading through content meant for someone else.</p>
+
+      <div class="bento">
+        <div class="bc"><span class="bc-icon">🧠</span><div class="bc-title">Brain Development</div><div class="bc-desc">Age-specific info on how cannabis affects the developing teen brain.</div></div>
+        <div class="bc"><span class="bc-icon">📊</span><div class="bc-title">Real Youth Data</div><div class="bc-desc">Colorado Healthy Kids survey stats showing real peer usage trends.</div></div>
+        <div class="bc"><span class="bc-icon">💬</span><div class="bc-title">Conversation Tools</div><div class="bc-desc">Scripts &amp; guides for parents and educators to open the dialogue.</div></div>
+        <div class="bc"><span class="bc-icon">🏫</span><div class="bc-title">School Resources</div><div class="bc-desc">Classroom-ready materials and health literacy frameworks.</div></div>
+        <div class="bc"><span class="bc-icon">⚠️</span><div class="bc-title">Risk Reduction</div><div class="bc-desc">Practical, non-judgmental content on recognizing and reducing risks.</div></div>
+        <div class="bc"><span class="bc-icon">📖</span><div class="bc-title">Credible Sources</div><div class="bc-desc">Every claim backed by peer-reviewed research and public health data.</div></div>
+      </div>
+
+      <div class="chips">
+        <span class="chip">Wix</span>
+        <span class="chip">JavaScript</span>
+        <span class="chip">Colorado YRBS Data</span>
+        <span class="chip">Health Literacy</span>
+      </div>
+    </div>
+
+    <div class="gap"></div>
+
+    <!-- 03 WHY IT MATTERS -->
+    <div class="sl" data-n="03">The Problem</div>
+    <div class="panel">
+      <h2>Why ClearMind Matters</h2>
+      <ul class="matters">
+        <li class="mi"><span class="mi-icon">✦</span><span class="mi-text">Transforms complex health research into teen-friendly guidance teens actually engage with.</span></li>
+        <li class="mi"><span class="mi-icon">✦</span><span class="mi-text">Uses trusted, peer-reviewed evidence instead of the misinformation teens often encounter online.</span></li>
+        <li class="mi"><span class="mi-icon">✦</span><span class="mi-text">Supports healthier school conversations and real-world prevention efforts.</span></li>
+        <li class="mi"><span class="mi-icon">✦</span><span class="mi-text">Bridges the gap between what parents think teens know and what teens are actually experiencing.</span></li>
+      </ul>
+    </div>
+
+    <div class="gap"></div>
+
+    <!-- 04 VIDEO -->
+    <div class="sl" data-n="04">In Action</div>
+    <div class="panel">
+      <h2>Watch the Demo</h2>
+      <div class="vid-wrap">
+        <iframe src="https://www.youtube.com/embed/rdc_xoR2dwI"
+          title="ClearMind for Teens Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="gap"></div>
+
+    <!-- 05 LINKS -->
+    <div class="sl" data-n="05">Explore</div>
+    <div class="panel">
+      <h2>Links</h2>
+      <div class="link-row">
+        <a href="https://www.clearmindforteens.com/" target="_blank" class="lp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+          clearmindforteens.com
+        </a>
+        <a href="https://www.youtube.com/watch?v=rdc_xoR2dwI" target="_blank" class="lp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Demo Video
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+  <script>
+    /* ── Cursor ── */
+    const ball = document.getElementById('cur-ball');
+    const ring = document.getElementById('cur-ring');
+    let bx=0,by=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{bx=e.clientX;by=e.clientY;});
+    (function tick(){
+      ball.style.transform=`translate(${bx}px,${by}px)`;
+      rx+=(bx-rx)*.1; ry+=(by-ry)*.1;
+      ring.style.transform=`translate(${rx}px,${ry}px)`;
+      requestAnimationFrame(tick);
+    })();
+    document.querySelectorAll('a,button,.bc,.stat-tile,.mi,.chip').forEach(el=>{
+      el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+      el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+    });
+
+    /* ── Particle network ── */
+    const cv=document.getElementById('pcvs');
+    const cx=cv.getContext('2d');
+    let W,H,pts=[];
+    const COLS=['rgba(168,240,74,','rgba(29,185,116,','rgba(15,107,68,'];
+    function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+    resize(); window.addEventListener('resize',resize);
+
+    class P {
+      constructor(){this.reset();}
+      reset(){
+        this.x=Math.random()*W; this.y=Math.random()*H;
+        this.r=Math.random()*1.5+.3;
+        this.vx=(Math.random()-.5)*.2; this.vy=(Math.random()-.5)*.2;
+        this.a=Math.random()*.4+.05;
+        this.c=COLS[Math.floor(Math.random()*COLS.length)];
+      }
+      tick(){
+        this.x+=this.vx; this.y+=this.vy;
+        if(this.x<0||this.x>W||this.y<0||this.y>H)this.reset();
+      }
+      draw(){
+        cx.beginPath(); cx.arc(this.x,this.y,this.r,0,Math.PI*2);
+        cx.fillStyle=this.c+this.a+')'; cx.fill();
+      }
+    }
+    for(let i=0;i<130;i++)pts.push(new P());
+
+    function frame(){
+      cx.clearRect(0,0,W,H);
+      for(let i=0;i<pts.length;i++){
+        for(let j=i+1;j<pts.length;j++){
+          const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+          const d=Math.sqrt(dx*dx+dy*dy);
+          if(d<85){
+            cx.beginPath(); cx.moveTo(pts[i].x,pts[i].y); cx.lineTo(pts[j].x,pts[j].y);
+            cx.strokeStyle=`rgba(168,240,74,${.045*(1-d/85)})`; cx.lineWidth=.6; cx.stroke();
+          }
+        }
+        pts[i].tick(); pts[i].draw();
+      }
+      requestAnimationFrame(frame);
+    }
+    frame();
+
+    /* ── Parallax glow on mousemove ── */
+    const glowA = document.getElementById('glowA');
+    document.addEventListener('mousemove',e=>{
+      const xp=(e.clientX/window.innerWidth-.5)*35;
+      const yp=(e.clientY/window.innerHeight-.5)*35;
+      glowA.style.transform=`translate(calc(-50% + ${xp}px), calc(-53% + ${yp}px))`;
+    });
+
+  </script>
+
+  <!-- Navigation script — enables arrow key navigation. Do NOT remove this. -->
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>

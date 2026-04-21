@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Change the title to your app name and your name -->
+  <title>MathViz | Gautham Korrapati & Eric Lee</title>
+
+  <!-- Required: keep this line so navigation arrows are styled -->
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: #1a1a2e;
+      background: var(--cac-snow, #f4f5fa);
+      min-height: 100vh;
+    }
+
+    /* Example banner */
+    .example-banner {
+      background: var(--cac-navy);
+      color: white;
+      text-align: center;
+      padding: 0.6rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .example-banner a {
+      color: #ffd700;
+      text-decoration: underline;
+    }
+
+    /* Hero header */
+    .project-hero {
+      background: linear-gradient(135deg, #000f63 0%, #1a2980 50%, #26d0ce 100%);
+      color: white;
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 70%, rgba(38, 208, 206, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 30%, rgba(69, 96, 179, 0.2) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .project-hero .app-icon {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin: 0 auto 1.5rem;
+      position: relative;
+    }
+
+    .project-hero h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      position: relative;
+    }
+
+    .project-hero .author {
+      font-size: 1.1rem;
+      opacity: 0.85;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .project-hero .district {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 0.3rem 1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      position: relative;
+    }
+
+    .project-hero .tagline {
+      font-size: 1.15rem;
+      opacity: 0.9;
+      max-width: 500px;
+      margin: 1rem auto 0;
+      line-height: 1.5;
+      position: relative;
+    }
+
+    /* Content container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 3rem;
+    }
+
+    /* Section cards */
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 15, 99, 0.06);
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--cac-navy);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card h2 .icon {
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      line-height: 1.75;
+      margin-bottom: 0.75rem;
+      color: #374151;
+    }
+
+    .card p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Tags */
+    .tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--cac-snow);
+      color: var(--cac-navy);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid var(--cac-smoke);
+    }
+
+    /* Tech stack */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .tech-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      background: var(--cac-snow);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--cac-slate);
+      border: 1px solid var(--cac-smoke);
+    }
+
+    /* Video */
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Screenshot gallery */
+    .screenshots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .screenshot-placeholder {
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, var(--cac-snow) 0%, var(--cac-smoke) 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cac-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 2px dashed var(--cac-smoke);
+    }
+
+    /* Link buttons */
+    .link-group {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.65rem 1.4rem;
+      background: var(--cac-navy);
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .link-btn:hover {
+      background: var(--cac-blue);
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+
+    .link-btn.secondary {
+      background: white;
+      color: var(--cac-navy);
+      border: 2px solid var(--cac-navy);
+    }
+
+    .link-btn.secondary:hover {
+      background: var(--cac-snow);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--cac-navy);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    footer a:hover {
+      color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .project-hero {
+        padding: 3rem 1.5rem 2.5rem;
+      }
+
+      .project-hero h1 {
+        font-size: 2rem;
+      }
+
+      .container {
+        padding: 1.5rem 1rem 2rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .tech-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Example banner — remove this on your real page -->
+  <!-- <div class="example-banner">
+    This is an example project page. <a href="https://github.com/hackclub/Congressional-Showcase/blob/main/README.md#add-your-project">Create your own!</a>
+  </div> -->
+
+  <!-- Back button — links to the main showcase -->
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <!-- Hero section with app name, author, and tagline -->
+  <div class="project-hero">
+    <div class="app-icon">&#127793;</div>
+    <h1>MathViz</h1>
+    <p class="author">by Gautham Korrapati & Eric Lee</p>
+    <span class="district">California District 27 (CA-27)</span>
+    <p class="tagline">Making learning math fun, one animation at a time.</p>
+  </div>
+
+  <div class="container">
+
+    <!-- About the developer -->
+    <div class="card">
+      <h2><span class="icon">&#128075;</span> About Us</h2>
+      <p>I'm Gautham, a current junior at Academy of the Canyons, and I've been interested in technology for a little while now. I've been coding since 7th grade and I'm passionate about how ML, among other things, are able to shape our current society. When I'm not coding, you can find me likely at the gym or hanging out with my friends.</p>
+      <p>And I'm Eric, a current sophomore at Fair Lawn High School, and I wanted to build something that could make a real impact in how education is actually taught with mathematics as well as pushing my own technical ability a bit further.</p>
+      <p></p>
+    </div>
+
+    <!-- About the app -->
+    <div class="card">
+      <h2><span class="icon">&#128241;</span> The App</h2>
+      <p>Mathviz has transitioned a bit, but it is primarily a website that helps students understand mathematics from a visual perspective, where anyone can simply input a basic prompt and it shows a visualization through a library known as Manim. It also has over 20k+ problems scrapped, and a custom lean interpreter for proof verification and writing along with an assistive LLM.</p>
+      <p>Built with Next and Firebase, Mathviz was previously piloted through Mathdash for a brief period, and we are currently expanding.</p>
+      <div class="tags">
+        <span class="tag">Education</span>
+        <span class="tag">Proofs</span>
+        <span class="tag">Problems</span>
+      </div>
+    </div>
+
+    <!-- Tech stack -->
+    <div class="card">
+      <h2><span class="icon">&#128736;</span> Built With</h2>
+      <div class="tech-grid">
+        <div class="tech-item">React Native</div>
+        <div class="tech-item">Firebase</div>
+        <div class="tech-item">Flask</div>
+        <div class="tech-item">Next JS</div>
+        <div class="tech-item">Selenium & BS4</div>
+        <div class="tech-item">PyTorch</div>
+      </div>
+    </div>
+
+    <!-- Demo video -->
+    <div class="card">
+      <h2><span class="icon">&#127909;</span> Demo</h2>
+      <div class="video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/c4dPzFE3_xE"
+          title="EcoTracker Demo Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Screenshots
+    <div class="card">
+      <h2><span class="icon">&#128248;</span> Screenshots</h2>
+      <div class="screenshots">
+        <div class="screenshot-placeholder">Your screenshot here</div>
+        <div class="screenshot-placeholder">Your screenshot here</div>
+        <div class="screenshot-placeholder">Your screenshot here</div>
+      </div>
+    </div> -->
+
+    <!-- Links -->
+    <!-- <div class="card">
+      <h2><span class="icon">&#128279;</span> Links</h2>
+      <div class="link-group"> -->
+        <!-- <a href="https://example.com" class="link-btn secondary">Try the App</a> -->
+      <!-- </div>
+    </div> -->
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+  <!-- Required: keep this line so arrow key navigation works -->
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>

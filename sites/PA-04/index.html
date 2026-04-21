@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfiniteMonkey | Ezra Aslan</title>
+  <meta name="description" content="Ezra Aslan's Congressional App Challenge showcase page for InfiniteMonkey, a computationally efficient text generator using Markov probability chains.">
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111827;
+      --card: rgba(17, 24, 39, 0.9);
+      --border: rgba(251, 191, 36, 0.15);
+      --amber: #fbbf24;
+      --amber-soft: rgba(251, 191, 36, 0.1);
+      --amber-dim: #b48811;
+      --green: #34d399;
+      --text: #f3f4f6;
+      --text-dim: #9ca3af;
+      --text-muted: #6b7280;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      background-image:
+        radial-gradient(circle at 50% 10%, rgba(251, 191, 36, 0.05), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(52, 211, 153, 0.03), transparent 35%);
+      min-height: 100vh;
+    }
+
+    a { color: var(--amber); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .page { max-width: 880px; margin: 0 auto; padding: 5.5rem 1.5rem 3rem; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 3.5rem 2.5rem;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero .badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      background: var(--amber-soft);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero .author {
+      color: var(--text-dim);
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .hero .school {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero .tagline {
+      color: var(--text-dim);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .hero-links {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .hero-link:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--amber);
+      text-decoration: none;
+    }
+
+    /* Cards */
+    .card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card .kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 0.25rem;
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .card p {
+      color: var(--text-dim);
+      line-height: 1.75;
+      margin-bottom: 0.75rem;
+    }
+
+    .card p:last-child { margin-bottom: 0; }
+
+    .tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      background: var(--amber-soft);
+      color: var(--amber);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+    }
+
+    /* Tech stack */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .tech-item {
+      padding: 0.6rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* Video */
+    .video-wrapper {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer a { color: var(--text-dim); }
+
+    @media (max-width: 600px) {
+      .hero { padding: 2rem 1.25rem; }
+      .card { padding: 1.5rem; }
+      .page { padding-top: 4.5rem; }
+      .tech-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <main class="page">
+    <header class="hero">
+      <div class="badge">PA-04 &middot; Congressional App Challenge Winner</div>
+      <h1>InfiniteMonkey</h1>
+      <p class="author">by Ezra Aslan</p>
+      <p class="school">Philadelphia, PA &middot; Sophomore</p>
+      <p class="tagline">A computationally efficient text generator that uses Markov probability chains to formulate text.</p>
+      <div class="hero-links">
+        <a class="hero-link" href="https://github.com/ezraaslan/Markov-Machine" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+    <div class="card">
+      <p class="kicker">Background</p>
+      <h2>About Me</h2>
+      <p>I'm Ezra, a sophomore from Philadelphia passionate about coding. I built InfiniteMonkey last summer and have since deepened my involvement with Hack Club, including founding a club at my school. Beyond programming, I enjoy guitar and backpacking.</p>
+    </div>
+
+    <div class="card">
+      <p class="kicker">The App</p>
+      <h2>What InfiniteMonkey Does</h2>
+      <p>InfiniteMonkey addresses resource consumption concerns with large language models by using lightweight Markov chain analysis. The application scrapes web text to build a corpus, analyzes word and phrase relationships based on configurable n-gram sizes, and generates new text using probability modeling.</p>
+      <p>Output coherence is enhanced through synonym replacement and part-of-speech tagging. Users interact through a graphical interface where they input questions and the program retrieves relevant online content for analysis.</p>
+      <p>Named after the Infinite Monkey Theorem, the program uses probability-based "guessing" for word succession.</p>
+      <div class="tags">
+        <span class="tag">Education</span>
+        <span class="tag">AI / Machine Learning</span>
+        <span class="tag">Accessibility</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="kicker">Built With</p>
+      <h2>Tech Stack</h2>
+      <div class="tech-grid">
+        <div class="tech-item">Python</div>
+        <div class="tech-item">Beautiful Soup 4</div>
+        <div class="tech-item">tkinter</div>
+        <div class="tech-item">NLTK</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="kicker">Demo</p>
+      <h2>See It in Action</h2>
+      <div class="video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/_fZEAct9l4E"
+          title="InfiniteMonkey Demo Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+</body>
+</html>

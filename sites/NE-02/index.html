@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Youth Policy Pulse | Gavin Vernon &amp; Michael Zhang</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #1b2a4a;
+      --navy-deep: #0f1b33;
+      --navy-light: #2c3e6b;
+      --cream: #faf8f2;
+      --cream-dark: #f0ece0;
+      --crimson: #b22234;
+      --crimson-light: #d4354a;
+      --gold-seal: #c9a84c;
+      --text-dark: #1a1a2a;
+      --text-mid: #3a3a4e;
+      --text-light: #6b6b80;
+      --border-light: rgba(27,42,74,0.1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Public Sans', 'Segoe UI', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BACK */
+    .back-link {
+      position: fixed;
+      top: 1rem;
+      left: 1.2rem;
+      z-index: 200;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-family: 'Public Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cream);
+      background: var(--navy);
+      padding: 0.5rem 1rem;
+      border-radius: 2px;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+    .back-link::before { content: '\2190'; font-size: 0.85rem; }
+    .back-link:hover { background: var(--navy-light); }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: var(--navy-deep);
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    /* Stars pattern across top */
+    .hero-stars-band {
+      background: var(--navy);
+      padding: 6rem 2rem 3rem;
+      position: relative;
+      text-align: center;
+    }
+
+    /* Subtle stars-and-stripes motif */
+    .hero-stars-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+    }
+
+    .hero-stripes {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stripe-row {
+      height: 4px;
+    }
+
+    .stripe-row.red { background: var(--crimson); }
+    .stripe-row.white { background: var(--cream); }
+
+    .hero-body {
+      background: var(--navy-deep);
+      padding: 2.5rem 2rem 3.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Capitol silhouette hint via CSS gradient */
+    .hero-body::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 120px;
+      background:
+        radial-gradient(ellipse 60px 80px at 50% 100%, rgba(255,255,255,0.03) 0%, transparent 100%),
+        radial-gradient(ellipse 120px 40px at 50% 100%, rgba(255,255,255,0.02) 0%, transparent 100%),
+        radial-gradient(ellipse 200px 20px at 50% 100%, rgba(255,255,255,0.015) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-seal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid var(--gold-seal);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-seal-inner {
+      font-family: 'Merriweather', Georgia, serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--gold-seal);
+      line-height: 1;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Public Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold-seal);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-family: 'Merriweather', Georgia, serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--crimson-light);
+    }
+
+    .hero-tagline {
+      font-family: 'Merriweather', Georgia, serif;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      font-weight: 400;
+      font-style: italic;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 2rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-authors {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .hero-author {
+      text-align: center;
+      padding: 0.8rem 1.5rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 2px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .hero-author-name {
+      font-family: 'Merriweather', Georgia, serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .hero-author-role {
+      font-family: 'Public Sans', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-top: 0.2rem;
+    }
+
+    /* ===== CONTENT ===== */
+    .content {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 4rem;
+    }
+
+    /* Two-column newspaper-style for some sections */
+    .columns {
+      column-count: 2;
+      column-gap: 2.5rem;
+      column-rule: 1px solid var(--border-light);
+    }
+
+    @media (max-width: 650px) {
+      .columns { column-count: 1; }
+    }
+
+    .article {
+      margin-bottom: 3rem;
+    }
+
+    .article-label {
+      font-family: 'Public Sans', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 0.4rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--crimson);
+      display: inline-block;
+    }
+
+    h2 {
+      font-family: 'Merriweather', Georgia, serif;
+      font-size: clamp(1.4rem, 3vw, 1.8rem);
+      font-weight: 900;
+      color: var(--navy);
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+
+    /* Card */
+    .gov-card {
+      background: #fff;
+      border: 1px solid var(--border-light);
+      border-radius: 2px;
+      padding: 2rem 2.2rem;
+      position: relative;
+    }
+
+    .gov-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--navy), var(--crimson));
+    }
+
+    .gov-card p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-mid);
+      margin-bottom: 0.8rem;
+    }
+    .gov-card p:last-child { margin-bottom: 0; }
+
+    .gov-card p strong {
+      color: var(--navy);
+    }
+
+    /* Divider between sections */
+    .rule {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 0.5rem 0 2.5rem;
+    }
+
+    .rule::before,
+    .rule::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-light);
+    }
+
+    .rule-star {
+      color: var(--crimson);
+      font-size: 0.7rem;
+    }
+
+    /* Mission */
+    .mission-panel {
+      background: var(--navy);
+      border-radius: 2px;
+      padding: 2.5rem 2.8rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mission-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--crimson);
+    }
+
+    .mission-panel::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--crimson);
+    }
+
+    .mission-panel blockquote {
+      font-family: 'Merriweather', Georgia, serif;
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .mission-panel cite {
+      display: block;
+      margin-top: 1.2rem;
+      font-family: 'Public Sans', sans-serif;
+      font-size: 0.62rem;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* TECH */
+    .tech-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .tech-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff;
+      border: 1px solid var(--border-light);
+      border-left: 3px solid var(--navy);
+      border-radius: 2px;
+      padding: 0.8rem 1.3rem;
+    }
+
+    .tech-tag-name {
+      font-family: 'Merriweather', Georgia, serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .tech-tag-role {
+      font-family: 'Public Sans', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    /* About grid */
+    .about-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    @media (max-width: 650px) {
+      .about-two-col { grid-template-columns: 1fr; }
+    }
+
+    .person-card {
+      background: #fff;
+      border: 1px solid var(--border-light);
+      border-radius: 2px;
+      padding: 1.8rem 2rem;
+      position: relative;
+    }
+
+    .person-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--navy);
+    }
+
+    .person-card h3 {
+      font-family: 'Merriweather', Georgia, serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.6rem;
+    }
+
+    .person-card p {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--text-mid);
+    }
+
+    .person-badge {
+      display: inline-block;
+      font-family: 'Public Sans', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      border: 1px solid var(--crimson);
+      border-radius: 2px;
+      padding: 0.2rem 0.6rem;
+      margin-bottom: 0.8rem;
+    }
+
+    /* VIDEO */
+    .video-wrap {
+      margin-top: 1.2rem;
+      border: 1px solid var(--border-light);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .video-wrap iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* LINKS */
+    .link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Public Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.7rem 1.4rem;
+      border-radius: 2px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .link-btn:hover { transform: translateY(-1px); }
+
+    .link-btn.primary {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+    }
+    .link-btn.primary:hover { box-shadow: 0 4px 16px rgba(27,42,74,0.25); }
+
+    .link-btn.secondary {
+      background: #fff;
+      color: var(--navy);
+      border: 1px solid var(--navy);
+    }
+    .link-btn.secondary:hover { background: var(--cream-dark); }
+
+    .link-btn svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy-deep);
+      text-align: center;
+      padding: 2rem;
+      border-top: 3px solid var(--crimson);
+    }
+
+    footer p {
+      font-family: 'Public Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5) !important;
+    }
+
+    footer a {
+      color: var(--gold-seal) !important;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .hero-stars-band { padding: 5rem 1.2rem 2rem; }
+      .hero-body { padding: 2rem 1.2rem 2.5rem; }
+      .content { padding: 2.5rem 1.2rem 3rem; }
+      .gov-card { padding: 1.5rem 1.5rem; }
+      .hero-authors { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-link">Back to Showcase</a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-stars-band">
+      <div class="hero-seal">
+        <div class="hero-seal-inner">YPP</div>
+      </div>
+      <p class="hero-eyebrow">Congressional App Challenge &bull; Nebraska-02</p>
+      <h1>Youth <em>Policy</em> Pulse</h1>
+      <p class="hero-tagline">Bridging the gap between young Americans and the legislative process.</p>
+      <div class="hero-authors">
+        <div class="hero-author">
+          <div class="hero-author-name">Gavin Vernon</div>
+          <div class="hero-author-role">Omaha, NE</div>
+        </div>
+        <div class="hero-author">
+          <div class="hero-author-name">Michael Zhang</div>
+          <div class="hero-author-role">Denver, CO</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-stripes">
+      <div class="stripe-row red"></div>
+      <div class="stripe-row white"></div>
+      <div class="stripe-row red"></div>
+    </div>
+    <div class="hero-body">
+      <p style="font-family:'Public Sans',sans-serif;font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);">
+        Omaha, NE &bull; Education &bull; Civic/Government &bull; 2025 Submission
+      </p>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- Mission -->
+    <div class="article">
+      <div class="mission-panel">
+        <blockquote>
+          Tracks Congressional data in real-time, allowing students to view summaries of current bills and interact with them -- bridging the gap between young people and the legislative process.
+        </blockquote>
+        <cite>-- Mission Statement, Youth Policy Pulse</cite>
+      </div>
+    </div>
+
+    <div class="rule"><span class="rule-star">&#9733;</span></div>
+
+    <!-- About the Creators -->
+    <div class="article">
+      <span class="article-label">The Founders</span>
+      <h2>About the Creators</h2>
+      <div class="about-two-col">
+        <div class="person-card">
+          <span class="person-badge">Co-Founder</span>
+          <h3>Gavin Vernon</h3>
+          <p>
+            Junior at Brownell Talbot School in Omaha, Nebraska. Gavin is the founder of Youths for Better Living Inc., dedicated to civic engagement and empowering young people in the political process.
+          </p>
+        </div>
+        <div class="person-card">
+          <span class="person-badge">Co-Founder</span>
+          <h3>Michael Zhang</h3>
+          <p>
+            Junior at Cherry Creek High School in Denver, Colorado. Michael is a TEDx Speaker and co-founder of Equity Learning, a nonprofit dedicated to educational access and equity.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Description -->
+    <div class="article">
+      <span class="article-label">The Platform</span>
+      <h2>About Youth Policy Pulse</h2>
+      <div class="gov-card">
+        <p>
+          Youth Policy Pulse is an interactive platform showing real-time Congressional bills with clear, accessible summaries. Users can like or dislike bills based on their personal viewpoints, making it easy to engage with legislation that affects their lives.
+        </p>
+        <p>
+          The platform also includes a legislative process overview, helping students understand how bills become laws. By combining real-time data with intuitive interactions, Youth Policy Pulse makes civic participation approachable for the next generation.
+        </p>
+      </div>
+    </div>
+
+    <!-- Tech Stack -->
+    <div class="article">
+      <span class="article-label">Built With</span>
+      <h2>Technology Stack</h2>
+      <div class="tech-row">
+        <div class="tech-tag">
+          <div>
+            <span class="tech-tag-name">JavaScript</span>
+            <span class="tech-tag-role">Frontend</span>
+          </div>
+        </div>
+        <div class="tech-tag">
+          <div>
+            <span class="tech-tag-name">Python</span>
+            <span class="tech-tag-role">Backend</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo Video -->
+    <div class="article">
+      <span class="article-label">In Session</span>
+      <h2>Demo Video</h2>
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube.com/embed/qAVr_RgND0g"
+          title="Youth Policy Pulse App Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Links -->
+    <div class="article">
+      <span class="article-label">Resources</span>
+      <h2>Links</h2>
+      <div class="link-row">
+        <a href="http://www.youthpolicypulse.com/" class="link-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/>
+          </svg>
+          Live App
+        </a>
+        <a href="https://github.com/mzhang5040/youthpolicypulse" class="link-btn secondary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge &bull; NE-02 &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

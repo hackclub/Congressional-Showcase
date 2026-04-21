@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Snap and Snack | Nicolas Campisi</title>
+
+  <!-- Shared styles — gives you navigation arrows and CAC CSS variables -->
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
+  <style>
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #333;
+      background: #f9fafc;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 2rem 3rem;
+    }
+
+    header { text-align: center; margin-bottom: 3rem; }
+    header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+    section {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; }
+    p { line-height: 1.7; margin-bottom: 1rem; }
+
+    .video iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    footer a { color: var(--cac-red); }
+
+    /* Cool gradient background */
+    body {
+      background: linear-gradient(135deg, #66eae1 0%, #2775b8 100%);
+      position: relative;
+    }
+
+    /* Floating emojis */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-30px); }
+    }
+
+    .floating-emojis {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .floating-emoji {
+      position: absolute;
+      font-size: 3rem;
+      opacity: 0.2;
+      animation: float 8s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <div class="floating-emojis">
+    <span class="floating-emoji" style="left: 10%; top: 20%; animation-delay: 0s;">🍕</span>
+    <span class="floating-emoji" style="left: 30%; top: 40%; animation-delay: 2s;">🍔</span>
+    <span class="floating-emoji" style="left: 50%; top: 60%; animation-delay: 4s;">🍟</span>
+    <span class="floating-emoji" style="left: 70%; top: 30%; animation-delay: 1s;">🥤</span>
+    <span class="floating-emoji" style="left: 80%; top: 70%; animation-delay: 3s;">🍿</span>
+    <span class="floating-emoji" style="left: 15%; top: 50%; animation-delay: 5s;">🍎</span>
+    <span class="floating-emoji" style="left: 35%; top: 10%; animation-delay: 1.5s;">🍌</span>
+    <span class="floating-emoji" style="left: 55%; top: 80%; animation-delay: 3.5s;">🍇</span>
+    <span class="floating-emoji" style="left: 75%; top: 15%; animation-delay: 0.5s;">🍦</span>
+    <span class="floating-emoji" style="left: 25%; top: 75%; animation-delay: 4.5s;">🥗</span>
+    <span class="floating-emoji" style="left: 45%; top: 25%; animation-delay: 2.5s;">🍪</span>
+    <span class="floating-emoji" style="left: 65%; top: 55%; animation-delay: 1s;">🍩</span>
+    <span class="floating-emoji" style="left: 5%; top: 35%; animation-delay: 3s;">🍓</span>
+    <span class="floating-emoji" style="left: 85%; top: 45%; animation-delay: 4s;">🥑</span>
+    <span class="floating-emoji" style="left: 20%; top: 65%; animation-delay: 2s;">🍉</span>
+  </div>
+
+  <div class="container">
+    <header>
+      <h1>Nicolas Campisi</h1>
+      <p>Helping you Snap & Snack safely and efficiently!</p>
+    </header>
+
+    <section>
+      <h2>About Me</h2>
+      <p>Hello! I'm from Avon, CT and a student at Avon Old Farms School. I'm have been interested in technology and coding since I took my first Computer Science class in 9th grade. Since then, I have worked on many community projects and have even gotten to work with people directly to contribute to technology accessibility.</p>
+    </section>
+
+    <section>
+      <h2>Snap & Snack</h2>
+      <p>For 32 million Americans living with food allergies, eating anything but the food that they’ve seen being made in front of them could pose a severe or even life-threatening risk. A single, simple mistake like a forgotten ingredient label, a shared utensil, or a trace amount of an allergen could lead to a severe and sometimes life-threatening reaction. Imagine having to double-check every meal, every snack, every bite, every day.</p>
+      <p>I am allergic to both dairy and eggs, which are two ingredients that appear not only in obvious foods like ice cream, but also in unexpected places such as hand soaps containing milk proteins. Knowing that my allergens could appear almost anywhere at any time has always been a major source of anxiety.</p>
+      <p>With Snap & Snack, you can now enjoy your favorite foods with peace of mind, using the app to scan food products and ensure they are free of any potential allergens. Whether you scan by barcode, list of ingredients, or translate, you can be a little less worried about about the risk of human error and the exhaustion of manual verification.</p>
+    </section>
+
+    <section class="video">
+      <h2>Demo</h2>
+      <iframe
+        src="https://www.youtube.com/embed/STommtCb4rg"
+        title="App Demo Video"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </section>
+
+    <section>
+      <h2>Links</h2>
+      <p>
+        <a href="https://github.com/n-campisi">GitHub</a>
+      </p>
+    </section>
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>

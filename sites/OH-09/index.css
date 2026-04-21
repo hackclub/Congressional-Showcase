@@ -1,0 +1,312 @@
+:root {
+    --primary: #007aff;
+    --bg: #050505;
+    --card-bg: rgba(255, 255, 255, 0.04);
+    --text: #ffffff;
+    --text-secondary: #a1a1a6;
+    --accent: #ff9f0a;
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+header,
+main > .row {
+    margin-bottom: 15vh; /* Adjust this value to see more/less of the sphere between sections */
+}
+html {
+    background-color: #050505; /* The base color deep behind the canvas */
+}
+body {
+    font-family:
+        "Inter",
+        -apple-system,
+        sans-serif;
+    background-color: transparent !important;
+    color: var(--text);
+    overflow-x: hidden;
+} /* --- Ray Tracing Background Graphic --- */
+.hero-graphics {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 85vh;
+    z-index: -1;
+    overflow: hidden;
+    background: radial-gradient(
+        circle at 50% -20%,
+        rgba(0, 122, 255, 0.15),
+        transparent 70%
+    );
+}
+.ray-pattern {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(
+            circle at 20% 30%,
+            rgba(255, 255, 255, 0.05) 1px,
+            transparent 1px
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(255, 255, 255, 0.05) 1px,
+            transparent 1px
+        );
+    background-size: 40px 40px;
+    mask-image: linear-gradient(to bottom, black 50%, transparent);
+    animation: move 20s linear infinite;
+} /* Simulating light rays */
+.ray-line {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(0, 122, 255, 0.2),
+        transparent
+    );
+    transform: rotate(45deg);
+    top: -50%;
+    left: 20%;
+    filter: blur(2px);
+}
+
+@keyframes move {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-40px);
+    }
+}
+
+/* --- Custom Styles --- */
+.glass-card {
+    background: rgba(10, 10, 10, 0.6) !important;
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    backdrop-filter: blur(15px) saturate(150%);
+    padding: 2.5rem;
+    transition: transform 0.3s ease;
+}
+
+.glass-btn {
+    background: rgba(10, 10, 10, 0.6) !important;
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    backdrop-filter: blur(15px) saturate(150%);
+    padding: 2.5rem;
+    transition: transform 0.3s ease;
+    color: white;
+}
+
+.badge-house {
+    background: linear-gradient(90deg, #ff9f0a, #ff375f);
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+h1 {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: -3px;
+    background: linear-gradient(to bottom, #fff 40%, #666);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.video-wrapper {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(0, 122, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tech-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.btn-custom {
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition-duration: 0.4s;
+    min-width: 15%;
+}
+
+.btn-custom:hover {
+    background: rgba(45, 45, 45, 0.6) !important;
+    transform: translateX(0) translateY(0) translateZ(0) scale(1.1) !important;
+}
+
+.btn-github {
+    background: #fff;
+    color: #000;
+}
+.btn-github:hover {
+    background: #e2e2e2;
+    transform: translateY(-2px);
+}
+
+/* --- Bootstrap Overrides --- */
+.navbar-brand {
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(0, 122, 255, 0.1);
+    border: 1px solid rgba(0, 122, 255, 0.3);
+    border-radius: 16px;
+}
+.stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+}
+.stat-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+}
+
+.tech-feature-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2rem;
+    height: 100%;
+    transition: all 0.3s ease;
+    overflow: hidden; /* Ensures the float stays contained */
+}
+
+.tech-feature-card:hover {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-5px);
+}
+
+/* Floating Icon Box */
+.icon-box-float {
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    font-size: 1.6rem;
+    margin-right: 1.25rem;
+    margin-bottom: 0.5rem; /* Space for text wrapping underneath */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Vibrant Themes */
+.icon-engine {
+    background: linear-gradient(135deg, #007aff, #00c7ff);
+}
+.icon-viz {
+    background: linear-gradient(135deg, #af52de, #d47afa);
+} /* Switched to Purple for a "Logic" feel */
+.icon-physics {
+    background: linear-gradient(135deg, #ff9f0a, #ffd60a);
+}
+
+.tech-content h3 {
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.5px;
+}
+
+.tech-description {
+    line-height: 1.6;
+    text-align: start; /* Optional: makes the wrap look cleaner */
+}
+
+#three-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* Behind everything */
+    pointer-events: none;
+}
+
+/* Asymmetrical Grid Adjustments */
+.vision-section {
+    position: relative;
+    z-index: 1;
+}
+
+.creator-card {
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    margin-top: 6rem; /* Stagger it lower than the Vision card */
+}
+
+.profile-hex {
+    width: 90px;
+    height: 80px;
+    background: var(--primary);
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+    font-size: 1.5rem;
+    box-shadow: 0 0 20px rgba(0, 122, 255, 0.4);
+}
+/* Vision Tags */
+.vision-tag {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.vision-tag:hover {
+    background: rgba(0, 122, 255, 0.1);
+    border-color: var(--primary);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.tag-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--primary);
+}
+
+.no-text-decoration {
+    color: var(--text);
+    text-decoration: none !important;
+}

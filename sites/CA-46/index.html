@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MathFluent | Xiong Yi</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #333;
+      background: linear-gradient(135deg, #f0f4ff 0%, #f9fafc 50%, #fff5f5 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 2rem 3rem;
+    }
+
+    header { text-align: center; margin-bottom: 3rem; }
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--cac-navy), var(--cac-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header p { color: #666; font-size: 1.1rem; }
+
+    section {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: var(--cac-navy);
+    }
+
+    p { line-height: 1.7; margin-bottom: 1rem; }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .feature {
+      background: #f0f4ff;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .feature .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .feature h3 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .feature p { font-size: 0.85rem; color: #666; margin-bottom: 0; }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .tech-tag {
+      background: #e8eaf6;
+      color: var(--cac-navy);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .video iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .links a {
+      display: inline-block;
+      padding: 0.6rem 1.5rem;
+      background: var(--cac-navy);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      transition: opacity 0.2s;
+    }
+
+    .links a:hover { opacity: 0.85; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    footer a { color: var(--cac-red); }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <div class="container">
+    <header>
+      <img src="../../assets/images/mathfluentlogo1.png" alt="MathFluent Logo" class="logo">
+      <h1>Xiong Yi</h1>
+      <p>Building tools that make math click not just compute.</p>
+    </header>
+
+    <section>
+      <h2>About Me</h2>
+      <p>I'm a high school student from California's 46th Congressional District passionate about making education more accessible through technology. I believe every student deserves to truly understand math not just memorize procedures.</p>
+      <p>MathFluent is my answer to the gap between getting the right answer and actually understanding why it's right.</p>
+    </section>
+
+    <section>
+      <h2>MathFluent</h2>
+      <p>MathFluent is a conceptual math learning platform that helps students understand math through visual storytelling, adaptive practice, and AI-powered tutoring.</p>
+      <p>Instead of just telling you "wrong answer," MathFluent creates real-world stories that show what your answer would look like in practice so you can <em>see</em> where your thinking went off track.</p>
+
+      <div class="features">
+        <div class="feature">
+          <div class=</div>
+          <h3>Visual Stories</h3>
+          <p>See your answers come to life in real-world scenarios</p>
+        </div>
+        <div class="feature">
+          <div class="icon"></div>
+          <h3>Adaptive Practice</h3>
+          <p>Problems that adjust to your skill level</p>
+        </div>
+        <div class="feature">
+          <div class="icon"></div>
+          <h3>Voice Tutoring</h3>
+          <p>AI-powered voice tutoring with real-time feedback</p>
+        </div>
+        <div class="feature">
+          <div class="icon"</div>
+          <h3>Fluency Tracking</h3>
+          <p>Track your mathematical fluency over time</p>
+        </div>
+      </div>
+
+      <h2 style="margin-top: 1.5rem;">Built With</h2>
+      <div class="tech-stack">
+        <span class="tech-tag">React</span>
+        <span class="tech-tag">TypeScript</span>
+        <span class="tech-tag">Vite</span>
+        <span class="tech-tag">Tailwind CSS</span>
+        <span class="tech-tag">shadcn/ui</span>
+        <span class="tech-tag">Supabase</span>
+        <span class="tech-tag">Claude AI</span>
+        <span class="tech-tag">ElevenLabs</span>
+      </div>
+    </section>
+
+    <section class="video">
+      <h2>Demo</h2>
+      <iframe
+        src="https://www.youtube.com/embed/3IcZaecFpvc"
+        title="MathFluent Demo Video"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </section>
+
+    <section>
+      <h2>Links</h2>
+      <div class="links">
+        <a href="https://github.com/DayyQ/think-math-fluent">GitHub</a>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>

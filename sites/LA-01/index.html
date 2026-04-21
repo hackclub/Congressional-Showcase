@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIR Poker | Arav Gandhi</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --felt: #0B3D1E;
+      --felt-dark: #062A13;
+      --felt-light: #145A30;
+      --gold: #D4A017;
+      --gold-light: #F2D06B;
+      --red: #C0392B;
+      --red-glow: rgba(192, 57, 43, 0.6);
+      --cream: #F5E6C8;
+      --white: #FFFFFF;
+      --text-light: #E8DCC8;
+      --text-muted: #7A9B7A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Roboto', -apple-system, sans-serif;
+      background: var(--felt-dark);
+      color: var(--text-light);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Felt texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* BACK */
+    .back-link {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      text-decoration: none;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      background: rgba(6, 42, 19, 0.9);
+      padding: 0.5rem 1.2rem;
+      border: 1px solid rgba(212, 160, 23, 0.3);
+      border-radius: 3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .back-link:hover { border-color: var(--gold); color: var(--gold-light); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      background: radial-gradient(ellipse at center top, var(--felt-light) 0%, var(--felt) 40%, var(--felt-dark) 80%);
+      overflow: hidden;
+    }
+
+    /* Dramatic spotlight */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(212,160,23,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Card suit decorations */
+    .suits {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .suits span {
+      position: absolute;
+      font-size: 4rem;
+      opacity: 0.04;
+      color: var(--white);
+    }
+    .suits span.red { color: var(--red); opacity: 0.06; }
+    .suits span:nth-child(1) { top: 8%; left: 5%; transform: rotate(-15deg); }
+    .suits span:nth-child(2) { top: 15%; right: 8%; transform: rotate(20deg); font-size: 3rem; }
+    .suits span:nth-child(3) { bottom: 25%; left: 10%; transform: rotate(10deg); font-size: 5rem; }
+    .suits span:nth-child(4) { bottom: 10%; right: 5%; transform: rotate(-25deg); }
+    .suits span:nth-child(5) { top: 50%; left: 30%; font-size: 3rem; }
+    .suits span:nth-child(6) { top: 35%; right: 20%; transform: rotate(30deg); font-size: 3.5rem; }
+
+    .hero-eyebrow {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 15vw, 12rem);
+      line-height: 0.9;
+      color: var(--white);
+      letter-spacing: 0.05em;
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 .air { color: var(--gold); }
+    .hero h1 .poker {
+      display: block;
+      font-size: 0.5em;
+      letter-spacing: 0.2em;
+      color: var(--text-light);
+    }
+
+    .hero-tagline {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 1.5rem auto 2.5rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      padding: 0.8rem 2rem;
+      border-radius: 3px;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold) 0%, #B8860B 100%);
+      color: var(--felt-dark);
+      box-shadow: 0 4px 20px rgba(212,160,23,0.3);
+    }
+    .btn-gold:hover { box-shadow: 0 6px 30px rgba(212,160,23,0.5); }
+
+    .btn-red {
+      background: linear-gradient(135deg, var(--red) 0%, #922B21 100%);
+      color: var(--white);
+      box-shadow: 0 4px 20px var(--red-glow);
+    }
+    .btn-red:hover { box-shadow: 0 6px 30px rgba(192,57,43,0.7); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid rgba(212,160,23,0.4);
+    }
+    .btn-outline:hover { border-color: var(--gold); background: rgba(212,160,23,0.05); }
+
+    /* DIVIDER */
+    .suit-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 2rem 0;
+      color: rgba(212,160,23,0.2);
+      font-size: 1rem;
+      letter-spacing: 0.5em;
+    }
+    .suit-divider::before,
+    .suit-divider::after {
+      content: '';
+      flex: 1;
+      max-width: 120px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(212,160,23,0.15), transparent);
+    }
+
+    /* CONTENT */
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    /* SECTION */
+    .section { margin-bottom: 3.5rem; }
+
+    .section-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--white);
+      letter-spacing: 0.04em;
+      margin-bottom: 1.2rem;
+      line-height: 1.1;
+    }
+
+    .content p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+    .content p + p { margin-top: 1rem; }
+
+    /* FELT CARDS */
+    .felt-card {
+      background: linear-gradient(145deg, var(--felt) 0%, var(--felt-light) 100%);
+      border: 1px solid rgba(212,160,23,0.12);
+      border-radius: 6px;
+      padding: 2.2rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .felt-card::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 80px; height: 80px;
+      background: radial-gradient(circle at top right, rgba(212,160,23,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ABOUT - horizontal layout */
+    .about-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 650px) { .about-row { grid-template-columns: 1fr; } }
+
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .stat-box {
+      background: rgba(11, 61, 30, 0.6);
+      border: 1px solid rgba(212,160,23,0.1);
+      border-radius: 4px;
+      padding: 0.8rem 1.2rem;
+      text-align: center;
+      min-width: 140px;
+    }
+    .stat-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+    .stat-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      color: var(--gold);
+    }
+
+    /* TECH - chip-style */
+    .tech-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .tech-chip {
+      background: rgba(11, 61, 30, 0.5);
+      border: 1px solid rgba(212,160,23,0.15);
+      border-radius: 3px;
+      padding: 0.7rem 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tech-chip-icon {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 1px;
+      transform: rotate(45deg);
+    }
+    .tech-chip-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      color: var(--text-light);
+    }
+    .tech-chip-role {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* VIDEO */
+    .video-frame {
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(212,160,23,0.15);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      margin-top: 1.2rem;
+    }
+    .video-frame iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* QUOTE */
+    .quote-block {
+      background: rgba(6, 42, 19, 0.8);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 6px 6px 0;
+      padding: 2rem 2.5rem;
+      margin-bottom: 3.5rem;
+    }
+    .quote-block blockquote {
+      font-size: 1.15rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+    .quote-block cite {
+      display: block;
+      margin-top: 1rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.8rem;
+      font-style: normal;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+    }
+
+    /* LINKS */
+    .links-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+    @media (max-width: 500px) { .links-grid { grid-template-columns: 1fr; } }
+
+    .link-card {
+      background: rgba(11, 61, 30, 0.5);
+      border: 1px solid rgba(212,160,23,0.12);
+      border-radius: 4px;
+      padding: 1.5rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .link-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .link-card-icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .link-card-icon.gold-bg { background: linear-gradient(135deg, var(--gold), #B8860B); color: var(--felt-dark); }
+    .link-card-icon.red-bg { background: linear-gradient(135deg, var(--red), #922B21); color: var(--white); }
+    .link-card-icon svg { width: 18px; height: 18px; }
+    .link-card-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      color: var(--text-light);
+    }
+    .link-card-sub {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-top: 0.1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      background: rgba(3, 20, 9, 0.9);
+      border-top: 1px solid rgba(212,160,23,0.08);
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    footer p {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+    }
+    footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+    footer .suits-inline {
+      color: rgba(212,160,23,0.3);
+      margin: 0 0.5rem;
+      letter-spacing: 0.3em;
+    }
+
+    /* ANIMATIONS */
+
+    @media (max-width: 600px) {
+      .hero { min-height: 75vh; padding: 5rem 1.5rem 3rem; }
+      .content { padding: 1.5rem 1.2rem 3rem; }
+      .felt-card { padding: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-link">&#8592; Showcase</a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="suits">
+      <span>&#9824;</span>
+      <span class="red">&#9829;</span>
+      <span>&#9827;</span>
+      <span class="red">&#9830;</span>
+      <span>&#9824;</span>
+      <span class="red">&#9829;</span>
+    </div>
+
+    <p class="hero-eyebrow">Congressional App Challenge &bull; Louisiana-01</p>
+    <h1><span class="air">AIR</span><span class="poker">POKER</span></h1>
+    <p class="hero-tagline">A web-based poker experience against AI opponents. Learn strategy, sharpen your mind &mdash; no real stakes, no risk.</p>
+
+    <div class="hero-actions">
+      <a href="https://www.air-poker.us" class="btn btn-gold" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/></svg>
+        Play Now
+      </a>
+      <a href="#demo" class="btn btn-outline">Watch Demo</a>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- QUOTE -->
+    <div class="quote-block anim d1">
+      <blockquote>Air poker is a playful, imaginary version of poker where players mimic dealing and betting without real stakes, offering a low-risk outlet that can help reduce gambling addiction behaviors and support mental well-being.</blockquote>
+      <cite>Mission Statement &mdash; AIR Poker</cite>
+    </div>
+
+    <div class="suit-divider">&#9824; &#9829; &#9830; &#9827;</div>
+
+    <!-- ABOUT -->
+    <div class="section anim d2">
+      <p class="section-label">The Builder</p>
+      <h2>About Arav Gandhi</h2>
+      <div class="felt-card">
+        <div class="about-row">
+          <div>
+            <p>I'm a senior at Haynes Academy focused on computer science and engineering. I'm passionate about building functional software, ML models, and mechanical systems. As a self-taught coder, I love tackling challenges that blend technology with real-world impact.</p>
+            <p>I created AIR Poker to provide a fun, risk-free way for people to learn and enjoy poker strategy without the dangers of gambling.</p>
+          </div>
+          <div class="about-stats">
+            <div class="stat-box">
+              <div class="stat-label">School</div>
+              <div class="stat-value">Haynes Academy</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Grade</div>
+              <div class="stat-value">Senior</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Location</div>
+              <div class="stat-value">Metairie, LA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THE APP -->
+    <div class="section anim d3">
+      <p class="section-label">The Game</p>
+      <h2>Risk-Free Strategy Gaming</h2>
+      <div class="felt-card">
+        <p>AIR Poker is a web-based poker platform featuring AI opponent gameplay, structured betting mechanics, hand evaluation, and showdown systems. Designed for casual players seeking to learn strategy without financial risk.</p>
+        <p>Built with JavaScript, HTML, and CSS paired with a Firebase backend, AIR Poker delivers smooth gameplay with intelligent AI opponents that challenge players to improve their decision-making skills in a safe environment.</p>
+      </div>
+    </div>
+
+    <!-- TECH -->
+    <div class="section anim d3">
+      <p class="section-label">The Stack</p>
+      <h2>Built With</h2>
+      <div class="tech-row">
+        <div class="tech-chip"><span class="tech-chip-icon"></span><span class="tech-chip-name">JavaScript</span><span class="tech-chip-role">&nbsp;&middot; Game Logic</span></div>
+        <div class="tech-chip"><span class="tech-chip-icon"></span><span class="tech-chip-name">HTML</span><span class="tech-chip-role">&nbsp;&middot; Structure</span></div>
+        <div class="tech-chip"><span class="tech-chip-icon"></span><span class="tech-chip-name">CSS</span><span class="tech-chip-role">&nbsp;&middot; Styling</span></div>
+        <div class="tech-chip"><span class="tech-chip-icon"></span><span class="tech-chip-name">Firebase</span><span class="tech-chip-role">&nbsp;&middot; Backend</span></div>
+      </div>
+    </div>
+
+    <div class="suit-divider">&#9824; &#9829; &#9830; &#9827;</div>
+
+    <!-- DEMO -->
+    <div class="section anim d4" id="demo">
+      <p class="section-label">In Action</p>
+      <h2>Demo</h2>
+      <div class="video-frame">
+        <iframe
+          src="https://www.youtube.com/embed/a3LDQpwINpA"
+          title="AIR Poker Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="section anim d5">
+      <p class="section-label">Explore</p>
+      <h2>Links</h2>
+      <div class="links-grid">
+        <a href="https://www.air-poker.us" class="link-card" target="_blank" rel="noopener">
+          <div class="link-card-icon gold-bg">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/></svg>
+          </div>
+          <div>
+            <div class="link-card-text">Play AIR Poker</div>
+            <div class="link-card-sub">air-poker.us</div>
+          </div>
+        </a>
+        <a href="https://www.youtube.com/watch?v=a3LDQpwINpA" class="link-card" target="_blank" rel="noopener">
+          <div class="link-card-icon red-bg">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 4.5v7l5-3.5-5-3.5z"/></svg>
+          </div>
+          <div>
+            <div class="link-card-text">Watch on YouTube</div>
+            <div class="link-card-sub">Full demo video</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge 2025 <span class="suits-inline">&#9824;&#9829;&#9830;&#9827;</span> LA-01 &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

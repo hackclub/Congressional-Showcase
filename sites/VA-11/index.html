@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAFEY | Amrik Majumdar & Atiksh Gupta | VA-11</title>
+  <meta name="description" content="SAFEY — a stealth-mode Progressive Web App protecting individuals experiencing domestic violence. Built by Westfield High School students, VA-11." />
+
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    /* ── LOGO-MATCHED PALETTE ──────────────────────────
+       Logo: teal-blue top (#5bbfbe) → warm cream bottom (#d8edd5)
+       Shield: amber gold (#f5a800)
+       Text: dark navy (#1d3a4e)
+       We map that to a medium-dark teal-navy site
+    ─────────────────────────────────────────────────── */
+    :root {
+      --bg:        #0e2d38;
+      --bg2:       #0a2330;
+      --surface:   rgba(14, 58, 72, 0.78);
+      --surf-hov:  rgba(18, 72, 88, 0.92);
+      --teal:      #3eccc0;
+      --teal-b:    #5dd8cc;
+      --teal-dim:  rgba(62, 204, 192, 0.14);
+      --teal-ring: rgba(62, 204, 192, 0.3);
+      --amber:     #f5a500;
+      --amber-b:   #fbbf24;
+      --amber-dim: rgba(245, 165, 0, 0.14);
+      --amber-ring:rgba(245, 165, 0, 0.3);
+      --cream:     #d8f0ec;
+      --white:     #edfaf7;
+      --sub:       rgba(216, 240, 236, 0.58);
+      --dim:       rgba(216, 240, 236, 0.28);
+      --border:    rgba(62, 204, 192, 0.1);
+      --border-h:  rgba(245, 165, 0, 0.3);
+      --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #root { position: relative; z-index: 1; }
+
+    /* ── KEYFRAMES ── */
+    @keyframes fadeUp    { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+    @keyframes spin      { to{transform:rotate(360deg)} }
+    @keyframes blink     { 0%,100%{opacity:1} 50%{opacity:0} }
+    @keyframes breathe   { 0%,100%{opacity:.15} 50%{opacity:.3} }
+    @keyframes scrollDrop{ 0%{transform:translateY(-4px);opacity:0} 50%{opacity:1} 100%{transform:translateY(10px);opacity:0} }
+    @keyframes pulseRing { 0%{box-shadow:0 0 0 0 rgba(245,165,0,.55)} 70%{box-shadow:0 0 0 18px rgba(245,165,0,0)} 100%{box-shadow:0 0 0 0 rgba(245,165,0,0)} }
+    @keyframes morphBlob {
+      0%,100%{border-radius:38% 62% 44% 56% / 56% 44% 62% 38%}
+      33%     {border-radius:56% 44% 62% 38% / 38% 62% 44% 56%}
+      66%     {border-radius:44% 56% 38% 62% / 62% 38% 56% 44%}
+    }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── MARQUEE ── */
+    .marquee-bar {
+      position: relative; z-index: 2;
+      overflow: hidden;
+      border-top: 1px solid rgba(62,204,192,.1);
+      border-bottom: 1px solid rgba(62,204,192,.1);
+      background: rgba(62,204,192,.03);
+      padding: .85rem 0;
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 32s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    .m-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 2rem;
+      padding: 0 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .66rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(62,204,192,.38);
+      white-space: nowrap;
+    }
+    .m-item::after { content: '✦'; font-size: .4rem; color: rgba(62,204,192,.2); }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px }
+    ::-webkit-scrollbar-track { background: var(--bg2) }
+    ::-webkit-scrollbar-thumb { background: rgba(62,204,192,.3); border-radius: 3px }
+  </style>
+</head>
+<body>
+
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState, useEffect, useRef, useCallback, memo } = React;
+
+    /* ══════════════════════════════════════════════
+       HOOKS
+    ══════════════════════════════════════════════ */
+    function useInView(ref, threshold = 0.12) {
+      const [vis, setVis] = useState(false);
+      useEffect(() => {
+        if (!ref.current) return;
+        const obs = new IntersectionObserver(([e]) => {
+          if (e.isIntersecting) { setVis(true); obs.disconnect(); }
+        }, { threshold });
+        obs.observe(ref.current);
+        return () => obs.disconnect();
+      }, []);
+      return vis;
+    }
+
+    function useCounter(target, ms, active) {
+      const [n, setN] = useState(0);
+      useEffect(() => {
+        if (!active) return;
+        let t0 = null;
+        const step = ts => {
+          if (!t0) t0 = ts;
+          const p = Math.min((ts - t0) / ms, 1);
+          setN(Math.round((1 - Math.pow(1 - p, 3)) * target));
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      }, [active]);
+      return n;
+    }
+
+    /* ══════════════════════════════════════════════
+       PARTICLE CANVAS — elastic walls, teal dots
+    ══════════════════════════════════════════════ */
+    const ParticleCanvas = memo(() => {
+      const cvs = useRef(null);
+      useEffect(() => {
+        const c = cvs.current, ctx = c.getContext('2d');
+        let raf, mouse = { x: -999, y: -999 };
+
+        const resize = () => { c.width = innerWidth; c.height = innerHeight; };
+        resize();
+
+        const N = Math.min(Math.floor(c.width * c.height / 11000), 100);
+        const pts = Array.from({ length: N }, () => ({
+          x: 60 + Math.random() * (c.width - 120),
+          y: 60 + Math.random() * (c.height - 120),
+          vx: (Math.random() - .5) * .4,
+          vy: (Math.random() - .5) * .4,
+          r: Math.random() * 1.3 + .35,
+          a: Math.random() * .45 + .1,
+        }));
+
+        const tick = () => {
+          ctx.clearRect(0, 0, c.width, c.height);
+
+          const MARGIN = 60;   // elastic wall zone width
+          const K      = 0.012; // spring constant
+
+          pts.forEach(p => {
+            // Mouse repulsion
+            const dx = p.x - mouse.x, dy = p.y - mouse.y, d = Math.hypot(dx, dy);
+            if (d < 130 && d > 1) {
+              const f = (130 - d) / 130 * .55;
+              p.vx += dx / d * f;
+              p.vy += dy / d * f;
+            }
+
+            // Elastic wall spring forces — particles bounce back smoothly
+            if (p.x < MARGIN)           p.vx += (MARGIN - p.x)          * K;
+            if (p.x > c.width - MARGIN) p.vx -= (p.x - (c.width - MARGIN)) * K;
+            if (p.y < MARGIN)           p.vy += (MARGIN - p.y)          * K;
+            if (p.y > c.height - MARGIN)p.vy -= (p.y - (c.height - MARGIN)) * K;
+
+            // Speed limit + friction
+            const spd = Math.hypot(p.vx, p.vy);
+            if (spd > 2.2) { p.vx = p.vx / spd * 2.2; p.vy = p.vy / spd * 2.2; }
+            p.vx *= .993; p.vy *= .993;
+
+            p.x += p.vx; p.y += p.vy;
+
+            // Safety clamp (never truly escape)
+            p.x = Math.max(2, Math.min(c.width  - 2, p.x));
+            p.y = Math.max(2, Math.min(c.height - 2, p.y));
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(62,204,192,${p.a})`;
+            ctx.fill();
+          });
+
+          // Connection lines
+          for (let i = 0; i < pts.length; i++)
+            for (let j = i + 1; j < pts.length; j++) {
+              const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+              if (d < 115) {
+                ctx.beginPath();
+                ctx.moveTo(pts[i].x, pts[i].y);
+                ctx.lineTo(pts[j].x, pts[j].y);
+                ctx.strokeStyle = `rgba(62,204,192,${(1 - d / 115) * .09})`;
+                ctx.lineWidth = .5;
+                ctx.stroke();
+              }
+            }
+
+          raf = requestAnimationFrame(tick);
+        };
+
+        const onMove = e => { mouse.x = e.clientX; mouse.y = e.clientY; };
+        window.addEventListener('resize', resize);
+        window.addEventListener('mousemove', onMove, { passive: true });
+        tick();
+        return () => {
+          cancelAnimationFrame(raf);
+          window.removeEventListener('resize', resize);
+          window.removeEventListener('mousemove', onMove);
+        };
+      }, []);
+
+      return (
+        <canvas ref={cvs} style={{
+          position: 'fixed', inset: 0, width: '100%', height: '100%',
+          pointerEvents: 'none', zIndex: 0, opacity: .5,
+        }} />
+      );
+    });
+
+    /* ══════════════════════════════════════════════
+       SCROLL PROGRESS BAR
+    ══════════════════════════════════════════════ */
+    const ScrollBar = memo(() => {
+      const [pct, setPct] = useState(0);
+      useEffect(() => {
+        const u = () => {
+          const d = document.documentElement;
+          setPct(scrollY / (d.scrollHeight - d.clientHeight) * 100);
+        };
+        window.addEventListener('scroll', u, { passive: true });
+        return () => window.removeEventListener('scroll', u);
+      }, []);
+      return (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, height: 3, zIndex: 9999,
+          width: `${pct}%`,
+          background: 'linear-gradient(90deg,#0e8a7e,#3eccc0,#f5a500)',
+          boxShadow: '0 0 8px rgba(62,204,192,.5)',
+          transition: 'width .1s linear',
+        }} />
+      );
+    });
+
+    /* ══════════════════════════════════════════════
+       MARQUEE BAR
+    ══════════════════════════════════════════════ */
+    const MARQUEE_ITEMS = [
+      'Stealth Mode','Safety Planning','Offline-First','Privacy-First',
+      'Domestic Safety','Zero Cloud','Encrypted Storage','Emergency Tools',
+      'PIN Protection','Progressive PWA','VA-11','Westfield High','2025',
+    ];
+
+    const Marquee = () => (
+      <div className="marquee-bar" aria-hidden="true">
+        <div className="marquee-track">
+          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((t, i) => (
+            <span key={i} className="m-item">{t}</span>
+          ))}
+        </div>
+      </div>
+    );
+
+    /* ══════════════════════════════════════════════
+       3D SHIELD — cursor-tracked tilt
+    ══════════════════════════════════════════════ */
+    const Shield3D = () => {
+      const wrap = useRef(null), tgt = useRef({ x:0,y:0 }), cur = useRef({ x:0,y:0 }), raf = useRef(null);
+      useEffect(() => {
+        const onMove = e => {
+          const hero = wrap.current?.closest('.hero-section');
+          if (!hero) return;
+          const r = hero.getBoundingClientRect();
+          tgt.current = {
+            x:  ((e.clientX - r.left - r.width  / 2) / r.width)  * 18,
+            y: -((e.clientY - r.top  - r.height / 2) / r.height) * 18,
+          };
+        };
+        const loop = () => {
+          cur.current.x += (tgt.current.x - cur.current.x) * .055;
+          cur.current.y += (tgt.current.y - cur.current.y) * .055;
+          if (wrap.current)
+            wrap.current.style.transform =
+              `perspective(900px) rotateY(${cur.current.x}deg) rotateX(${cur.current.y}deg)`;
+          raf.current = requestAnimationFrame(loop);
+        };
+        window.addEventListener('mousemove', onMove, { passive: true });
+        loop();
+        return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(raf.current); };
+      }, []);
+
+      return (
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'center', position:'relative', zIndex:1, animation:'fadeUp .8s .15s ease both' }}>
+          <div ref={wrap} style={{ position:'relative', width:'clamp(200px,24vw,360px)', willChange:'transform', transformStyle:'preserve-3d' }}>
+            <div style={{ position:'absolute', inset:'-12%', borderRadius:'50%', border:'1px solid rgba(62,204,192,.1)', animation:'spin 22s linear infinite' }} />
+            <div style={{ position:'absolute', inset:'-26%', borderRadius:'50%', border:'1px solid rgba(62,204,192,.05)', animation:'spin 38s linear infinite reverse' }} />
+            <div style={{ position:'absolute', inset:'-18%', borderRadius:'50%', background:'radial-gradient(circle,rgba(245,165,0,.14) 0%,transparent 68%)', animation:'breathe 3.5s ease-in-out infinite' }} />
+            <svg width="100%" viewBox="0 0 200 230" fill="none">
+              <defs>
+                <linearGradient id="sG" x1="0" y1="0" x2="200" y2="230" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#1a4a5a"/>
+                  <stop offset="100%" stopColor="#0a2330"/>
+                </linearGradient>
+                <linearGradient id="sS" x1="0" y1="0" x2="200" y2="230" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#f5a500" stopOpacity=".95"/>
+                  <stop offset="100%" stopColor="#c47d00" stopOpacity=".25"/>
+                </linearGradient>
+                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="b"/>
+                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <path d="M100 6 L190 42 L190 112 C190 162 150 206 100 224 C50 206 10 162 10 112 L10 42 Z"
+                fill="url(#sG)" stroke="url(#sS)" strokeWidth="1.5" filter="url(#glow)"/>
+              <path d="M100 26 L172 57 L172 115 C172 156 142 190 100 207 C58 190 28 156 28 115 L28 57 Z"
+                fill="none" stroke="rgba(245,165,0,.13)" strokeWidth="1"/>
+            </svg>
+            <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', paddingTop:'6%' }}>
+              <div style={{ fontSize:'clamp(2.2rem,5vw,3.5rem)', lineHeight:1, filter:'drop-shadow(0 0 14px rgba(245,165,0,.5))' }}>🔒</div>
+              <div style={{ fontFamily:"'DM Mono',monospace", fontSize:'.63rem', letterSpacing:'.24em', textTransform:'uppercase', color:'#f5a500', marginTop:'.6rem', opacity:.85 }}>SAFEY</div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    /* ══════════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════════ */
+    const Hero = () => {
+      const [typed, setTyped] = useState(''), [done, setDone] = useState(false);
+      const text = 'A stealth-mode app for people in domestic violence situations. Hides in plain sight, works offline, keeps everything on your device.';
+      useEffect(() => {
+        let i = 0, iv;
+        const t = setTimeout(() => {
+          iv = setInterval(() => {
+            i++;
+            setTyped(text.slice(0, i));
+            if (i >= text.length) { clearInterval(iv); setDone(true); }
+          }, 22);
+        }, 800);
+        return () => { clearTimeout(t); clearInterval(iv); };
+      }, []);
+
+      return (
+        <section className="hero-section" style={{ minHeight:'100svh', display:'grid', gridTemplateColumns:'1fr 1fr', alignItems:'center', gap:'3rem', padding:'7rem 6vw 5rem', position:'relative', zIndex:1, overflow:'hidden' }}>
+          <div style={{ position:'absolute', right:0, top:0, bottom:0, width:'50%', background:'radial-gradient(ellipse at right center,rgba(245,165,0,.06) 0%,transparent 70%)', pointerEvents:'none' }} />
+
+          <div>
+            <div style={{ display:'inline-flex', alignItems:'center', gap:'.5rem', background:'rgba(245,165,0,.1)', border:'1px solid rgba(245,165,0,.28)', color:'#f5a500', fontSize:'.68rem', fontWeight:600, letterSpacing:'.13em', textTransform:'uppercase', padding:'.35rem .9rem', borderRadius:999, marginBottom:'1.8rem', animation:'fadeUp .5s ease both', whiteSpace:'nowrap' }}>
+              🛡️ &nbsp;Congressional App Challenge · VA-11 · 2025
+            </div>
+
+            <h1 style={{ fontFamily:"'Playfair Display',serif", fontWeight:900, fontSize:'clamp(5rem,10vw,9.5rem)', lineHeight:.9, letterSpacing:'-.02em', animation:'fadeUp .6s .1s ease both', background:'linear-gradient(135deg,#edfaf7 40%,rgba(245,165,0,.9))', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+              SAFEY
+            </h1>
+
+            <p style={{ marginTop:'1.6rem', fontSize:'1.05rem', lineHeight:1.82, color:'rgba(216,240,236,.62)', maxWidth:'40ch', fontWeight:300, minHeight:'5em', animation:'fadeUp .6s .2s ease both' }}>
+              {typed}
+              {!done && <span style={{ borderRight:'2px solid #f5a500', animation:'blink 1s step-end infinite' }}>&thinsp;</span>}
+            </p>
+
+            <div style={{ marginTop:'2.4rem', display:'flex', alignItems:'center', gap:'1.4rem', animation:'fadeUp .6s .32s ease both' }}>
+              <div>
+                <div style={{ fontSize:'.95rem', fontWeight:500, color:'#edfaf7' }}>Amrik Majumdar &amp; Atiksh Gupta</div>
+                <div style={{ fontSize:'.78rem', color:'rgba(216,240,236,.4)', fontWeight:300, marginTop:2 }}>Westfield High School · Virginia's 11th District</div>
+              </div>
+              <div style={{ width:1, height:36, background:'rgba(216,240,236,.18)' }} />
+              <div style={{ fontFamily:"'DM Mono',monospace", fontSize:'.78rem', color:'#3eccc0', letterSpacing:'.08em' }}>VA · 11</div>
+            </div>
+
+            <div style={{ display:'flex', flexWrap:'wrap', gap:'.45rem', marginTop:'1.9rem', animation:'fadeUp .6s .4s ease both' }}>
+              {['Safety','Health','Privacy','Offline-First','PWA'].map(t => (
+                <span key={t} style={{ background:'rgba(62,204,192,.08)', border:'1px solid rgba(62,204,192,.22)', color:'#3eccc0', fontSize:'.7rem', fontWeight:500, padding:'.28rem .7rem', borderRadius:999, letterSpacing:'.03em' }}>{t}</span>
+              ))}
+            </div>
+          </div>
+
+          <Shield3D />
+
+          <div style={{ position:'absolute', bottom:'2rem', left:'50%', transform:'translateX(-50%)', display:'flex', flexDirection:'column', alignItems:'center', gap:'.4rem', color:'rgba(216,240,236,.22)', fontSize:'.6rem', letterSpacing:'.14em', textTransform:'uppercase', animation:'fadeUp 1s 1.2s ease both' }}>
+            Scroll
+            <div style={{ width:1, height:30, background:'linear-gradient(to bottom,rgba(245,165,0,.4),transparent)', animation:'scrollDrop 1.6s ease-in-out infinite' }} />
+          </div>
+        </section>
+      );
+    };
+
+    /* ══════════════════════════════════════════════
+       STATS
+    ══════════════════════════════════════════════ */
+    const Stat = ({ target, suffix, label }) => {
+      const ref = useRef(null), vis = useInView(ref), n = useCounter(target, 1300, vis);
+      return (
+        <div ref={ref} style={{ textAlign:'center', padding:'0 1.5rem' }}>
+          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2.4rem,5vw,3.6rem)', fontWeight:900, color:'#f5a500', lineHeight:1 }}>{n}{suffix}</div>
+          <div style={{ fontSize:'.68rem', fontWeight:600, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(216,240,236,.32)', marginTop:'.5rem' }}>{label}</div>
+        </div>
+      );
+    };
+
+    const Stats = () => (
+      <div style={{ display:'flex', justifyContent:'center', flexWrap:'wrap', gap:'2rem', padding:'3rem 6vw', borderTop:'1px solid rgba(62,204,192,.08)', borderBottom:'1px solid rgba(62,204,192,.08)', position:'relative', zIndex:1, background:'rgba(10,35,48,.6)', backdropFilter:'blur(12px)' }}>
+        <Stat target={0}   suffix=""  label="Cloud Servers" />
+        <div style={{ width:1, background:'rgba(62,204,192,.1)', alignSelf:'stretch' }} />
+        <Stat target={100} suffix="%" label="Works Offline" />
+        <div style={{ width:1, background:'rgba(62,204,192,.1)', alignSelf:'stretch' }} />
+        <Stat target={256} suffix=""  label="AES Encryption Bits" />
+      </div>
+    );
+
+    /* ══════════════════════════════════════════════
+       SECTION WRAPPER
+    ══════════════════════════════════════════════ */
+    const Section = ({ children, style = {} }) => {
+      const ref = useRef(null), vis = useInView(ref);
+      return (
+        <section ref={ref} style={{ padding:'5.5rem 6vw', position:'relative', zIndex:1, borderTop:'1px solid rgba(62,204,192,.07)', opacity:vis?1:0, transform:vis?'none':'translateY(28px)', transition:'opacity .75s ease, transform .75s ease', ...style }}>
+          {children}
+        </section>
+      );
+    };
+
+    const SLabel = ({ num, children }) => (
+      <div style={{ display:'flex', alignItems:'center', gap:'.8rem', fontFamily:"'DM Mono',monospace", fontSize:'.63rem', letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(62,204,192,.5)', marginBottom:'1rem' }}>
+        <span style={{ color:'rgba(62,204,192,.25)' }}>{num}</span>
+        {children}
+        <span style={{ flex:1, height:1, background:'rgba(62,204,192,.08)' }} />
+      </div>
+    );
+
+    const STitle = ({ children }) => (
+      <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(2rem,4vw,2.8rem)', fontWeight:700, color:'#edfaf7', lineHeight:1.15, marginBottom:'1.5rem' }}>{children}</h2>
+    );
+
+    /* ══════════════════════════════════════════════
+       MONOGRAM BLOB (ClearMind-style)
+    ══════════════════════════════════════════════ */
+    const Monogram = ({ initials, delay = 0 }) => (
+      <div style={{
+        width:110, height:110, flexShrink:0, borderRadius:'38% 62% 44% 56% / 56% 44% 62% 38%',
+        background:'conic-gradient(from 180deg,#0e8a7e,#3eccc0,#f5a500,#3eccc0,#0e8a7e)',
+        display:'grid', placeItems:'center',
+        fontFamily:"'Playfair Display',serif", fontSize:'2rem', fontWeight:900, color:'#0a2330',
+        animation:`morphBlob 16s ${delay}s ease-in-out infinite`,
+        boxShadow:'0 0 60px rgba(62,204,192,.2), 0 0 120px rgba(62,204,192,.08)',
+        letterSpacing:'-.02em',
+      }}>
+        {initials}
+      </div>
+    );
+
+    /* ══════════════════════════════════════════════
+       ABOUT SECTION
+    ══════════════════════════════════════════════ */
+    const About = () => (
+      <Section>
+        <SLabel num="01">The Builders</SLabel>
+        <STitle>About Us</STitle>
+
+        {/* Two-person cards */}
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem', marginBottom:'1.6rem' }}>
+          {[
+            { initials:'AM', name:'Amrik Majumdar', delay:0 },
+            { initials:'AG', name:'Atiksh Gupta',   delay:4 },
+          ].map(p => (
+            <div key={p.name}
+              style={{ background:'rgba(14,58,72,.78)', backdropFilter:'blur(20px)', border:'1px solid rgba(62,204,192,.1)', borderRadius:18, padding:'1.8rem 2rem', display:'flex', alignItems:'center', gap:'1.5rem', transition:'border-color .3s, box-shadow .3s' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(245,165,0,.25)'; e.currentTarget.style.boxShadow='0 8px 32px rgba(0,0,0,.25)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(62,204,192,.1)';  e.currentTarget.style.boxShadow='none'; }}
+            >
+              <Monogram initials={p.initials} delay={p.delay} />
+              <div>
+                <div style={{ fontFamily:"'Playfair Display',serif", fontSize:'1.3rem', fontWeight:700, color:'#edfaf7', lineHeight:1.1 }}>{p.name}</div>
+                <div style={{ fontSize:'.75rem', color:'rgba(216,240,236,.4)', marginTop:'.3rem', fontWeight:300 }}>Westfield High School</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Shared bio */}
+        <div style={{ background:'rgba(14,58,72,.78)', backdropFilter:'blur(20px)', border:'1px solid rgba(62,204,192,.1)', borderRadius:18, padding:'2rem 2.4rem', marginBottom:'1.6rem', transition:'border-color .3s' }}
+          onMouseEnter={e => e.currentTarget.style.borderColor='rgba(245,165,0,.2)'}
+          onMouseLeave={e => e.currentTarget.style.borderColor='rgba(62,204,192,.1)'}
+        >
+          <p style={{ color:'#d8f0ec', fontSize:'1.06rem', lineHeight:1.85, fontWeight:300 }}>
+            We're Amrik Majumdar and Atiksh Gupta, juniors at Westfield High School in Virginia's 11th District. We both love finding real-world problems that technology can actually solve, and SAFEY came out of exactly that. We noticed domestic safety was a priority on Virginia's Governor's website, but the apps available were cloud-based, required accounts, and weren't built with privacy in mind. So we built what we felt was missing.
+          </p>
+        </div>
+
+        {/* Pull quote */}
+        <div style={{ background:'rgba(14,58,72,.78)', backdropFilter:'blur(20px)', borderLeft:'4px solid #f5a500', borderRadius:'0 18px 18px 0', padding:'2rem 2.5rem', position:'relative', overflow:'hidden' }}>
+          <div style={{ position:'absolute', bottom:'-2.5rem', right:'1.5rem', fontFamily:"'Playfair Display',serif", fontSize:'11rem', color:'rgba(245,165,0,.07)', lineHeight:1, pointerEvents:'none', userSelect:'none' }}>"</div>
+          <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(1.05rem,2vw,1.3rem)', fontStyle:'italic', color:'#edfaf7', lineHeight:1.68, position:'relative', zIndex:1 }}>
+            We wanted to build something that a person in a scary situation could actually trust. Discreet, offline, fast, and forgiving when you mistype your PIN at 2am.
+          </p>
+        </div>
+      </Section>
+    );
+
+    /* ══════════════════════════════════════════════
+       FEATURE CARDS — 3D tilt
+    ══════════════════════════════════════════════ */
+    const FeatureCard = memo(({ icon, name, desc, delay }) => {
+      const ref = useRef(null), vis = useInView(ref), raf = useRef(null);
+      const tgt = useRef({ rx:0,ry:0 }), cur = useRef({ rx:0,ry:0 }), active = useRef(false);
+
+      const onEnter = useCallback(() => {
+        active.current = true;
+        const loop = () => {
+          if (!active.current || !ref.current) return;
+          cur.current.rx += (tgt.current.rx - cur.current.rx) * .12;
+          cur.current.ry += (tgt.current.ry - cur.current.ry) * .12;
+          ref.current.style.transform = `perspective(700px) rotateX(${cur.current.rx}deg) rotateY(${cur.current.ry}deg) translateZ(12px)`;
+          ref.current.style.borderColor = 'rgba(245,165,0,.28)';
+          ref.current.style.background  = 'rgba(18,72,88,.92)';
+          raf.current = requestAnimationFrame(loop);
+        };
+        loop();
+      }, []);
+
+      const onMove = useCallback(e => {
+        if (!ref.current) return;
+        const r = ref.current.getBoundingClientRect();
+        tgt.current = { rx:-((e.clientY-r.top-r.height/2)/r.height)*10, ry:((e.clientX-r.left-r.width/2)/r.width)*10 };
+      }, []);
+
+      const onLeave = useCallback(() => {
+        active.current = false;
+        cancelAnimationFrame(raf.current);
+        tgt.current = { rx:0, ry:0 };
+        if (ref.current) {
+          ref.current.style.transition = 'transform .5s ease,border-color .3s,background .3s';
+          ref.current.style.transform  = 'perspective(700px) rotateX(0) rotateY(0) translateZ(0)';
+          ref.current.style.borderColor= 'rgba(62,204,192,.1)';
+          ref.current.style.background = 'rgba(14,58,72,.78)';
+          setTimeout(() => { if (ref.current) ref.current.style.transition='border-color .3s,background .3s'; }, 500);
+        }
+        cur.current = { rx:0, ry:0 };
+      }, []);
+
+      useEffect(() => () => cancelAnimationFrame(raf.current), []);
+
+      return (
+        <div ref={ref} onMouseEnter={onEnter} onMouseMove={onMove} onMouseLeave={onLeave}
+          style={{ background:'rgba(14,58,72,.78)', backdropFilter:'blur(20px)', border:'1px solid rgba(62,204,192,.1)', borderRadius:18, padding:'1.6rem 1.7rem', position:'relative', overflow:'hidden', cursor:'default', willChange:'transform', opacity:vis?1:0, translate:vis?'none':'0 26px', transition:`opacity .6s ${delay}s ease, translate .6s ${delay}s ease` }}>
+          <div style={{ position:'absolute', bottom:0, left:0, right:0, height:2, background:'linear-gradient(90deg,transparent,rgba(245,165,0,.4),transparent)' }} />
+          <div style={{ position:'relative', zIndex:1 }}>
+            <div style={{ fontSize:'1.85rem', lineHeight:1, marginBottom:'.85rem', display:'inline-block', transition:'transform .3s' }}
+              onMouseEnter={e => e.currentTarget.style.transform='scale(1.15)'}
+              onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
+            >{icon}</div>
+            <div style={{ fontWeight:600, fontSize:'1rem', color:'#edfaf7', marginBottom:'.4rem' }}>{name}</div>
+            <div style={{ fontSize:'.88rem', color:'rgba(216,240,236,.55)', lineHeight:1.65 }}>{desc}</div>
+          </div>
+        </div>
+      );
+    });
+
+    /* ══════════════════════════════════════════════
+       FEATURES SECTION
+    ══════════════════════════════════════════════ */
+    const FEATURES = [
+      { icon:'🎭', name:'Stealth Mode',       desc:"Looks like a calculator or notes app. Alerts queue silently and only show when it's safe." },
+      { icon:'📡', name:'Offline-First',      desc:'Everything works without internet. No cloud dependency means no digital trail.' },
+      { icon:'📋', name:'Safety Planning',    desc:'Guided risk assessment and customizable plans for daily use and emergencies.' },
+      { icon:'🔐', name:'Encrypted Storage',  desc:'All data encrypted on-device only. No accounts. No servers. Nothing to breach.' },
+      { icon:'🚨', name:'Emergency Tools',    desc:'One-tap toggles and curated crisis resources designed to work under pressure.' },
+      { icon:'🔒', name:'Progressive Lockout',desc:'Failed PIN attempts escalate from a 30-second pause to a full data reset warning.' },
+    ];
+
+    const Features = () => (
+      <Section>
+        <SLabel num="02">The App</SLabel>
+        <STitle>What is SAFEY?</STitle>
+        <p style={{ color:'rgba(216,240,236,.58)', fontSize:'1.05rem', lineHeight:1.82, fontWeight:300, maxWidth:'58ch', marginBottom:'2.5rem' }}>
+          An offline-first PWA for people experiencing domestic violence. The core feature is{' '}
+          <strong style={{ color:'#f5a500', fontWeight:500 }}>stealth mode</strong>: the app looks like a calculator on the surface, with a PIN unlocking the real thing underneath.
+        </p>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(225px,1fr))', gap:'1rem' }}>
+          {FEATURES.map((f, i) => <FeatureCard key={f.name} {...f} delay={i * .08} />)}
+        </div>
+      </Section>
+    );
+
+    /* ══════════════════════════════════════════════
+       TECH SECTION — full width grid, no WebCrypto
+    ══════════════════════════════════════════════ */
+    const TECH = [
+      { name:'PWA',             role:'App Shell'  },
+      { name:'JavaScript',      role:'Core Logic' },
+      { name:'Service Workers', role:'Offline'    },
+      { name:'IndexedDB',       role:'Storage'    },
+      { name:'HTML5 / CSS3',    role:'Interface'  },
+    ];
+
+    const TechItem = memo(({ name, role, delay, vis }) => {
+      const [hov, setHov] = useState(false);
+      return (
+        <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+          style={{ background:hov?'rgba(18,72,88,.95)':'rgba(14,58,72,.78)', backdropFilter:'blur(16px)', border:hov?'1px solid rgba(245,165,0,.35)':'1px solid rgba(62,204,192,.1)', borderRadius:13, padding:'1.2rem 1rem', textAlign:'center', cursor:'default', boxShadow:hov?'0 8px 28px rgba(0,0,0,.25),0 0 18px rgba(245,165,0,.1)':'none', transform:vis?(hov?'translateY(-5px) scale(1.04)':'scale(1)'):'scale(.9)', opacity:vis?1:0, transition:`all .35s ${delay}s ease` }}>
+          <span style={{ display:'block', fontFamily:"'Playfair Display',serif", fontSize:'.94rem', fontWeight:700, color:hov?'#f5a500':'#edfaf7', marginBottom:'.28rem', transition:'color .2s' }}>{name}</span>
+          <span style={{ fontSize:'.63rem', color:'rgba(216,240,236,.28)', textTransform:'uppercase', letterSpacing:'.1em' }}>{role}</span>
+        </div>
+      );
+    });
+
+    const Tech = () => {
+      const ref = useRef(null), vis = useInView(ref);
+      return (
+        <section ref={ref} style={{ padding:'5.5rem 6vw', position:'relative', zIndex:1, borderTop:'1px solid rgba(62,204,192,.07)', opacity:vis?1:0, transform:vis?'none':'translateY(28px)', transition:'opacity .75s ease, transform .75s ease' }}>
+          <SLabel num="03">Built With</SLabel>
+          <STitle>Technology</STitle>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:'.85rem' }}>
+            {TECH.map((t, i) => <TechItem key={t.name} {...t} delay={i * .07} vis={vis} />)}
+          </div>
+        </section>
+      );
+    };
+
+    /* ══════════════════════════════════════════════
+       DEMO — plain iframe like ClearMind, smaller
+    ══════════════════════════════════════════════ */
+    const Demo = () => {
+      const ref = useRef(null), vis = useInView(ref);
+      return (
+        <section ref={ref} style={{ padding:'5.5rem 6vw', position:'relative', zIndex:1, borderTop:'1px solid rgba(62,204,192,.07)', opacity:vis?1:0, transform:vis?'none':'translateY(28px)', transition:'opacity .75s ease, transform .75s ease' }}>
+          <SLabel num="04">In Action</SLabel>
+          <STitle>Demo</STitle>
+          {/* Constrained width so it's not full-screen huge */}
+          <div style={{ maxWidth:680, margin:'0 auto' }}>
+            <div style={{ position:'relative', width:'100%', aspectRatio:'16/9', borderRadius:18, overflow:'hidden', border:'1px solid rgba(62,204,192,.12)', boxShadow:'0 16px 60px rgba(0,0,0,.4)' }}>
+              <iframe
+                src="https://www.youtube.com/embed/LEB7JYgnRqc"
+                title="SAFEY Demo Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                style={{ width:'100%', height:'100%', border:'none', display:'block' }}
+              />
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    /* ══════════════════════════════════════════════
+       MAGNETIC BUTTON
+    ══════════════════════════════════════════════ */
+    const MagBtn = ({ href, children, primary }) => {
+      const ref = useRef(null), [off, setOff] = useState({ x:0,y:0 }), [hov, setHov] = useState(false);
+      const onMove = e => {
+        const r = ref.current?.getBoundingClientRect();
+        if (!r) return;
+        setOff({ x:(e.clientX-r.left-r.width/2)*.2, y:(e.clientY-r.top-r.height/2)*.2 });
+      };
+      return (
+        <a ref={ref} href={href} target="_blank" rel="noopener"
+          onMouseMove={onMove} onMouseEnter={() => setHov(true)} onMouseLeave={() => { setOff({x:0,y:0}); setHov(false); }}
+          style={{ display:'inline-flex', alignItems:'center', gap:'.5rem', padding:'.85rem 2rem', borderRadius:13, fontSize:'.9rem', fontWeight:600, textDecoration:'none', background:primary?'#f5a500':'rgba(14,58,72,.85)', color:primary?'#0a1a28':'#d8f0ec', border:primary?'none':'1px solid rgba(62,204,192,.15)', backdropFilter:primary?'none':'blur(16px)', transform:`translate(${off.x}px,${off.y}px)`, transition:'transform .3s ease,box-shadow .3s,background .2s', boxShadow:primary?(hov?'0 12px 32px rgba(245,165,0,.4)':'0 4px 16px rgba(245,165,0,.25)'):(hov?'0 8px 24px rgba(0,0,0,.3)':'0 2px 8px rgba(0,0,0,.15)') }}>
+          {children}
+        </a>
+      );
+    };
+
+    /* ══════════════════════════════════════════════
+       LINKS
+    ══════════════════════════════════════════════ */
+    const Links = () => (
+      <Section>
+        <SLabel num="05">Explore</SLabel>
+        <STitle>Links</STitle>
+        <div style={{ display:'flex', flexWrap:'wrap', gap:'1rem' }}>
+          <MagBtn href="https://www.congressionalappchallenge.us/25-VA11/" primary>🏛️ &nbsp;Official CAC Page</MagBtn>
+          <MagBtn href="https://www.youtube.com/watch?v=LEB7JYgnRqc">▶ &nbsp;Watch on YouTube</MagBtn>
+        </div>
+      </Section>
+    );
+
+    /* ══════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════ */
+    const Footer = () => (
+      <footer style={{ textAlign:'center', padding:'2.5rem 6vw', borderTop:'1px solid rgba(62,204,192,.07)', fontSize:'.75rem', color:'rgba(216,240,236,.2)', position:'relative', zIndex:1, fontFamily:"'DM Mono',monospace", letterSpacing:'.1em', textTransform:'uppercase' }}>
+        Congressional App Challenge &bull;{' '}
+        <a href="../../" style={{ color:'rgba(62,204,192,.45)', textDecoration:'none' }}>Back to Showcase</a>
+      </footer>
+    );
+
+    /* ══════════════════════════════════════════════
+       APP
+    ══════════════════════════════════════════════ */
+    const App = () => (
+      <>
+        <ParticleCanvas />
+        <ScrollBar />
+        <Hero />
+        <Marquee />
+        <Stats />
+        <About />
+        <Features />
+        <Tech />
+        <Demo />
+        <Links />
+        <Footer />
+      </>
+    );
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+
+  <style>
+    @media (max-width: 860px) {
+      .hero-section { grid-template-columns: 1fr !important; min-height: auto !important; padding: 6rem 6vw 4rem !important; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .about-people { grid-template-columns: 1fr !important; }
+    }
+    /* Tech grid: 5 cols on desktop, collapse on smaller screens */
+    @media (max-width: 700px) {
+      [data-tech-grid] { grid-template-columns: repeat(3, 1fr) !important; }
+    }
+    @media (max-width: 440px) {
+      [data-tech-grid] { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+  </style>
+
+</body>
+</html>

@@ -4,9 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IAHeroes | Joey Zambreno</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -95,8 +100,6 @@
       justify-content: center;
       gap: 10px;
       margin-bottom: 2rem;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.1s forwards;
     }
 
     .star {
@@ -114,8 +117,6 @@
       text-transform: uppercase;
       color: #fff;
       margin-bottom: 1.2rem;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.2s forwards;
     }
 
     .hero h1 {
@@ -126,8 +127,6 @@
       letter-spacing: -0.01em;
       color: #fff;
       margin-bottom: 0.5rem;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.3s forwards;
     }
 
     .hero h1 span { color: var(--gold); }
@@ -139,8 +138,6 @@
       font-style: italic;
       color: rgba(255,255,255,0.7);
       margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.4s forwards;
     }
 
     .hero-divider {
@@ -149,8 +146,6 @@
       justify-content: center;
       gap: 1rem;
       margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.5s forwards;
     }
 
     .hero-divider::before,
@@ -175,8 +170,6 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--gold-light);
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.6s forwards;
     }
 
     /* ── MAIN LAYOUT ──────────────────────────── */
@@ -189,18 +182,7 @@
     /* ── SECTION BASE ────────────────────────── */
     section {
       margin-bottom: 3rem;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.7s ease forwards;
     }
-
-    section:nth-child(1) { animation-delay: 0.1s; }
-    section:nth-child(2) { animation-delay: 0.2s; }
-    section:nth-child(3) { animation-delay: 0.3s; }
-    section:nth-child(4) { animation-delay: 0.4s; }
-    section:nth-child(5) { animation-delay: 0.5s; }
-    section:nth-child(6) { animation-delay: 0.55s; }
-    section:nth-child(7) { animation-delay: 0.6s; }
 
     .section-label {
       font-size: 0.68rem;
@@ -591,10 +573,6 @@
     }
 
     /* ── ANIMATIONS ──────────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
   </style>
 </head>
 <body>
@@ -621,7 +599,7 @@
   <div class="container">
 
     <!-- Mission Quote -->
-    <section style="animation-delay: 0.05s;">
+    <section>
       <div class="mission-quote">
         <blockquote>
           To honor and preserve the incredible stories of Iowa's veterans by providing a modern, accessible platform for storytelling, education, and community connection. IAHeroes bridges the gap between generations, ensuring that the sacrifices and experiences of our veterans are never forgotten.

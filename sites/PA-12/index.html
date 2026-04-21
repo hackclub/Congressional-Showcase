@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Isomer Enumerator | Jeffery Zhang</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #0D9488;
+      --teal-dark: #0F766E;
+      --teal-light: #CCFBF1;
+      --teal-50: #F0FDFA;
+      --cyan: #0891B2;
+      --cyan-light: #CFFAFE;
+      --emerald: #059669;
+      --white: #FFFFFF;
+      --bg: #F8FAFC;
+      --text: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --border: #E2E8F0;
+      --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BACK */
+    .back-nav {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--teal);
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--card-shadow);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .back-nav:hover { background: var(--teal-50); border-color: var(--teal); }
+    .back-nav svg { width: 14px; height: 14px; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 7rem 2rem 4rem;
+      background: linear-gradient(180deg, #F0FDFA 0%, #CCFBF1 30%, var(--white) 100%);
+      overflow: hidden;
+    }
+
+    /* Molecule motif - subtle connected dots */
+    .molecule-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .molecule-bg .node {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(13, 148, 136, 0.08);
+      border-radius: 50%;
+    }
+    .molecule-bg .node::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(to right, rgba(13,148,136,0.06), transparent);
+      transform-origin: left center;
+    }
+    .molecule-bg .node:nth-child(1) { top: 12%; left: 8%; }
+    .molecule-bg .node:nth-child(1)::after { transform: rotate(45deg); }
+    .molecule-bg .node:nth-child(2) { top: 22%; left: 20%; }
+    .molecule-bg .node:nth-child(2)::after { transform: rotate(-20deg); width: 60px; }
+    .molecule-bg .node:nth-child(3) { top: 8%; right: 12%; }
+    .molecule-bg .node:nth-child(3)::after { transform: rotate(155deg); }
+    .molecule-bg .node:nth-child(4) { top: 35%; right: 6%; }
+    .molecule-bg .node:nth-child(4)::after { transform: rotate(210deg); width: 100px; }
+    .molecule-bg .node:nth-child(5) { bottom: 28%; left: 15%; }
+    .molecule-bg .node:nth-child(5)::after { transform: rotate(-35deg); width: 70px; }
+    .molecule-bg .node:nth-child(6) { bottom: 18%; right: 22%; }
+    .molecule-bg .node:nth-child(6)::after { transform: rotate(130deg); }
+    .molecule-bg .node:nth-child(7) { top: 18%; left: 45%; }
+    .molecule-bg .node:nth-child(7)::after { transform: rotate(70deg); width: 90px; }
+    .molecule-bg .node:nth-child(8) { bottom: 35%; right: 40%; }
+    .molecule-bg .node:nth-child(8)::after { transform: rotate(-60deg); width: 50px; }
+
+    .hero-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-chip {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-secondary);
+    }
+    .hero-chip.teal { background: var(--teal-light); color: var(--teal); border-color: transparent; }
+    .hero-chip.cyan { background: var(--cyan-light); color: var(--cyan); border-color: transparent; }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span { color: var(--teal); }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 620px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .hero-meta-item {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .hero-meta-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* MAIN */
+    .page-main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    /* DASHBOARD GRID */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 800px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+    .dash-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .dash-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .dash-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    .dash-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .dash-icon.teal { background: var(--teal-light); }
+    .dash-icon.cyan { background: var(--cyan-light); }
+    .dash-icon.emerald { background: #D1FAE5; }
+    .dash-card-title {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .dash-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+    .dash-card p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* SECTION HEADING */
+    .section-heading {
+      margin-bottom: 1.5rem;
+    }
+    .section-heading .label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.4rem;
+    }
+    .section-heading h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    /* CONTENT PANELS */
+    .content-panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.2rem 2.5rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 3rem;
+    }
+
+    .content-panel p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-secondary);
+    }
+    .content-panel p + p { margin-top: 1rem; }
+
+    /* CREATOR - single column */
+    .creator-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 3rem;
+    }
+    .creator-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .creator-avatar {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--white);
+      background: var(--teal);
+    }
+    .creator-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .creator-role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .creator-card p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+    .creator-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+    }
+    .creator-tag {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.2rem 0.6rem;
+    }
+
+    /* TECH STACK */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    .tech-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .tech-dot {
+      width: 8px; height: 8px;
+      border-radius: 2px;
+    }
+    .tech-dot.teal { background: var(--teal); }
+    .tech-dot.cyan { background: var(--cyan); }
+    .tech-dot.emerald { background: var(--emerald); }
+    .tech-dot.amber { background: #F59E0B; }
+    .tech-bar-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .tech-bar-role {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    /* VIDEO */
+    .video-panel {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      margin-top: 1rem;
+    }
+    .video-panel iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box {
+      background: linear-gradient(135deg, var(--teal-50) 0%, #ECFDF5 100%);
+      border: 1px solid rgba(13, 148, 136, 0.1);
+      border-radius: 12px;
+      padding: 2rem 2.2rem;
+      margin-bottom: 3rem;
+    }
+    .highlight-box .quote-mark {
+      font-family: 'Lora', serif;
+      font-size: 3rem;
+      color: var(--teal);
+      opacity: 0.2;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .highlight-box blockquote {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .highlight-box cite {
+      display: block;
+      margin-top: 0.8rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* LINKS */
+    .links-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .action-btn:hover { transform: translateY(-1px); }
+    .action-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .action-btn.primary {
+      background: var(--teal);
+      color: var(--white);
+      box-shadow: 0 2px 10px rgba(13,148,136,0.2);
+    }
+    .action-btn.primary:hover { box-shadow: 0 4px 15px rgba(13,148,136,0.3); }
+    .action-btn.outline {
+      background: var(--white);
+      color: var(--teal);
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--text);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    footer p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+    }
+    footer a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    footer a:hover { color: var(--white); text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1.5rem 3rem; }
+      .page-main { padding: 2rem 1.2rem 3rem; }
+      .content-panel { padding: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-nav">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+    Showcase
+  </a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="molecule-bg">
+      <div class="node"></div><div class="node"></div><div class="node"></div>
+      <div class="node"></div><div class="node"></div><div class="node"></div>
+      <div class="node"></div><div class="node"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-chips">
+        <span class="hero-chip teal">Education</span>
+        <span class="hero-chip cyan">Science</span>
+        <span class="hero-chip">Chemistry</span>
+        <span class="hero-chip">PA-12</span>
+      </div>
+      <h1>Isomer <span>Enumerator</span></h1>
+      <p class="hero-desc">An application that models molecules and systematically generates all valid structural isomers based on bonding rules, electron counts, and formal charge constraints.</p>
+      <div class="hero-meta">
+        <span class="hero-meta-item"><strong>Creator:</strong> Jeffery Zhang</span>
+        <span class="hero-meta-item"><strong>School:</strong> Upper Saint Clair High School</span>
+        <span class="hero-meta-item"><strong>District:</strong> PA-12, Pittsburgh</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-main">
+
+    <!-- MISSION -->
+    <div class="highlight-box">
+      <div class="quote-mark">"</div>
+      <blockquote>A computational chemistry tool that uses recursive backtracking and object-oriented design to systematically enumerate all valid structural isomers of a given molecular formula, making organic chemistry more accessible and explorable.</blockquote>
+      <cite>Project Vision</cite>
+    </div>
+
+    <!-- FEATURE DASHBOARD CARDS -->
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon teal">&#x269B;</div>
+          <span class="dash-card-title">Structures</span>
+        </div>
+        <h3>Molecule Modeling</h3>
+        <p>Graph-based representation of chemical structures using node objects to accurately model atoms, bonds, and molecular geometry.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon cyan">&#x1F52C;</div>
+          <span class="dash-card-title">Algorithm</span>
+        </div>
+        <h3>Isomer Generation</h3>
+        <p>Recursive backtracking algorithm to systematically find all valid structural isomers for a given molecular formula.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon emerald">&#x2705;</div>
+          <span class="dash-card-title">Validation</span>
+        </div>
+        <h3>Rule Validation</h3>
+        <p>Enforces bonding rules, electron counts, and formal charge constraints to ensure only chemically valid isomers are generated.</p>
+      </div>
+    </div>
+
+    <!-- CREATOR -->
+    <div class="section-heading">
+      <p class="label">The Builder</p>
+      <h2>About the Creator</h2>
+    </div>
+    <div class="creator-card">
+      <div class="creator-card-header">
+        <div class="creator-avatar">JZ</div>
+        <div>
+          <div class="creator-name">Jeffery Zhang</div>
+          <div class="creator-role">Senior, Upper Saint Clair High School</div>
+        </div>
+      </div>
+      <p>A senior who has been coding since ninth grade, inspired by CMU CS Academy. Outside of programming, Jeffery is active in speech and debate and plays the clarinet. He will be attending UC Berkeley to study computer science.</p>
+      <div class="creator-tags">
+        <span class="creator-tag">Speech &amp; Debate</span>
+        <span class="creator-tag">Clarinet</span>
+        <span class="creator-tag">CMU CS Academy</span>
+        <span class="creator-tag">UC Berkeley</span>
+      </div>
+    </div>
+
+    <!-- APP DESCRIPTION -->
+    <div class="section-heading">
+      <p class="label">The Application</p>
+      <h2>How It Works</h2>
+    </div>
+    <div class="content-panel">
+      <p>Isomer Enumerator uses recursive backtracking and object-oriented programming to generate all valid molecular variants for chemistry education. The application takes a molecular formula as input and systematically explores every possible structural arrangement that satisfies chemical bonding rules.</p>
+      <p>The backend is built with Python and connected to a JavaScript frontend via FastAPI. Graph and node structures represent chemical objects, allowing the system to model atoms as nodes and bonds as edges. This approach enables efficient traversal and validation of molecular configurations while enforcing electron counts and formal charge constraints.</p>
+    </div>
+
+    <!-- TECH -->
+    <div class="section-heading">
+      <p class="label">Built With</p>
+      <h2>Technology Stack</h2>
+    </div>
+    <div class="tech-stack" style="margin-bottom: 3rem;">
+      <div class="tech-bar"><span class="tech-dot teal"></span><span class="tech-bar-name">Python</span><span class="tech-bar-role">&middot; Backend</span></div>
+      <div class="tech-bar"><span class="tech-dot amber"></span><span class="tech-bar-name">JavaScript</span><span class="tech-bar-role">&middot; Frontend</span></div>
+      <div class="tech-bar"><span class="tech-dot emerald"></span><span class="tech-bar-name">FastAPI</span><span class="tech-bar-role">&middot; API Layer</span></div>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="section-heading">
+      <p class="label">In Action</p>
+      <h2>Demo Video</h2>
+    </div>
+    <div style="margin-bottom: 3rem;">
+      <div class="video-panel">
+        <iframe
+          src="https://www.youtube.com/embed/dSPbkZ6RItQ"
+          title="Isomer Enumerator Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="section-heading">
+      <p class="label">Explore</p>
+      <h2>Project Links</h2>
+    </div>
+    <div style="margin-bottom: 2rem;">
+      <div class="links-flex">
+        <a href="https://jefferyz2008.github.io/Isomer-Enumerator-Frontend/" class="action-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/></svg>
+          Live App
+        </a>
+        <a href="https://github.com/jefferyz2008/Isomer_Enumerator_Backend" class="action-btn outline" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 .2A8 8 0 0 0 5.47 15.79c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0 0 8 .2z"/></svg>
+          GitHub Repository
+        </a>
+        <a href="https://www.youtube.com/watch?v=dSPbkZ6RItQ" class="action-btn outline" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 4.5v7l5-3.5-5-3.5z"/></svg>
+          Watch on YouTube
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge 2025 &bull; PA-12 &bull; Pittsburgh, PA &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

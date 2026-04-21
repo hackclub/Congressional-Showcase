@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Oasis | John I. Bolden II</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&family=Bitter:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand: #F5E6C8;
+      --sand-light: #FBF3E4;
+      --sand-dark: #D4B896;
+      --green: #5B8C5A;
+      --green-dark: #3D6B3D;
+      --green-light: #7BAF7A;
+      --water: #6AAFE6;
+      --water-dark: #4A90C4;
+      --water-light: #A8D4F5;
+      --brown: #8B6F47;
+      --text-dark: #2C2416;
+      --text-mid: #4A3F2F;
+      --text-muted: #7A6F5F;
+      --white: #FFFDF8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Karla', sans-serif;
+      background: var(--sand-light);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BACK LINK ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      position: fixed;
+      top: 1rem;
+      left: 1.2rem;
+      z-index: 100;
+      text-decoration: none;
+      background: var(--green-dark);
+      color: var(--sand-light);
+      font-family: 'Karla', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      transition: background 0.2s, transform 0.15s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .back-link::before { content: '\2190'; font-size: 0.85rem; }
+    .back-link:hover { background: var(--green); transform: translateX(-2px); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      background: linear-gradient(170deg, var(--green-dark) 0%, var(--green) 40%, var(--sand-dark) 100%);
+      padding: 6rem 2rem 5rem;
+      text-align: center;
+      overflow: hidden;
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Palm tree silhouettes */
+    .hero::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 5%;
+      width: 120px;
+      height: 300px;
+      background:
+        radial-gradient(ellipse 60px 25px at 60px 80px, rgba(0,0,0,0.12) 0%, transparent 100%),
+        radial-gradient(ellipse 50px 20px at 40px 100px, rgba(0,0,0,0.1) 0%, transparent 100%),
+        radial-gradient(ellipse 55px 22px at 75px 60px, rgba(0,0,0,0.11) 0%, transparent 100%),
+        linear-gradient(to top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.1) 2px, transparent 2px);
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 8%;
+      width: 100px;
+      height: 250px;
+      background:
+        radial-gradient(ellipse 50px 20px at 50px 70px, rgba(0,0,0,0.1) 0%, transparent 100%),
+        radial-gradient(ellipse 45px 18px at 35px 90px, rgba(0,0,0,0.09) 0%, transparent 100%);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    /* Wave border at bottom of hero */
+    .hero-wave {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+    .hero-wave svg {
+      display: block;
+      width: 100%;
+      height: 60px;
+    }
+
+    .hero-district {
+      font-family: 'Karla', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--water-light);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-family: 'Bitter', Georgia, serif;
+      font-size: clamp(3rem, 9vw, 5.5rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 0.4rem;
+      text-shadow: 0 3px 20px rgba(0,0,0,0.2);
+    }
+
+    .hero h1 .accent { color: var(--water-light); }
+
+    .hero-tagline {
+      font-family: 'Bitter', serif;
+      font-size: clamp(1rem, 2.2vw, 1.35rem);
+      font-style: italic;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 2rem;
+      max-width: 500px;
+    }
+
+    .hero-creator {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 0.5rem 1.5rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.05em;
+    }
+
+    .hero-features {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+    }
+    .hero-chip .icon { font-size: 1rem; }
+
+    /* ── NOTEBOOK SECTION STYLE ── */
+    .notebook-bg {
+      background: var(--white);
+      background-image:
+        repeating-linear-gradient(
+          transparent,
+          transparent 31px,
+          #e8dcc8 31px,
+          #e8dcc8 32px
+        );
+      background-size: 100% 32px;
+      background-position: 0 8px;
+      position: relative;
+    }
+
+    .notebook-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 60px;
+      width: 2px;
+      height: 100%;
+      background: rgba(220, 100, 100, 0.2);
+    }
+
+    @media (max-width: 700px) {
+      .notebook-bg::before { left: 30px; }
+    }
+
+    /* ── LAYOUT ── */
+    .content-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: rgba(91,140,90,0.1);
+      padding: 0.3rem 0.8rem;
+      border-radius: 12px;
+      margin-bottom: 0.8rem;
+    }
+
+    h2 {
+      font-family: 'Bitter', Georgia, serif;
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+
+    p {
+      font-size: 1.02rem;
+      line-height: 1.85;
+      color: var(--text-mid);
+      margin-bottom: 1rem;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── ABOUT CARD — split layout ── */
+    .about-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 650px) {
+      .about-split { grid-template-columns: 1fr; }
+    }
+
+    .about-bio {
+      background: var(--white);
+      border: 2px solid var(--sand-dark);
+      border-radius: 12px;
+      padding: 1.8rem 2rem;
+    }
+
+    .about-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .badge-item {
+      background: var(--sand);
+      border-radius: 10px;
+      padding: 1rem 1.3rem;
+      border-left: 4px solid var(--green);
+    }
+    .badge-item .label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+    .badge-item .value {
+      font-family: 'Bitter', serif;
+      font-size: 0.95rem;
+      color: var(--green-dark);
+    }
+
+    /* ── APP CARD ── */
+    .app-card {
+      background: linear-gradient(135deg, var(--green-dark), var(--green));
+      border-radius: 16px;
+      padding: 2.5rem;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .app-card::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+    }
+    .app-card::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -30px;
+      width: 120px;
+      height: 120px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+    .app-card h2 { color: var(--water-light); }
+    .app-card p { color: rgba(255,255,255,0.88); }
+    .app-card .section-tag {
+      background: rgba(255,255,255,0.15);
+      color: var(--water-light);
+    }
+
+    .feature-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.2rem;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+    }
+    .pill .icon { font-size: 0.9rem; }
+
+    /* ── VIDEO ── */
+    .video-container {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 3px solid var(--sand-dark);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      margin-top: 1rem;
+    }
+    .video-container iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* ── LINKS ── */
+    .links-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .oasis-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Karla', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 0.7rem 1.5rem;
+      border-radius: 25px;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .oasis-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.12); }
+
+    .oasis-btn.primary {
+      background: var(--green);
+      color: #fff;
+    }
+    .oasis-btn.secondary {
+      background: var(--water);
+      color: #fff;
+    }
+
+    .oasis-btn svg { width: 14px; height: 14px; }
+
+    /* ── WAVE DIVIDER ── */
+    .wave-divider {
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+    .wave-divider svg {
+      display: block;
+      width: 100%;
+      height: 40px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--green-dark);
+      color: var(--sand-light);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    footer a {
+      color: var(--water-light);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 500px) {
+      .hero { padding: 5rem 1.5rem 4rem; }
+      .content-wrap { padding: 2rem 1.2rem 3rem; }
+      .app-card { padding: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-link">Back to Showcase</a>
+
+  <!-- ── HERO ── -->
+  <header class="hero">
+    <p class="hero-district">Congressional App Challenge &bull; MI-04 &bull; Kalamazoo, MI</p>
+    <h1>Study <span class="accent">Oasis</span></h1>
+    <p class="hero-tagline">A calm retreat for focused learning -- timers, tasks, and an AI tutor in one peaceful study space.</p>
+    <div class="hero-creator">John I. Bolden II &mdash; 2025 Submission</div>
+    <div class="hero-features">
+      <span class="hero-chip"><span class="icon">&#9201;</span> Focus Timers</span>
+      <span class="hero-chip"><span class="icon">&#9745;</span> Task Lists</span>
+      <span class="hero-chip"><span class="icon">&#129302;</span> AI Tutor</span>
+    </div>
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+        <path d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,60 L0,60 Z" fill="#FBF3E4"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- ── CONTENT ── -->
+  <div class="content-wrap">
+
+    <!-- About the Creator -->
+    <div class="section">
+      <span class="section-tag">The Builder</span>
+      <h2>Meet John</h2>
+      <div class="about-split">
+        <div class="about-bio">
+          <p>
+            Hi! I'm John I. Bolden II, an 8th grader at Comstock STEM Academy. I'm passionate about coding, gaming, and technology. I've even authored a book on coding! Outside of building apps, I participate in NJHS, Science Olympiad, Future City, and Steps to Victory community programs.
+          </p>
+        </div>
+        <div class="about-badges">
+          <div class="badge-item">
+            <div class="label">School</div>
+            <div class="value">Comstock STEM Academy</div>
+          </div>
+          <div class="badge-item">
+            <div class="label">Grade</div>
+            <div class="value">8th Grade</div>
+          </div>
+          <div class="badge-item">
+            <div class="label">Activities</div>
+            <div class="value">NJHS, Science Olympiad, Future City</div>
+          </div>
+          <div class="badge-item">
+            <div class="label">Categories</div>
+            <div class="value">Education, AI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About the App -->
+    <div class="section">
+      <div class="app-card">
+        <span class="section-tag">The App</span>
+        <h2>Your personal study sanctuary</h2>
+        <p>
+          Study Oasis is a study resource designed for middle and high school students. It offers focus timers to help students stay on task, assignment tracking via organized task lists, and an AI tutoring system that answers questions and explains concepts in a safe, supportive environment.
+        </p>
+        <p>
+          The app brings together the essential tools students need to study effectively -- all in one place -- creating a calm, focused space for learning.
+        </p>
+        <div class="feature-pills">
+          <span class="pill"><span class="icon">&#128218;</span> Study Resources</span>
+          <span class="pill"><span class="icon">&#127793;</span> Calm Environment</span>
+          <span class="pill"><span class="icon">&#128161;</span> AI-Powered Help</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notebook-lined section for demo -->
+    <div class="section">
+      <span class="section-tag">In Action</span>
+      <h2>Watch the Demo</h2>
+      <div class="video-container">
+        <iframe
+          src="https://www.youtube.com/embed/amVvUa_IkTo"
+          title="Study Oasis App Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Links -->
+    <div class="section">
+      <span class="section-tag">Explore</span>
+      <h2>Links</h2>
+      <div class="links-row">
+        <a href="https://youtu.be/amVvUa_IkTo" class="oasis-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/></svg>
+          Watch on YouTube
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+      <path d="M0,20 C360,40 720,0 1080,20 C1260,30 1360,10 1440,20 L1440,40 L0,40 Z" fill="#3D6B3D"/>
+    </svg>
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge 2025 &bull; MI-04 &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

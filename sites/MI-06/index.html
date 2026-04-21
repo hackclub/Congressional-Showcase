@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoTrack | Srihan Sankepalle, Abhinav Mosra &amp; Nihit Yeruva</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #059669;
+      --green-dark: #047857;
+      --green-light: #D1FAE5;
+      --green-50: #ECFDF5;
+      --teal: #0D9488;
+      --teal-light: #CCFBF1;
+      --emerald: #10B981;
+      --white: #FFFFFF;
+      --bg: #F8FAFC;
+      --text: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --border: #E2E8F0;
+      --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BACK */
+    .back-nav {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--green);
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--card-shadow);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .back-nav:hover { background: var(--green-50); border-color: var(--green); }
+    .back-nav svg { width: 14px; height: 14px; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 7rem 2rem 4rem;
+      background: linear-gradient(180deg, #ECFDF5 0%, #D1FAE5 30%, var(--white) 100%);
+      overflow: hidden;
+    }
+
+    /* Leaf motif - subtle eco decorations */
+    .eco-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .eco-bg .leaf {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(5, 150, 105, 0.08);
+      border-radius: 50%;
+    }
+    .eco-bg .leaf::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(to right, rgba(5,150,105,0.06), transparent);
+      transform-origin: left center;
+    }
+    .eco-bg .leaf:nth-child(1) { top: 15%; left: 5%; }
+    .eco-bg .leaf:nth-child(1)::after { transform: rotate(30deg); }
+    .eco-bg .leaf:nth-child(2) { top: 25%; left: 18%; }
+    .eco-bg .leaf:nth-child(2)::after { transform: rotate(-15deg); width: 60px; }
+    .eco-bg .leaf:nth-child(3) { top: 10%; right: 15%; }
+    .eco-bg .leaf:nth-child(3)::after { transform: rotate(160deg); }
+    .eco-bg .leaf:nth-child(4) { top: 40%; right: 8%; }
+    .eco-bg .leaf:nth-child(4)::after { transform: rotate(200deg); width: 100px; }
+    .eco-bg .leaf:nth-child(5) { bottom: 30%; left: 12%; }
+    .eco-bg .leaf:nth-child(5)::after { transform: rotate(-40deg); width: 70px; }
+    .eco-bg .leaf:nth-child(6) { bottom: 20%; right: 25%; }
+    .eco-bg .leaf:nth-child(6)::after { transform: rotate(140deg); }
+
+    .hero-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-chip {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-secondary);
+    }
+    .hero-chip.green { background: var(--green-light); color: var(--green); border-color: transparent; }
+    .hero-chip.teal { background: var(--teal-light); color: var(--teal); border-color: transparent; }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span { color: var(--green); }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 620px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .hero-meta-item {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .hero-meta-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* MAIN */
+    .page-main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    /* DASHBOARD GRID */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 800px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+    .dash-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .dash-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .dash-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    .dash-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .dash-icon.green { background: var(--green-light); }
+    .dash-icon.teal { background: var(--teal-light); }
+    .dash-icon.emerald { background: #D1FAE5; }
+    .dash-card-title {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .dash-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+    .dash-card p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* SECTION HEADING */
+    .section-heading {
+      margin-bottom: 1.5rem;
+    }
+    .section-heading .label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 0.4rem;
+    }
+    .section-heading h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    /* CONTENT PANELS */
+    .content-panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.2rem 2.5rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 3rem;
+    }
+
+    .content-panel p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-secondary);
+    }
+    .content-panel p + p { margin-top: 1rem; }
+
+    /* CREATORS - three columns */
+    .creators-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 800px) { .creators-grid { grid-template-columns: 1fr; } }
+
+    .creator-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+    }
+    .creator-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .creator-avatar {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .creator-avatar.green { background: var(--green); }
+    .creator-avatar.teal { background: var(--teal); }
+    .creator-avatar.emerald { background: var(--emerald); }
+    .creator-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .creator-role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .creator-card p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+    .creator-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+    }
+    .creator-tag {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.2rem 0.6rem;
+    }
+
+    /* TECH STACK - bar style */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    .tech-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .tech-dot {
+      width: 8px; height: 8px;
+      border-radius: 2px;
+    }
+    .tech-dot.green { background: var(--green); }
+    .tech-dot.teal { background: var(--teal); }
+    .tech-dot.emerald { background: var(--emerald); }
+    .tech-dot.orange { background: #F59E0B; }
+    .tech-bar-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .tech-bar-role {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    /* VIDEO */
+    .video-panel {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      margin-top: 1rem;
+    }
+    .video-panel iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* HIGHLIGHT BOX */
+    .highlight-box {
+      background: linear-gradient(135deg, var(--green-50) 0%, #F0FDF4 100%);
+      border: 1px solid rgba(5, 150, 105, 0.1);
+      border-radius: 12px;
+      padding: 2rem 2.2rem;
+      margin-bottom: 3rem;
+    }
+    .highlight-box .quote-mark {
+      font-family: 'Lora', serif;
+      font-size: 3rem;
+      color: var(--green);
+      opacity: 0.2;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .highlight-box blockquote {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .highlight-box cite {
+      display: block;
+      margin-top: 0.8rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* LINKS */
+    .links-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .action-btn:hover { transform: translateY(-1px); }
+    .action-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .action-btn.primary {
+      background: var(--green);
+      color: var(--white);
+      box-shadow: 0 2px 10px rgba(5,150,105,0.2);
+    }
+    .action-btn.primary:hover { box-shadow: 0 4px 15px rgba(5,150,105,0.3); }
+    .action-btn.outline {
+      background: var(--white);
+      color: var(--green);
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--text);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    footer p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+    }
+    footer a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    footer a:hover { color: var(--white); text-decoration: underline; }
+
+    /* ANIMATIONS */
+
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1.5rem 3rem; }
+      .page-main { padding: 2rem 1.2rem 3rem; }
+      .content-panel { padding: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-nav">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+    Showcase
+  </a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eco-bg">
+      <div class="leaf"></div><div class="leaf"></div><div class="leaf"></div>
+      <div class="leaf"></div><div class="leaf"></div><div class="leaf"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-chips">
+        <span class="hero-chip green">Education</span>
+        <span class="hero-chip teal">Environment</span>
+        <span class="hero-chip">AI</span>
+        <span class="hero-chip">MI-06</span>
+      </div>
+      <h1>Eco<span>Track</span></h1>
+      <p class="hero-desc">A cross-platform web and iOS app that helps users track their real-time carbon footprint, learn about sustainability through interactive challenges and trivia, and connect with local environmental events.</p>
+      <div class="hero-meta">
+        <span class="hero-meta-item"><strong>Creators:</strong> Srihan Sankepalle, Abhinav Mosra &amp; Nihit Yeruva</span>
+        <span class="hero-meta-item"><strong>Schools:</strong> Northville High School &amp; Independence High School</span>
+        <span class="hero-meta-item"><strong>District:</strong> MI-06, Northville, MI</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-main">
+
+    <!-- MISSION -->
+    <div class="highlight-box fade-in f1">
+      <div class="quote-mark">"</div>
+      <blockquote>Empowering people to make informed choices about their environmental impact and proving that small actions collectively make a significant difference for our planet.</blockquote>
+      <cite>Mission Statement</cite>
+    </div>
+
+    <!-- FEATURE DASHBOARD CARDS -->
+    <div class="dashboard-grid fade-in f2">
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon green">&#x1F30D;</div>
+          <span class="dash-card-title">Tracking</span>
+        </div>
+        <h3>Carbon Footprint Tracking</h3>
+        <p>Real-time monitoring of your personal environmental impact, helping you understand and reduce your carbon footprint day by day.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon teal">&#x1F916;</div>
+          <span class="dash-card-title">AI-Powered</span>
+        </div>
+        <h3>EcoBot AI Assistant</h3>
+        <p>Personalized sustainability advice tailored to your lifestyle, powered by AI to help you make greener choices every day.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon emerald">&#x1F91D;</div>
+          <span class="dash-card-title">Community</span>
+        </div>
+        <h3>Community Connection</h3>
+        <p>Interactive challenges, trivia, and local environmental events that bring people together for a more sustainable future.</p>
+      </div>
+    </div>
+
+    <!-- CREATORS -->
+    <div class="section-heading fade-in f2">
+      <p class="label">The Builders</p>
+      <h2>About the Creators</h2>
+    </div>
+    <div class="creators-grid fade-in f3">
+      <div class="creator-card">
+        <div class="creator-card-header">
+          <div class="creator-avatar green">SS</div>
+          <div>
+            <div class="creator-name">Srihan Sankepalle</div>
+            <div class="creator-role">Junior, Northville High School</div>
+          </div>
+        </div>
+        <p>A high school junior passionate about using technology to solve real-world environmental problems.</p>
+        <div class="creator-tags">
+          <span class="creator-tag">Biotech Research</span>
+          <span class="creator-tag">Entrepreneurship</span>
+          <span class="creator-tag">STEM Advocacy</span>
+        </div>
+      </div>
+      <div class="creator-card">
+        <div class="creator-card-header">
+          <div class="creator-avatar teal">AM</div>
+          <div>
+            <div class="creator-name">Abhinav Mosra</div>
+            <div class="creator-role">Junior, Northville High School</div>
+          </div>
+        </div>
+        <p>Dedicated to building meaningful tech solutions that address sustainability and environmental awareness.</p>
+        <div class="creator-tags">
+          <span class="creator-tag">Entrepreneurship</span>
+          <span class="creator-tag">STEM</span>
+          <span class="creator-tag">Technology</span>
+        </div>
+      </div>
+      <div class="creator-card">
+        <div class="creator-card-header">
+          <div class="creator-avatar emerald">NY</div>
+          <div>
+            <div class="creator-name">Nihit Yeruva</div>
+            <div class="creator-role">Junior, Independence High School</div>
+          </div>
+        </div>
+        <p>Committed to leveraging code and design to create tools that make a tangible difference in the world.</p>
+        <div class="creator-tags">
+          <span class="creator-tag">Biotech Research</span>
+          <span class="creator-tag">STEM</span>
+          <span class="creator-tag">Innovation</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- APP DESCRIPTION -->
+    <div class="section-heading fade-in f3">
+      <p class="label">The Platform</p>
+      <h2>How It Works</h2>
+    </div>
+    <div class="content-panel fade-in f4">
+      <p>EcoTrack gives users the ability to monitor their carbon footprint in real time. The app integrates an AI-powered assistant called EcoBot that provides personalized sustainability advice based on each user's habits and lifestyle. Whether you're tracking daily commutes, energy usage, or food choices, EcoTrack helps quantify the environmental impact of everyday decisions.</p>
+      <p>Beyond tracking, EcoTrack features interactive Challenges and Trivia sections that make learning about sustainability engaging and fun. The Local page connects users to community events and volunteer opportunities in their area. Built by high school juniors from Northville, Michigan, EcoTrack is designed to empower people to make informed choices and prove that small actions collectively make a significant difference.</p>
+    </div>
+
+    <!-- TECH -->
+    <div class="section-heading fade-in f4">
+      <p class="label">Built With</p>
+      <h2>Technology Stack</h2>
+    </div>
+    <div class="tech-stack fade-in f4" style="margin-bottom: 3rem;">
+      <div class="tech-bar"><span class="tech-dot green"></span><span class="tech-bar-name">iOS</span><span class="tech-bar-role">&middot; Mobile App</span></div>
+      <div class="tech-bar"><span class="tech-dot teal"></span><span class="tech-bar-name">Web</span><span class="tech-bar-role">&middot; Cross-Platform</span></div>
+      <div class="tech-bar"><span class="tech-dot emerald"></span><span class="tech-bar-name">AI (EcoBot)</span><span class="tech-bar-role">&middot; Assistant</span></div>
+      <div class="tech-bar"><span class="tech-dot orange"></span><span class="tech-bar-name">Real-time Data</span><span class="tech-bar-role">&middot; Tracking</span></div>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="section-heading fade-in f5">
+      <p class="label">In Action</p>
+      <h2>Demo Video</h2>
+    </div>
+    <div class="fade-in f5" style="margin-bottom: 3rem;">
+      <div class="video-panel">
+        <iframe
+          src="https://www.youtube.com/embed/69840kxi2j0"
+          title="EcoTrack Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="section-heading fade-in f6">
+      <p class="label">Explore</p>
+      <h2>Project Links</h2>
+    </div>
+    <div class="fade-in f6" style="margin-bottom: 2rem;">
+      <div class="links-flex">
+        <a href="https://www.youtube.com/watch?v=69840kxi2j0" class="action-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 4.5v7l5-3.5-5-3.5z"/></svg>
+          Watch on YouTube
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge 2025 &bull; MI-06 &bull; Northville, MI &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

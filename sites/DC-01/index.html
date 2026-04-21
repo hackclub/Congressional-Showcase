@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DIVENDO | Shivaj Raman</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #2ecc71;
+      --green-dark: #1a9c54;
+      --blue: #3b82f6;
+      --purple: #8b5cf6;
+      --pink: #ec4899;
+      --yellow: #fbbf24;
+      --bg: #f0f7ff;
+      --bg-white: #ffffff;
+      --text-dark: #1e293b;
+      --text-mid: #475569;
+      --text-light: #94a3b8;
+      --gradient-hero: linear-gradient(135deg, #2ecc71 0%, #3b82f6 50%, #8b5cf6 100%);
+      --gradient-card: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(139,92,246,0.06));
+      --shadow-soft: 0 4px 24px rgba(59,130,246,0.1);
+      --shadow-card: 0 2px 12px rgba(0,0,0,0.06);
+      --radius: 20px;
+      --radius-sm: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Quicksand', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BACK */
+    .back-link {
+      position: fixed;
+      top: 1rem;
+      left: 1.2rem;
+      z-index: 200;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+      background: var(--green);
+      padding: 0.5rem 1.1rem;
+      border-radius: 50px;
+      box-shadow: 0 2px 10px rgba(46,204,113,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .back-link:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(46,204,113,0.35); }
+    .back-link::before { content: '\2190'; }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: var(--gradient-hero);
+      position: relative;
+      overflow: hidden;
+      padding: 6rem 2rem 5rem;
+      text-align: center;
+    }
+
+    /* Floating coin decorations */
+    .hero::before,
+    .hero::after {
+      content: '$';
+      position: absolute;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 8rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.07);
+      pointer-events: none;
+    }
+    .hero::before { top: 10%; left: 5%; transform: rotate(-15deg); }
+    .hero::after { bottom: 5%; right: 8%; font-size: 6rem; transform: rotate(12deg); content: '%'; }
+
+    .hero-floating {
+      position: absolute;
+      font-size: 3rem;
+      opacity: 0.08;
+      color: #fff;
+      pointer-events: none;
+    }
+    .hero-floating:nth-child(1) { top: 20%; left: 18%; animation: float 6s ease-in-out infinite; }
+    .hero-floating:nth-child(2) { top: 60%; left: 75%; animation: float 7s ease-in-out 1s infinite; }
+    .hero-floating:nth-child(3) { top: 35%; right: 12%; animation: float 5s ease-in-out 0.5s infinite; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 1.2rem;
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero-subtitle {
+      font-family: 'Quicksand', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      font-weight: 500;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 2rem;
+    }
+
+    .hero-chips {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.35rem 0.9rem;
+      border-radius: 50px;
+    }
+
+    .chip-icon {
+      font-size: 0.9rem;
+    }
+
+    .hero-creator {
+      margin-top: 1.8rem;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* ===== WAVY DIVIDER ===== */
+    .wave-divider {
+      position: relative;
+      margin-top: -2px;
+    }
+    .wave-divider svg {
+      display: block;
+      width: 100%;
+      height: 50px;
+    }
+
+    /* ===== CONTENT ===== */
+    .content {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    .section {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1rem;
+    }
+
+    .section-emoji {
+      font-size: 1.6rem;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gradient-card);
+      border-radius: 14px;
+      flex-shrink: 0;
+    }
+
+    .section-label {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+
+    h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 1.8rem);
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.2;
+    }
+
+    .bubble-card {
+      background: var(--bg-white);
+      border-radius: var(--radius);
+      padding: 2rem 2.2rem;
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(59,130,246,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bubble-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-hero);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .bubble-card p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-mid);
+      margin-bottom: 0.8rem;
+    }
+    .bubble-card p:last-child { margin-bottom: 0; }
+
+    /* MISSION CALLOUT */
+    .mission-callout {
+      background: var(--gradient-hero);
+      border-radius: var(--radius);
+      padding: 2.5rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mission-callout::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .mission-callout::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: -20px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .mission-callout blockquote {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+      font-weight: 500;
+      line-height: 1.65;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mission-callout cite {
+      display: block;
+      margin-top: 1rem;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.72rem;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ABOUT FACTS */
+    .fact-bubbles {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 500px) {
+      .fact-bubbles { grid-template-columns: 1fr; }
+    }
+
+    .fact-bubble {
+      background: var(--gradient-card);
+      border-radius: var(--radius-sm);
+      padding: 1.1rem 1.3rem;
+      text-align: center;
+    }
+
+    .fact-bubble-label {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.25rem;
+    }
+
+    .fact-bubble-value {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--purple);
+    }
+
+    /* VIDEO */
+    .video-wrap {
+      margin-top: 1rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .video-wrap iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* LINKS */
+    .link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.7rem 1.5rem;
+      border-radius: 50px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .link-btn:hover { transform: translateY(-2px); }
+
+    .link-btn.primary {
+      background: var(--gradient-hero);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(59,130,246,0.25);
+    }
+    .link-btn.primary:hover { box-shadow: 0 6px 20px rgba(59,130,246,0.35); }
+
+    .link-btn svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--gradient-hero);
+      text-align: center;
+      padding: 2rem;
+    }
+
+    footer p {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85) !important;
+    }
+
+    footer a {
+      color: #fff !important;
+      text-decoration: underline;
+    }
+
+    /* ANIMATION */
+
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1.2rem 4rem; }
+      .content { padding: 1.5rem 1.2rem 3rem; }
+      .bubble-card { padding: 1.5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-link">Back to Showcase</a>
+
+  <!-- Floating decorations -->
+  <div class="hero-floating" style="top:15%;left:12%;">&#x1F4B0;</div>
+  <div class="hero-floating" style="top:55%;left:80%;">&#x1F4C8;</div>
+  <div class="hero-floating" style="top:30%;right:10%;">&#x1F3AE;</div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">DC-01 &bull; Congressional App Challenge</div>
+      <h1>DIVENDO</h1>
+      <p class="hero-subtitle">Learn finance. Trade stocks. Level up your money skills.</p>
+      <div class="hero-chips">
+        <span class="chip"><span class="chip-icon">&#x1F4DA;</span> Education</span>
+        <span class="chip"><span class="chip-icon">&#x1F4B5;</span> Finance</span>
+        <span class="chip"><span class="chip-icon">&#x1F3AE;</span> Games</span>
+        <span class="chip"><span class="chip-icon">&#x1F4CD;</span> Washington, DC</span>
+      </div>
+      <p class="hero-creator">Built by Shivaj Raman &mdash; 2025 Submission</p>
+    </div>
+  </header>
+
+  <!-- Wave transition -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 50" preserveAspectRatio="none">
+      <path fill="#f0f7ff" d="M0,0 C360,50 1080,50 1440,0 L1440,50 L0,50 Z"/>
+    </svg>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- Mission -->
+    <div class="section">
+      <div class="mission-callout">
+        <blockquote>
+          A financial literacy app that helps people learn about finances and how to trade on the stock market using lessons, tutorials, and simulations.
+        </blockquote>
+        <cite>-- Mission Statement, DIVENDO</cite>
+      </div>
+    </div>
+
+    <!-- About Me -->
+    <div class="section">
+      <div class="section-title-row">
+        <div class="section-emoji">&#x1F9D1;&#x200D;&#x1F4BB;</div>
+        <div>
+          <span class="section-label">The Builder</span>
+          <h2>About Shivaj</h2>
+        </div>
+      </div>
+      <div class="bubble-card">
+        <p>
+          Shivaj Raman is a 7th grader at St. Albans School in Washington, D.C. He is passionate about VEX V5 robotics and loves playing baseball. Shivaj has been coding since 1st grade when he was first introduced to Processing, and he has been building projects ever since.
+        </p>
+        <p>
+          DIVENDO combines his interest in technology with his curiosity about the financial world, creating an accessible platform where anyone can learn about money.
+        </p>
+      </div>
+      <div class="fact-bubbles">
+        <div class="fact-bubble">
+          <div class="fact-bubble-label">School</div>
+          <div class="fact-bubble-value">St. Albans School</div>
+        </div>
+        <div class="fact-bubble">
+          <div class="fact-bubble-label">Grade</div>
+          <div class="fact-bubble-value">7th Grade</div>
+        </div>
+        <div class="fact-bubble">
+          <div class="fact-bubble-label">Hobby</div>
+          <div class="fact-bubble-value">VEX Robotics</div>
+        </div>
+        <div class="fact-bubble">
+          <div class="fact-bubble-label">Coding Since</div>
+          <div class="fact-bubble-value">1st Grade</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Description -->
+    <div class="section">
+      <div class="section-title-row">
+        <div class="section-emoji">&#x1F4B0;</div>
+        <div>
+          <span class="section-label">The App</span>
+          <h2>What is DIVENDO?</h2>
+        </div>
+      </div>
+      <div class="bubble-card">
+        <p>
+          DIVENDO helps many different groups of people learn about finance and develop financial literacy. Through built-in lessons and video tutorials, users can learn everything from compound interest to arbitrage strategies.
+        </p>
+        <p>
+          Users can test their knowledge in the virtual stock simulator and compete with friends and family through quizzes and challenges. The platform makes financial education accessible, engaging, and fun for everyone.
+        </p>
+      </div>
+    </div>
+
+    <!-- Demo Video -->
+    <div class="section">
+      <div class="section-title-row">
+        <div class="section-emoji">&#x1F3AC;</div>
+        <div>
+          <span class="section-label">In Action</span>
+          <h2>Watch the Demo</h2>
+        </div>
+      </div>
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube.com/embed/fKMKwddkBvs"
+          title="DIVENDO App Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Links -->
+    <div class="section">
+      <div class="section-title-row">
+        <div class="section-emoji">&#x1F517;</div>
+        <div>
+          <span class="section-label">Explore</span>
+          <h2>Links</h2>
+        </div>
+      </div>
+      <div class="link-row">
+        <a href="https://www.youtube.com/watch?v=fKMKwddkBvs" class="link-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/>
+          </svg>
+          Watch on YouTube
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge &bull; DC-01 &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

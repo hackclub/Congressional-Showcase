@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlertNow | Adi Khurana</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-dark: #1a1a1e;
+      --bg-darker: #111114;
+      --bg-card: #222228;
+      --red-alert: #e03e3e;
+      --amber: #f0a500;
+      --amber-dim: rgba(240,165,0,0.15);
+      --red-dim: rgba(224,62,62,0.12);
+      --text-primary: #e8e8ec;
+      --text-secondary: #a0a0aa;
+      --text-muted: #66666e;
+      --border: rgba(240,165,0,0.2);
+      --stripe: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 8px,
+        rgba(240,165,0,0.06) 8px,
+        rgba(240,165,0,0.06) 10px
+      );
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BACK LINK */
+    .back-link {
+      position: fixed;
+      top: 1rem;
+      left: 1.2rem;
+      z-index: 200;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--amber);
+      background: var(--bg-darker);
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.9rem;
+      clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+      transition: background 0.2s;
+    }
+    .back-link:hover { background: rgba(240,165,0,0.1); }
+    .back-link::before { content: '\2190'; font-size: 0.85rem; }
+
+    /* ===== HERO — SECURITY DASHBOARD ===== */
+    .hero {
+      background: var(--bg-darker);
+      position: relative;
+      overflow: hidden;
+      padding: 6rem 2rem 4rem;
+      border-bottom: 2px solid var(--red-alert);
+    }
+
+    /* diagonal warning stripes top */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--red-alert) 0,
+        var(--red-alert) 20px,
+        var(--amber) 20px,
+        var(--amber) 40px
+      );
+    }
+
+    /* grid overlay */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(240,165,0,0.04) 59px, rgba(240,165,0,0.04) 60px),
+        repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(240,165,0,0.04) 59px, rgba(240,165,0,0.04) 60px);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-status { justify-self: center; }
+    }
+
+    .hero-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+
+    .hero h1 .alert { color: var(--red-alert); }
+    .hero h1 .now { color: var(--amber); }
+
+    .hero-tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 480px;
+      margin-top: 1rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .hero-meta-item {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      border-left: 2px solid var(--red-alert);
+      padding-left: 0.7rem;
+    }
+
+    .hero-meta-item strong {
+      display: block;
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* Status panel on right */
+    .hero-status {
+      background: rgba(224,62,62,0.08);
+      border: 1px solid rgba(224,62,62,0.3);
+      padding: 1.5rem 1.8rem;
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+      min-width: 200px;
+    }
+
+    .status-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .status-line {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--amber);
+      margin-bottom: 0.3rem;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red-alert);
+      margin-right: 6px;
+      animation: pulse 1.5s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    /* Sections stagger */
+    .panel {
+      margin-bottom: 3rem;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .panel-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--red-dim);
+      border: 1px solid rgba(224,62,62,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+      flex-shrink: 0;
+    }
+
+    .panel-icon svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--red-alert);
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .panel-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red-alert);
+    }
+
+    h2 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: #fff;
+      margin-bottom: 0;
+      line-height: 1.1;
+    }
+
+    /* Card */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 2rem 2.2rem;
+      position: relative;
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--red-alert);
+    }
+
+    .card p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      margin-bottom: 0.8rem;
+    }
+    .card p:last-child { margin-bottom: 0; }
+
+    /* Diagonal stripe divider */
+    .stripe-divider {
+      height: 4px;
+      margin: 0.5rem 0 2.5rem;
+      background: var(--stripe);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* TECH GRID — monospace readout style */
+    .tech-readout {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .tech-cell {
+      background: var(--bg-darker);
+      border: 1px solid var(--border);
+      padding: 1rem 1.2rem;
+      position: relative;
+      clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+    }
+
+    .tech-cell::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--amber);
+      opacity: 0.5;
+    }
+
+    .tech-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .tech-value {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--amber);
+    }
+
+    /* VIDEO */
+    .video-frame {
+      position: relative;
+      margin-top: 1.2rem;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    }
+
+    .video-frame::before {
+      content: 'LIVE FEED';
+      position: absolute;
+      top: 12px;
+      right: 28px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--red-alert);
+      z-index: 2;
+      animation: pulse 1.5s ease infinite;
+    }
+
+    .video-frame iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* MISSION BLOCK */
+    .mission-block {
+      background: var(--bg-darker);
+      border-left: 4px solid var(--red-alert);
+      border-right: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 2.4rem;
+      position: relative;
+    }
+
+    .mission-block::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--stripe);
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .mission-block blockquote {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text-primary);
+      position: relative;
+      z-index: 1;
+    }
+
+    .mission-block cite {
+      display: block;
+      margin-top: 1rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-style: normal;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* LINKS */
+    .link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.65rem 1.3rem;
+      transition: background 0.2s, transform 0.15s;
+      clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+    }
+
+    .link-btn:hover { transform: translateY(-1px); }
+
+    .link-btn.primary {
+      background: var(--red-alert);
+      color: #fff;
+      border: none;
+    }
+    .link-btn.primary:hover { background: #c93535; }
+
+    .link-btn svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg-darker);
+      border-top: 2px solid var(--red-alert);
+      padding: 1.8rem 2rem;
+      text-align: center;
+    }
+
+    footer p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted) !important;
+    }
+
+    footer a {
+      color: var(--amber) !important;
+      text-decoration: underline;
+    }
+
+    /* ANIMATION */
+
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1.2rem 3rem; }
+      .content { padding: 2rem 1.2rem 3rem; }
+      .card { padding: 1.4rem 1.4rem; }
+      .hero-meta { flex-direction: column; gap: 0.8rem; }
+      .tech-readout { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-link">Back to Showcase</a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="hero-eyebrow">NJ-03 // Congressional App Challenge // Moorestown, NJ</p>
+        <h1><span class="alert">Alert</span><span class="now">Now</span></h1>
+        <p class="hero-tagline">
+          Real-time AI threat detection for schools. Combining audio and video analysis to enable faster emergency response and protect students.
+        </p>
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <span>Category</span>
+            <strong>Health / AI</strong>
+          </div>
+          <div class="hero-meta-item">
+            <span>Developer</span>
+            <strong>Adi Khurana</strong>
+          </div>
+          <div class="hero-meta-item">
+            <span>Year</span>
+            <strong>2025</strong>
+          </div>
+        </div>
+      </div>
+      <div class="hero-status">
+        <div class="status-label">System Status</div>
+        <div class="status-line"><span class="status-dot"></span> Audio Monitor Active</div>
+        <div class="status-line"><span class="status-dot"></span> Video Feed Online</div>
+        <div class="status-line" style="color: var(--text-muted); font-size: 0.85rem;">Threats Detected: 0</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- Mission -->
+    <div class="panel">
+      <div class="mission-block">
+        <blockquote>
+          A real-time, low-cost AI system that detects potential gun threats in schools using both audio and video analysis to enable faster emergency response.
+        </blockquote>
+        <cite>-- Mission Statement // AlertNow</cite>
+      </div>
+    </div>
+
+    <div class="stripe-divider"></div>
+
+    <!-- About -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div>
+          <span class="panel-tag">Operator Profile</span>
+          <h2>About the Creator</h2>
+        </div>
+      </div>
+      <div class="card">
+        <p>
+          Adi Khurana is a senior at Moorestown High School with deep interests in technology and artificial intelligence for public safety. Beyond coding, Adi has built a business, published research, and teaches coding to members of his community.
+        </p>
+        <p>
+          Driven by the belief that technology can be a powerful force for keeping people safe, Adi created AlertNow as a direct contribution toward protecting students and staff in schools across the country.
+        </p>
+      </div>
+    </div>
+
+    <!-- App -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <span class="panel-tag">System Overview</span>
+          <h2>About AlertNow</h2>
+        </div>
+      </div>
+      <div class="card">
+        <p>
+          AlertNow is a multi-modal threat detection system combining computer vision (YOLOv8) and audio analysis using Convolutional Neural Networks. The system analyzes live CCTV feeds for weapons and gunshot sounds, sending real-time alerts via SMS, email, and an interactive dashboard.
+        </p>
+        <p>
+          By fusing both audio and video analysis, AlertNow provides a more reliable detection system than single-modality approaches, enabling faster emergency response and helping protect students and staff in schools.
+        </p>
+      </div>
+    </div>
+
+    <!-- Tech Stack -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-icon">
+          <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div>
+          <span class="panel-tag">Tech Loadout</span>
+          <h2>Technology Stack</h2>
+        </div>
+      </div>
+      <div class="tech-readout">
+        <div class="tech-cell"><div class="tech-label">Core Language</div><div class="tech-value">Python</div></div>
+        <div class="tech-cell"><div class="tech-label">Computer Vision</div><div class="tech-value">OpenCV</div></div>
+        <div class="tech-cell"><div class="tech-label">ML Framework</div><div class="tech-value">TensorFlow</div></div>
+        <div class="tech-cell"><div class="tech-label">ML Framework</div><div class="tech-value">PyTorch</div></div>
+        <div class="tech-cell"><div class="tech-label">Object Detection</div><div class="tech-value">YOLOv8</div></div>
+        <div class="tech-cell"><div class="tech-label">Web Framework</div><div class="tech-value">Django</div></div>
+        <div class="tech-cell"><div class="tech-label">Alerts &amp; SMS</div><div class="tech-value">Twilio</div></div>
+        <div class="tech-cell"><div class="tech-label">Audio Analysis</div><div class="tech-value">CNNs</div></div>
+      </div>
+    </div>
+
+    <!-- Demo Video -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-icon">
+          <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+        <div>
+          <span class="panel-tag">Surveillance Feed</span>
+          <h2>Demo</h2>
+        </div>
+      </div>
+      <div class="video-frame">
+        <iframe
+          src="https://player.vimeo.com/video/1132354039"
+          title="AlertNow App Demo"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Links -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-icon">
+          <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </div>
+        <div>
+          <span class="panel-tag">External Links</span>
+          <h2>Links</h2>
+        </div>
+      </div>
+      <div class="link-row">
+        <a href="https://vimeo.com/1132354039" class="link-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/>
+          </svg>
+          Watch on Vimeo
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge // NJ-03 // <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

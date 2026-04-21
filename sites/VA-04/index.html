@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ElderLink AR | Akash Arun Kumar Soumya</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #6C5CE7;
+      --purple-dark: #5A4BD1;
+      --purple-light: #A29BFE;
+      --teal: #00B894;
+      --teal-light: #55EFC4;
+      --bg: #F8F7FF;
+      --card-bg: #FFFFFF;
+      --text: #2D3436;
+      --text-secondary: #636E72;
+      --text-muted: #B2BEC3;
+      --border: rgba(108, 92, 231, 0.1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BACK LINK */
+    .back-link {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+      background: var(--purple);
+      padding: 0.55rem 1.1rem;
+      border-radius: 50px;
+      box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .back-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+    }
+    .back-link svg { width: 14px; height: 14px; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      background: linear-gradient(135deg, #6C5CE7 0%, #4834D4 40%, #00B894 100%);
+      overflow: hidden;
+    }
+
+    /* Geometric AR accents */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 500px;
+      height: 500px;
+      border: 2px solid rgba(255,255,255,0.08);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      left: -60px;
+      width: 300px;
+      height: 300px;
+      border: 2px solid rgba(255,255,255,0.06);
+      transform: rotate(45deg);
+      pointer-events: none;
+    }
+
+    .hero-geo {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .hero-geo span {
+      position: absolute;
+      border: 1.5px solid rgba(255,255,255,0.07);
+      border-radius: 4px;
+    }
+    .hero-geo span:nth-child(1) { width: 80px; height: 80px; top: 15%; left: 8%; transform: rotate(25deg); }
+    .hero-geo span:nth-child(2) { width: 120px; height: 120px; top: 60%; right: 10%; transform: rotate(-15deg); border-radius: 50%; }
+    .hero-geo span:nth-child(3) { width: 60px; height: 60px; bottom: 20%; left: 20%; transform: rotate(60deg); }
+    .hero-geo span:nth-child(4) { width: 40px; height: 40px; top: 25%; right: 25%; transform: rotate(45deg); border-radius: 50%; border-width: 2px; border-color: rgba(85,239,196,0.15); }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+
+    .hero-tags {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .hero-tag {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.05;
+      margin-bottom: 0.3rem;
+    }
+    .hero h1 span {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-top: 0.3rem;
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.7;
+      margin: 1.5rem auto 2rem;
+      max-width: 550px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50px;
+      padding: 0.5rem 1.3rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--teal-light);
+      border-radius: 50%;
+    }
+
+    /* MAIN CONTENT */
+    .page-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    /* TWO-COL LAYOUT */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3.5rem;
+    }
+    @media (max-width: 700px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 2rem 2.2rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 20px rgba(108, 92, 231, 0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(108, 92, 231, 0.08);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1.2rem;
+      color: #fff;
+    }
+    .card-icon.purple { background: linear-gradient(135deg, var(--purple), var(--purple-dark)); }
+    .card-icon.teal { background: linear-gradient(135deg, var(--teal), #00CEC9); }
+
+    .section-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+
+    .card p, .about-text p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+
+    /* FULL WIDTH SECTIONS */
+    .full-section {
+      margin-bottom: 3.5rem;
+    }
+
+    /* ABOUT SECTION - side by side */
+    .about-split {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .about-split { grid-template-columns: 1fr; }
+    }
+
+    .about-text {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .about-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .about-detail {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
+      border: 1px solid var(--border);
+    }
+    .about-detail-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+    .about-detail-value {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* TECH STACK - pill style */
+    .tech-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.2rem;
+    }
+    .tech-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 0.65rem 1.3rem;
+      transition: border-color 0.2s;
+    }
+    .tech-pill:hover { border-color: var(--purple-light); }
+    .tech-pill-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--purple);
+    }
+    .tech-pill-dot.alt { background: var(--teal); }
+    .tech-pill-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .tech-pill-role {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* VIDEO */
+    .video-container {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 30px rgba(108, 92, 231, 0.08);
+      margin-top: 1.2rem;
+    }
+    .video-container iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* QUOTE BANNER */
+    .quote-banner {
+      background: linear-gradient(135deg, var(--purple) 0%, #4834D4 100%);
+      border-radius: 20px;
+      padding: 3rem 3.5rem;
+      margin-bottom: 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .quote-banner::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border: 2px solid rgba(255,255,255,0.06);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .quote-banner blockquote {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 400;
+      color: rgba(255,255,255,0.95);
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-banner cite {
+      display: block;
+      margin-top: 1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* LINKS */
+    .links-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.75rem 1.6rem;
+      border-radius: 50px;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(108, 92, 231, 0.25);
+    }
+    .btn-primary:hover { box-shadow: 0 6px 20px rgba(108, 92, 231, 0.35); }
+    .btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* DISTRICT INFO */
+    .district-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 1.5rem 0;
+      margin-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .district-item {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+    .district-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* FOOTER */
+    footer {
+      background: linear-gradient(135deg, #2D3436 0%, #1a1a2e 100%);
+      text-align: center;
+      padding: 2.5rem 2rem;
+    }
+    footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.05em;
+    }
+    footer a {
+      color: var(--purple-light);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    footer a:hover { text-decoration: underline; }
+
+    /* ANIMATIONS */
+
+    @media (max-width: 600px) {
+      .hero { min-height: 70vh; padding: 5rem 1.5rem 3rem; }
+      .page-content { padding: 2.5rem 1.2rem; }
+      .quote-banner { padding: 2rem 1.8rem; }
+      .about-text { padding: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-link">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+    Showcase
+  </a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-geo">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="hero-content">
+      <div class="hero-tags">
+        <span class="hero-tag">Health</span>
+        <span class="hero-tag">AI</span>
+        <span class="hero-tag">VA-04</span>
+      </div>
+      <h1>
+        ElderLink AR
+        <span>Augmented Reality Wellness</span>
+      </h1>
+      <p class="hero-desc">AI-powered wellness guidance for the elderly through real-time augmented reality camera-tracking technology.</p>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Akash Arun Kumar Soumya &mdash; Richmond, VA
+      </div>
+    </div>
+  </header>
+
+  <div class="page-content">
+
+    <!-- QUOTE -->
+    <div class="quote-banner animate delay-1">
+      <blockquote>ElderLink AR utilizes AI to provide targeted wellness advice and guidance to the elderly, offering real-time feedback through AR camera-tracking technology.</blockquote>
+      <cite>Mission Statement</cite>
+    </div>
+
+    <!-- ABOUT + SIDEBAR -->
+    <section class="full-section animate delay-2">
+      <p class="section-eyebrow">The Creator</p>
+      <h2>About Akash</h2>
+      <div class="about-split">
+        <div class="about-text">
+          <p>Hi! I'm Akash Arun Kumar Soumya, a sophomore at Maggie L. Walker Governor's School. I've been a self-taught programmer since middle school, driven by a passion for building technology that makes a real difference. Outside of coding, I enjoy playing tennis and public speaking.</p>
+          <p style="margin-top:1rem;">I created ElderLink AR because I believe technology can meaningfully improve the lives of elderly individuals through personalized, accessible wellness support.</p>
+        </div>
+        <div class="about-sidebar">
+          <div class="about-detail">
+            <div class="about-detail-label">School</div>
+            <div class="about-detail-value">Maggie L. Walker Governor's School</div>
+          </div>
+          <div class="about-detail">
+            <div class="about-detail-label">Grade</div>
+            <div class="about-detail-value">Sophomore</div>
+          </div>
+          <div class="about-detail">
+            <div class="about-detail-label">Location</div>
+            <div class="about-detail-value">Richmond, VA</div>
+          </div>
+          <div class="about-detail">
+            <div class="about-detail-label">Interests</div>
+            <div class="about-detail-value">Tennis, Public Speaking</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APP DESC + TECH - two cards side by side -->
+    <div class="two-col animate delay-3">
+      <div class="card">
+        <div class="card-icon purple">&#x1F4F1;</div>
+        <p class="section-eyebrow">The App</p>
+        <h2>What It Does</h2>
+        <p>ElderLink AR is a mobile application featuring two specialized chatbots that deliver customized wellness guidance to elderly users. The app leverages AR camera-tracking technology to provide real-time, interactive health feedback across both Android and iOS.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon teal">&#x2699;</div>
+        <p class="section-eyebrow">How It Works</p>
+        <h2>Under the Hood</h2>
+        <p>Built cross-platform with Kotlin and Swift, ElderLink AR integrates Google ML Kit and Apple ML Kit for machine learning, the Gemini API for conversational AI, and Firebase for reliable backend services.</p>
+      </div>
+    </div>
+
+    <!-- TECH STACK -->
+    <section class="full-section animate delay-3">
+      <p class="section-eyebrow">Built With</p>
+      <h2>Technology Stack</h2>
+      <div class="tech-pills">
+        <div class="tech-pill"><span class="tech-pill-dot"></span><span class="tech-pill-name">Kotlin</span><span class="tech-pill-role">&middot; Android</span></div>
+        <div class="tech-pill"><span class="tech-pill-dot"></span><span class="tech-pill-name">Swift</span><span class="tech-pill-role">&middot; iOS</span></div>
+        <div class="tech-pill"><span class="tech-pill-dot alt"></span><span class="tech-pill-name">Google ML Kit</span><span class="tech-pill-role">&middot; Vision</span></div>
+        <div class="tech-pill"><span class="tech-pill-dot alt"></span><span class="tech-pill-name">Apple ML Kit</span><span class="tech-pill-role">&middot; Vision</span></div>
+        <div class="tech-pill"><span class="tech-pill-dot"></span><span class="tech-pill-name">Gemini API</span><span class="tech-pill-role">&middot; AI</span></div>
+        <div class="tech-pill"><span class="tech-pill-dot alt"></span><span class="tech-pill-name">Firebase</span><span class="tech-pill-role">&middot; Backend</span></div>
+      </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section class="full-section animate delay-4">
+      <p class="section-eyebrow">In Action</p>
+      <h2>Demo Video</h2>
+      <div class="video-container">
+        <iframe
+          src="https://player.vimeo.com/video/1132297525"
+          title="ElderLink AR Demo"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+
+    <!-- LINKS -->
+    <section class="full-section animate delay-5">
+      <p class="section-eyebrow">Explore</p>
+      <h2>Project Links</h2>
+      <div class="links-row">
+        <a href="https://github.com/AkashAS-coder/ElderLink-AR.git" class="btn btn-primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub Repository
+        </a>
+      </div>
+      <div class="district-bar">
+        <span class="district-item"><strong>District:</strong> VA-04</span>
+        <span class="district-item"><strong>Location:</strong> Richmond, VA</span>
+        <span class="district-item"><strong>Categories:</strong> Health, AI</span>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge 2025 &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>PhishingHook | MI-02</title>
+
+    <link rel="stylesheet" href="../../assets/css/shared.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --background: oklch(0.145 0 0);
+        --foreground: oklch(0.985 0 0);
+        --primary: oklch(0.9597 0.2076 108.57);
+        --secondary: oklch(0.205 0 0);
+        --accent: oklch(0.2759 0.0601 109.77);
+        --card: oklch(0.2264 0 0);
+      }
+
+      body {
+        background-color: var(--background);
+        background-image: radial-gradient(
+          var(--secondary) 1px,
+          transparent 1px
+        );
+        background-size: 25px 25px;
+        color: var(--primary);
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .container {
+        max-width: 1500px;
+        margin: auto;
+      }
+
+      /* Back button */
+      .back-to-showcase {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        width: auto;
+        display: inline-flex;
+        white-space: nowrap;
+        background: rgba(0, 0, 0, 0.85);
+        color: #ccc;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+      }
+
+      .back-to-showcase:hover {
+        background: var(--primary);
+        color: #000;
+        box-shadow: 0 0 14px rgba(255, 215, 0, 0.5);
+      }
+
+      /* Top bar */
+      .top-bar {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 3.5rem 2rem 0.5rem 2rem;
+      }
+
+      .top-bar h1 {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 3rem;
+        color: var(--primary);
+        letter-spacing: 0.04em;
+        line-height: 1;
+        text-shadow:
+          0 0 8px rgba(255, 215, 0, 0.8),
+          0 0 20px rgba(255, 215, 0, 0.4),
+          2px 2px 0px rgba(0, 255, 150, 0.15);
+      }
+
+      .top-bar h1::after {
+        content: "_";
+        animation: blink 1.1s step-end infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* Main scene */
+      .scene {
+        display: flex;
+        gap: 5rem;
+        padding: 0 2rem;
+        flex: 1;
+        min-height: 0;
+      }
+
+      /* Left column wrapper so video can be centered vertically */
+      .left-col {
+        width: 58%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        padding-top: 3rem;
+      }
+
+      /* Video panel */
+      .video-box {
+        width: 100%;
+        border: 1px solid var(--accent);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 0 18px rgba(255, 215, 0, 0.15);
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+      }
+
+      .video-box iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        display: block;
+      }
+
+      /* Cards column */
+      .cards-col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1.2rem;
+        overflow: visible;
+      }
+
+      .card {
+        display: inline-block;
+        position: relative; /* enables z-index */
+        background-color: #1c1c1c;
+        border-radius: 14px;
+        padding: 1.4rem 1.6rem;
+        transition: transform 0.25s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+      }
+
+      .card h2 {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.85rem;
+        font-weight: 400;
+        color: var(--primary);
+        margin-bottom: 0.7rem;
+        letter-spacing: 0.1em;
+      }
+
+      .card p {
+        line-height: 1.75;
+        color: #ccc;
+        font-size: 0.9rem;
+      }
+
+      /* Stagger */
+      .card-about-us {
+        align-self: flex-end;
+        width: 88%;
+      }
+      .card-about-app {
+        align-self: flex-start;
+        width: 94%;
+      }
+      .card-links {
+        align-self: flex-end;
+        width: 88%;
+        background-color: var(--primary);
+      }
+
+      .card-links h2 {
+        color: #000;
+      }
+      .card-links p {
+        color: #222;
+      }
+
+      .link-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
+
+      .link-group a {
+        color: #000;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: underline;
+      }
+
+      .link-group a:hover {
+        color: #444;
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 1rem;
+        color: #555;
+        font-size: 0.8rem;
+      }
+
+      /* ── Animations ── */
+      /* ----------------------------------------------
+      * Generated by Animista on 2026-4-14 17:4:5
+      * Licensed under FreeBSD License.
+      * See http://animista.net/license for more info.
+      * w: http://animista.net, t: @cssanimista
+      * ---------------------------------------------- */
+
+      .fade-in-right {
+        -webkit-animation: fade-in-right 1s cubic-bezier(0.39, 0.575, 0.565, 1)
+          both;
+        animation: fade-in-right 1s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+      }
+
+      /* animation fade-in-right */
+      @-webkit-keyframes fade-in-right {
+        0% {
+          -webkit-transform: translateX(50px);
+          transform: translateX(50px);
+          opacity: 0;
+        }
+        100% {
+          -webkit-transform: translateX(0);
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes fade-in-right {
+        0% {
+          -webkit-transform: translateX(50px);
+          transform: translateX(50px);
+          opacity: 0;
+        }
+        100% {
+          -webkit-transform: translateX(0);
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .fade-in-bottom {
+        -webkit-animation: fade-in-bottom 1.5s
+          cubic-bezier(0.39, 0.575, 0.565, 1) both;
+        animation: fade-in-bottom 1.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+      }
+
+      /* fade-in-bottom */
+      @-webkit-keyframes fade-in-bottom {
+        0% {
+          -webkit-transform: translateY(50px);
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        100% {
+          -webkit-transform: translateY(0);
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      @keyframes fade-in-bottom {
+        0% {
+          -webkit-transform: translateY(50px);
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        100% {
+          -webkit-transform: translateY(0);
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* ── Responsive ── */
+
+      /* Small laptops / large tablets (landscape) */
+      @media (max-width: 1100px) {
+        .top-bar h1 {
+          font-size: 3.5rem;
+        }
+        .left-col {
+          width: 52%;
+          padding-top: 2rem;
+        }
+        .card {
+          padding: 1.1rem 1.3rem;
+        }
+        .card p {
+          font-size: 0.85rem;
+        }
+      }
+
+      /* Tablets / small laptops */
+      @media (max-width: 860px) {
+        .top-bar h1 {
+          font-size: 2.8rem;
+        }
+        .scene {
+          flex-direction: column;
+          padding: 0 1.5rem 2rem;
+        }
+        .left-col {
+          width: 100%;
+          padding-top: 1rem;
+        }
+        .cards-col {
+          justify-content: flex-start;
+        }
+        .card-about-us,
+        .card-about-app,
+        .card-links {
+          align-self: stretch;
+          width: 100%;
+        }
+      }
+
+      /* Mobile */
+      @media (max-width: 480px) {
+        .top-bar {
+          padding: 3rem 1rem 0.5rem;
+        }
+        .top-bar h1 {
+          font-size: 2rem;
+        }
+        .scene {
+          padding: 0 1rem 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Required: fixed back button (styled by shared.css) -->
+    <a href="../../index.html" class="back-to-showcase"
+      >&larr; Back to Showcase</a
+    >
+
+    <!-- Top bar -->
+
+    <header class="top-bar">
+      <svg
+        version="1.2"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 2000 861"
+        width="100"
+        height="100"
+        style="
+          height: 80px;
+          width: auto;
+          fill: var(--primary);
+          filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+        "
+      >
+        <g id="2">
+          <path
+            id="Shape 2"
+            fill-rule="evenodd"
+            class="s0"
+            d="m548.57 433.02l-548.57 316.72v-201.62l191.45-110.53-191.45-110.54v-210.74z"
+          />
+          <path
+            id="Shape 1"
+            fill-rule="evenodd"
+            class="s0"
+            d="m2000 430.51l-364.9 379.37 9.97-592.94 1.07-0.57h-0.78v-16.98l0.01-0.38h-0.01v-18.77l-959.68-0.22-0.01 36.41h0.47l9.75 580.29-352.25-366.21 414.09-430.51h828.18zm-414.09 430.51h-828.18l-61.14-63.57 9.59-571.05 460.59 246.11 458.02-244.73 9.79 582.64z"
+          />
+        </g>
+        <g id="2 white">
+          <path
+            id="Shape 2"
+            fill-rule="evenodd"
+            class="s1"
+            d="m548.57 433.02l-548.57 316.72v-201.62l191.45-110.53-191.45-110.54v-210.74z"
+          />
+          <path
+            id="Shape 1"
+            fill-rule="evenodd"
+            class="s1"
+            d="m2000 430.51l-364.9 379.37 9.97-592.94 1.07-0.57h-0.78v-16.98l0.01-0.38h-0.01v-18.77l-959.68-0.22-0.01 36.41h0.47l9.75 580.29-352.25-366.21 414.09-430.51h828.18zm-414.09 430.51h-828.18l-61.14-63.57 9.59-571.05 460.59 246.11 458.02-244.73 9.79 582.64z"
+          />
+        </g>
+      </svg>
+      <h1>PhishingHook</h1>
+    </header>
+
+    <!-- Main scene -->
+    <main class="container">
+      <div class="scene">
+        <!-- Left: video centered in column -->
+        <section class="left-col fade-in-bottom">
+          <div class="video-box">
+            <iframe
+              src="https://www.youtube.com/embed/A4NeHJX1Zko"
+              title="PhishingHook Demo"
+              frameborder="0"
+              allow="
+                accelerometer;
+                autoplay;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture;
+                web-share;
+              "
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            >
+            </iframe>
+          </div>
+        </section>
+
+        <!-- Right: staggered cards -->
+        <section class="cards-col">
+          <div class="fade-in-right card-about-us">
+            <div class="card">
+              <h2>// ABOUT US</h2>
+              <p>
+                We are a team of seniors from the cybersecurity class at the Bay
+                Arenac ISD. For most of us, this was our first time building a
+                website — a challenging but incredible learning experience.
+                We're thrilled to bring PhishingHook to the showcase in D.C!
+              </p>
+            </div>
+          </div>
+
+          <div class="fade-in-right card-about-app">
+            <div class="card">
+              <h2>// ABOUT PHISHINGHOOK</h2>
+              <p>
+                PhishingHook is a website designed to raise cybersecurity
+                awareness. With interactive quizzes to test your knowledge, it
+                helps everyday users recognize phishing attempts, social
+                engineering tactics, and common online threats.
+              </p>
+            </div>
+          </div>
+
+          <div class="fade-in-right card card-links">
+            <h2>// LINKS</h2>
+            <div class="link-group">
+              <a href="https://example.com">&#8594; Visit PhishingHook</a>
+              <a href="https://www.congressionalappchallenge.us"
+                >&#8594; Congressional App Challenge</a
+              >
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <p>Congressional App Challenge &mdash; MI-02</p>
+    </footer>
+
+    <!-- Required: arrow key navigation between projects -->
+    <script src="../../assets/js/nav.js" data-root="../../"></script>
+  </body>
+</html>

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vantage AI | Iacopo Schianchi</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #0B0E17;
+      --bg-secondary: #111627;
+      --bg-card: rgba(17, 22, 39, 0.7);
+      --bg-card-border: rgba(59, 130, 246, 0.15);
+      --blue: #3B82F6;
+      --blue-light: #60A5FA;
+      --blue-glow: rgba(59, 130, 246, 0.3);
+      --blue-faint: rgba(59, 130, 246, 0.06);
+      --cyan: #22D3EE;
+      --text-primary: #E8ECF4;
+      --text-secondary: #8892A8;
+      --text-muted: #4A5568;
+      --glass-bg: rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Manrope', system-ui, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BACK ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      position: fixed;
+      top: 1rem;
+      left: 1.2rem;
+      z-index: 100;
+      text-decoration: none;
+      background: var(--bg-secondary);
+      color: var(--blue-light);
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.45rem 1rem;
+      border-radius: 6px;
+      border: 1px solid var(--bg-card-border);
+      transition: border-color 0.2s, transform 0.15s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
+    .back-link::before { content: '\2190'; font-size: 0.85rem; }
+    .back-link:hover { border-color: var(--blue); transform: translateX(-2px); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      background: var(--bg-primary);
+      padding: 7rem 2rem 5rem;
+      text-align: center;
+      overflow: hidden;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Neural network node decoration */
+    .hero-nodes {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .node {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--blue);
+      border-radius: 50%;
+      opacity: 0.3;
+      box-shadow: 0 0 8px var(--blue-glow);
+    }
+    .node:nth-child(1) { top: 15%; left: 10%; animation: nodePulse 3s ease-in-out infinite; }
+    .node:nth-child(2) { top: 25%; left: 85%; animation: nodePulse 3s ease-in-out 0.5s infinite; }
+    .node:nth-child(3) { top: 60%; left: 5%; animation: nodePulse 3s ease-in-out 1s infinite; }
+    .node:nth-child(4) { top: 70%; left: 92%; animation: nodePulse 3s ease-in-out 1.5s infinite; }
+    .node:nth-child(5) { top: 40%; left: 20%; animation: nodePulse 3s ease-in-out 0.8s infinite; width: 3px; height: 3px; }
+    .node:nth-child(6) { top: 50%; left: 78%; animation: nodePulse 3s ease-in-out 2s infinite; width: 3px; height: 3px; }
+    .node:nth-child(7) { top: 80%; left: 30%; animation: nodePulse 3s ease-in-out 0.3s infinite; width: 5px; height: 5px; }
+    .node:nth-child(8) { top: 20%; left: 65%; animation: nodePulse 3s ease-in-out 1.2s infinite; width: 5px; height: 5px; }
+
+    /* Connection lines */
+    .hero-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .hero-lines::before {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 10%;
+      width: 300px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--blue-glow), transparent);
+      transform: rotate(15deg);
+      opacity: 0.3;
+    }
+    .hero-lines::after {
+      content: '';
+      position: absolute;
+      bottom: 25%;
+      right: 10%;
+      width: 250px;
+      height: 1px;
+      background: linear-gradient(270deg, var(--blue-glow), transparent);
+      transform: rotate(-10deg);
+      opacity: 0.3;
+    }
+
+    /* Radial glow behind title */
+    .hero-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(59,130,246,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow .dot { color: var(--blue); margin: 0 0.5rem; }
+
+    .hero h1 {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(3rem, 9vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.03em;
+    }
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, var(--blue-light), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 400;
+      color: var(--text-secondary);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    /* Search bar element */
+    .hero-search {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 12px;
+      padding: 0.8rem 1.5rem;
+      max-width: 480px;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+    .hero-search .search-icon {
+      color: var(--blue);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .hero-search .search-text {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .hero-search .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 16px;
+      background: var(--blue);
+      animation: blink 1s step-end infinite;
+      margin-left: 2px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--glass-border);
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    /* ── GLASS PANELS ── */
+    .glass {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 14px;
+      padding: 2rem 2.2rem;
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+    .glass::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(59,130,246,0.2), transparent);
+    }
+
+    .section {
+      margin-bottom: 3rem;
+    }
+
+    .section-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 2px;
+      background: var(--blue);
+      border-radius: 1px;
+    }
+
+    h2 {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── ABOUT ── */
+    .about-card {
+      display: flex;
+      gap: 2rem;
+      align-items: start;
+    }
+    .about-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    @media (max-width: 500px) {
+      .about-card { flex-direction: column; }
+    }
+
+    /* ── TECH STACK ── */
+    .tech-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.2rem;
+    }
+    .tech-tag {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.78rem;
+      font-weight: 500;
+      background: var(--blue-faint);
+      border: 1px solid var(--bg-card-border);
+      color: var(--blue-light);
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .tech-tag:hover {
+      border-color: var(--blue);
+      background: rgba(59,130,246,0.1);
+    }
+
+    /* floating paper cards */
+    .paper-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 550px) {
+      .paper-cards { grid-template-columns: 1fr; }
+    }
+    .paper-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .paper-card:hover {
+      border-color: var(--bg-card-border);
+      transform: translateY(-2px);
+    }
+    .paper-card .title {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.3rem;
+    }
+    .paper-card .desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── VIDEO ── */
+    .video-frame {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--bg-card-border);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      margin-top: 1rem;
+    }
+    .video-frame iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* ── LINKS ── */
+    .link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    .v-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.65rem 1.4rem;
+      border-radius: 8px;
+      transition: transform 0.15s, box-shadow 0.2s;
+      letter-spacing: 0.04em;
+    }
+    .v-btn:hover { transform: translateY(-2px); }
+    .v-btn svg { width: 14px; height: 14px; }
+
+    .v-btn.primary {
+      background: linear-gradient(135deg, var(--blue), #2563EB);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 16px rgba(59,130,246,0.3);
+    }
+    .v-btn.primary:hover { box-shadow: 0 6px 24px rgba(59,130,246,0.4); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+    }
+    footer a {
+      color: var(--blue-light);
+      text-decoration: underline;
+    }
+    footer p { color: var(--text-muted); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes nodePulse {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.5); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @media (max-width: 500px) {
+      .hero { padding: 5rem 1.5rem 4rem; }
+      .content { padding: 2rem 1.2rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-link">Back to Showcase</a>
+
+  <!-- ── HERO ── -->
+  <header class="hero">
+    <div class="hero-nodes">
+      <div class="node"></div><div class="node"></div><div class="node"></div><div class="node"></div>
+      <div class="node"></div><div class="node"></div><div class="node"></div><div class="node"></div>
+    </div>
+    <div class="hero-lines"></div>
+    <div class="hero-glow"></div>
+
+    <p class="hero-eyebrow">Congressional App Challenge<span class="dot">&bull;</span>VA-06<span class="dot">&bull;</span>Winchester, VA</p>
+    <h1>Vantage <span class="gradient">AI</span></h1>
+    <p class="hero-sub">An AI research tool that finds answers grounded in scientific literature. Search smarter, discover faster.</p>
+
+    <div class="hero-search">
+      <span class="search-icon">&#128269;</span>
+      <span class="search-text">Search scientific papers...</span>
+      <span class="cursor"></span>
+    </div>
+
+    <div class="hero-badge">
+      Iacopo Schianchi &mdash; 2025 Submission &mdash; Education, AI
+    </div>
+  </header>
+
+  <!-- ── CONTENT ── -->
+  <div class="content">
+
+    <!-- About -->
+    <div class="section">
+      <div class="section-label">The Researcher</div>
+      <h2>About Iacopo</h2>
+      <div class="glass">
+        <div class="about-card">
+          <div class="about-avatar">IS</div>
+          <div>
+            <p>
+              I'm Iacopo Schianchi, a junior at John Handley High School in Winchester, VA. I've been coding since 8th grade and am deeply passionate about artificial intelligence, machine learning, natural language processing, and computer vision. I love exploring how these technologies can make information more accessible and research more efficient.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- App -->
+    <div class="section">
+      <div class="section-label">The Platform</div>
+      <h2>AI-Powered Research Assistant</h2>
+      <div class="glass">
+        <p>
+          Vantage AI leverages Cerebras LLM agents and Hugging Face sentence-transformer models to perform semantic search across research papers. It helps researchers and students quickly find relevant answers grounded in scientific literature.
+        </p>
+        <p>
+          The platform incorporates Natural Language Inference (NLI) models for source stance analysis, allowing users to understand not just what the research says, but how different sources relate to and support each other.
+        </p>
+        <div class="paper-cards">
+          <div class="paper-card">
+            <div class="title">Semantic Search</div>
+            <div class="desc">Find relevant papers by meaning, not just keywords</div>
+          </div>
+          <div class="paper-card">
+            <div class="title">LLM Agents</div>
+            <div class="desc">Cerebras-powered agents synthesize answers from sources</div>
+          </div>
+          <div class="paper-card">
+            <div class="title">Stance Analysis</div>
+            <div class="desc">NLI models reveal how sources agree or conflict</div>
+          </div>
+          <div class="paper-card">
+            <div class="title">Grounded Answers</div>
+            <div class="desc">Every response is traceable to real scientific papers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech Stack -->
+    <div class="section">
+      <div class="section-label">Built With</div>
+      <h2>Technology Stack</h2>
+      <div class="tech-row">
+        <span class="tech-tag">Flask</span>
+        <span class="tech-tag">Cerebras</span>
+        <span class="tech-tag">Hugging Face</span>
+        <span class="tech-tag">sentence-transformers</span>
+        <span class="tech-tag">NLI Models</span>
+        <span class="tech-tag">Python</span>
+      </div>
+    </div>
+
+    <!-- Demo -->
+    <div class="section">
+      <div class="section-label">In Action</div>
+      <h2>Demo</h2>
+      <div class="video-frame">
+        <iframe
+          src="https://player.vimeo.com/video/1131913204"
+          title="Vantage AI App Demo"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Links -->
+    <div class="section">
+      <div class="section-label">Explore</div>
+      <h2>Links</h2>
+      <div class="link-row">
+        <a href="https://vimeo.com/1131913204" class="v-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/></svg>
+          Watch Demo on Vimeo
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge 2025 &bull; VA-06 &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

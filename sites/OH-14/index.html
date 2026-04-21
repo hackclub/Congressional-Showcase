@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swell | Graham Anderson</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ocean-deep: #1a5276;
+      --ocean-mid: #2e86c1;
+      --ocean-light: #85c1e9;
+      --ocean-pale: #d4e6f1;
+      --sand-warm: #f5e6ca;
+      --sand-light: #faf3e6;
+      --sand-dark: #d4a76a;
+      --foam: #ffffff;
+      --text-dark: #2c3e50;
+      --text-body: #4a4a4a;
+      --text-muted: #7f8c8d;
+      --coral: #e67e22;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Crimson Text', Georgia, serif;
+      background: var(--sand-light);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    /* -- BACK BUTTON -- */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      text-decoration: none;
+      background: var(--ocean-deep);
+      color: #fff;
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.1rem;
+      border-radius: 50px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 3px 12px rgba(26,82,118,0.3);
+    }
+    .back-link::before { content: '\2190'; font-size: 1rem; }
+    .back-link:hover { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(26,82,118,0.35); }
+
+    /* -- WAVE SVG DIVIDER -- */
+    .wave-divider {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-top: -1px;
+    }
+    .wave-divider-flip {
+      transform: scaleY(-1);
+      margin-bottom: -1px;
+    }
+
+    /* -- HERO -- */
+    .hero {
+      background: linear-gradient(170deg, var(--ocean-deep) 0%, var(--ocean-mid) 50%, var(--ocean-light) 100%);
+      color: #fff;
+      padding: 6rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: -10%;
+      width: 120%;
+      height: 300px;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 60px,
+        rgba(255,255,255,0.04) 60px,
+        rgba(255,255,255,0.04) 62px
+      );
+      transform: rotate(-3deg);
+      pointer-events: none;
+    }
+
+    /* Floating puzzle pieces */
+    .hero-deco {
+      position: absolute;
+      opacity: 0.07;
+      font-size: 5rem;
+      color: #fff;
+      pointer-events: none;
+      animation: floatSlow 8s ease-in-out infinite;
+    }
+    .hero-deco:nth-child(1) { top: 12%; left: 8%; animation-delay: 0s; }
+    .hero-deco:nth-child(2) { top: 20%; right: 10%; font-size: 3.5rem; animation-delay: 2s; }
+    .hero-deco:nth-child(3) { bottom: 18%; left: 15%; font-size: 4rem; animation-delay: 4s; }
+    .hero-deco:nth-child(4) { bottom: 25%; right: 18%; font-size: 3rem; animation-delay: 1s; }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+    }
+
+    .hero-eyebrow {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sand-warm);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Cabin', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero h1 .tilde {
+      display: inline-block;
+      color: var(--sand-warm);
+      animation: waveTilde 3s ease-in-out infinite;
+    }
+
+    @keyframes waveTilde {
+      0%, 100% { transform: translateY(0); }
+      25% { transform: translateY(-6px); }
+      75% { transform: translateY(4px); }
+    }
+
+    .hero-tagline {
+      font-family: 'Crimson Text', serif;
+      font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+      font-style: italic;
+      color: rgba(255,255,255,0.8);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero-chips {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .chip {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(4px);
+    }
+
+    /* -- WAVE after hero -- */
+    .wave-hero-bottom {
+      background: linear-gradient(to bottom, var(--ocean-light), var(--sand-light));
+    }
+
+    /* -- MAIN CONTENT -- */
+    .page-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* -- SECTION STYLES -- */
+    .content-section {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-tag {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ocean-mid);
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-family: 'Cabin', sans-serif;
+      font-size: clamp(1.7rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: var(--ocean-deep);
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.9;
+      color: var(--text-body);
+      margin-bottom: 1rem;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* -- WELCOMING CARD -- */
+    .warm-card {
+      background: var(--foam);
+      border-radius: 20px;
+      padding: 2.2rem 2.5rem;
+      box-shadow: 0 4px 24px rgba(26,82,118,0.08);
+      border: 2px solid var(--ocean-pale);
+    }
+
+    /* -- ABOUT GRID (crossword style) -- */
+    .crossword-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+
+    .crossword-cell {
+      background: var(--foam);
+      border: 2px solid var(--ocean-pale);
+      border-radius: 14px;
+      padding: 1.4rem;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .crossword-cell:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(26,82,118,0.12);
+    }
+
+    .cell-number {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--ocean-mid);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.3rem;
+    }
+
+    .cell-answer {
+      font-family: 'Cabin', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ocean-deep);
+    }
+
+    /* -- GAME CARDS (features) -- */
+    .games-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.2rem;
+    }
+
+    .game-card {
+      background: linear-gradient(145deg, var(--ocean-deep), var(--ocean-mid));
+      border-radius: 18px;
+      padding: 1.8rem;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .game-card-icon {
+      font-size: 2rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .game-card h3 {
+      font-family: 'Cabin', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .game-card p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.6;
+    }
+
+    /* -- TECH BUBBLES -- */
+    .tech-bubbles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .tech-bubble {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: var(--ocean-deep);
+      color: #fff;
+      padding: 0.6rem 1.4rem;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tech-bubble .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sand-warm);
+    }
+
+    /* -- VIDEO -- */
+    .video-container {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(26,82,118,0.15);
+      margin-top: 1.2rem;
+      border: 3px solid var(--ocean-pale);
+    }
+
+    .video-container iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* -- QUOTE BANNER -- */
+    .ocean-quote {
+      background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-mid));
+      border-radius: 20px;
+      padding: 2.8rem 2.5rem;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      margin: 3rem 0;
+    }
+
+    .ocean-quote::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='rgba(255,255,255,0.06)' d='M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,100 L0,100Z'/%3E%3C/svg%3E") no-repeat bottom/cover;
+      pointer-events: none;
+    }
+
+    .ocean-quote blockquote {
+      font-family: 'Crimson Text', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      font-style: italic;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.95);
+      position: relative;
+      z-index: 1;
+    }
+
+    .ocean-quote cite {
+      display: block;
+      margin-top: 1rem;
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.78rem;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sand-warm);
+    }
+
+    /* -- LINKS -- */
+    .link-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.75rem 1.6rem;
+      border-radius: 50px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(26,82,118,0.2); }
+
+    .btn-primary {
+      background: var(--ocean-deep);
+      color: #fff;
+    }
+
+    .btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* -- FOOTER -- */
+    footer {
+      background: var(--ocean-deep);
+      color: #fff;
+      text-align: center;
+      padding: 2.2rem 1.5rem;
+      position: relative;
+    }
+
+    footer p {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8) !important;
+    }
+
+    footer a {
+      color: var(--sand-warm) !important;
+      text-decoration: underline;
+    }
+
+    /* -- RESPONSIVE -- */
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1.5rem 2.5rem; }
+      .warm-card { padding: 1.5rem; }
+      .crossword-grid { grid-template-columns: 1fr 1fr; }
+      .games-row { grid-template-columns: 1fr; }
+      .ocean-quote { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-link">Back to Showcase</a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-deco">&#9819;</div>
+    <div class="hero-deco">&#9823;</div>
+    <div class="hero-deco">&#10022;</div>
+    <div class="hero-deco">&#9830;</div>
+
+    <p class="hero-eyebrow">Congressional App Challenge &bull; OH-14 &bull; Geneva, Ohio</p>
+    <h1>S<span class="tilde">~</span>ell</h1>
+    <p class="hero-tagline">Keeping senior minds active and engaged through crosswords, sudoku, and trivia games.</p>
+    <div class="hero-chips">
+      <span class="chip">Health</span>
+      <span class="chip">Games</span>
+      <span class="chip">Senior-Friendly</span>
+    </div>
+  </header>
+
+  <!-- Wave transition -->
+  <svg class="wave-divider" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#85c1e9" d="M0,20 C240,65 480,5 720,35 C960,65 1200,15 1440,30 L1440,0 L0,0Z"/>
+    <path fill="#f5e6ca" d="M0,45 C360,75 720,20 1080,50 C1260,62 1380,55 1440,50 L1440,80 L0,80Z"/>
+    <path fill="#faf3e6" d="M0,60 C320,80 640,40 960,65 C1200,78 1360,60 1440,65 L1440,80 L0,80Z"/>
+  </svg>
+
+  <!-- CONTENT -->
+  <div class="page-content" style="padding-top: 2rem; padding-bottom: 3rem;">
+
+    <!-- Quote -->
+    <div class="ocean-quote content-section">
+      <blockquote>
+        Swell is designed so that every senior can pick it up, feel at home, and give their brain a wonderful workout &mdash; no tiny text, no confusing menus, just the joy of a good puzzle.
+      </blockquote>
+      <cite>&mdash; Graham Anderson, creator of Swell</cite>
+    </div>
+
+    <!-- About the Creator -->
+    <section class="content-section">
+      <p class="section-tag">The Creator</p>
+      <h2>Meet Graham Anderson</h2>
+      <div class="warm-card">
+        <p>
+          Graham is a 16-year-old homeschooler from Geneva, Ohio. He started programming at age 12 by modding Terraria, and the spark of building something from code has driven him ever since. When he is not developing apps, Graham enjoys sim racing and spending time outdoors in nature.
+        </p>
+      </div>
+      <div class="crossword-grid">
+        <div class="crossword-cell">
+          <div class="cell-number">1 Across</div>
+          <div class="cell-answer">Age 16</div>
+        </div>
+        <div class="crossword-cell">
+          <div class="cell-number">2 Down</div>
+          <div class="cell-answer">Geneva, OH</div>
+        </div>
+        <div class="crossword-cell">
+          <div class="cell-number">3 Across</div>
+          <div class="cell-answer">Homeschooled</div>
+        </div>
+        <div class="crossword-cell">
+          <div class="cell-number">4 Down</div>
+          <div class="cell-answer">Coding since 12</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wave divider -->
+    <svg class="wave-divider" viewBox="0 0 1440 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="margin: 1rem 0 2rem;">
+      <path fill="#d4e6f1" d="M0,20 C360,35 720,5 1080,25 C1260,33 1380,28 1440,25 L1440,40 L0,40Z"/>
+      <path fill="transparent" stroke="#85c1e9" stroke-width="0.8" d="M0,15 C360,30 720,0 1080,20 C1260,28 1380,22 1440,20" fill="none"/>
+    </svg>
+
+    <!-- About the App -->
+    <section class="content-section">
+      <p class="section-tag">The App</p>
+      <h2>What is Swell?</h2>
+      <div class="warm-card">
+        <p>
+          Swell provides senior citizens with brain-engaging games designed for clarity and comfort. Every element &mdash; from large, readable text to simple navigation &mdash; is built so that older adults feel confident and welcome from the first tap.
+        </p>
+        <p>
+          The goal is straightforward: help seniors maintain cognitive sharpness and have a genuinely good time doing it. No clutter, no pressure &mdash; just the satisfaction of solving a great puzzle.
+        </p>
+      </div>
+
+      <div class="games-row">
+        <div class="game-card">
+          <span class="game-card-icon">&#9638;</span>
+          <h3>Crosswords</h3>
+          <p>Classic word puzzles with large print and helpful hints.</p>
+        </div>
+        <div class="game-card">
+          <span class="game-card-icon">&#9639;</span>
+          <h3>Sudoku</h3>
+          <p>Number grids at multiple difficulty levels, easy to read.</p>
+        </div>
+        <div class="game-card">
+          <span class="game-card-icon">&#10067;</span>
+          <h3>Trivia</h3>
+          <p>Fun knowledge challenges spanning history, culture, and more.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="content-section">
+      <p class="section-tag">Built With</p>
+      <h2>Technology</h2>
+      <div class="tech-bubbles">
+        <span class="tech-bubble"><span class="dot"></span> JavaScript</span>
+        <span class="tech-bubble"><span class="dot"></span> TypeScript</span>
+        <span class="tech-bubble"><span class="dot"></span> React</span>
+        <span class="tech-bubble"><span class="dot"></span> React Native</span>
+        <span class="tech-bubble"><span class="dot"></span> Expo</span>
+      </div>
+    </section>
+
+    <!-- Demo Video -->
+    <section class="content-section">
+      <p class="section-tag">See It In Action</p>
+      <h2>Demo Video</h2>
+      <div class="video-container">
+        <iframe
+          src="https://www.youtube.com/embed/bBNUvjGTJb4"
+          title="Swell App Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </section>
+
+    <!-- Links -->
+    <section class="content-section">
+      <p class="section-tag">Explore</p>
+      <h2>Links</h2>
+      <div class="link-buttons">
+        <a href="https://youtu.be/bBNUvjGTJb4" class="btn btn-primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/>
+          </svg>
+          Watch Demo
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Wave before footer -->
+  <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#1a5276" d="M0,25 C360,50 720,10 1080,35 C1260,45 1380,40 1440,35 L1440,60 L0,60Z"/>
+  </svg>
+
+  <footer>
+    <p>Congressional App Challenge &mdash; OH-14 &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

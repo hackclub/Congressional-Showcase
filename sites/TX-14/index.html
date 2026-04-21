@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vision Warriors | Aarush Sinha</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #E8720C;
+      --orange-light: #F4A53A;
+      --navy: #0B1D3A;
+      --navy-mid: #132B52;
+      --white: #FFFFFF;
+      --off-white: #FDF7F0;
+      --text-dark: #0B1D3A;
+      --text-body: #2A3652;
+      --text-muted: #5A6A82;
+      --focus-ring: #E8720C;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Atkinson Hyperlegible', Verdana, sans-serif;
+      background: var(--off-white);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-size: 1.125rem;
+      line-height: 1.8;
+    }
+
+    /* Focus styles for accessibility */
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 3px;
+    }
+
+    /* ── BACK LINK ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      text-decoration: none;
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      border: 2px solid var(--orange);
+      transition: background 0.2s, transform 0.15s;
+      box-shadow: 0 4px 16px rgba(11,29,58,0.35);
+    }
+    .back-link:hover { background: var(--navy-mid); transform: translateX(-3px); }
+    .back-link::before { content: '\2190'; font-size: 1.1rem; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--navy);
+      color: var(--white);
+      padding: 6rem 2rem 5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Animated scan lines — like an eye scanner */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--orange);
+      animation: scanLine 3s ease-in-out infinite;
+      opacity: 0.7;
+      box-shadow: 0 0 20px var(--orange), 0 0 60px rgba(232,114,12,0.3);
+    }
+
+    @keyframes scanLine {
+      0% { top: 0; }
+      50% { top: calc(100% - 4px); }
+      100% { top: 0; }
+    }
+
+    /* Eye SVG background */
+    .hero-eye {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      opacity: 0.04;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero-district {
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--orange-light);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Lexend', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+
+    .hero h1 .highlight {
+      color: var(--orange);
+      display: block;
+    }
+
+    .hero-tagline {
+      font-family: 'Atkinson Hyperlegible', sans-serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 700;
+      color: rgba(255,255,255,0.85);
+      max-width: 600px;
+      margin: 1rem auto 2rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .hero-tag {
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.2rem;
+      border: 2px solid var(--orange);
+      border-radius: 100px;
+      color: var(--orange-light);
+    }
+
+    /* ── MAIN ── */
+    .main-content {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 4rem 2rem 5rem;
+    }
+
+    /* ── SECTION HEADINGS — extra large for accessibility ── */
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-heading .icon-bar {
+      width: 6px;
+      height: 48px;
+      background: var(--orange);
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .section-heading h2 {
+      font-family: 'Lexend', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.2;
+    }
+
+    .section-eyebrow {
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 0.4rem;
+    }
+
+    /* ── SECTIONS ── */
+    .content-section {
+      margin-bottom: 4rem;
+    }
+
+    p {
+      font-size: 1.15rem;
+      line-height: 1.9;
+      color: var(--text-body);
+      margin-bottom: 1rem;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── ABOUT CARD — split layout ── */
+    .about-card {
+      background: var(--white);
+      border: 2px solid rgba(11,29,58,0.08);
+      border-radius: 12px;
+      padding: 2.5rem 2.8rem;
+      position: relative;
+      box-shadow: 0 4px 24px rgba(11,29,58,0.06);
+    }
+
+    .about-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 2rem; right: 2rem;
+      height: 4px;
+      background: linear-gradient(90deg, var(--orange), var(--orange-light), var(--orange));
+      border-radius: 0 0 12px 12px;
+    }
+
+    /* ── APP FEATURE GRID ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    .feature-card {
+      background: var(--white);
+      border: 2px solid rgba(11,29,58,0.06);
+      border-radius: 10px;
+      padding: 1.8rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(11,29,58,0.04);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--orange);
+    }
+
+    .feature-card .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-family: 'Lexend', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 640px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── TECH STACK — large pills ── */
+    .tech-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .tech-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--navy);
+      color: var(--white);
+      padding: 0.9rem 1.6rem;
+      border-radius: 100px;
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .tech-pill .dot {
+      width: 10px;
+      height: 10px;
+      background: var(--orange);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── VIDEO ── */
+    .video-container {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 3px solid var(--navy);
+      margin-top: 1.2rem;
+      box-shadow: 0 8px 40px rgba(11,29,58,0.15);
+    }
+
+    .video-container iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* ── LINKS ── */
+    .link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      border-radius: 8px;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(11,29,58,0.2); }
+
+    .cta-btn.primary {
+      background: var(--orange);
+      color: var(--white);
+    }
+
+    .cta-btn svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ── ACCESSIBILITY BANNER ── */
+    .a11y-banner {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: 12px;
+      padding: 2.5rem 3rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .a11y-banner .eye-icon {
+      flex-shrink: 0;
+      width: 80px;
+      height: 80px;
+    }
+
+    .a11y-banner .eye-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .a11y-banner h3 {
+      font-family: 'Lexend', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: var(--orange-light);
+    }
+
+    .a11y-banner p {
+      color: rgba(255,255,255,0.85);
+      font-size: 1.05rem;
+    }
+
+    @media (max-width: 640px) {
+      .a11y-banner {
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1rem;
+      }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      color: var(--white);
+      text-align: center;
+      padding: 2.5rem 2rem;
+    }
+
+    footer .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    footer p {
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.7) !important;
+    }
+
+    footer a {
+      color: var(--orange-light) !important;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    footer .divider-line {
+      width: 60px;
+      height: 3px;
+      background: var(--orange);
+      border-radius: 2px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero { padding: 5rem 1.5rem 4rem; min-height: auto; }
+      .main-content { padding: 3rem 1.5rem 4rem; }
+      .about-card { padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-link">Back to Showcase</a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <svg class="hero-eye" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="100" cy="100" rx="90" ry="55" stroke="white" stroke-width="2"/>
+      <circle cx="100" cy="100" r="30" stroke="white" stroke-width="2"/>
+      <circle cx="100" cy="100" r="12" fill="white"/>
+    </svg>
+    <p class="hero-district">Congressional App Challenge &bull; TX-14 &bull; League City, TX</p>
+    <h1>VISION<span class="highlight">WARRIORS</span></h1>
+    <p class="hero-tagline">Computer vision empowering independence for the visually impaired.</p>
+    <div class="hero-meta">
+      <span class="hero-tag">Education</span>
+      <span class="hero-tag">Health</span>
+      <span class="hero-tag">Accessibility</span>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- Accessibility Mission Banner -->
+    <div class="a11y-banner">
+      <div class="eye-icon">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="40" cy="40" rx="35" ry="20" stroke="#F4A53A" stroke-width="3"/>
+          <circle cx="40" cy="40" r="12" stroke="#F4A53A" stroke-width="3"/>
+          <circle cx="40" cy="40" r="5" fill="#E8720C"/>
+          <line x1="5" y1="5" x2="75" y2="75" stroke="#E8720C" stroke-width="2.5" stroke-linecap="round" opacity="0"/>
+        </svg>
+      </div>
+      <div>
+        <h3>Seeing the World, Differently</h3>
+        <p>Vision Warriors uses OCR, color detection, and text-to-speech to help visually impaired individuals identify colors and read text from images or live webcam feeds, translating the visual world into clear audio feedback.</p>
+      </div>
+    </div>
+
+    <!-- About the Creator -->
+    <section class="content-section">
+      <div class="section-eyebrow">The Creator</div>
+      <div class="section-heading">
+        <div class="icon-bar"></div>
+        <h2>Aarush Sinha</h2>
+      </div>
+      <div class="about-card">
+        <p>
+          Hi! I am a high school senior from League City, Texas. My interests span coding, guitar, and basketball. I started programming in 8th grade with the goal of creating games and conducting research. That early curiosity has grown into a passion for building technology that makes a real difference in people's lives, and Vision Warriors is the result of that commitment.
+        </p>
+      </div>
+    </section>
+
+    <!-- About the App -->
+    <section class="content-section">
+      <div class="section-eyebrow">The App</div>
+      <div class="section-heading">
+        <div class="icon-bar"></div>
+        <h2>Accessibility Through Computer Vision</h2>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <span class="feature-icon" aria-hidden="true">&#128065;</span>
+          <h3>Color Detection</h3>
+          <p>Identifies object colors from uploaded images or a live webcam feed, making the visual world accessible through clear audio descriptions.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon" aria-hidden="true">&#128196;</span>
+          <h3>OCR Text Recognition</h3>
+          <p>Reads printed text from any image using optical character recognition, converting visual text into structured data ready for speech output.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon" aria-hidden="true">&#128266;</span>
+          <h3>Text-to-Speech</h3>
+          <p>Converts all detected text into natural spoken audio, empowering users to hear what they cannot see with clear, reliable feedback.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon" aria-hidden="true">&#127909;</span>
+          <h3>Live Webcam Feed</h3>
+          <p>Real-time processing of live camera input, enabling instant identification and audio output without needing to take or upload a photo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="content-section">
+      <div class="section-eyebrow">Built With</div>
+      <div class="section-heading">
+        <div class="icon-bar"></div>
+        <h2>Technology Stack</h2>
+      </div>
+      <div class="tech-row">
+        <div class="tech-pill"><span class="dot"></span>Python</div>
+        <div class="tech-pill"><span class="dot"></span>OCR API</div>
+        <div class="tech-pill"><span class="dot"></span>OpenCV</div>
+        <div class="tech-pill"><span class="dot"></span>Text-to-Speech</div>
+      </div>
+    </section>
+
+    <!-- Demo Video -->
+    <section class="content-section">
+      <div class="section-eyebrow">In Action</div>
+      <div class="section-heading">
+        <div class="icon-bar"></div>
+        <h2>Watch the Demo</h2>
+      </div>
+      <div class="video-container">
+        <iframe
+          src="https://www.youtube.com/embed/xiJHK_PZkKU"
+          title="Vision Warriors App Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </section>
+
+    <!-- Links -->
+    <section class="content-section">
+      <div class="section-eyebrow">Explore</div>
+      <div class="section-heading">
+        <div class="icon-bar"></div>
+        <h2>Project Links</h2>
+      </div>
+      <div class="link-row">
+        <a href="https://github.com/Aarush-ai288/Vision-Warriors-Updated/tree/main" class="cta-btn primary" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          View on GitHub
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="divider-line"></div>
+      <p>Congressional App Challenge 2025 &bull; TX-14</p>
+      <p><a href="../../">Back to Showcase</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

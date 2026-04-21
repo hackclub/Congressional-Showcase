@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JourneyKeep: Quests & Focus</title>
+
+    <!-- Required: keep this line so navigation arrows are styled -->
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS v3 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@11/dist/framer-motion.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                        serif: ['Libre Baskerville', 'serif'],
+                    },
+                    backgroundImage: {
+                        'dot-grid': "radial-gradient(circle, #2563eb 1px, transparent 1px)",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --jk-paper: #efece2;
+            --jk-paper-deep: #e8e3d5;
+            --jk-ink: #2b2b33;
+            --jk-accent: #ef6b4a;
+            --jk-accent-soft: #f8d5c5;
+            --jk-mint: #dfe9dd;
+            --jk-gold: #f3e1b0;
+        }
+
+        body {
+            background: var(--jk-paper);
+            color: var(--jk-ink);
+        }
+
+        .bg-dot-grid {
+            background-image:
+                radial-gradient(circle, rgba(239, 107, 74, 0.2) 1px, transparent 1px),
+                linear-gradient(180deg, #f7f3e9 0%, #f1eddf 100%);
+            background-size: 80px 80px;
+            background-position: center;
+        }
+
+        .dotted-surface {
+            background-image: radial-gradient(circle, rgba(239, 107, 74, 0.16) 1px, transparent 1px);
+            background-size: 80px 80px;
+            background-position: center;
+        }
+
+        .hero-glow {
+            position: absolute;
+            border-radius: 999px;
+            filter: blur(20px);
+            pointer-events: none;
+            opacity: 0.45;
+        }
+
+        .hero-title-accent {
+            color: var(--jk-accent);
+            font-style: italic;
+            font-family: 'Libre Baskerville', serif;
+            font-weight: 400;
+        }
+
+        .hero-stat-card {
+            border: 1px solid #e9cfba;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(248, 236, 220, 0.88));
+            box-shadow: 0 8px 24px rgba(67, 44, 22, 0.08);
+        }
+
+        .impact-card-apple {
+            background: linear-gradient(180deg, #fff9f2 0%, #fef1e6 100%);
+            border-color: #efd4bf;
+        }
+
+        .impact-card-google {
+            background: linear-gradient(180deg, #f5f9ff 0%, #ecf3ff 100%);
+            border-color: #cdddff;
+        }
+
+        .impact-card-global {
+            background: linear-gradient(180deg, #f6fbf4 0%, #eaf4e7 100%);
+            border-color: #cfe1ca;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        ::selection {
+            background-color: #dbeafe;
+            color: #1e3a8a;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back button: links to the main showcase -->
+    <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { motion, AnimatePresence } = window.Motion;
+        const { useState, useEffect } = React;
+
+        // Lucide Icon Component Wrapper
+        const Icon = ({ name, className }) => {
+            const [iconHtml, setIconHtml] = useState('');
+            
+            useEffect(() => {
+                const icon = lucide.icons[name];
+                if (icon) {
+                    const svg = lucide.createIcons({
+                        icons: { [name]: icon },
+                        attrs: { class: className }
+                    });
+                }
+            }, [name, className]);
+
+            // Fallback to direct SVG or just use a placeholder if lucide-react isn't available
+            // In a single file CDN approach, we'll use a helper to render icons
+            return <i data-lucide={name} className={className}></i>;
+        };
+
+        // Manual Icon implementation for reliability in single HTML
+        const LucideIcon = ({ name, className, size = 24 }) => {
+            useEffect(() => {
+                lucide.createIcons();
+            }, []);
+            return <i data-lucide={name} className={className} style={{ width: size, height: size }}></i>;
+        };
+
+        const REVIEWS = [
+            {
+                title: "Actually succeeds at feeling like a game",
+                rating: 4,
+                date: "Mar 21",
+                author: "Walter",
+                content: "love this app. literally makes me get up n do stuff, and really feels like a video game, which not many apps can pull off. Only thing I think could be better is the crown system. There's not a lot you can do with crowns, and they stack up way faster than i spend them. I think it'd be cool if there was a way to spend them on skins for the app or maybe like unlocking certain functions, like 250 crowns = more"
+            },
+            {
+                title: "Great reminder to get off my phone",
+                rating: 5,
+                date: "Mar 30",
+                author: "JamesonHert",
+                content: "I love this app, especially the widget you can add because every time I open my phone and see it I don't want to make the leaf sad. It's a nice way to make screen time control a bit more manageable, definitely recommend!"
+            },
+            {
+                title: "Best app to get out of bed",
+                rating: 5,
+                date: "10/05/2025",
+                author: "G",
+                content: "I have had JourneyKeep for one week and have had such a great time waking up thinking \"oh what will I get to do today \" I have recommended this app to all of my friends because seriously this is a great idea it almost reminds me of Duolingo because of the streaks but with a lot less notifications."
+            }
+        ];
+
+        function ReviewCard({ review }) {
+            return (
+                <div className="flex-none w-[320px] md:w-[400px] bg-white rounded-2xl p-6 flex flex-col gap-3 shadow-sm">
+                    <div className="flex justify-between items-start">
+                        <div className="flex flex-col gap-1">
+                            <h4 className="font-display font-bold text-slate-900 line-clamp-1">{review.title}</h4>
+                            <div className="flex gap-0.5">
+                                {[...Array(5)].map((_, i) => (
+                                    <LucideIcon
+                                        key={i}
+                                        name="star"
+                                        size={12}
+                                        className={`${i < review.rating ? "fill-orange-400 text-orange-400" : "text-slate-300"}`}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <p className="text-xs text-slate-400">{review.date}</p>
+                            <p className="text-xs text-slate-400 font-medium">{review.author}</p>
+                        </div>
+                    </div>
+                    <p className="text-sm leading-relaxed text-slate-600 line-clamp-6">
+                        {review.content}
+                        <span className="text-blue-500 font-medium cursor-pointer ml-1">more</span>
+                    </p>
+                </div>
+            );
+        }
+
+        function OnboardingPlaceholder({ label, imageSrc }) {
+            return (
+                <div className="h-[420px] w-[210px] rounded-[2.2rem] shadow-[0_18px_40px_rgba(16,24,40,0.26)]">
+                    <div className="relative h-full w-full overflow-hidden rounded-[1.7rem] bg-slate-100">
+                        <img
+                            src={imageSrc}
+                            alt={label}
+                            className="h-full w-full object-cover object-top"
+                            referrerPolicy="no-referrer"
+                        />
+                        <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/16 to-transparent"></div>
+                        <div className="pointer-events-none absolute inset-x-0 top-2 flex justify-center">
+                            <div className="h-1.5 w-14 rounded-full bg-black/45"></div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function App() {
+            useEffect(() => {
+                lucide.createIcons();
+            }, []);
+
+            return (
+                <div className="min-h-screen font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+                    {/* Hero Section */}
+                    <section className="relative overflow-hidden bg-dot-grid pt-32 pb-24 lg:pt-40 lg:pb-32">
+                        <div className="hero-glow h-56 w-56 left-[8%] top-[12%] bg-[#f2c0a8]"></div>
+                        <div className="hero-glow h-44 w-44 right-[18%] top-[18%] bg-[#d6e7d5]"></div>
+                        <div className="container mx-auto px-6 relative z-10">
+                            <div className="flex flex-col items-center text-center">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6 }}
+                                    className="mb-6 flex items-center gap-2 rounded-full bg-orange-50 px-4 py-1.5 text-sm font-semibold text-orange-600 ring-1 ring-inset ring-orange-600/20"
+                                >
+                                    <LucideIcon name="leaf" size={16} />
+                                    <span>CONGRESSIONAL APP CHALLENGE | WASHINGTON-06</span>
+                                </motion.div>
+                                
+                                <motion.h1
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.1 }}
+                                    className="max-w-4xl text-5xl font-serif tracking-tight text-slate-900 sm:text-7xl"
+                                >
+                                    JourneyKeep: <span className="hero-title-accent">Quests & Focus</span>
+                                </motion.h1>
+                                
+                                <motion.p
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.2 }}
+                                    className="mt-8 max-w-2xl text-lg leading-8 text-slate-600"
+                                >
+                                    Almost every app on your phone is engineered to keep you scrolling. JourneyKeep is engineered to get you off it by turning real-world habits into a game of sidequests.
+                                </motion.p>
+
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.3 }}
+                                    className="mt-8 grid w-full max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2"
+                                >
+                                    <div className="hero-stat-card rounded-2xl px-6 py-4 backdrop-blur">
+                                        <p className="text-3xl font-display font-bold text-slate-900">35,000+</p>
+                                        <p className="mt-1 text-sm font-medium uppercase tracking-wide text-slate-600">installs</p>
+                                    </div>
+                                    <div className="hero-stat-card rounded-2xl px-6 py-4 backdrop-blur">
+                                        <p className="text-3xl font-display font-bold text-slate-900">43,000+</p>
+                                        <p className="mt-1 text-sm font-medium uppercase tracking-wide text-slate-600">quests completed</p>
+                                    </div>
+                                </motion.div>
+                            </div>
+                        </div>
+
+                        {/* Scattered Images */}
+                        <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
+                            {/* Top Left */}
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 1, delay: 0.5 }}
+                                className="absolute left-[3%] top-[22%] w-24 md:w-40 lg:w-56 group"
+                            >
+                                <div className="relative overflow-hidden border border-slate-100">
+                                    <img 
+                                        src="https://swfcjxikbqkjyeplnrws.supabase.co/storage/v1/object/sign/quest-photos/users/46389e15-637b-489b-9dcc-aad18df1f492/photos/photo_1775156419143_u7laik7pz.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zMWZjMTc1Ni1jMmM3LTRlYzMtODlkYi0xY2U2YWI1YzBkN2IiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJxdWVzdC1waG90b3MvdXNlcnMvNDYzODllMTUtNjM3Yi00ODliLTlkY2MtYWFkMThkZjFmNDkyL3Bob3Rvcy9waG90b18xNzc1MTU2NDE5MTQzX3U3bGFpazdwei5qcGciLCJpYXQiOjE3NzUxNTg2NDEsImV4cCI6MzkyMjY0MjI4OH0.nO-TM5zz6BwRIUDKAXhAT37VCYNuYLF9L-8Rc6ey5Ak" 
+                                        alt="Sunrise @ Cape May" 
+                                        className=" w-full h-auto"
+                                        referrerPolicy="no-referrer"
+                                    />
+                                    <div className="absolute bottom-0 left-0 right-0 bg-black/40 backdrop-blur-[2px] px-2 py-1">
+                                        <p className="text-[8px] md:text-[10px] text-white/90 font-medium uppercase tracking-wider">completed on: Apr 2, 2026</p>
+                                    </div>
+                                </div>
+                            </motion.div>
+
+                            {/* Top Center-Left */}
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 1, delay: 0.7 }}
+                                className="absolute left-[18%] top-[2%] w-20 md:w-28 lg:w-36 group"
+                            >
+                                <div className="relative overflow-hidden border border-slate-100">
+                                    <img 
+                                        src="https://swfcjxikbqkjyeplnrws.supabase.co/storage/v1/object/sign/quest-photos/users/82811b64-13db-4f93-97fd-57e94d260a4c/photos/photo_1767182277442_a8o8092a2.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zMWZjMTc1Ni1jMmM3LTRlYzMtODlkYi0xY2U2YWI1YzBkN2IiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJxdWVzdC1waG90b3MvdXNlcnMvODI4MTFiNjQtMTNkYi00ZjkzLTk3ZmQtNTdlOTRkMjYwYTRjL3Bob3Rvcy9waG90b18xNzY3MTgyMjc3NDQyX2E4bzgwOTJhMi5qcGciLCJpYXQiOjE3NzMyNjI1MjMsImV4cCI6MzkyMDc0NjE3MH0.MD6VJbwQ6U4XzaTJSCzhm-joMIQZG4H7PZjAGO1GauQ" 
+                                        alt="Compliment quest" 
+                                        className="w-full h-auto"
+                                        referrerPolicy="no-referrer"
+                                    />
+                                    <div className="absolute bottom-0 left-0 right-0 bg-black/40 backdrop-blur-[2px] px-2 py-1">
+                                        <p className="text-[8px] md:text-[10px] text-white/90 font-medium uppercase tracking-wider">completed on: Dec 31, 2025</p>
+                                    </div>
+                                </div>
+                            </motion.div>
+
+                            {/* Top Right */}
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 1, delay: 0.6 }}
+                                className="absolute right-[8%] top-[8%] w-48 md:w-32 lg:w-52 group"
+                            >
+                                <div className="relative overflow-hidden border border-slate-100">
+                                    <img 
+                                        src="https://swfcjxikbqkjyeplnrws.supabase.co/storage/v1/object/sign/quest-photos/users/ee75488b-91ac-4ed8-b77e-395608a53bdc/photos/photo_1763471637235_dm5u0wu0f.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zMWZjMTc1Ni1jMmM3LTRlYzMtODlkYi0xY2U2YWI1YzBkN2IiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJxdWVzdC1waG90b3MvdXNlcnMvZWU3NTQ4OGItOTFhYy00ZWQ4LWI3N2UtMzk1NjA4YTUzYmRjL3Bob3Rvcy9waG90b18xNzYzNDcxNjM3MjM1X2RtNXUwd3UwZi5qcGciLCJpYXQiOjE3NzMyNjI1MjQsImV4cCI6MzkyMDc0NjE3MX0.CSbnk7b4bfwI0SfSOGEHZ1q3iOFCwRfmQMWCYaPdtUI" 
+                                        alt="location quest" 
+                                        className="w-full h-auto"
+                                        referrerPolicy="no-referrer"
+                                    />
+                                    <div className="absolute bottom-0 left-0 right-0 bg-black/40 backdrop-blur-[2px] px-2 py-1">
+                                        <p className="text-[8px] md:text-[10px] text-white/90 font-medium uppercase tracking-wider">completed on: Nov 18, 2025</p>
+                                    </div>
+                                </div>
+                            </motion.div>
+
+                            {/* Middle Right */}
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 1, delay: 0.8 }}
+                                className="absolute right-[4%] top-[45%] w-28 md:w-36 lg:w-48 group"
+                            >
+                                <div className="relative overflow-hidden border border-slate-100">
+                                    <img 
+                                        src="https://swfcjxikbqkjyeplnrws.supabase.co/storage/v1/object/sign/quest-photos/users/d10159e0-05bc-4826-9831-e9de97e6ed3f/photos/photo_1762349202777_rzv54g8cp.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zMWZjMTc1Ni1jMmM3LTRlYzMtODlkYi0xY2U2YWI1YzBkN2IiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJxdWVzdC1waG90b3MvdXNlcnMvZDEwMTU5ZTAtMDViYy00ODI2LTk4MzEtZTlkZTk3ZTZlZDNmL3Bob3Rvcy9waG90b18xNzYyMzQ5MjAyNzc3X3J6djU0ZzhjcC5qcGciLCJpYXQiOjE3NzMyNjI1MjQsImV4cCI6MzkyMDc0NjE3MX0.ZFDEXf74e42mRkIJKfvEeSvnvEoRj9aEfAQp5BkT3jk" 
+                                        alt="biking quest" 
+                                        className="w-full h-auto"
+                                        referrerPolicy="no-referrer"
+                                    />
+                                    <div className="absolute bottom-0 left-0 right-0 bg-black/40 backdrop-blur-[2px] px-2 py-1">
+                                        <p className="text-[8px] md:text-[10px] text-white/90 font-medium uppercase tracking-wider">completed on: Nov 5, 2025</p>
+                                    </div>
+                                </div>
+                            </motion.div>
+
+                            {/* Bottom Left */}
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 1, delay: 0.9 }}
+                                className="absolute left-[5%] bottom-[8%] w-32 md:w-44 lg:w-56 group"
+                            >
+                                <div className="relative overflow-hidden border border-slate-100">
+                                    <img 
+                                        src="https://swfcjxikbqkjyeplnrws.supabase.co/storage/v1/object/sign/quest-photos/users/14232a07-b0af-43e5-b99d-5fe1a8e50315/photos/photo_1759860917949_sve5ew1j5.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zMWZjMTc1Ni1jMmM3LTRlYzMtODlkYi0xY2U2YWI1YzBkN2IiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJxdWVzdC1waG90b3MvdXNlcnMvMTQyMzJhMDctYjBhZi00M2U1LWI5OWQtNWZlMWE4ZTUwMzE1L3Bob3Rvcy9waG90b18xNzU5ODYwOTE3OTQ5X3N2ZTVldzFqNS5qcGciLCJpYXQiOjE3NzMyNjI1MjUsImV4cCI6MzkyMDc0NjE3Mn0.LAB4by1vTiy-zrWIuqdm0TGX2aC88OqIWtQ2nEZZoQQ" 
+                                        alt="Learning about the skull quest" 
+                                        className="w-full h-auto"
+                                        referrerPolicy="no-referrer"
+                                    />
+                                    <div className="absolute bottom-0 left-0 right-0 bg-black/40 backdrop-blur-[2px] px-2 py-1">
+                                        <p className="text-[8px] md:text-[10px] text-white/90 font-medium uppercase tracking-wider">completed on: Oct 7, 2025</p>
+                                    </div>
+                                </div>
+                            </motion.div>
+
+                            {/* Bottom Right */}
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 1, delay: 1 }}
+                                className="absolute right-[12%] bottom-[2%] w-28 md:w-36 lg:w-60 group"
+                            >
+                                <div className="relative overflow-hidden border border-slate-100">
+                                    <img 
+                                        src="https://swfcjxikbqkjyeplnrws.supabase.co/storage/v1/object/sign/quest-photos/users/d7c3a713-b615-4989-930a-5f99db4143d4/photos/photo_1759759264728_5y1m8rmwd.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zMWZjMTc1Ni1jMmM3LTRlYzMtODlkYi0xY2U2YWI1YzBkN2IiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJxdWVzdC1waG90b3MvdXNlcnMvZDdjM2E3MTMtYjYxNS00OTg5LTkzMGEtNWY5OWRiNDE0M2Q0L3Bob3Rvcy9waG90b18xNzU5NzU5MjY0NzI4XzV5MW04cm13ZC5qcGciLCJpYXQiOjE3NzMyNjI1MjUsImV4cCI6MzkyMDc0NjE3Mn0.WV6oBicfYuRhLmMWHbM1t1F1L1FrFO_n6gL8G02F7NM" 
+                                        alt="Highest Point quest" 
+                                        className="w-full h-auto"
+                                        referrerPolicy="no-referrer"
+                                    />
+                                    <div className="absolute bottom-0 left-0 right-0 bg-black/40 backdrop-blur-[2px] px-2 py-1">
+                                        <p className="text-[8px] md:text-[10px] text-white/90 font-medium uppercase tracking-wider">completed on: Oct 6, 2025</p>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* User Reviews Section */}
+                    <section className="py-24 bg-[#f7f1e7] dotted-surface overflow-hidden border-y border-[#e6dccb]">
+                        <div className="container mx-auto px-6 mb-10">
+                            <h2 className="text-4xl font-display font-bold text-slate-900">User Reviews</h2>
+                            <p className="text-slate-500 mt-2">pulled from https://apps.apple.com/us/app/journeykeep-quests-focus/id6749665109</p>
+                        </div>
+                        
+                        <div className="relative flex overflow-hidden">
+                            <motion.div 
+                                animate={{ x: ["0%", "-50%"] }}
+                                transition={{ 
+                                    repeat: Infinity, 
+                                    duration: 40, 
+                                    ease: "linear" 
+                                }}
+                                className="flex gap-6 px-6"
+                            >
+                                {[...REVIEWS, ...REVIEWS, ...REVIEWS, ...REVIEWS].map((review, i) => (
+                                    <ReviewCard key={i} review={review} />
+                                ))}
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* Content Sections */}
+                    <div className="flex flex-col">
+                        {/* About Us */}
+                        <section className="py-32 bg-[#fff9f0] dotted-surface">
+                            <div className="container mx-auto max-w-6xl px-6">
+                                <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-[260px_1fr] lg:gap-14">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        className="mx-auto w-[220px] sm:w-[250px] md:mx-0"
+                                    >
+                                        <div className="overflow-hidden rounded-[2rem] shadow-[0_20px_45px_rgba(43,43,51,0.18)] rotate-2">
+                                            <img
+                                                src="https://swfcjxikbqkjyeplnrws.supabase.co/storage/v1/object/public/public%20website%20assets/brain%20nourishment.png"
+                                                alt="Brain Nourishment Instagram page screenshot"
+                                                className="h-auto w-full"
+                                                referrerPolicy="no-referrer"
+                                            />
+                                        </div>
+                                    </motion.div>
+
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        className="text-center md:text-left"
+                                    >
+                                        <h2 className="text-5xl md:text-6xl font-display font-bold text-slate-900 mb-8 tracking-tight">about us</h2>
+                                        <p className="text-xl md:text-2xl leading-relaxed text-slate-600 max-w-3xl mx-auto md:mx-0">
+                                            We're Garner and Andrew — high school seniors. We've had the privilege of growing a community of 5M+ followers, and in doing so, witnessing unique stories from around the world.
+                                        </p>
+                                        <p className="mt-6 text-xl md:text-2xl leading-relaxed text-slate-600 max-w-3xl mx-auto md:mx-0">
+                                            We were inspired to build JourneyKeep based on community feedback of what existing apps do wrong. We see modern digital connectivity as a means of sharing human connection.
+                                        </p>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* The App */}
+                        <section className="py-32 bg-[#f3ecdf] dotted-surface border-y border-[#e8dcc7]">
+                            <div className="container mx-auto max-w-6xl px-6">
+                                <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-[1fr_260px] lg:gap-14">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        className="mx-auto w-[220px] sm:w-[250px] md:mx-0 md:order-2"
+                                    >
+                                        <div className="overflow-hidden rounded-[2rem] shadow-[0_20px_45px_rgba(43,43,51,0.18)] -rotate-2">
+                                            <img
+                                                src="https://swfcjxikbqkjyeplnrws.supabase.co/storage/v1/object/public/public%20website%20assets/IMG_2050.jpeg"
+                                                alt="JourneyKeep App Store page screenshot"
+                                                className="h-auto w-full"
+                                                referrerPolicy="no-referrer"
+                                            />
+                                        </div>
+                                    </motion.div>
+
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        className="text-center md:text-left md:order-1"
+                                    >
+                                        <h2 className="text-5xl md:text-6xl font-display font-bold text-slate-900 mb-8 tracking-tight">the app</h2>
+                                        <p className="text-xl md:text-2xl leading-relaxed text-slate-600 max-w-3xl mx-auto md:mx-0">
+                                            JourneyKeep's purpose is to combat screen addiction and doomscrolling by utilizing video game mechanics to motivate users to disconnect from their devices and build healthy, real-world habits.
+                                        </p>
+
+                                        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                                            <div className="impact-card-apple rounded-2xl border p-5 text-center shadow-sm">
+                                                <div className="flex items-center justify-center gap-1.5">
+                                                    <p className="text-3xl font-display font-bold text-slate-900">4.8</p>
+                                                    <LucideIcon name="star" size={18} className="fill-amber-400 text-amber-400" />
+                                                </div>
+                                                <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Apple rating</p>
+                                                <p className="mt-2 text-sm text-slate-600">291 reviews</p>
+                                            </div>
+
+                                            <div className="impact-card-google rounded-2xl border p-5 text-center shadow-sm">
+                                                <div className="flex items-center justify-center gap-1.5">
+                                                    <p className="text-3xl font-display font-bold text-slate-900">4.7</p>
+                                                    <LucideIcon name="star" size={18} className="fill-amber-400 text-amber-400" />
+                                                </div>
+                                                <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Google rating</p>
+                                                <p className="mt-2 text-sm text-slate-600">532 reviews</p>
+                                            </div>
+
+                                            <div className="impact-card-global rounded-2xl border p-5 text-center shadow-sm">
+                                                <p className="text-3xl font-display font-bold text-slate-900">100+</p>
+                                                <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500">countries</p>
+                                                <p className="mt-2 text-sm text-slate-600">with JourneyKeep users</p>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* How it Works */}
+                        <section className="py-32 bg-[#fffaf3] dotted-surface">
+                            <div className="container mx-auto max-w-6xl px-6">
+                                <div className="relative">
+                                    <div className="pointer-events-none absolute inset-0 hidden lg:block z-0">
+                                        <svg viewBox="0 0 1200 980" className="h-full w-full">
+                                            <path d="M165 125 C 390 260, 780 320, 1035 215" fill="none" stroke="#ef6b4a" strokeWidth="4" strokeLinecap="round" />
+                                            <path d="M165 450 C 390 415, 790 390, 1045 275" fill="none" stroke="#ef6b4a" strokeWidth="4" strokeLinecap="round" />
+                                            <path d="M165 648 C 400 780, 790 775, 1045 700" fill="none" stroke="#ef6b4a" strokeWidth="4" strokeLinecap="round" />
+                                        </svg>
+                                    </div>
+
+                                    <div className="pointer-events-none absolute inset-0 hidden lg:block z-[1]">
+                                        <div className="absolute left-[-2%] top-[4%] -rotate-12">
+                                            <OnboardingPlaceholder
+                                                label="Onboarding screen 1"
+                                                imageSrc="https://swfcjxikbqkjyeplnrws.supabase.co/storage/v1/object/public/public%20website%20assets/1.jpg"
+                                            />
+                                        </div>
+                                        <div className="absolute right-[-2%] top-[12%] rotate-12">
+                                            <OnboardingPlaceholder
+                                                label="Onboarding screen 2"
+                                                imageSrc="https://swfcjxikbqkjyeplnrws.supabase.co/storage/v1/object/public/public%20website%20assets/2.jpg"
+                                            />
+                                        </div>
+                                        <div className="absolute left-[-1%] top-[46%] -rotate-12">
+                                            <OnboardingPlaceholder
+                                                label="Onboarding screen 3"
+                                                imageSrc="https://swfcjxikbqkjyeplnrws.supabase.co/storage/v1/object/public/public%20website%20assets/3.jpg"
+                                            />
+                                        </div>
+                                        <div className="absolute right-[-3%] top-[58%] rotate-[11deg]">
+                                            <OnboardingPlaceholder
+                                                label="Onboarding screen 4"
+                                                imageSrc="https://swfcjxikbqkjyeplnrws.supabase.co/storage/v1/object/public/public%20website%20assets/4.jpg"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="relative z-10 mx-auto max-w-2xl">
+                                        <div className="text-center mb-16">
+                                            <h2 className="text-5xl md:text-6xl font-display font-bold text-slate-900 mb-4 tracking-tight">how it works</h2>
+                                            <p className="text-slate-500 text-lg">your journey to focus in four steps</p>
+                                        </div>
+
+                                        <div className="flex flex-col items-center gap-8">
+                                            {[
+                                                {
+                                                    title: "The Lockout",
+                                                    description: "You select your most distracting apps (like Instagram, TikTok, or Reddit). JourneyKeep locks them using Apple's Screen Time framework or Android's Accessibility features.",
+                                                    icon: "lock",
+                                                    color: "bg-red-50 text-red-600"
+                                                },
+                                                {
+                                                    title: "The Daily Quests",
+                                                    description: "Every morning at 6 AM, your quests reset. These are real-world habits you want to build, such as going to the gym, reading a book, going for a run, meditating, or simply \"touching grass.\"",
+                                                    icon: "calendar",
+                                                    color: "bg-blue-50 text-blue-600"
+                                                },
+                                                {
+                                                    title: "The Proof",
+                                                    description: "You cannot unlock your apps just by clicking a button. You have to physically do the task and snap a photo. An AI verification system checks your photo to ensure you aren't cheating.",
+                                                    icon: "check-circle-2",
+                                                    color: "bg-purple-50 text-purple-600"
+                                                },
+                                                {
+                                                    title: "The Reward",
+                                                    description: "Once verified, you earn \"Crowns\" (in-game currency) and keep your daily streak alive. You can spend your crowns to unlock your distracting apps, buy breaks, or end focus sessions.",
+                                                    icon: "trophy",
+                                                    color: "bg-amber-50 text-amber-600"
+                                                }
+                                            ].map((step, i, arr) => (
+                                                <React.Fragment key={i}>
+                                                    <motion.div
+                                                        initial={{ opacity: 0, y: 20 }}
+                                                        whileInView={{ opacity: 1, y: 0 }}
+                                                        viewport={{ once: true }}
+                                                        transition={{ delay: i * 0.1 }}
+                                                        className="w-full bg-white/95 rounded-3xl border border-slate-200 p-8 shadow-sm hover:shadow-md transition-shadow"
+                                                    >
+                                                        <div className="flex items-start gap-6">
+                                                            <div className={`flex-none h-12 w-12 rounded-2xl ${step.color} flex items-center justify-center`}>
+                                                                <LucideIcon name={step.icon} size={24} />
+                                                            </div>
+                                                            <div>
+                                                                <h3 className="text-2xl font-display font-bold text-slate-900 mb-2">{step.title}</h3>
+                                                                <p className="text-lg text-slate-600 leading-relaxed">{step.description}</p>
+                                                            </div>
+                                                        </div>
+                                                    </motion.div>
+                                                    {i < arr.length - 1 && (
+                                                        <motion.div
+                                                            initial={{ opacity: 0 }}
+                                                            whileInView={{ opacity: 1 }}
+                                                            viewport={{ once: true }}
+                                                            transition={{ delay: i * 0.1 + 0.2 }}
+                                                        >
+                                                            <LucideIcon name="arrow-down" size={32} className="text-slate-300 animate-bounce" />
+                                                        </motion.div>
+                                                    )}
+                                                </React.Fragment>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Demo */}
+                        <section className="py-24 bg-[#f2ebde] dotted-surface border-y border-[#e7dbc7]">
+                            <div className="container mx-auto max-w-4xl px-6">
+                                <motion.section 
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    className="group"
+                                >
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50 text-purple-600 transition-colors group-hover:bg-purple-600 group-hover:text-white">
+                                            <LucideIcon name="play" size={20} />
+                                        </div>
+                                        <h2 className="text-2xl font-display font-bold text-slate-900">Demo</h2>
+                                    </div>
+                                    <div className="aspect-video overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm">
+                                        <iframe
+                                            src="https://www.youtube.com/embed/5oStxFr2kZ4"
+                                            title="JourneyKeep Demo Video"
+                                            className="h-full w-full"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowFullScreen
+                                        ></iframe>
+                                    </div>
+                                </motion.section>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+
+    <!-- Required: keep this line so arrow key navigation works -->
+    <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IslaGo | Congressional App Challenge Showcase</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #0D9488;
+      --teal-dark: #0F766E;
+      --teal-light: #CCFBF1;
+      --teal-50: #F0FDFA;
+      --blue: #2563EB;
+      --blue-light: #DBEAFE;
+      --amber: #D97706;
+      --amber-light: #FEF3C7;
+      --white: #FFFFFF;
+      --bg: #F8FAFC;
+      --text: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --border: #E2E8F0;
+      --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .back-nav {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--teal);
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--card-shadow);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .back-nav:hover { background: var(--teal-50); border-color: var(--teal); }
+    .back-nav svg { width: 14px; height: 14px; }
+
+    .hero {
+      position: relative;
+      padding: 7rem 2rem 4rem;
+      background: linear-gradient(180deg, #F0FDFA 0%, #CCFBF1 30%, var(--white) 100%);
+      overflow: hidden;
+    }
+
+    .hero-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-chip {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-secondary);
+    }
+    .hero-chip.teal { background: var(--teal-light); color: var(--teal); border-color: transparent; }
+    .hero-chip.amber { background: var(--amber-light); color: var(--amber); border-color: transparent; }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span { color: var(--teal); }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 620px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .hero-meta-item {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .hero-meta-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .page-main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 800px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+    .dash-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .dash-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .dash-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    .dash-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .dash-icon.teal { background: var(--teal-light); }
+    .dash-icon.amber { background: var(--amber-light); }
+    .dash-icon.blue { background: var(--blue-light); }
+    .dash-card-title {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .dash-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+    .dash-card p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    .section-heading {
+      margin-bottom: 1.5rem;
+    }
+    .section-heading .label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.4rem;
+    }
+    .section-heading h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    .content-panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.2rem 2.5rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 3rem;
+    }
+    .content-panel p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-secondary);
+    }
+    .content-panel p + p { margin-top: 1rem; }
+
+    .creators-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 650px) { .creators-grid { grid-template-columns: 1fr; } }
+
+    .creator-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+    }
+    .creator-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .creator-avatar {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .creator-avatar.teal { background: var(--teal); }
+    .creator-avatar.amber { background: var(--amber); }
+    .creator-avatar.blue { background: var(--blue); }
+    .creator-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .creator-role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .creator-card p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+
+    .highlight-box {
+      background: linear-gradient(135deg, var(--teal-50) 0%, #F0FDFA 100%);
+      border: 1px solid rgba(13, 148, 136, 0.1);
+      border-radius: 12px;
+      padding: 2rem 2.2rem;
+      margin-bottom: 3rem;
+    }
+    .highlight-box .quote-mark {
+      font-family: 'Lora', serif;
+      font-size: 3rem;
+      color: var(--teal);
+      opacity: 0.2;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .highlight-box blockquote {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .highlight-box cite {
+      display: block;
+      margin-top: 0.8rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    .tech-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      box-shadow: var(--card-shadow);
+    }
+    .tech-dot {
+      width: 8px; height: 8px;
+      border-radius: 2px;
+    }
+    .tech-dot.teal { background: var(--teal); }
+    .tech-dot.blue { background: var(--blue); }
+    .tech-dot.amber { background: var(--amber); }
+    .tech-bar-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .tech-bar-role {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .video-panel {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      margin-top: 1rem;
+    }
+    .video-panel iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    .links-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .action-btn:hover { transform: translateY(-1px); }
+    .action-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .action-btn.primary {
+      background: var(--teal);
+      color: var(--white);
+      box-shadow: 0 2px 10px rgba(13,148,136,0.2);
+    }
+    .action-btn.primary:hover { box-shadow: 0 4px 15px rgba(13,148,136,0.3); }
+    .action-btn.outline {
+      background: var(--white);
+      color: var(--teal);
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow);
+    }
+
+    footer {
+      background: var(--text);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    footer p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+    }
+    footer a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    footer a:hover { color: var(--white); text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1.5rem 3rem; }
+      .page-main { padding: 2rem 1.2rem 3rem; }
+      .content-panel { padding: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-nav">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+    Showcase
+  </a>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-chips">
+        <span class="hero-chip teal">Environment</span>
+        <span class="hero-chip teal">Civic</span>
+        <span class="hero-chip amber">Accessibility</span>
+        <span class="hero-chip">Transit</span>
+        <span class="hero-chip">MP-00</span>
+      </div>
+      <h1>Isla<span>Go</span></h1>
+      <p class="hero-desc">A comprehensive mobile transit application for bus arrival estimation in the CNMI, improving island mobility in Saipan through real-time bus tracking, personalized ride assistance, and a curated guide to local attractions.</p>
+      <div class="hero-meta">
+        <span class="hero-meta-item"><strong>Creators:</strong> ZongYao Huang, Fiona Zhu, Boying Lin, Brianna Paraiso</span>
+        <span class="hero-meta-item"><strong>School:</strong> Marianas High School</span>
+        <span class="hero-meta-item"><strong>District:</strong> MP-00, Saipan</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-main">
+
+    <div class="highlight-box">
+      <div class="quote-mark">"</div>
+      <blockquote>Empowering residents and tourists with the tools they need to navigate Saipan reliably, ensuring that no one in our community is left behind due to a lack of information.</blockquote>
+      <cite>Mission Statement</cite>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon teal">&#x1F68C;</div>
+          <span class="dash-card-title">Tracking</span>
+        </div>
+        <h3>Real-Time Bus Tracking</h3>
+        <p>Live bus location tracking and arrival estimation so riders never miss their connection on the island.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon amber">&#x267F;</div>
+          <span class="dash-card-title">Accessibility</span>
+        </div>
+        <h3>Rider Check-In</h3>
+        <p>Specialized ride assistance for the elderly and people with disabilities, with ADA-compliant UI settings.</p>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-icon blue">&#x1F3DD;</div>
+          <span class="dash-card-title">Tourism</span>
+        </div>
+        <h3>Local Attractions Guide</h3>
+        <p>A curated guide to Saipan's premier attractions and businesses, boosting the local economy through discovery.</p>
+      </div>
+    </div>
+
+    <div class="section-heading">
+      <p class="label">The Team</p>
+      <h2>About the Creators</h2>
+    </div>
+    <div class="creators-grid">
+      <div class="creator-card">
+        <div class="creator-card-header">
+          <div class="creator-avatar teal">ZH</div>
+          <div>
+            <div class="creator-name">ZongYao Huang</div>
+            <div class="creator-role">Marianas High School</div>
+          </div>
+        </div>
+        <p>Co-developer of IslaGo, working to solve transit uncertainty in the Saipan community through technology.</p>
+      </div>
+      <div class="creator-card">
+        <div class="creator-card-header">
+          <div class="creator-avatar amber">FZ</div>
+          <div>
+            <div class="creator-name">Fiona Zhu</div>
+            <div class="creator-role">Marianas High School</div>
+          </div>
+        </div>
+        <p>Co-developer focused on building accessible tools to help residents and tourists navigate the island reliably.</p>
+      </div>
+      <div class="creator-card">
+        <div class="creator-card-header">
+          <div class="creator-avatar blue">BL</div>
+          <div>
+            <div class="creator-name">Boying Lin</div>
+            <div class="creator-role">Marianas High School</div>
+          </div>
+        </div>
+        <p>Co-developer contributing to IslaGo's mission of improving mobility and connectivity across the CNMI.</p>
+      </div>
+      <div class="creator-card">
+        <div class="creator-card-header">
+          <div class="creator-avatar teal">BP</div>
+          <div>
+            <div class="creator-name">Brianna Paraiso</div>
+            <div class="creator-role">Marianas High School</div>
+          </div>
+        </div>
+        <p>Co-developer passionate about ensuring no one in the community is left behind due to lack of transit information.</p>
+      </div>
+    </div>
+
+    <div class="section-heading">
+      <p class="label">The Platform</p>
+      <h2>How It Works</h2>
+    </div>
+    <div class="content-panel">
+      <p>IslaGo is a comprehensive mobile transit and tourism application designed to revolutionize navigation within the CNMI by providing residents and visitors in Saipan with real-time bus tracking, instant service notifications, and a dedicated "Rider Check-In" feature to minimize missed connections.</p>
+      <p>The app addresses the critical lack of reliable transit data that often hinders students, employees, and tourists. Beyond standard commuting, IslaGo promotes inclusivity through specialized Ride Assistance for the elderly and people with disabilities, featuring ADA-compliant UI settings while simultaneously boosting the local economy via a curated guide to Saipan's premier attractions and businesses.</p>
+    </div>
+
+    <div class="section-heading">
+      <p class="label">Built With</p>
+      <h2>Technology Stack</h2>
+    </div>
+    <div class="tech-stack" style="margin-bottom: 3rem;">
+      <div class="tech-bar"><span class="tech-dot teal"></span><span class="tech-bar-name">Supabase</span><span class="tech-bar-role">&middot; Backend</span></div>
+      <div class="tech-bar"><span class="tech-dot blue"></span><span class="tech-bar-name">Tailwind CSS</span><span class="tech-bar-role">&middot; Styling</span></div>
+      <div class="tech-bar"><span class="tech-dot amber"></span><span class="tech-bar-name">Mapping APIs</span><span class="tech-bar-role">&middot; Navigation</span></div>
+    </div>
+
+    <div class="section-heading">
+      <p class="label">In Action</p>
+      <h2>Demo Video</h2>
+    </div>
+    <div style="margin-bottom: 3rem;">
+      <div class="video-panel">
+        <iframe
+          src="https://www.youtube.com/embed/4Y_TnzvUlVw"
+          title="IslaGo Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+    </div>
+
+    <div class="section-heading">
+      <p class="label">Explore</p>
+      <h2>Project Links</h2>
+    </div>
+    <div style="margin-bottom: 2rem;">
+      <div class="links-flex">
+        <a href="https://www.youtube.com/watch?v=4Y_TnzvUlVw" class="action-btn outline" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 4.5v7l5-3.5-5-3.5z"/></svg>
+          Watch on YouTube
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge 2025 &bull; MP-00 &bull; Saipan, MP &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daisy | Tony Yilmaz</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  <script defer src="../../assets/js/nav.js" data-root="../../"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --yellow: #F9D423;
+      --yellow-light: #FFF8DC;
+      --yellow-dark: #E6C200;
+      --green: #38B000;
+      --green-light: #E8F5E1;
+      --white: #FFFFFF;
+      --bg: #FEFEFE;
+      --text: #1A1A2E;
+      --text-secondary: #555770;
+      --text-muted: #9B9DB3;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
+      --radius: 20px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BACK */
+    .back-btn {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 100;
+      text-decoration: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text);
+      background: var(--white);
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      box-shadow: var(--shadow-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.2s;
+    }
+    .back-btn:hover { transform: scale(1.03); }
+    .back-btn span { font-size: 1.1rem; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 7rem 2rem 5rem;
+      text-align: center;
+      background: linear-gradient(180deg, #FFFEF5 0%, #FFF8DC 50%, var(--bg) 100%);
+      overflow: hidden;
+    }
+
+    /* Floating daisy petals */
+    .petal {
+      position: absolute;
+      width: 20px;
+      height: 40px;
+      background: rgba(249, 212, 35, 0.15);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      pointer-events: none;
+      animation: floatPetal 8s ease-in-out infinite;
+    }
+    .petal:nth-child(1) { top: 10%; left: 8%; animation-delay: 0s; transform: rotate(30deg); }
+    .petal:nth-child(2) { top: 20%; right: 12%; animation-delay: 2s; transform: rotate(-20deg); width: 16px; height: 32px; }
+    .petal:nth-child(3) { bottom: 30%; left: 15%; animation-delay: 4s; transform: rotate(60deg); width: 14px; height: 28px; background: rgba(56,176,0,0.1); }
+    .petal:nth-child(4) { top: 40%; right: 6%; animation-delay: 1s; transform: rotate(-45deg); width: 18px; height: 36px; }
+    .petal:nth-child(5) { bottom: 15%; right: 20%; animation-delay: 3s; transform: rotate(15deg); background: rgba(56,176,0,0.08); }
+
+    @keyframes floatPetal {
+      0%, 100% { transform: translateY(0) rotate(var(--r, 30deg)); }
+      50% { transform: translateY(-20px) rotate(calc(var(--r, 30deg) + 10deg)); }
+    }
+
+    .hero-daisy {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      position: relative;
+    }
+    .hero-daisy .center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 24px; height: 24px;
+      background: var(--yellow);
+      border-radius: 50%;
+      z-index: 2;
+    }
+    .hero-daisy .petal-ring {
+      position: absolute;
+      inset: 0;
+    }
+    .hero-daisy .petal-ring span {
+      position: absolute;
+      top: 2px; left: 50%;
+      width: 12px; height: 28px;
+      background: #fff;
+      border-radius: 50%;
+      transform-origin: 50% 100%;
+      margin-left: -6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .hero-daisy .petal-ring span:nth-child(1) { transform: rotate(0deg) translateY(-10px); }
+    .hero-daisy .petal-ring span:nth-child(2) { transform: rotate(45deg) translateY(-10px); }
+    .hero-daisy .petal-ring span:nth-child(3) { transform: rotate(90deg) translateY(-10px); }
+    .hero-daisy .petal-ring span:nth-child(4) { transform: rotate(135deg) translateY(-10px); }
+    .hero-daisy .petal-ring span:nth-child(5) { transform: rotate(180deg) translateY(-10px); }
+    .hero-daisy .petal-ring span:nth-child(6) { transform: rotate(225deg) translateY(-10px); }
+    .hero-daisy .petal-ring span:nth-child(7) { transform: rotate(270deg) translateY(-10px); }
+    .hero-daisy .petal-ring span:nth-child(8) { transform: rotate(315deg) translateY(-10px); }
+
+    .hero-eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .hero h1 {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .hero h1 .dot {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      background: var(--yellow);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-left: 2px;
+      box-shadow: 0 2px 8px rgba(249,212,35,0.5);
+    }
+
+    .hero-tagline {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin: 0.8rem auto 2rem;
+      line-height: 1.6;
+    }
+
+    .hero-chips {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--white);
+      border: 1.5px solid #eee;
+      border-radius: 50px;
+      padding: 0.4rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      box-shadow: var(--shadow-sm);
+    }
+    .chip-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .chip-dot.y { background: var(--yellow); }
+    .chip-dot.g { background: var(--green); }
+
+    /* MAIN */
+    .main-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    /* CONVERSATION STYLE LAYOUT */
+    .convo-section {
+      margin-bottom: 3rem;
+    }
+
+    .convo-bubble {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem 2.2rem;
+      box-shadow: var(--shadow-sm);
+      border: 1.5px solid #f0f0f0;
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    .convo-bubble.highlight {
+      background: linear-gradient(135deg, #FFF9E0 0%, #FFFFF0 100%);
+      border-color: rgba(249,212,35,0.3);
+    }
+    .convo-bubble.green-accent {
+      border-left: 4px solid var(--green);
+    }
+
+    .convo-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+    }
+    .convo-label .icon {
+      width: 20px; height: 20px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+    }
+    .convo-label .icon.y { background: var(--yellow-light); }
+    .convo-label .icon.g { background: var(--green-light); }
+
+    h2 {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+      line-height: 1.3;
+    }
+
+    .convo-bubble p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+    .convo-bubble p + p { margin-top: 0.8rem; }
+
+    /* TWO-UP CARDS */
+    .card-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 650px) { .card-pair { grid-template-columns: 1fr; } }
+
+    .mini-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 1.8rem;
+      border: 1.5px solid #f0f0f0;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .mini-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+    .mini-card-emoji {
+      font-size: 2rem;
+      margin-bottom: 0.8rem;
+    }
+    .mini-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--text);
+    }
+    .mini-card p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* VIDEO */
+    .video-wrapper {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      margin-top: 1rem;
+    }
+    .video-wrapper iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* CREATOR CARD */
+    .creator-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+      border: 1.5px solid #f0f0f0;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 600px) {
+      .creator-card { flex-direction: column; text-align: center; }
+    }
+    .creator-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--yellow-light) 0%, var(--green-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 2.2rem;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .creator-info h2 { margin-bottom: 0.3rem; }
+    .creator-info .subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+    .creator-info p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* LINKS */
+    .links-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1.2rem;
+    }
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.7rem 1.5rem;
+      border-radius: 50px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .link-btn:hover { transform: translateY(-2px); }
+    .link-btn.primary {
+      background: var(--text);
+      color: var(--white);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    .link-btn svg { width: 14px; height: 14px; }
+
+    /* FOOTER */
+    footer {
+      background: var(--text);
+      text-align: center;
+      padding: 2.5rem 2rem;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    footer p {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+    }
+    footer a {
+      color: var(--yellow);
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+
+    /* ANIMATIONS */
+
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1.5rem 3rem; }
+      .main-content { padding: 1.5rem 1.2rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../../" class="back-btn"><span>&#8592;</span> Showcase</a>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+
+    <div class="hero-daisy">
+      <div class="petal-ring">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div class="center"></div>
+    </div>
+
+    <p class="hero-eyebrow">Congressional App Challenge &bull; FL-19</p>
+    <h1>Daisy<span class="dot"></span></h1>
+    <p class="hero-tagline">Your AI-powered assistant for team organization. Simple, clear, and consistent communication.</p>
+
+    <div class="hero-chips">
+      <span class="chip"><span class="chip-dot y"></span> Social</span>
+      <span class="chip"><span class="chip-dot g"></span> AI</span>
+      <span class="chip"><span class="chip-dot y"></span> Naples, FL</span>
+    </div>
+  </header>
+
+  <div class="main-content">
+
+    <!-- CREATOR -->
+    <div class="creator-card slide-in s1">
+      <div class="creator-avatar">TY</div>
+      <div class="creator-info">
+        <h2>Tony Yilmaz</h2>
+        <p class="subtitle">Senior &bull; Naples, Florida</p>
+        <p>I've been coding since 7th grade and have a deep interest in AI design and 3D game development using Unity and Blender. I built Daisy because I saw firsthand how difficult it can be for large teams to communicate effectively, and I wanted to create an intelligent solution that simplifies that process.</p>
+      </div>
+    </div>
+
+    <!-- WHAT & WHY cards -->
+    <div class="card-pair slide-in s2">
+      <div class="mini-card">
+        <div class="mini-card-emoji">&#x1F4AC;</div>
+        <h3>Smart Communication</h3>
+        <p>Daisy uses B.R.I. (Beyond Real Intelligence) technology to help teams manage tasks with ease, remembering context from previous interactions.</p>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-emoji">&#x1F331;</div>
+        <h3>Grows With You</h3>
+        <p>The app personalizes responses to each user, creating a seamless and intuitive experience whether you manage a club, a team, or a business group.</p>
+      </div>
+    </div>
+
+    <!-- ABOUT THE APP -->
+    <div class="convo-section slide-in s3">
+      <div class="convo-bubble highlight">
+        <div class="convo-label"><span class="icon y">&#x1F33C;</span> The App</div>
+        <h2>What is Daisy?</h2>
+        <p>Daisy is an AI assistant that leverages B.R.I. technology to help teams manage tasks and communication with ease. The app remembers context from previous interactions and personalizes its responses to each user, creating a seamless and intuitive experience for group coordination.</p>
+        <p>Whether you're managing a club, a sports team, or a business group, Daisy keeps communication consistent and organized, reducing the chaos that comes with large group coordination.</p>
+      </div>
+    </div>
+
+    <!-- DEMO -->
+    <div class="convo-section slide-in s4">
+      <div class="convo-bubble green-accent">
+        <div class="convo-label"><span class="icon g">&#x25B6;</span> Demo</div>
+        <h2>See Daisy in Action</h2>
+        <div class="video-wrapper">
+          <iframe
+            src="https://www.youtube.com/embed/bR0V7EcAiBs"
+            title="Daisy App Demo"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin">
+          </iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="convo-section slide-in s5">
+      <div class="convo-bubble">
+        <div class="convo-label"><span class="icon y">&#x1F517;</span> Links</div>
+        <h2>Explore the Project</h2>
+        <div class="links-area">
+          <a href="https://www.youtube.com/watch?v=bR0V7EcAiBs" class="link-btn primary" target="_blank" rel="noopener">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3M10 2h4m0 0v4m0-4L7 9"/></svg>
+            Watch on YouTube
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge 2025 &bull; FL-19 &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+</body>
+</html>

@@ -6,7 +6,7 @@ Each participant gets their own page to show off who they are, what they built, 
 
 ## Add Your Project
 
-Participated in the Congressional App Challenge? Add your page to the showcase! There are two ways to do it — pick whichever you're most comfortable with.
+Participated in the Congressional App Challenge? Add your page to the showcase! There are two ways to do it so pick whichever you're most comfortable with.
 
 ---
 
@@ -26,7 +26,7 @@ A maintainer will create your showcase page and let you know when it's live.
 
 ### Option B: Build Your Own Page
 
-Want more control over your page? You can create and customize it yourself — all from your browser, no terminal or downloads needed.
+Want more control over your page? You can create and customize it yourself!
 
 #### Step 1: Fork This Repo (Make Your Own Copy)
 
@@ -113,6 +113,7 @@ A maintainer will review your page, check that everything works, and merge it in
 - Check out the [example page](sites/example/) to see what a finished page looks like
 - Look at the [template README](template/README.md) for customization tips
 - [Open a help request](../../issues/new?template=get-help.yml) if you're stuck — no question is too small!
+- Email clay@hackclub.com for help.
 
 ## License
 
