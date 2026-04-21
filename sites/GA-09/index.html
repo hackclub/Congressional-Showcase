@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pulmo Lens | Congressional App Challenge</title>
+
+  
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #07111f, #0c1f38, #12345a);
+      color: white;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    #nav-container {
+      position: relative;
+      z-index: 1000;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+      background:
+        radial-gradient(circle at top left, rgba(0, 194, 255, 0.16), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(0, 132, 255, 0.14), transparent 35%);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(0, 200, 255, 0.12), transparent 52%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      animation: fadeUp 1.1s ease;
+    }
+
+    .logo {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 12px;
+      box-shadow: 0 0 25px rgba(0, 191, 255, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    h1 {
+      font-size: 3.7rem;
+      color: #7edcff;
+      margin-bottom: 14px;
+      letter-spacing: 1px;
+    }
+
+    .tagline {
+      margin: 18px auto 24px;
+      max-width: 760px;
+      color: #d9f6ff;
+      font-size: 1.15rem;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 8px;
+      display: inline-block;
+      transition: 0.3s ease;
+    }
+
+    .primary {
+      background: #00c2ff;
+      color: #03131f;
+    }
+
+    .primary:hover {
+      background: #86e7ff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 194, 255, 0.25);
+    }
+
+    .secondary {
+      border: 2px solid #7edcff;
+      color: #7edcff;
+      background: transparent;
+    }
+
+    .secondary:hover {
+      background: rgba(126, 220, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    main {
+      width: 90%;
+      max-width: 1100px;
+      margin: auto;
+      padding-bottom: 40px;
+    }
+
+    section {
+      margin: 60px 0;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.07);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.22);
+      backdrop-filter: blur(10px);
+    }
+
+    h2 {
+      color: #8ee8ff;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    p {
+      color: #ebfbff;
+    }
+
+    .feature-grid,
+    .impact-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      margin-top: 24px;
+    }
+
+    .feature-card,
+    .impact-card {
+      background: rgba(255,255,255,0.08);
+      padding: 22px;
+      border-radius: 16px;
+      transition: 0.3s;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .feature-card:hover,
+    .impact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,200,255,0.2);
+    }
+
+    .feature-card h3,
+    .impact-card h3 {
+      color: #00d9ff;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p,
+    .impact-card p {
+      color: #eefcff;
+    }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      border-radius: 18px;
+      overflow: hidden;
+      margin-top: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.28);
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+    }
+
+    .video-note {
+      margin-top: 16px;
+      color: #d7f6ff;
+      font-size: 0.95rem;
+    }
+
+    .flip-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      margin-top: 24px;
+    }
+
+    .flip-card {
+      perspective: 1000px;
+      height: 260px;
+      cursor: pointer;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .flip-card-front {
+      background: linear-gradient(145deg, rgba(0,194,255,0.28), rgba(255,255,255,0.08));
+      border: 1px solid rgba(126, 220, 255, 0.28);
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .flip-card-back {
+      background: rgba(255,255,255,0.1);
+      transform: rotateY(180deg);
+      color: #eafcff;
+      line-height: 1.6;
+      font-size: 0.98rem;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .video-link-wrap {
+      text-align: center;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 30px;
+      color: #cfefff;
+      font-size: 0.95rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.8rem;
+      }
+
+      h2 {
+        font-size: 1.65rem;
+      }
+
+      .tagline {
+        font-size: 1rem;
+      }
+
+      .logo {
+        width: 100px;
+        height: 100px;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .flip-card {
+        height: 280px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="nav-container"></div>
+
+  <header class="hero">
+    <div class="hero-content">
+      <!-- LOGO -->
+      <img src="https://codehs.com/uploads/a47cff1b4a93111db3b073ef2b84e89a" class="logo" alt="Pulmo Lens Logo" />
+
+      <h1>Pulmo Lens</h1>
+      <p class="tagline">
+        AI-powered pneumonia detection platform leveraging machine learning to assist in analyzing chest X-rays with greater clarity, speed, and purpose.
+      </p>
+
+      <a href="#about" class="btn primary">Explore</a>
+      <a href="#demo" class="btn secondary">Demo</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="card reveal">
+      <h2>About Me</h2>
+      <p>
+        Hi, I’m Krish Tripathy. I developed Pulmo Lens as a first-place winning project in the Congressional App Challenge. Inspired by real healthcare challenges, this project applies artificial intelligence to medical imaging in order to support faster analysis and more meaningful innovation in diagnostics.
+      </p>
+    </section>
+
+    <section id="about" class="reveal">
+      <h2>What Pulmo Lens Does</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>X-ray Upload</h3>
+          <p>Allows users to submit chest X-ray images for intelligent medical image analysis.</p>
+        </div>
+        <div class="feature-card">
+          <h3>AI Prediction</h3>
+          <p>Uses machine learning to classify scans as showing pneumonia or normal findings.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Confidence Output</h3>
+          <p>Provides prediction confidence to give users a clearer view of model certainty.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Visual Insight</h3>
+          <p>Supports interpretability through visual guidance such as highlighted areas of concern.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card reveal">
+      <h2>Project Impact & Innovation</h2>
+      <div class="impact-grid">
+        <div class="impact-card">
+          <h3>Congressional Recognition</h3>
+          <p>
+            Pulmo Lens earned first place in the Congressional App Challenge, reflecting both computational skills and meaningful real-world application.
+          </p>
+        </div>
+        <div class="impact-card">
+          <h3>AI + Healthcare Integration</h3>
+          <p>
+            The project combines machine  learning and medical imaging to demonstrate how artificial intelligence can contribute to smarter clinical support tools.
+          </p>
+        </div>
+        <div class="impact-card">
+          <h3>Real-World Problem Solving</h3>
+          <p>
+            By addressing delays in pneumonia detection, Pulmo Lens focuses on a genuine healthcare challenge where time and clarity matter.
+          </p>
+        </div>
+    </section>
+
+    <section id="demo" class="card reveal">
+      <h2>Demo Video</h2>
+      <div class="video-wrapper">
+        <iframe
+          src="https://vimeo.com/1183211214/3968fc0a7b?share=copy&fl=sv&fe=ci"
+          title="Pulmo Lens Demo Video"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <h2>Why Pulmo Lens Matters</h2>
+      <div class="flip-grid">
+        <div class="flip-card" onclick="toggleCard(this)">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">Early Detection</div>
+            <div class="flip-card-back">
+              Pneumonia can become life threatening when warning signs are missed or diagnosis is delayed. Pulmo Lens is designed to support faster recognition of concerning patterns in chest X-rays.
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="toggleCard(this)">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">AI With Purpose</div>
+            <div class="flip-card-back">
+              Pulmo Lens shows how artificial intelligence can move beyond theory and be applied to meaningful healthcare challenges, transforming machine learning into a tool with real social value.
+            </div>
+          </div>
+        </div>
+
+        
+        </div>
+
+        
+    </section>
+
+    <section class="card reveal video-link-wrap">
+      <h2>Demo Link</h2>
+      <a href="https://vimeo.com/1183211214/3968fc0a7b?share=copy&fl=sv&fe=ci" class="btn primary" target="_blank">Watch on Vimeo</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+  <p>Created by Krish Tripathy | Pulmo Lens</p>
+
+  <p style="margin-top: 10px;">
+     Contact: 
+    <a href="mailto:krishtripathy26@gmail.com" style="color:#7edcff; text-decoration:none;">
+      krishtripathy26@gmail.com
+    </a>
+  </p>
+
+  <div style="margin-top: 15px;">
+    <a href="https://www.linkedin.com/in/krish-tripathy-3174242b1/" 
+       target="_blank" 
+       class="btn secondary">
+       Connect on LinkedIn
+    </a>
+  </div>
+</footer>
+
+ <!-- Navigation script — enables arrow key navigation. Do NOT remove this. -->
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+
+  <script>
+    function toggleCard(card) {
+      card.classList.toggle("flipped");
+    }
+
+    const reveals = document.querySelectorAll(".reveal");
+
+    function revealOnScroll() {
+      const windowHeight = window.innerHeight;
+      reveals.forEach((element) => {
+        const top = element.getBoundingClientRect().top;
+        if (top < windowHeight - 90) {
+          element.classList.add("active");
+        }
+      });
+    }
+
+    window.addEventListener("scroll", revealOnScroll);
+    window.addEventListener("load", revealOnScroll);
+  </script>
+</body>
+</html>
