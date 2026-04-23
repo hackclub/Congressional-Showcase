@@ -1370,4 +1370,19 @@
   "location": { "lat": 42.4806, "lng": -83.4755, "label": "Novi, MI" },
   "district": "MI-11", "state": "MI", "tags": ["education", "ai"]
 }
+  {
+  "slug": "GA-09",
+  "name": "Krish Tripathy",
+  "appName": "Pulmo Lens",
+  "description": "An AI-powered pneumonia detection platform that helps medical professionals identify regions of Pneumonia, with more speed and reliability.",
+  "thumbnail": "sites/XX-00/thumbnail.png",
+  "location": {
+    "lat": 40.7128,
+    "lng": -74.0060,
+    "label": "Sugar Hill, GA"
+  },
+  "district": "GA-09",
+  "state": "GA",
+  "tags": ["medical", "ai"]
+}
 ]
