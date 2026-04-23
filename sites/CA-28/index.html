@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Fire Up | Anika Jha</title>
+
+  <!-- Shared styles — keep this -->
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Rammetto+One&family=Sour+Gummy:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #fff8f1;
+      --bg-soft: #fff1e5;
+      --bg-card: rgba(255, 255, 255, 0.72);
+      --bg-card-strong: rgba(255, 255, 255, 0.88);
+      --fire-1: #ff6b2c;
+      --fire-2: #ff9548;
+      --fire-3: #ffbf5f;
+      --fire-4: #ffe0a3;
+      --peach: #ffd8c0;
+      --cream: #fffaf5;
+      --text: #4d2410;
+      --text-soft: #8a5436;
+      --border: rgba(255, 146, 72, 0.2);
+      --shadow-soft: 0 12px 40px rgba(255, 126, 44, 0.10);
+      --shadow-hover: 0 24px 70px rgba(255, 126, 44, 0.18);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --max-width: 1220px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Sour Gummy", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 18%, rgba(255, 191, 95, 0.32), transparent 20%),
+        radial-gradient(circle at 88% 22%, rgba(255, 149, 72, 0.22), transparent 22%),
+        radial-gradient(circle at 28% 78%, rgba(255, 107, 44, 0.12), transparent 20%),
+        linear-gradient(135deg, #fffaf6 0%, #fff3e8 45%, #fff8f1 100%);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    /* Custom cursor */
+    #cursor-flame {
+      position: fixed;
+      width: 24px;
+      height: 24px;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition:
+        width 0.28s var(--ease),
+        height 0.28s var(--ease),
+        filter 0.28s var(--ease),
+        opacity 0.2s ease;
+      filter: drop-shadow(0 0 10px rgba(255, 149, 72, 0.45));
+      opacity: 0.95;
+      mix-blend-mode: multiply;
+    }
+
+    #cursor-ring {
+      position: fixed;
+      width: 44px;
+      height: 44px;
+      border: 1.5px solid rgba(255, 120, 44, 0.26);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition:
+        width 0.32s var(--ease),
+        height 0.32s var(--ease),
+        border-color 0.28s var(--ease),
+        background 0.28s var(--ease),
+        opacity 0.2s ease;
+      background: rgba(255, 191, 95, 0.04);
+      backdrop-filter: blur(2px);
+    }
+
+    body.cursor-hover #cursor-flame {
+      width: 40px;
+      height: 40px;
+      filter: drop-shadow(0 0 18px rgba(255, 107, 44, 0.42));
+    }
+
+    body.cursor-hover #cursor-ring {
+      width: 68px;
+      height: 68px;
+      border-color: rgba(255, 107, 44, 0.14);
+      background: rgba(255, 191, 95, 0.10);
+    }
+
+    /* Decorative background elements */
+    .bg-blur {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(28px);
+      opacity: 0.45;
+      animation: drift 14s ease-in-out infinite;
+    }
+
+    .blob.one {
+      width: 320px;
+      height: 320px;
+      left: -60px;
+      top: 120px;
+      background: radial-gradient(circle, rgba(255, 191, 95, 0.6), transparent 68%);
+    }
+
+    .blob.two {
+      width: 360px;
+      height: 360px;
+      right: -80px;
+      top: 240px;
+      background: radial-gradient(circle, rgba(255, 149, 72, 0.45), transparent 70%);
+      animation-delay: -4s;
+    }
+
+    .blob.three {
+      width: 290px;
+      height: 290px;
+      left: 18%;
+      bottom: 50px;
+      background: radial-gradient(circle, rgba(255, 107, 44, 0.2), transparent 72%);
+      animation-delay: -8s;
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translateY(0px) translateX(0px) scale(1); }
+      50% { transform: translateY(-18px) translateX(12px) scale(1.06); }
+    }
+
+    /* Back button */
+    .back-to-showcase {
+      top: 1.2rem !important;
+      left: 1.2rem !important;
+      z-index: 300;
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--text) !important;
+      border: 1px solid rgba(255, 149, 72, 0.18);
+      border-radius: 999px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 10px 28px rgba(255, 126, 44, 0.08);
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease);
+    }
+
+    .back-to-showcase:hover {
+      transform: translateY(-3px) scale(1.03);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 18px 40px rgba(255, 126, 44, 0.12);
+    }
+
+    /* Ticker */
+    .ticker-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      width: 100%;
+      overflow: hidden;
+      background: linear-gradient(90deg, #ffbf5f 0%, #ff9548 50%, #ffbf5f 100%);
+      border-top: 1px solid rgba(255,255,255,0.28);
+      border-bottom: 1px solid rgba(255,255,255,0.28);
+      box-shadow: 0 10px 28px rgba(255, 126, 44, 0.12);
+    }
+
+    .ticker {
+      display: flex;
+      width: max-content;
+      min-width: 100%;
+      white-space: nowrap;
+      animation: tickerMove 34s linear infinite;
+      font-family: "Sour Gummy", sans-serif;
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: white;
+      padding: 0.9rem 0;
+      letter-spacing: 0.01em;
+    }
+
+    .ticker span {
+      padding-right: 3.5rem;
+    }
+
+    @keyframes tickerMove {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: min(var(--max-width), calc(100% - 2rem));
+      margin: 0 auto;
+      padding-bottom: 4rem;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 92vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 3.2rem 0 4.8rem;
+      position: relative;
+    }
+
+    .hero-inner {
+      max-width: 920px;
+      display: grid;
+      gap: 1.2rem;
+      justify-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.7rem 1rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(255, 149, 72, 0.16);
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      transition: transform 0.25s var(--ease);
+    }
+
+    .hero-badge:hover {
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    .badge-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, var(--fire-3), var(--fire-1));
+      box-shadow: 0 0 0 0 rgba(255, 149, 72, 0.45);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 149, 72, 0.45); }
+      50% { box-shadow: 0 0 0 9px rgba(255, 149, 72, 0); }
+    }
+
+    .logo-card {
+      width: min(82vw, 340px);
+      aspect-ratio: 1 / 1;
+      border-radius: 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,246,239,0.88));
+      border: 1px solid rgba(255, 149, 72, 0.18);
+      box-shadow: 0 22px 60px rgba(255, 126, 44, 0.12);
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+      backdrop-filter: blur(16px);
+      transform-style: preserve-3d;
+    }
+
+    .logo-card::before {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      top: -60px;
+      right: -40px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 191, 95, 0.35), transparent 70%);
+      pointer-events: none;
+    }
+
+    .logo-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 30px 74px rgba(255, 126, 44, 0.18);
+    }
+
+    .logo-placeholder {
+      width: 82%;
+      height: 82%;
+      border-radius: 28px;
+      border: 2px dashed rgba(255, 149, 72, 0.28);
+      background: rgba(255, 255, 255, 0.55);
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      color: var(--text-soft);
+      text-align: center;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    .logo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 28px;
+      display: block;
+    }
+
+    .app-title {
+      font-family: "Bagel Fat One", cursive;
+      font-size: clamp(3rem, 9vw, 6.2rem);
+      line-height: 0.98;
+      color: var(--fire-1);
+      text-shadow: 0 6px 22px rgba(255, 149, 72, 0.16);
+    }
+
+    .app-subtitle {
+      font-family: "Rammetto One", cursive;
+      font-size: clamp(1rem, 2.2vw, 1.35rem);
+      line-height: 1.5;
+      color: var(--text-soft);
+    }
+
+    .hero-note {
+      max-width: 760px;
+      font-size: 1.14rem;
+      line-height: 1.9;
+      color: var(--text-soft);
+      padding: 0 1rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 0.4rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 1rem 1.35rem;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), background 0.28s var(--ease);
+      border: 1px solid transparent;
+      box-shadow: var(--shadow-soft);
+      min-width: 165px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--fire-1), var(--fire-2));
+      color: white;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.86);
+      border-color: rgba(255, 149, 72, 0.18);
+      color: var(--text);
+    }
+
+    .btn:hover {
+      transform: translateY(-5px) scale(1.04);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .scroll-cue {
+      margin-top: 0.4rem;
+      font-size: 0.95rem;
+      color: rgba(138, 84, 54, 0.7);
+      animation: bob 2.2s ease-in-out infinite;
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* Sections */
+    .content-grid {
+      display: grid;
+      gap: 1.3rem;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0.4rem 0 0.2rem;
+      color: rgba(138, 84, 54, 0.68);
+      font-size: 0.92rem;
+      letter-spacing: 0.04em;
+    }
+
+    .section-label::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, rgba(255, 149, 72, 0.2), transparent);
+    }
+
+    .panel {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      transition: transform 0.32s var(--ease), box-shadow 0.32s var(--ease), border-color 0.32s var(--ease);
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent 32%, rgba(255, 191, 95, 0.06));
+      pointer-events: none;
+    }
+
+    .panel:hover {
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(255, 149, 72, 0.28);
+    }
+
+    .panel h2 {
+      font-family: "Bagel Fat One", cursive;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.06;
+      color: var(--fire-1);
+      margin-bottom: 0.4rem;
+    }
+
+    .panel h3 {
+      font-family: "Rammetto One", cursive;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+
+    .panel p,
+    .panel li {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: var(--text-soft);
+    }
+
+    .section-subheader {
+      margin-bottom: 1rem;
+      color: rgba(138, 84, 54, 0.82);
+      font-size: 1rem;
+    }
+
+    .about-layout,
+    .developer-layout {
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 1.25rem;
+      align-items: stretch;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255, 149, 72, 0.14);
+      border-radius: var(--radius-lg);
+      padding: 1.2rem;
+      transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), background 0.28s var(--ease);
+    }
+
+    .mini-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 18px 40px rgba(255, 126, 44, 0.12);
+    }
+
+    .mini-card ul {
+      list-style: none;
+      display: grid;
+      gap: 0.8rem;
+      margin-top: 0.35rem;
+    }
+
+    .mini-card li {
+      padding-left: 1.1rem;
+      position: relative;
+    }
+
+    .mini-card li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--fire-2);
+      font-size: 0.8rem;
+      top: 0.35rem;
+    }
+
+    .feature-ribbon {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.95rem;
+      margin-top: 1rem;
+    }
+
+    .feature-pill {
+      padding: 0.95rem 1rem;
+      text-align: center;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ffd98f, #ff9548);
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(255, 126, 44, 0.12);
+      transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease);
+    }
+
+    .feature-pill:hover {
+      transform: translateY(-5px) scale(1.06);
+      box-shadow: 0 18px 34px rgba(255, 126, 44, 0.18);
+    }
+
+    .profile-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      text-align: center;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255, 149, 72, 0.14);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem;
+      transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), background 0.28s var(--ease);
+    }
+
+    .profile-side:hover {
+      transform: translateY(-6px) scale(1.02);
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 18px 40px rgba(255, 126, 44, 0.12);
+    }
+
+    .profile-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,244,235,0.92));
+      border: 2px dashed rgba(255, 149, 72, 0.26);
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      text-align: center;
+      color: var(--text-soft);
+      line-height: 1.6;
+      box-shadow: 0 14px 36px rgba(255, 126, 44, 0.10);
+      overflow: hidden;
+    }
+
+    .profile-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .social-row {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .social-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,242,229,0.95));
+      border: 1px solid rgba(255, 149, 72, 0.16);
+      box-shadow: 0 10px 22px rgba(255, 126, 44, 0.08);
+      transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), background 0.28s var(--ease);
+    }
+
+    .social-icon:hover {
+      transform: translateY(-4px) scale(1.08);
+      box-shadow: 0 18px 30px rgba(255, 126, 44, 0.14);
+      background: linear-gradient(135deg, #fff5ea, #ffe4c7);
+    }
+
+    .social-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--fire-1);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+      align-items: start;
+    }
+
+    .mindmap-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.95fr;
+      gap: 1rem;
+      margin-top: 1rem;
+      align-items: start;
+    }
+
+    .media-card,
+    .mindmap-card {
+      position: relative;
+      perspective: 1400px;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      overflow: visible;
+      transition: transform 0.32s var(--ease);
+    }
+
+    .media-card:hover,
+    .mindmap-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      border-radius: 26px;
+      transform-style: preserve-3d;
+      transition: transform 0.75s var(--ease), box-shadow 0.32s var(--ease);
+      box-shadow: 0 12px 32px rgba(255, 126, 44, 0.08);
+    }
+
+    .media-card:hover .flip-card-inner,
+    .mindmap-card:hover .flip-card-inner,
+    .media-card.is-flipped .flip-card-inner,
+    .mindmap-card.is-flipped .flip-card-inner {
+      transform: rotateY(180deg);
+      box-shadow: 0 24px 52px rgba(255, 126, 44, 0.14);
+    }
+
+    .flip-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      overflow: hidden;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border: 1px solid rgba(255, 149, 72, 0.16);
+    }
+
+    .flip-front {
+      background: linear-gradient(135deg, rgba(255, 222, 183, 0.72), rgba(255, 240, 226, 0.94));
+    }
+
+    .mindmap-card .flip-front {
+      background: linear-gradient(135deg, rgba(255, 236, 212, 0.8), rgba(255, 247, 239, 0.95));
+    }
+
+    .flip-back {
+      background: linear-gradient(135deg, rgba(255, 248, 241, 0.98), rgba(255, 235, 214, 0.96));
+      transform: rotateY(180deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2rem;
+    }
+
+    .flip-front img,
+    .flip-front iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 26px;
+      display: block;
+    }
+
+    .flip-front .label {
+      position: absolute;
+      left: 1rem;
+      bottom: 1rem;
+      z-index: 2;
+      width: fit-content;
+      max-width: calc(100% - 2rem);
+      background: rgba(255,255,255,0.84);
+      border: 1px solid rgba(255, 149, 72, 0.14);
+      padding: 0.8rem 0.95rem;
+      border-radius: 18px;
+      color: var(--text-soft);
+      line-height: 1.65;
+      backdrop-filter: blur(10px);
+    }
+
+    .flip-back-content {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255, 149, 72, 0.14);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.25rem;
+      text-align: left;
+      color: var(--text-soft);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+    }
+
+    .flip-back-content h3 {
+      font-family: "Rammetto One", cursive;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 0.7rem;
+    }
+
+    .flip-back-content p {
+      font-size: 0.98rem;
+      line-height: 1.75;
+      margin: 0;
+      color: var(--text-soft);
+    }
+
+    .flip-hint {
+      margin-top: 0.8rem;
+      font-size: 0.82rem;
+      opacity: 0.72;
+    }
+
+    /* Showcase proportions */
+    .media-card.prediction {
+      grid-column: span 7;
+      aspect-ratio: 37 / 26;
+      min-height: 300px;
+    }
+
+    .media-card.detection {
+      grid-column: span 5;
+      aspect-ratio: 32 / 25;
+      min-height: 300px;
+    }
+
+    .media-card.evacuation {
+      grid-column: span 4;
+      aspect-ratio: 6.4 / 10.2;
+      min-height: 360px;
+    }
+
+    .media-card.fireguide {
+      grid-column: span 4;
+      aspect-ratio: 6.6 / 10.4;
+      min-height: 360px;
+    }
+
+    .media-card.sos {
+      grid-column: span 4;
+      aspect-ratio: 6.3 / 9.3;
+      min-height: 360px;
+    }
+
+    /* Tech stack proportions */
+    .mindmap-card.prediction {
+      aspect-ratio: 16 / 9;
+      min-height: 320px;
+    }
+
+    .mindmap-card.map {
+      aspect-ratio: 16 / 9;
+      min-height: 220px;
+    }
+
+    .mindmap-card.detection {
+      grid-column: 1 / span 2;
+      aspect-ratio: 3 / 2;
+      min-height: 360px;
+      max-width: 760px;
+    }
+
+    .video-frame {
+      margin-top: 1rem;
+      border-radius: 26px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 149, 72, 0.16);
+      box-shadow: 0 18px 48px rgba(255, 126, 44, 0.12);
+      background: rgba(255,255,255,0.7);
+      transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease);
+    }
+
+    .video-frame:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 26px 56px rgba(255, 126, 44, 0.16);
+    }
+
+    .video-frame iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      display: block;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 1.3rem;
+      border-radius: 999px;
+      font-weight: 700;
+      border: 1px solid rgba(255, 149, 72, 0.18);
+      transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), background 0.28s var(--ease);
+      box-shadow: var(--shadow-soft);
+      background: rgba(255,255,255,0.88);
+    }
+
+    .cta.primary {
+      background: linear-gradient(135deg, var(--fire-1), var(--fire-2));
+      color: white;
+      border-color: transparent;
+    }
+
+    .cta.secondary {
+      color: var(--text);
+    }
+
+    .cta:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(34px) scale(0.985);
+      transition:
+        opacity 0.85s var(--ease),
+        transform 0.85s var(--ease);
+      will-change: transform, opacity;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem 1rem 3rem;
+      color: rgba(138, 84, 54, 0.75);
+      font-size: 0.95rem;
+    }
+
+    footer a {
+      color: var(--fire-1);
+    }
+
+    @media (max-width: 960px) {
+      .about-layout,
+      .developer-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-ribbon {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .media-card.prediction,
+      .media-card.detection,
+      .media-card.evacuation,
+      .media-card.fireguide,
+      .media-card.sos {
+        grid-column: span 12;
+      }
+
+      .media-card.prediction,
+      .media-card.detection {
+        min-height: 260px;
+      }
+
+      .media-card.evacuation,
+      .media-card.fireguide,
+      .media-card.sos {
+        min-height: 320px;
+      }
+
+      .mindmap-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mindmap-card.prediction,
+      .mindmap-card.map,
+      .mindmap-card.detection {
+        grid-column: auto;
+        max-width: none;
+        min-height: 260px;
+      }
+
+      .mindmap-card.detection {
+        aspect-ratio: 3 / 2;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(calc(100% - 1rem), var(--max-width));
+      }
+
+      .panel {
+        padding: 1.35rem;
+      }
+
+      .feature-ribbon {
+        grid-template-columns: 1fr;
+      }
+
+      .ticker {
+        font-size: 0.95rem;
+      }
+
+      .profile-circle {
+        width: 150px;
+        height: 150px;
+      }
+
+      #cursor-flame,
+      #cursor-ring {
+        display: none;
+      }
+
+      body {
+        cursor: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- custom cursor -->
+  <div id="cursor-ring" aria-hidden="true"></div>
+  <svg id="cursor-flame" viewBox="0 0 64 64" aria-hidden="true">
+    <defs>
+      <linearGradient id="fireGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ffe39c"></stop>
+        <stop offset="52%" stop-color="#ff9a48"></stop>
+        <stop offset="100%" stop-color="#ff5f2c"></stop>
+      </linearGradient>
+    </defs>
+    <path d="M34 4c3 8-3 12-3 18 0 4 3 6 3 10 0 6-4 10-10 10-7 0-12-5-12-13 0-9 6-14 10-18 3-3 6-6 6-12 5 3 7 6 6 5z" fill="url(#fireGrad)"></path>
+    <path d="M38 20c5 4 8 9 8 15 0 11-7 19-18 19S10 46 10 35c0-4 1-7 3-10-1 11 6 16 14 16 9 0 15-6 15-14 0-3-1-5-4-7z" fill="rgba(255,255,255,0.25)"></path>
+  </svg>
+
+  <!-- Back button — keep this -->
+  <a href="../../" class="back-to-showcase hover-target">&larr; Back to Showcase</a>
+
+  <div class="bg-blur" aria-hidden="true">
+    <div class="blob one"></div>
+    <div class="blob two"></div>
+    <div class="blob three"></div>
+  </div>
+
+  <div class="ticker-wrap">
+    <div class="ticker" aria-label="Fire Up highlights">
+      <span>
+        Fire Up: Dynamic Prediction, Live Detection, Evacuation Planning, Awareness. Plans to work in conjunction with Fire Drones: NASA Dream With Us Design Challenge 1st Place, City of STEM Innovation Challenge 1st Place, 3M Young Scientist Honorable Mention
+      </span>
+      <span>
+        Fire Up: Dynamic Prediction, Live Detection, Evacuation Planning, Awareness. Plans to work in conjunction with Fire Drones: NASA Dream With Us Design Challenge 1st Place, City of STEM Innovation Challenge 1st Place, 3M Young Scientist Honorable Mention
+      </span>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="hero reveal">
+      <div class="hero-inner">
+        <div class="hero-badge hover-target">
+          <span class="badge-dot"></span>
+          Congressional App Challenge • CA-28 • Fire Safety Innovation
+        </div>
+
+        <div class="logo-card hover-target" id="logoCard">
+          <img src="fire-up-logo.jpg" alt="Fire Up logo">
+        </div>
+
+        <h1 class="app-title">Fire Up</h1>
+        <p class="app-subtitle">By Anika Jha, CA28</p>
+
+        <p class="hero-note">
+          Fire Up is an intuitive yet powerful web app that brings together prediction, live detection, actionable guidance, and real-time evacuation planning in one cohesive experience, making wildfire readiness smarter and more interactive for both civilians and first responders.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="https://fire-up.streamlit.app" target="_blank" rel="noopener noreferrer" class="btn btn-primary hover-target">Open Fire Up</a>
+          <a href="https://youtu.be/M6boFqd9h_E" target="_blank" rel="noopener noreferrer" class="btn btn-secondary hover-target">See the App</a>
+        </div>
+
+        <div class="scroll-cue">Scroll to explore ↓</div>
+      </div>
+    </section>
+
+    <div class="content-grid">
+      <div class="section-label reveal">The App</div>
+      <section class="panel reveal hover-target">
+        <div class="about-layout">
+          <div>
+            <h2>About Fire Up</h2>
+            <p>
+              Existing wildfire readiness initiatives lack real-time prediction and detection accessible to both first responders and the general public. 
+              Fire Up is the first solution to bring together dynamic fire prediction, live fire and smoke detection,
+              evacuation route planning, and educational guidance in one integrated experience.
+            </p>
+            <p>
+              The vision for Fire Up is not just to report danger, but to help people react intelligently
+              and quickly. In the future, the platform is designed with the potential to work in conjunction
+              with fire drones, connecting software intelligence with hardware-based wildfire response systems.
+            </p>
+          </div>
+
+          <div class="mini-card hover-target">
+            <h3>Main Features</h3>
+            <ul>
+              <li>Dynamic wildfire prediction mapping</li>
+              <li>Integration of low-cost Raspberry Pi set-up for fire/smoke detection</li>
+              <li>Evacuation planning and safer route support</li>
+              <li>Preparedness information and built-in SOS functionality</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="feature-ribbon">
+          <div class="feature-pill hover-target">Prediction</div>
+          <div class="feature-pill hover-target">Detection</div>
+          <div class="feature-pill hover-target">Evacuation</div>
+          <div class="feature-pill hover-target">Awareness</div>
+        </div>
+      </section>
+
+      <div class="section-label reveal">The Developer</div>
+      <section class="panel reveal hover-target">
+        <div class="developer-layout">
+          <div>
+            <h2>About the Developer: Anika Jha</h2>
+            <p>
+              Hi, I’m Anika Jha. I'm a sophomore from Arcadia High School, and I'm passionate about creating technology that can
+              make a real impact. I love combining coding, engineering, design, and scientific
+              problem-solving to build projects that are both meaningful and practical.
+            </p>
+            <p>
+              I created Fire Up to address a problem that affects millions of people: wildfire risk.
+              Living in California, I have seen how important early awareness, fast response, and clear
+              safety planning can be. My family and I were almost evacuated during the Palisades & Eaton fires, and I wanted to build something that supports both information and action in a unique way.
+            </p>
+          </div>
+
+          <div class="profile-side hover-target">
+            <div class="profile-circle">
+              <img src="profile-photo.jpg" alt="Profile photo of Anika Jha">
+            </div>
+
+            <div class="social-row">
+              <a class="social-icon hover-target" href="https://www.instagram.com/anika_j_8/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"></circle>
+                </svg>
+              </a>
+
+              <a class="social-icon hover-target" href="https://www.linkedin.com/in/anika-jha-7b21783b8/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24">
+                  <path d="M16 8a6 6 0 0 1 6 6v7"></path>
+                  <path d="M2 9h4v12H2z"></path>
+                  <circle cx="4" cy="4" r="2"></circle>
+                  <path d="M10 9h4v2"></path>
+                  <path d="M10 21V9"></path>
+                  <path d="M16 21v-7"></path>
+                </svg>
+              </a>
+
+              <a class="social-icon hover-target" href="mailto:anikajhaa8@gmail.com" aria-label="Email">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                  <path d="M3 7l9 6 9-6"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-label reveal">Visual Showcase</div>
+      <section class="panel reveal hover-target">
+        <h2>Project Showcase</h2>
+        <p class="section-subheader">Hover/click each card for more information.</p>
+
+        <div class="showcase-grid">
+          <div class="media-card prediction hover-target flip-trigger">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front">
+                <img src="https://raw.githubusercontent.com/AJSmartyPants/Fire-Up-Public/main/assets/prediction.png" alt="Fire Up prediction map">
+                <div class="label">Prediction Map</div>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-back-content">
+                  <h3>Prediction Map</h3>
+                  <p>&bull; Uses live inputs from <strong>Open-Meteo API, NASA AppEEARS, and CalFire GIS</strong> data.<br>
+                    &bull; Processes data on land cover, vegetation index (NDVI), soil moisture, and meteorological variables.<br>
+                    &bull; Employs a custom <strong>LightGBM machine-learning model</strong> to estimate:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&deg; <strong>Wildfire likelihood</strong><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&deg; <strong>Acres potentially affected</strong><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&deg; <strong>Fire duration / severity</strong><br>
+                    &bull; Map visualization built with <strong>Plotly Mapbox</strong> - counties shaded by risk, marker size scales with predicted duration, and radius scales with acres affected.<br><br></p>
+                  <div class="flip-hint">Hover/click to flip</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="media-card detection hover-target flip-trigger">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front">
+                <img src="https://raw.githubusercontent.com/AJSmartyPants/Fire-Up-Public/main/assets/detection.png" alt="Fire Up detection feature">
+                <div class="label">Detection</div>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-back-content">
+                  <h3>Detection</h3>
+                  <p>&bull; Integrates with <strong>Raspberry Pi 5 + sensor modules</strong> (temperature, humidity, light, camera).<br>
+                    &bull; Runs a <strong>TensorFlow Keras CNN</strong> trained to <strong>95 % accuracy</strong> for detecting <strong>fire / smoke / safe frames</strong>.<br>
+                    &bull; Users can paste their Flask API URL directly into the app to stream live detection results from their own devices.<br><br></p>
+                  <div class="flip-hint">Hover/click to flip</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="media-card evacuation hover-target flip-trigger">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front">
+                <img src="https://raw.githubusercontent.com/AJSmartyPants/Fire-Up-Public/main/assets/evacuation.png" alt="Fire Up evacuation feature">
+                <div class="label">Evacuation</div>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-back-content">
+                  <h3>Evacuation</h3>
+                  <p>&bull; Generates real-time optimized escape routes with the <strong>Geoapify Routing API</strong>.<br>
+                    &bull; Automatically avoids active wildfire zones using <strong>NASA FIRMS</strong> satellite hotspot data.<br>
+                    &bull; Interactive map built with <strong>Folium</strong>, allowing users to visualize safe paths dynamically.<br><br></p>
+                  <div class="flip-hint">Hover/click to flip</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="media-card fireguide hover-target flip-trigger">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front">
+                <img src="https://raw.githubusercontent.com/AJSmartyPants/Fire-Up-Public/main/assets/fireguide.png" alt="Fire Up fire guide information feature">
+                <div class="label">Fire Guide</div>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-back-content">
+                  <h3>Fire Guide</h3>
+                  <p>&bull; A compact fire safety and preparedness guide written in plain language for quick reference.<br></p>
+                  <div class="flip-hint">Hover/click to flip</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="media-card sos hover-target flip-trigger">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front">
+                <img src="https://raw.githubusercontent.com/AJSmartyPants/Fire-Up-Public/main/assets/sos.png" alt="Fire Up SOS feature">
+                <div class="label">SOS</div>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-back-content">
+                  <h3>SOS</h3>
+                  <p>&bull; The SOS page lets users:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&deg; Share live location and status<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&deg; Select from pre-written emergency messages<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&deg; Instantly open 911 and contact local community resources<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&deg; Send status updates via email or SMS (coming soon with Twilio)</p>
+                  <div class="flip-hint">Hover/click to flip</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-label reveal">Tech Stack</div>
+      <section class="panel reveal hover-target">
+        <h2>How I Built It</h2>
+        <p class="section-subheader">Hover/click each card for more information.</p>
+
+        <div class="mindmap-grid">
+          <div class="mindmap-card prediction hover-target flip-trigger">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front">
+                <img src="https://raw.githubusercontent.com/AJSmartyPants/Fire-Up-Public/main/assets/predictionstack.png" alt="Prediction tech stack mindmap">
+                <div class="label">Prediction Tech Stack</div>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-back-content">
+                  <h3>Prediction Tech Stack</h3>
+                  <p>&bull; Uses live inputs from <strong>Open-Meteo API, NASA AppEEARS, and CalFire GIS</strong> data.<br>
+                    &bull; Processes data on land cover, vegetation index (NDVI), soil moisture, and meteorological variables.<br>
+                    &bull; Employs a custom <strong>LightGBM machine-learning model</strong> to estimate:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&deg; <strong>Wildfire likelihood</strong><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&deg; <strong>Acres potentially affected</strong><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&deg; <strong>Fire duration / severity</strong><br></p>
+                  <div class="flip-hint">Hover/click to flip</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mindmap-card map hover-target flip-trigger">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front">
+                <img src="https://raw.githubusercontent.com/AJSmartyPants/Fire-Up-Public/main/assets/mapstack.png" alt="Map tech stack mindmap">
+                <div class="label">Map Tech Stack</div>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-back-content">
+                  <h3>Map Tech Stack</h3>
+                  <p>&bull; Map visualization built with <strong>Plotly Mapbox</strong> - counties shaded by risk, marker size scales with predicted duration, and radius scales with acres affected.<br><br></p>
+                  <div class="flip-hint">Hover/click to flip</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mindmap-card detection hover-target flip-trigger">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front">
+                <img src="https://raw.githubusercontent.com/AJSmartyPants/Fire-Up-Public/main/assets/detectionstack.png" alt="Detection tech stack mindmap">
+                <div class="label">Detection Tech Stack</div>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-back-content">
+                  <h3>Detection Tech Stack</h3>
+                  <p>The Raspberry Pi module allows you to stream real-time environmental and camera data directly into the <strong>Fire Up</strong> app.<br>
+                    It runs a local Flask server that the web app connects to in order to display live sensor data and video.<br><br>
+                    
+                    This script captures:<br><br>
+                    
+                    &bull; <strong>Temperature &amp; Humidity</strong> from a DHT20 sensor<br>
+                    &bull; <strong>Light intensity (lux)</strong> from a BH1750 sensor<br>
+                    &bull; <strong>Live video feed</strong> from the Raspberry Pi camera<br>
+                    &bull; And exposes them via a Flask API that connects to Fire Up’s Detections page<br>
+                    &bull; <strong>The live camera feed is fed into a custom TensorFlow Keras CNN of 95% accuracy that classifies whether there is fire, smoke, or neither</strong><br><br></p>
+                  <div class="flip-hint">Hover/click to flip</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-label reveal">In Action</div>
+      <section id="video" class="panel reveal hover-target">
+        <h2>Demo Video</h2>
+
+        <div class="video-frame hover-target">
+          <iframe
+            src="https://www.youtube.com/embed/M6boFqd9h_E"
+            title="Fire Up Demo Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </section>
+
+      <div class="section-label reveal">Launch</div>
+      <section class="panel reveal hover-target">
+        <h2>Try it Out!</h2>
+
+        <div class="cta-row">
+          <a class="cta primary hover-target" href="https://fire-up.streamlit.app" target="_blank" rel="noopener noreferrer">
+            Open Fire Up
+          </a>
+          <a class="cta secondary hover-target" href="https://github.com/AJSmartyPants/Fire-Up-Public" target="_blank" rel="noopener noreferrer">
+            GitHub Repository
+          </a>
+          <a class="cta secondary hover-target" href="https://drive.google.com/file/d/1VBGVXJSbvqWEsSxV5kHKaS6sP9q2Ejii/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+            More Project Info
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+  <script>
+    /* Scroll reveal */
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, {
+      threshold: 0.14
+    });
+
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    /* Cursor */
+    const flame = document.getElementById('cursor-flame');
+    const ring = document.getElementById('cursor-ring');
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let ringX = mouseX;
+    let ringY = mouseY;
+    let flameX = mouseX;
+    let flameY = mouseY;
+    let hoverScale = 1;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+      flameX += (mouseX - flameX) * 0.28;
+      flameY += (mouseY - flameY) * 0.28;
+
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+
+      flame.style.left = flameX + 'px';
+      flame.style.top = flameY + 'px';
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+
+      const wobble = Math.sin(Date.now() * 0.012) * 2.4;
+      flame.style.transform = `translate(-50%, -50%) rotate(${wobble}deg) scale(${hoverScale})`;
+
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    const hoverTargets = document.querySelectorAll(
+      'a, button, .hover-target, .panel, .mini-card, .feature-pill, .media-card, .mindmap-card, .cta, .btn, .social-icon'
+    );
+
+    hoverTargets.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        document.body.classList.add('cursor-hover');
+        hoverScale = 1.12;
+      });
+
+      el.addEventListener('mouseleave', () => {
+        document.body.classList.remove('cursor-hover');
+        hoverScale = 1;
+      });
+    });
+
+    document.addEventListener('mouseleave', () => {
+      flame.style.opacity = '0';
+      ring.style.opacity = '0';
+    });
+
+    document.addEventListener('mouseenter', () => {
+      flame.style.opacity = '0.95';
+      ring.style.opacity = '1';
+    });
+
+    /* Slight logo tilt */
+    const logoCard = document.getElementById('logoCard');
+    if (logoCard) {
+      logoCard.addEventListener('mousemove', (e) => {
+        const rect = logoCard.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const rotateY = ((x / rect.width) - 0.5) * 10;
+        const rotateX = ((y / rect.height) - 0.5) * -10;
+
+        logoCard.style.transform = `translateY(-8px) scale(1.02) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      logoCard.addEventListener('mouseleave', () => {
+        logoCard.style.transform = '';
+      });
+    }
+
+    /* Click-to-flip for touch/smaller screens */
+    document.querySelectorAll('.flip-trigger').forEach(card => {
+      card.addEventListener('click', () => {
+        if (window.innerWidth <= 1024) {
+          card.classList.toggle('is-flipped');
+        }
+      });
+    });
+  </script>
+
+  <!-- Navigation script — keep this -->
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+</body>
+</html>
