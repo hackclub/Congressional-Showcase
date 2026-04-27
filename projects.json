@@ -1388,4 +1388,20 @@
   "location": { "lat": 40.7455, "lng": -73.906, "label": "New York, NY" },
   "district": "NY-07", "state": "NY", "tags": ["education", "ai"]
 }
+block:
+{
+  "slug": "WI-01",
+  "name": "Sonakshi Giri",
+  "appName": "RideRight",
+  "description": "Built using JavaScript, the app RightRide estimates a user’s blood alcohol (BAC) content based on age, sex, weight, and drinking activity using data from the World Health Organization and information from producers of alcoholic beverages.",
+  "thumbnail": "sites/WI-00/thumbnail.png",
+  "location": {
+    "lat": 37.090240,
+    "lng": -95.712891,
+    "label": "Franklin, WI"
+  },
+  "district": "WI-00",
+  "state": "WI",
+  "tags": ["health", "saftey"]
+}
 ]
