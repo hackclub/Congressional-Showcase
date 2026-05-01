@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>InsureLit | Ishaanvi Vemula</title>
+
+  <!-- Shared styles — DO NOT REMOVE -->
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #1f2937;
+      background: linear-gradient(135deg, #e6f4f1, #f8fbff);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Subtle health-themed background pattern */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230f766e' fill-opacity='0.05'%3E%3Cpath d='M55 20h10v80H55zM20 55h80v10H20z'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 120px 120px;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 4rem 2rem 3rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    header img {
+      width: 90px;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: 3.2rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #0f766e, #14b8a6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+    }
+
+    header p {
+      color: #475569;
+      font-size: 1.1rem;
+    }
+
+    section {
+      background: white;
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.7rem;
+      margin-bottom: 1rem;
+      color: #0f766e;
+      position: relative;
+    }
+
+    h2::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(90deg, #0f766e, #14b8a6);
+      margin-top: 6px;
+      border-radius: 2px;
+    }
+
+    p {
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .card {
+      background: linear-gradient(135deg, #0f766e, #14b8a6);
+      color: white;
+      padding: 1.2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    }
+
+    .card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.3px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .video iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 10px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #0f766e;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+
+    footer a { color: #0f766e; }
+
+    .section-label {
+      margin-top: 2rem;
+      font-family: 'Sora', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #0f766e;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+  
+
+    /* Animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    header {
+      animation: fadeHeader 1s ease forwards;
+    }
+
+    @keyframes fadeHeader {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: cardFade 0.6s ease forwards;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+    .card:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes cardFade {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+  
+
+    /* Scroll Indicator */
+    .scroll-indicator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      width: 0%;
+      background: linear-gradient(90deg, #0f766e, #14b8a6);
+      z-index: 9999;
+      transition: width 0.1s ease-out;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="scroll-indicator" id="scrollBar"></div>
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <div class="container">
+    <header>
+      <h1>InsureLit</h1>
+      <p style="font-size: 1.2rem; color: #64748b;">Ishaanvi Vemula</p>
+      <p>Building equitable healthcare access through technology</p>
+      <div class="tag">IL-11 • Aurora, Illinois</div>
+    </header>
+
+    <section class="fade-in">
+      <h2>About Me</h2>
+      <p>
+        Ishaanvi is a passionate high school junior, 2026 TEDx speaker, and Girls Who Code alumna. She built InsureLit to address the complexity and inequity of healthcare access in America.
+      </p>
+      <p>
+        Many people struggle to understand what healthcare services they are entitled to. InsureLit simplifies this by making healthcare information accessible, understandable, and actionable.
+      </p>
+    </section>
+
+    <section class="fade-in">
+      <h2>InsureLit Features</h2>
+
+      <div class="features">
+        <div class="card">
+          <h3>📄 Smart Document Scanner</h3>
+          <p>Scans insurance cards and documents, translating complex medical jargon into simple, clear explanations of coverage.</p>
+        </div>
+
+        <div class="card">
+          <h3>🔄 Uninsured Mode</h3>
+          <p>Switch to a personalized experience with Medicaid info, healthcare rights, and options for those without insurance.</p>
+        </div>
+
+        <div class="card">
+          <h3>🤖 AI Health Assistant</h3>
+          <p>Ask health-related questions and receive answers tailored to your insurance details and personal context.</p>
+        </div>
+
+        <div class="card">
+          <h3>📍 Live Resource Map</h3>
+          <p>Find nearby clinics and health events with real-time updates based on your location.</p>
+        </div>
+
+        <div class="card">
+          <h3>📅 Health Calendar</h3>
+          <p>Save, track, and manage appointments or community health events in one place.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="fade-in">
+      <h2>How It Was Built</h2>
+
+      <h3 class="section-label">Frontend</h3>
+      <div class="features tech-grid">
+        <div class="card">
+          <img src="https://cdn.simpleicons.org/swift/F05138" style="width:36px;margin-bottom:8px;">
+          <h3>Swift</h3>
+          <p>Core language for building app logic and UI.</p>
+        </div>
+        <div class="card">
+          <img src="https://cdn.simpleicons.org/apple/000000" style="width:36px;margin-bottom:8px;">
+          <h3>SwiftUI</h3>
+          <p>Modern framework for responsive interfaces.</p>
+        </div>
+        <div class="card">
+          <img src="https://cdn.simpleicons.org/apple/000000" style="width:36px;margin-bottom:8px;">
+          <h3>MapKit</h3>
+          <p>Interactive maps and location services.</p>
+        </div>
+      </div>
+
+      <h3 class="section-label">AI</h3>
+      <div class="features tech-grid">
+        <div class="card">
+          <img src="https://cdn.simpleicons.org/apple/000000" style="width:36px;margin-bottom:8px;">
+          <h3>CoreML</h3>
+          <p>On-device machine learning capabilities.</p>
+        </div>
+        <div class="card">
+          <img src="https://cdn.simpleicons.org/apple/000000" style="width:36px;margin-bottom:8px;">
+          <h3>Vision OCR</h3>
+          <p>Extracts text from insurance documents.</p>
+        </div>
+      </div>
+
+      <h3 class="section-label">Backend</h3>
+      <div class="features tech-grid">
+        <div class="card">
+          <img src="https://cdn.simpleicons.org/php/777BB4" style="width:36px;margin-bottom:8px;">
+          <h3>PHP</h3>
+          <p>Server-side logic and processing.</p>
+        </div>
+      </div>
+
+      <h3 class="section-label">APIs & System Tools</h3>
+      <div class="features tech-grid">
+        <div class="card">
+          <img src="https://cdn.simpleicons.org/xcode/147EFB" style="width:36px;margin-bottom:8px;">
+          <h3>Xcode</h3>
+          <p>Development environment for building and testing.</p>
+        </div>
+        <div class="card">
+          <img src="https://cdn.simpleicons.org/apple/000000" style="width:36px;margin-bottom:8px;">
+          <h3>VisionKit</h3>
+          <p>Document scanning and capture.</p>
+        </div>
+        <div class="card">
+          <img src="https://cdn.simpleicons.org/apple/000000" style="width:36px;margin-bottom:8px;">
+          <h3>HealthKit</h3>
+          <p>Secure health data integration.</p>
+        </div>
+        <div class="card">
+          <img src="https://cdn.simpleicons.org/apple/000000" style="width:36px;margin-bottom:8px;">
+          <h3>URLSession APIs</h3>
+          <p>Handles networking and API communication.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="video">
+      <h2>Demo</h2>
+      <iframe
+        src="https://youtu.be/7INlhuLDfxA"
+        title="InsureLit Demo"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </section>
+  </div>
+
+  <footer>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+
+
+  <script>
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+
+  <script>
+    const scrollBar = document.getElementById('scrollBar');
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      scrollBar.style.width = scrollPercent + '%';
+    });
+  </script>
+</body>
+</html>
+
