@@ -1124,6 +1124,329 @@
   "district": "IL-11",
   "state": "IL",
   "tags": ["health", "inclusivity", "literacy"]
+{
+  "slug": "CT-01",
+  "name": "Gian Handa & Satvik Koppu",
+  "appName": "Gut Vitality",
+  "description": "Fostering a network of gut-conscious individuals through health tracking and AI insights.",
+  "thumbnail": "sites/CT-01/thumbnail.png",
+  "location": { "lat": 41.8493, "lng": -72.5671, "label": "South Windsor, CT" },
+  "district": "CT-01", "state": "CT", "tags": ["health", "ai"]
+},
+{
+  "slug": "NY-10",
+  "name": "Troye Kim",
+  "appName": "OnSight Music",
+  "description": "Upload MIDI files to parse into sheet music with live pitch and rhythm feedback for vocalists.",
+  "thumbnail": "sites/NY-10/thumbnail.png",
+  "location": { "lat": 40.7128, "lng": -74.0060, "label": "New York, NY" },
+  "district": "NY-10", "state": "NY", "tags": ["education", "games"]
+},
+{
+  "slug": "TX-24",
+  "name": "Tristan Sun",
+  "appName": "MyHeartHealth",
+  "description": "Automatically parses paper BP logs, extracts data from BP monitors, and visualizes health trends.",
+  "thumbnail": "sites/TX-24/thumbnail.png",
+  "location": { "lat": 32.7767, "lng": -96.7970, "label": "Dallas, TX" },
+  "district": "TX-24", "state": "TX", "tags": ["health", "ai"]
+},
+{
+  "slug": "CA-24",
+  "name": "Neil Sharangpani and Ethan Ding",
+  "appName": "Eulearn",
+  "description": "Complete step-by-step explanations for regular, parametric, and polar integration problems.",
+  "thumbnail": "sites/CA-24/thumbnail.png",
+  "location": { "lat": 34.4208, "lng": -119.6982, "label": "Santa Barbara, CA" },
+  "district": "CA-24", "state": "CA", "tags": ["education"]
+},
+{
+  "slug": "MA-03",
+  "name": "Reya Kannan",
+  "appName": "Yard2Yum",
+  "description": "A sustainable circular system connecting restaurants with composting facilities and farms.",
+  "thumbnail": "sites/MA-03/thumbnail.png",
+  "location": { "lat": 42.6612, "lng": -71.4246, "label": "Tyngsborough, MA" },
+  "district": "MA-03", "state": "MA", "tags": ["environment"]
+},
+{
+  "slug": "MO-07",
+  "name": "Thuc Chi Do and Ronin Gambill",
+  "appName": "PawPass",
+  "description": "Stores pet info and generates QR codes for easy access, made for pet shelters and owners.",
+  "thumbnail": "sites/MO-07/thumbnail.png",
+  "location": { "lat": 37.2090, "lng": -93.2923, "label": "Springfield, MO" },
+  "district": "MO-07", "state": "MO", "tags": ["social"]
+},
+{
+  "slug": "IL-06",
+  "name": "Maclane Zich",
+  "appName": "HeadacheWise",
+  "description": "An iOS app using AI to identify personal headache triggers and deliver predictive insights.",
+  "thumbnail": "sites/IL-06/thumbnail.png",
+  "location": { "lat": 41.8781, "lng": -87.6298, "label": "Chicago, IL" },
+  "district": "IL-06", "state": "IL", "tags": ["health", "ai"]
+},
+{
+  "slug": "MD-05",
+  "name": "David Alozie, Sean Cardenas, Isaac Yoo",
+  "appName": "Sokrat",
+  "description": "Helps anyone quickly find research materials with intelligent keyword search.",
+  "thumbnail": "sites/MD-05/thumbnail.png",
+  "location": { "lat": 38.9897, "lng": -76.8756, "label": "Greenbelt, MD" },
+  "district": "MD-05", "state": "MD", "tags": ["education"]
+},
+{
+  "slug": "NC-06",
+  "name": "Haashini Balasubramanian",
+  "appName": "Nestling",
+  "description": "An AI-powered copilot helping NICU parents track baby growth, interpret medical records, and navigate post-discharge care.",
+  "thumbnail": "sites/NC-06/thumbnail.png",
+  "location": { "lat": 35.4088, "lng": -80.5795, "label": "Concord, NC" },
+  "district": "NC-06", "state": "NC", "tags": ["health", "social", "ai", "accessibility"]
+},
+{
+  "slug": "TX-32",
+  "name": "Chloe Tao",
+  "appName": "Matched",
+  "description": "Connects users with peers who share their interests for genuine social connections.",
+  "thumbnail": "sites/TX-32/thumbnail.png",
+  "location": { "lat": 32.7767, "lng": -96.7970, "label": "Dallas, TX" },
+  "district": "TX-32", "state": "TX", "tags": ["social"]
+},
+{
+  "slug": "AL-01",
+  "name": "Henry Murphy",
+  "appName": "Boat Knots",
+  "description": "Teaches how to tie boat knots with photo and video demos.",
+  "thumbnail": "sites/AL-01/thumbnail.png",
+  "location": { "lat": 30.6954, "lng": -88.0399, "label": "Mobile, AL" },
+  "district": "AL-01", "state": "AL", "tags": ["education"]
+},
+{
+  "slug": "VA-01",
+  "name": "Faribah Nuha, Jay Chauhan, Obaloluwa Ogunade, Jack Gardner",
+  "appName": "TroopCompanion",
+  "description": "Veteran mental health app with 24/7 PTSD support via AI therapist, breathing exercises, and medication tracker.",
+  "thumbnail": "sites/VA-01/thumbnail.png",
+  "location": { "lat": 37.6659, "lng": -77.5095, "label": "Glen Allen, VA" },
+  "district": "VA-01", "state": "VA", "tags": ["health", "civic", "ai", "accessibility"]
+},
+{
+  "slug": "CA-02",
+  "name": "Alexander Cameron and Damien Boisvert",
+  "appName": "Seen",
+  "description": "Mental health app for teens with mood tracking, journaling, and PHQ-9 assessment with AI analysis.",
+  "thumbnail": "sites/CA-02/thumbnail.png",
+  "location": { "lat": 38.1074, "lng": -122.5697, "label": "Novato, CA" },
+  "district": "CA-02", "state": "CA", "tags": ["health", "ai"]
+},
+{
+  "slug": "TX-26",
+  "name": "Tanish Chauhan",
+  "appName": "Hedgex",
+  "description": "A stock trading education platform with real-time market data and backtesting tools.",
+  "thumbnail": "sites/TX-26/thumbnail.png",
+  "location": { "lat": 33.2362, "lng": -96.8011, "label": "Prosper, TX" },
+  "district": "TX-26", "state": "TX", "tags": ["education", "finance"]
+},
+{
+  "slug": "SC-01",
+  "name": "Aydin Zaide",
+  "appName": "Chalkboard",
+  "description": "A task scheduling app for students to track assignments.",
+  "thumbnail": "sites/SC-01/thumbnail.png",
+  "location": { "lat": 33.0185, "lng": -80.1756, "label": "Summerville, SC" },
+  "district": "SC-01", "state": "SC", "tags": ["education"]
+},
+{
+  "slug": "UT-01",
+  "name": "Victor Young and Forest Young",
+  "appName": "Computerpreter",
+  "description": "Real-time ASL translation for Deaf accessibility using AI-powered sign language detection.",
+  "thumbnail": "sites/UT-01/thumbnail.png",
+  "location": { "lat": 40.7608, "lng": -111.8910, "label": "Salt Lake City, UT" },
+  "district": "UT-01", "state": "UT", "tags": ["social", "ai", "accessibility"]
+},
+{
+  "slug": "CA-06",
+  "name": "Aarit Atreja and Anvi Atreja",
+  "appName": "LearnAI4ALL",
+  "description": "An easy, engaging, inclusive way for students to begin their AI learning journey.",
+  "thumbnail": "sites/CA-06/thumbnail.png",
+  "location": { "lat": 38.5816, "lng": -121.4944, "label": "Sacramento, CA" },
+  "district": "CA-06", "state": "CA", "tags": ["education", "ai"]
+},
+{
+  "slug": "MA-06",
+  "name": "Kwezi Besiimire",
+  "appName": "Bridges",
+  "description": "A bilingual web app connecting Lawrence and Andover communities with local events and resources.",
+  "thumbnail": "sites/MA-06/thumbnail.png",
+  "location": { "lat": 42.6583, "lng": -71.1368, "label": "Andover, MA" },
+  "district": "MA-06", "state": "MA", "tags": ["accessibility"]
+},
+{
+  "slug": "GA-03",
+  "name": "Omar DeJesus, Wade Ballard, Juliet Browning, Alaina Dhople",
+  "appName": "NxtSteps",
+  "description": "Helps high school students navigate the path to college with guided planning tools.",
+  "thumbnail": "sites/GA-03/thumbnail.png",
+  "location": { "lat": 33.5804, "lng": -85.0766, "label": "Carrollton, GA" },
+  "district": "GA-03", "state": "GA", "tags": ["education"]
+},
+{
+  "slug": "CA-45",
+  "name": "Vedant Kharul",
+  "appName": "ShelterLink",
+  "description": "An AI-powered service connecting homeless people with shelters and personalized services in real time.",
+  "thumbnail": "sites/CA-45/thumbnail.png",
+  "location": { "lat": 33.7701, "lng": -118.1937, "label": "Long Beach, CA" },
+  "district": "CA-45", "state": "CA", "tags": ["social", "accessibility"]
+},
+{
+  "slug": "CT-05",
+  "name": "Nicolas Campisi",
+  "appName": "Snap & Snack",
+  "description": "Snap the food product's info, and Snack safely with allergy and nutrition insights.",
+  "thumbnail": "sites/CT-05/thumbnail.png",
+  "location": { "lat": 41.8096, "lng": -72.8306, "label": "Avon, CT" },
+  "district": "CT-05", "state": "CT", "tags": ["accessibility", "health"]
+},
+{
+  "slug": "CA-46",
+  "name": "Xiong Yi",
+  "appName": "MathFluent",
+  "description": "A conceptual learning platform helping students understand the logic behind mathematics.",
+  "thumbnail": "sites/CA-46/thumbnail.png",
+  "location": { "lat": 33.77, "lng": -117.92, "label": "Anaheim, CA" },
+  "district": "CA-46", "state": "CA", "tags": ["education"]
+},
+{
+  "slug": "CA-27",
+  "name": "Gautham Korrapati, Eric Lee",
+  "appName": "Mathviz",
+  "description": "An app that bridges the gap for learning mathematics with verified proof checkers and compilers.",
+  "thumbnail": "sites/CA-27/thumbnail.png",
+  "location": { "lat": 34.198, "lng": -118.261, "label": "Los Angeles, CA" },
+  "district": "CA-27", "state": "CA", "tags": ["education"]
+},
+{
+  "slug": "TX-34",
+  "name": "Max Moyle",
+  "appName": "Heatwave",
+  "description": "A pedestrian-first navigation app routing through shade and away from high-speed roads.",
+  "thumbnail": "sites/TX-34/thumbnail.png",
+  "location": { "lat": 26.1906, "lng": -97.6961, "label": "Harlingen, TX" },
+  "district": "TX-34", "state": "TX", "tags": ["environment", "navigation"]
+},
+{
+  "slug": "NJ-07",
+  "name": "Maxwell Brohm & Zander Leon",
+  "appName": "ChronoIQ",
+  "description": "AI-powered study scheduler that generates Google Calendar study blocks from your Classroom assignments.",
+  "thumbnail": "sites/NJ-07/thumbnail.png",
+  "location": { "lat": 40.987, "lng": -74.3765, "label": "Kinnelon, NJ" },
+  "district": "NJ-07", "state": "NJ", "tags": ["education", "ai"]
+},
+{
+  "slug": "AZ-03",
+  "name": "Antoni Gonzalez, Grey Ricker, Sean Collay",
+  "appName": "NaviCare",
+  "description": "An easy-to-navigate Health Hub accessible to all.",
+  "thumbnail": "sites/AZ-03/Logo-NC+-01.png",
+  "location": { "lat": 33.4483, "lng": -112.0725, "label": "Phoenix, AZ" },
+  "district": "AZ-03", "state": "AZ", "tags": ["health"]
+},
+{
+  "slug": "GA-07",
+  "name": "Hannah Kim",
+  "appName": "SpeakEase.io",
+  "description": "An AI-powered AAC app that learns your speech patterns to predict and voice complete sentences with natural clarity.",
+  "thumbnail": "sites/GA-07/thumbnail.png",
+  "location": { "lat": 34.1069, "lng": -84.1384, "label": "Duluth, GA" },
+  "district": "GA-07", "state": "GA", "tags": ["accessibility", "ai"]
+},
+{
+  "slug": "MI-02",
+  "name": "Levi Willette, Jayvn Craves, James McGillis",
+  "appName": "Phishing Hook",
+  "description": "A digital solution to phishing identification and training through games and real emails.",
+  "thumbnail": "sites/MI-02/thumbnail.png",
+  "location": { "lat": 43.5945, "lng": -83.8889, "label": "Bay City, MI" },
+  "district": "MI-02", "state": "MI", "tags": ["education", "security"]
+},
+{
+  "slug": "MI-11",
+  "name": "Aahana Ashok & Natnicha Kusalasi",
+  "appName": "LunchAhead",
+  "description": "A student-focused app that improves school lunch through smarter planning, healthier choices, and reduced food waste.",
+  "thumbnail": "sites/MI-11/thumbnail.png",
+  "location": { "lat": 42.4806, "lng": -83.4755, "label": "Novi, MI" },
+  "district": "MI-11", "state": "MI", "tags": ["education", "ai"]
+},
+{
+  "slug": "CA-28",
+  "name": "Anika Jha",
+  "appName": "Fire Up",
+  "description": "A web app bringing together wildfire prediction, live detection, guidance, and evacuation planning in one experience.",
+  "thumbnail": "sites/CA-28/thumbnail.png",
+  "location": { "lat": 34.1274, "lng": -118.0459, "label": "Arcadia, CA" },
+  "district": "CA-28", "state": "CA", "tags": ["environment", "ai", "safety"]
+},
+{
+  "slug": "NY-07",
+  "name": "Eduardo Almeyda",
+  "appName": "LearnIT",
+  "description": "An app to help students learn topics better, keep progress, and answer questions with the use of AI.",
+  "thumbnail": "sites/NY-07/logo.png",
+  "location": { "lat": 40.7455, "lng": -73.906, "label": "New York, NY" },
+  "district": "NY-07", "state": "NY", "tags": ["education", "ai"]
+},
+{
+  "slug": "GA-06",
+  "name": "Utshaho Bandyopadhyay Gupta",
+  "appName": "Affordable Smart Glasses",
+  "description": "3D-printed smart glasses helping blind and visually impaired people with day-to-day tasks using on-device AI.",
+  "thumbnail": "sites/GA-06/thumbnail.png",
+  "location": { "lat": 33.749, "lng": -84.388, "label": "Atlanta, GA" },
+  "district": "GA-06", "state": "GA", "tags": ["education", "ai", "accessibility"]
+},
+{
+  "slug": "FL-22",
+  "name": "Yuting Ding",
+  "appName": "BinGo!",
+  "description": "An interactive app helping students learn how to sort garbage correctly through search, quizzes, and timed games.",
+  "thumbnail": "sites/FL-22/thumbnail.png",
+  "location": { "lat": 26.4615, "lng": -80.0728, "label": "Delray Beach, FL" },
+  "district": "FL-22", "state": "FL", "tags": ["education", "environment"]
+},
+{
+  "slug": "TX-23",
+  "name": "Mridul Gautham",
+  "appName": "SafeZone",
+  "description": "A PWA providing tools to survive disasters with real-time alerts, safe spot locating, and emergency communications.",
+  "thumbnail": "sites/TX-23/thumbnail.png",
+  "location": { "lat": 29.4241, "lng": -98.4936, "label": "San Antonio, TX" },
+  "district": "TX-23", "state": "TX", "tags": ["environment", "social", "accessibility"]
+},
+{
+  "slug": "IL-01",
+  "name": "Saanika Dutta",
+  "appName": "Bias Lite",
+  "description": "An AI-powered tool that detects biased language in text and suggests more fair and inclusive alternatives.",
+  "thumbnail": "sites/IL-01/thumbnail.png",
+  "location": { "lat": 41.8781, "lng": -87.6298, "label": "Chicago, IL" },
+  "district": "IL-01", "state": "IL", "tags": ["civic", "social", "ai", "accessibility"]
+},
+{
+  "slug": "TX-03",
+  "name": "Ron Minin, Abyudh Mukkavilli, Bosco Qiu",
+  "appName": "Verdis",
+  "description": "A drone-based crop health monitoring system using ML, computer vision, and NLP to detect disease and advise farmers.",
+  "thumbnail": "sites/TX-03/thumbnail.png",
+  "location": { "lat": 33.2362, "lng": -96.8011, "label": "Prosper, TX" },
+  "district": "TX-03", "state": "TX", "tags": ["environment", "ai"]
 }
   
 ]

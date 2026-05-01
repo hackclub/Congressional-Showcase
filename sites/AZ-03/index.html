@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NaviCare — AZ-03 | Congressional App Challenge</title>
+
+  <!-- Required by Congressional App Challenge — DO NOT REMOVE -->
+  <link rel="stylesheet" href="../../shared.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --navy:   #212056;
+      --navy2:  #2d2c78;
+      --accent: #5b8cff;
+      --soft:   #eef1ff;
+      --text:   #1a1a2e;
+      --muted:  #5c5c80;
+      --white:  #ffffff;
+      --card-bg:#f7f8ff;
+      --border: #dde2f5;
+      --shadow: 0 8px 32px rgba(33,32,86,.14);
+      --radius: 20px;
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--card-bg);
+      color: var(--text);
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ─── BOTANICAL BACKGROUND ───────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='380' height='380'%3E%3Cg opacity='.05' fill='%23212056'%3E%3Ccircle cx='190' cy='190' r='16'/%3E%3Cellipse cx='190' cy='142' rx='10' ry='26' transform='rotate(0 190 190)'/%3E%3Cellipse cx='190' cy='142' rx='10' ry='26' transform='rotate(45 190 190)'/%3E%3Cellipse cx='190' cy='142' rx='10' ry='26' transform='rotate(90 190 190)'/%3E%3Cellipse cx='190' cy='142' rx='10' ry='26' transform='rotate(135 190 190)'/%3E%3Cellipse cx='190' cy='142' rx='10' ry='26' transform='rotate(180 190 190)'/%3E%3Cellipse cx='190' cy='142' rx='10' ry='26' transform='rotate(225 190 190)'/%3E%3Cellipse cx='190' cy='142' rx='10' ry='26' transform='rotate(270 190 190)'/%3E%3Cellipse cx='190' cy='142' rx='10' ry='26' transform='rotate(315 190 190)'/%3E%3Cellipse cx='190' cy='120' rx='6' ry='16' transform='rotate(22.5 190 190)'/%3E%3Cellipse cx='190' cy='120' rx='6' ry='16' transform='rotate(67.5 190 190)'/%3E%3Cellipse cx='190' cy='120' rx='6' ry='16' transform='rotate(112.5 190 190)'/%3E%3Cellipse cx='190' cy='120' rx='6' ry='16' transform='rotate(157.5 190 190)'/%3E%3Cellipse cx='190' cy='120' rx='6' ry='16' transform='rotate(202.5 190 190)'/%3E%3Cellipse cx='190' cy='120' rx='6' ry='16' transform='rotate(247.5 190 190)'/%3E%3Cellipse cx='190' cy='120' rx='6' ry='16' transform='rotate(292.5 190 190)'/%3E%3Cellipse cx='190' cy='120' rx='6' ry='16' transform='rotate(337.5 190 190)'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 420px 420px;
+    }
+
+    /* ─── RIPPLE / SHOCKWAVE ─────────────────────────────────── */
+    .ripple-ring {
+      position: fixed;
+      border-radius: 50%;
+      border: 2px solid rgba(91,140,255,.55);
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(0);
+      animation: ripple-out .65s ease-out forwards;
+      z-index: 9999;
+    }
+    @keyframes ripple-out {
+      0%   { transform: translate(-50%,-50%) scale(0); opacity: 1; }
+      100% { transform: translate(-50%,-50%) scale(1); opacity: 0; }
+    }
+
+    /* ─── LAYOUT ──────────────────────────────────────────────── */
+    .page { position: relative; z-index: 1; }
+
+    /* ─── HERO ────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      background: linear-gradient(160deg, #181745 0%, #212056 55%, #2d2c78 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cg opacity='.07' fill='%23ffffff'%3E%3Ccircle cx='140' cy='140' r='12'/%3E%3Cellipse cx='140' cy='100' rx='8' ry='22' transform='rotate(0 140 140)'/%3E%3Cellipse cx='140' cy='100' rx='8' ry='22' transform='rotate(45 140 140)'/%3E%3Cellipse cx='140' cy='100' rx='8' ry='22' transform='rotate(90 140 140)'/%3E%3Cellipse cx='140' cy='100' rx='8' ry='22' transform='rotate(135 140 140)'/%3E%3Cellipse cx='140' cy='100' rx='8' ry='22' transform='rotate(180 140 140)'/%3E%3Cellipse cx='140' cy='100' rx='8' ry='22' transform='rotate(225 140 140)'/%3E%3Cellipse cx='140' cy='100' rx='8' ry='22' transform='rotate(270 140 140)'/%3E%3Cellipse cx='140' cy='100' rx='8' ry='22' transform='rotate(315 140 140)'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 320px 320px;
+      pointer-events: none;
+    }
+    .hero-logo {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      border-radius: 24px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 6px 24px rgba(0,0,0,.4));
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+    .hero-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.55);
+      margin-bottom: 14px;
+      position: relative; z-index: 1;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 20px;
+      position: relative; z-index: 1;
+    }
+    .hero h1 em { font-style: italic; color: #a0b8ff; }
+    .hero-sub {
+      max-width: 560px;
+      color: rgba(255,255,255,.72);
+      font-size: 1.1rem;
+      line-height: 1.65;
+      margin-bottom: 40px;
+      position: relative; z-index: 1;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative; z-index: 1;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover { transform: scale(1.06); }
+    .btn-primary {
+      background: var(--white);
+      color: var(--navy);
+      box-shadow: 0 4px 18px rgba(0,0,0,.18);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 28px rgba(0,0,0,.25); }
+    .btn-ghost {
+      background: rgba(255,255,255,.12);
+      color: var(--white);
+      border: 1.5px solid rgba(255,255,255,.3);
+      backdrop-filter: blur(8px);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.2); }
+
+    /* ─── SCROLL BADGE ───────────────────────────────────────── */
+    .scroll-badge {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,.4);
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    .scroll-badge svg { opacity: .5; }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── SECTIONS ────────────────────────────────────────────── */
+    section { position: relative; z-index: 1; }
+    .section-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 90px 24px;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      color: var(--navy);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 640px;
+    }
+
+    /* ─── VIDEO ───────────────────────────────────────────────── */
+    .video-section { background: var(--navy); }
+    .video-section .section-title { color: var(--white); }
+    .video-section .section-label  { color: #a0b8ff; }
+    .video-section .section-desc   { color: rgba(255,255,255,.65); }
+    .video-wrap {
+      margin-top: 44px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+      aspect-ratio: 16/9;
+      max-width: 860px;
+    }
+    .video-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+    .yt-thumb {
+      display: block;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .yt-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .yt-play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,.25);
+      transition: background .2s;
+    }
+    .yt-thumb:hover .yt-play { background: rgba(0,0,0,.1); }
+    .yt-play svg { filter: drop-shadow(0 2px 8px rgba(0,0,0,.5)); transform: scale(1.5); }
+
+    /* ─── FEATURES GRID ──────────────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+      margin-top: 52px;
+    }
+    .feat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 26px;
+      box-shadow: var(--shadow);
+      transition: transform .22s ease, box-shadow .22s ease;
+      cursor: default;
+    }
+    .feat-card:hover { transform: scale(1.035); box-shadow: 0 14px 42px rgba(33,32,86,.18); }
+    .feat-icon {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+    }
+
+    .feat-icon img {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      display: block;
+      mix-blend-mode: multiply;
+    }
+    .feat-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .feat-card p { color: var(--muted); line-height: 1.6; font-size: .95rem; }
+
+    /* ─── APP SCREENSHOTS / MOCKUP STRIP ─────────────────────── */
+    .mockup-row {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-top: 50px;
+      scrollbar-width: none;
+    }
+    .mockup-row::-webkit-scrollbar { display: none; }
+    .mock-frame {
+      flex: 0 0 260px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .22s ease;
+    }
+    .mock-frame:hover { transform: scale(1.04); }
+    .mock-bar {
+      background: var(--navy);
+      padding: 8px 14px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .mock-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .mock-bar img {
+      height: 180px;
+      width: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .mock-label {
+      padding: 12px 14px;
+      font-weight: 600;
+      font-size: .85rem;
+      color: var(--navy);
+    }
+
+    /* ─── TEAM ────────────────────────────────────────────────── */
+    .team-section { background: var(--soft); }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .team-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .team-card:hover { transform: scale(1.03); box-shadow: 0 12px 36px rgba(33,32,86,.16); }
+    .avatar-photo-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+    }
+    .avatar-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+    .team-body {
+      padding: 22px 22px 24px;
+    }
+    .team-info h4 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .team-role {
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .team-info p { color: var(--muted); font-size: .9rem; line-height: 1.55; }
+
+    /* ─── ABOUT / PROCESS ─────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-top: 24px;
+    }
+    @media (max-width: 780px) { .about-grid { grid-template-columns: 1fr; gap: 32px; } }
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+    .stat-row {
+      display: flex;
+      gap: 24px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+    .stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .stat-lbl { font-size: .8rem; color: var(--muted); margin-top: 4px; }
+    .process-list { display: flex; flex-direction: column; gap: 20px; }
+    .proc-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .proc-num {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .proc-text h5 { font-size: .95rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+    .proc-text p  { font-size: .88rem; color: var(--muted); line-height: 1.5; }
+
+    /* ─── LINKS / CTA ─────────────────────────────────────────── */
+    .cta-section { background: var(--navy); }
+    .cta-section .section-title { color: var(--white); }
+    .cta-section .section-desc  { color: rgba(255,255,255,.65); }
+    .links-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+    .link-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,.1);
+      border: 1.5px solid rgba(255,255,255,.18);
+      border-radius: 50px;
+      padding: 12px 22px;
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: .92rem;
+      backdrop-filter: blur(10px);
+      transition: transform .2s ease, background .2s ease;
+    }
+    .link-card:hover { transform: scale(1.06); background: rgba(255,255,255,.18); }
+
+    /* ─── FOOTER ──────────────────────────────────────────────── */
+    footer {
+      background: #13133a;
+      padding: 32px 24px;
+      text-align: center;
+      color: rgba(255,255,255,.35);
+      font-size: .85rem;
+      position: relative;
+      z-index: 1;
+    }
+    footer strong { color: rgba(255,255,255,.65); }
+
+    /* ─── SCHOOL BADGE ───────────────────────────────────────── */
+    .school-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 50px;
+      padding: 8px 18px;
+      color: rgba(255,255,255,.6);
+      font-size: .82rem;
+      font-weight: 500;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .school-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #a0b8ff; }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .team-grid     { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="school-badge">
+      <span class="dot"></span>
+      Phoenix Coding Academy · AZ-03 · Congressional App Challenge 2025
+    </div>
+
+    <!-- NC+ Logo -->
+    <img
+      class="hero-logo"
+      src="Logo-NC+-01.png"
+      alt="NaviCare Logo"
+    />
+
+    <p class="hero-tag">Made by students, for everyone</p>
+    <h1>Navi<em>Care</em></h1>
+    <p class="hero-sub">
+      We made NaviCare because navigating medical information can become really confusing. We wanted to make a simple hub for your information, that actually helps people — similar to MyChart, but more straightforward.
+    </p>
+    <div class="hero-btns">
+      <a class="btn btn-primary" href="#video">▶ Watch Our Video</a>
+      <a class="btn btn-ghost"   href="#features">See What It Does</a>
+    </div>
+
+    <div class="scroll-badge">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+      </svg>
+      Scroll
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       VIDEO
+  ══════════════════════════════════════════════ -->
+  <section id="video" class="video-section">
+    <div class="section-inner">
+      <p class="section-label">Our Demo Video</p>
+      <h2 class="section-title">Here's How It Works</h2>
+      <p class="section-desc">We made a video showing off all the pages and features. You can see the whole app in action here — The video was directed by Grey and we're proud of the final result.</p>
+      <div class="video-wrap" id="yt-player">
+        <div class="yt-thumb" id="yt-facade" onclick="loadYT()">
+          <img src="https://img.youtube.com/vi/sd6K0Xiqi1Q/maxresdefault.jpg" alt="NaviCare Demo Video" onerror="this.src='https://img.youtube.com/vi/sd6K0Xiqi1Q/hqdefault.jpg'">
+          <div class="yt-play">
+            <svg viewBox="0 0 68 48" width="68" height="48">
+              <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#f00"/>
+              <path d="M45 24 27 14v20" fill="#fff"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <script>
+        function loadYT() {
+          const player = document.getElementById('yt-player');
+          /* position:relative + absolute iframe = reliable 16/9 fill */
+          player.style.position = 'relative';
+          player.innerHTML = '<iframe src="https://www.youtube.com/embed/sd6K0Xiqi1Q?autoplay=1&rel=0" title="NaviCare Demo Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:none;display:block;"></iframe>';
+        }
+      </script>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       FEATURES
+  ══════════════════════════════════════════════ -->
+  <section id="features">
+    <div class="section-inner">
+      <p class="section-label">What's in the app</p>
+      <h2 class="section-title">4 Pages, Each One<br>Does Something Different.</h2>
+      <p class="section-desc">We split NaviCare into four main pages so it stays organized and easy to navigate. Here's what each one does.</p>
+
+      <div class="features-grid">
+        <div class="feat-card">
+          <div class="feat-icon"><img src="home.png" alt="Home" /></div>
+          <p>This is the main page. It shows health news and articles pulled from places like the CDC and WHO. There's a slideshow at the top with some of the latest articles and info cards at the bottom you can click on as well.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><img src="healthhub.png" alt="Health Hub" /></div>
+          <p>This is where you can see your upcoming doctor appointments. Each one shows the date, time, location, and if you click "more details" it gives you extra stuff like what to bring or how to prepare.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><img src="health guide.png" alt="Health Guide" /></div>
+          <p>This page has a chat-style assistant that asks you questions and helps you determine whether or not you should see a doctor, and can help you book an appointment. It's a prototype and is not a sustitute for real medical advice — we made sure to put a disclaimer regarding that that.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><img src="myacc.png" alt="My Account" /></div>
+          <p>This is the Profile page. Here you can see and edit your personal info like your name, birthday, address, phone number, insurance, doctor's name, and billing info. You click Edit to change those areas and Save when you're done.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       ABOUT / PROCESS
+  ══════════════════════════════════════════════ -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="section-label">About the App</p>
+          <h2 class="section-title" style="margin-bottom:20px">Why Did We Make This?</h2>
+          <p>We felt like a lot of health apps are either too complicated or too expensive to access. We wanted to make something that felt simple and clean — kind of like if MyChart got a redesign that normal people could actually use without getting confused.</p>
+          <p>We're three sophomores at the Phoenix Coding Academy in Phoenix, Arizona. Our school is really focused on coding and tech, so this was an important project for us. It took us several weeks to get it all done, and we split the workload into tasks specific to each role.</p>
+          <div class="stat-row">
+            <div class="stat"><span class="stat-num">4</span><span class="stat-lbl">Pages in the app</span></div>
+            <div class="stat"><span class="stat-num">3</span><span class="stat-lbl">Team members</span></div>
+            <div class="stat"><span class="stat-num">10th</span><span class="stat-lbl">Grade (Sophomores)</span></div>
+          </div>
+        </div>
+
+        <div>
+          <p class="section-label" style="margin-bottom:20px">How We Made It</p>
+          <div class="process-list">
+            <div class="proc-item">
+              <div class="proc-num">1</div>
+              <div class="proc-text">
+                <h5>Coming Up With the Idea</h5>
+                <p>Antoni came up with the idea for NaviCare and pitched it to Grey and Sean to form the team. He planned out the base features and then expanded on them with help of his team.</p>
+              </div>
+            </div>
+            <div class="proc-item">
+              <div class="proc-num">2</div>
+              <div class="proc-text">
+                <h5>Designing It</h5>
+                <p>Grey made all the designs — the logo, the nav buttons, the color scheme, all of it. He also directed the demo video we submitted and did most of our documenting and forms related to the Congressional App Challenge.</p>
+              </div>
+            </div>
+            <div class="proc-item">
+              <div class="proc-num">3</div>
+              <div class="proc-text">
+                <h5>Writing the Content</h5>
+                <p>Sean wrote most of the text you see in the app — the article descriptions, the health tips, the appointment details, pretty much all of the written stuff.</p>
+              </div>
+            </div>
+            <div class="proc-item">
+              <div class="proc-num">4</div>
+              <div class="proc-text">
+                <h5>Coding It</h5>
+                <p>Antoni coded the website and created this page. That includes the article slideshow, the chat-style health guide, the appointments page, and the editable profile — all done in HTML, CSS and JavaScript.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       TEAM
+  ══════════════════════════════════════════════ -->
+  <section id="team">
+    <div class="section-inner">
+      <p class="section-label">Who We Are</p>
+      <h2 class="section-title">Meet the Team</h2>
+      <p class="section-desc">We're a group of three close friends both in and out of school. We attend the Phoenix Coding Academy, part of the Phoenix Union High School district in the state of Arizona, and we are all currently Sophomores. The collaboration between us three was exceptional, despite the threat of procrastination.</p>
+
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="avatar-photo-wrap"><img class="avatar-photo" src="Image (3).jpg" alt="Antoni Gonzalez" /></div>
+          <div class="team-body">
+            <div class="team-info">
+              <h4>Antoni Gonzalez</h4>
+              <span class="team-role">Code Developer · App Idea</span>
+              <p>Antoni came up with the idea for NaviCare and coded the website. All four pages and the features were built by him. He also created the base for our app, figuring out how we wanted it to function before we began building.</p>
+            </div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="avatar-photo-wrap"><img class="avatar-photo" src="Image (2).jpg" alt="Grey Ricker" /></div>
+          <div class="team-body">
+            <div class="team-info">
+              <h4>Grey Ricker</h4>
+              <span class="team-role">UI Designer · Video Director</span>
+              <p>Grey designed the elements that you see — the logo, the nav buttons, the colors. He also directed our demo video and overall made sure that this was a visually pleasing experience.</p>
+            </div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="avatar-photo-wrap"><img class="avatar-photo" src="Image (4).jpg" alt="Sean Collay" /></div>
+          <div class="team-body">
+            <div class="team-info">
+              <h4>Sean Collay</h4>
+              <span class="team-role">Content Writer</span>
+              <p>Sean wrote most of the content inside the app. The health article descriptions, the tips, the appointment descriptions — most of the things you read in the app were written by Sean.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       CTA / LINKS
+  ══════════════════════════════════════════════ -->
+  <section class="cta-section">
+    <div class="section-inner">
+      <p class="section-label">Check It Out</p>
+      <h2 class="section-title">Try NaviCare Yourself</h2>
+      <p class="section-desc">You can open the actual app, watch our demo video, or look at the code. We built it all ourselves so feel free to check it out.</p>
+      <div class="links-row">
+        <a class="link-card btn" href="https://www.youtube.com/watch?v=sd6K0Xiqi1Q" target="_blank">
+          ▶ Watch on YouTube
+        </a>
+        <a class="link-card btn" href="https://github.com/extremelyfishstick-cy/Congressional-App-Challenge-AZ03" target="_blank">
+          ⌥ View Source Code
+        </a>
+      </div>
+
+      <div style="margin-top:60px; padding-top:40px; border-top: 1px solid rgba(255,255,255,.12);">
+        <p class="section-label" style="color:#a0b8ff">Quick Note</p>
+        <p style="color:rgba(255,255,255,.5); font-size:.88rem; max-width:580px; line-height:1.7;">
+          The Health Guide page is just a prototype we made for the demo — it's not real medical advice and shouldn't be used that way. We put a warning inside the app too so nobody gets confused about that.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════ -->
+  <footer>
+    <p>
+      <strong>NaviCare</strong> · AZ-03 · Phoenix Coding Academy, Phoenix, Arizona<br />
+      Antoni Gonzalez · Grey Ricker · Sean Collay · 10th Grade · 2025 Congressional App Challenge<br />
+      <span style="font-size:.75rem; margin-top:6px; display:block;">We're just three sophomores who wanted to make something actually useful. Hope you like it 🌸</span>
+    </p>
+  </footer>
+
+</div><!-- .page -->
+
+<!-- Required by Congressional App Challenge — DO NOT REMOVE -->
+<script src="../../nav.js"></script>
+
+<!-- ══ SHOCKWAVE / RIPPLE ON CLICK ══ -->
+<script>
+  document.addEventListener('click', function (e) {
+    const ring = document.createElement('div');
+    ring.className = 'ripple-ring';
+    const size = 120;
+    ring.style.cssText = `
+      width: ${size}px;
+      height: ${size}px;
+      left: ${e.clientX}px;
+      top: ${e.clientY}px;
+    `;
+    document.body.appendChild(ring);
+
+    // second, larger ring
+    const ring2 = document.createElement('div');
+    ring2.className = 'ripple-ring';
+    ring2.style.cssText = `
+      width: ${size * 1.8}px;
+      height: ${size * 1.8}px;
+      left: ${e.clientX}px;
+      top: ${e.clientY}px;
+      animation-delay: .08s;
+      border-color: rgba(91,140,255,.3);
+    `;
+    document.body.appendChild(ring2);
+
+    setTimeout(() => { ring.remove(); ring2.remove(); }, 900);
+  });
+</script>
+
+</body>
+</html>

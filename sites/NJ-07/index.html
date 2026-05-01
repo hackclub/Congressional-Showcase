@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChronoIQ — NJ-07 | Congressional App Challenge</title>
+
+  <!-- required shared styles — do not remove -->
+  <link rel="stylesheet" href="../../shared.css" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple:       #D0BFFF;
+      --purple-dark:  #7c5cbf;
+      --orange:       #FB923C;
+      --orange-dark:  #C2410C;
+      --bg:           #F5F5F5;
+      --surface:      #ffffff;
+      --text:         #1a1a2e;
+      --muted:        #6b7280;
+      --border:       #e5e7eb;
+      --radius:       0.75rem;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    section { padding: 4rem 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+
+    p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    /* ── Hero ─────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #2d1b69 55%, #3d1a00 100%);
+      color: #fff;
+      padding: 5rem 0 4rem;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(208, 191, 255, 0.15);
+      border: 1px solid var(--purple);
+      color: var(--purple);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      background: linear-gradient(90deg, var(--purple), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .hero .tagline {
+      font-size: 1.15rem;
+      color: rgba(255, 255, 255, 0.72);
+      max-width: 520px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .btn-primary {
+      background: var(--orange);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    /* ── Video ────────────────────────────── */
+    .video-poster {
+      display: block;
+      position: relative;
+      padding-bottom: 56.25%;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .video-poster img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .video-poster:hover img {
+      transform: scale(1.02);
+      opacity: 0.85;
+    }
+
+    .play-btn {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .play-btn-inner {
+      width: 72px;
+      height: 72px;
+      background: rgba(0, 0, 0, 0.65);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .video-poster:hover .play-btn-inner {
+      background: var(--orange);
+      border-color: var(--orange);
+      transform: scale(1.08);
+    }
+
+    .play-btn-inner svg {
+      width: 28px;
+      height: 28px;
+      color: #fff;
+      margin-left: 4px; /* optical center for play triangle */
+    }
+
+    /* ── Feature grid ─────────────────────── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+
+    .feature-card .icon {
+      width: 28px;
+      height: 28px;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+      opacity: 0.75;
+    }
+
+    .feature-card .icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .feature-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p { font-size: 0.875rem; margin: 0; }
+
+    /* ── Builders ─────────────────────────── */
+    .district-banner {
+      background: linear-gradient(135deg, rgba(208,191,255,0.12), rgba(251,146,60,0.12));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .district-banner .district-label {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--purple-dark);
+      white-space: nowrap;
+    }
+
+    .district-banner .district-info {
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .builders {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .builder-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+
+    .builder-card .name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+
+    .builder-card .location {
+      font-size: 0.8rem;
+      color: var(--orange-dark);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+
+    .builder-card p { font-size: 0.9rem; margin: 0; }
+
+    /* ── Tech stack ───────────────────────── */
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .tech-tag {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* ── Privacy note ─────────────────────── */
+    .privacy-note {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--orange);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-top: 1.25rem;
+    }
+
+    .privacy-note strong { color: var(--text); }
+  </style>
+</head>
+
+<body>
+
+<!-- shared nav — do not remove -->
+<div id="nav-placeholder"></div>
+
+<!-- ── Hero ──────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">NJ-07 &bull; Congressional App Challenge</div>
+    <h1>ChronoIQ</h1>
+    <p class="tagline">
+      Stop procrastinating. Connect your Google Calendar and Classroom,
+      and let Gemini AI build your study schedule automatically.
+    </p>
+    <div class="hero-links">
+      <a class="btn btn-primary" href="https://chronoiq.dev" target="_blank" rel="noopener">
+        Try ChronoIQ
+      </a>
+      <a class="btn btn-secondary" href="https://github.com/MaxwellBrohm/ChronoIQ" target="_blank" rel="noopener">
+        View Source
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Demo Video ─────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <h2>Demo</h2>
+    <a class="video-poster"
+       href="https://www.youtube.com/watch?v=Z4pOUTWQaOk"
+       target="_blank"
+       rel="noopener"
+       aria-label="Watch ChronoIQ demo on YouTube">
+      <img
+        src="https://img.youtube.com/vi/Z4pOUTWQaOk/maxresdefault.jpg"
+        alt="ChronoIQ demo video thumbnail"
+        onerror="this.src='https://img.youtube.com/vi/Z4pOUTWQaOk/hqdefault.jpg'"
+      />
+      <div class="play-btn">
+        <div class="play-btn-inner">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ── About the App ──────────────────────────────────── -->
+<section>
+  <div class="container">
+    <h2>About ChronoIQ</h2>
+    <p>
+      Every student faces the same wall: a pile of assignments, a calendar already full of
+      commitments, and no clear path to getting everything done. ChronoIQ tears down that wall.
+    </p>
+    <p>
+      It connects to your Google Calendar and Google Classroom, finds your actual free time,
+      and uses Gemini AI to break each assignment into realistic study blocks — written directly
+      to your calendar, no manual planning needed.
+    </p>
+
+    <div class="feature-grid">
+
+      <div class="feature-card">
+        <div class="icon">
+          <!-- Book icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+        </div>
+        <h3>Import Assignments</h3>
+        <p>Pulls your active Classroom assignments into a triage queue with due dates and submission status.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">
+          <!-- Sparkles / AI icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+            <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
+          </svg>
+        </div>
+        <h3>AI Scheduling</h3>
+        <p>Gemini 2.5 Flash analyzes your assignment details and free time windows to create an optimized plan.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">
+          <!-- Calendar icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="4" rx="2"/>
+            <line x1="16" x2="16" y1="2" y2="6"/>
+            <line x1="8" x2="8" y1="2" y2="6"/>
+            <line x1="3" x2="21" y1="10" y2="10"/>
+          </svg>
+        </div>
+        <h3>Calendar Sync</h3>
+        <p>Study blocks are written directly into Google Calendar, working around your existing commitments.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">
+          <!-- Check-circle icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h3>Progress Tracking</h3>
+        <p>Check off blocks as you finish them and watch your assignment progress update in real time.</p>
+      </div>
+
+    </div>
+
+    <div class="privacy-note">
+      <strong>Privacy-first:</strong> ChronoIQ stores nothing on its servers. All fetched data lives
+      in browser memory only. The only persistence is an encrypted session cookie and the calendar
+      events ChronoIQ creates in your own Google Calendar.
+    </div>
+  </div>
+</section>
+
+<!-- ── The Builders ───────────────────────────────────── -->
+<section>
+  <div class="container">
+    <h2>The Builders</h2>
+
+    <div class="district-banner">
+      <div class="district-label">NJ-07</div>
+      <div class="district-info">New Jersey's 7th Congressional District &bull; Northern New Jersey</div>
+    </div>
+
+    <div class="builders">
+      <div class="builder-card">
+        <div class="name">Maxwell Brohm</div>
+        <div class="location">Califon, NJ</div>
+        <p>
+          A high school student with a passion for software and building tools that actually solve
+          real problems. Maxwell led ChronoIQ's full-stack development — from the Next.js
+          frontend and custom OAuth 2.0 flow to the Gemini AI integration and Cloudflare
+          deployment.
+        </p>
+      </div>
+      <div class="builder-card">
+        <div class="name">Zander Leon</div>
+        <div class="location">Kinnelon, NJ</div>
+        <p>
+          A high school student interested in technology and design. Zander helped shape
+          ChronoIQ from initial concept through to a polished, deployed product — contributing
+          to the user experience and overall direction of the app.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Tech Stack ─────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <h2>Tech Stack</h2>
+    <p>Built with modern web technologies. Everything is open source and self-hostable.</p>
+    <div class="tech-list">
+      <span class="tech-tag">Next.js 15</span>
+      <span class="tech-tag">TypeScript</span>
+      <span class="tech-tag">Google Gemini 2.5 Flash</span>
+      <span class="tech-tag">Firebase Genkit</span>
+      <span class="tech-tag">Google Calendar API</span>
+      <span class="tech-tag">Google Classroom API</span>
+      <span class="tech-tag">OAuth 2.0</span>
+      <span class="tech-tag">AES-256-GCM Sessions</span>
+      <span class="tech-tag">shadcn/ui</span>
+      <span class="tech-tag">Tailwind CSS</span>
+      <span class="tech-tag">Cloudflare Pages</span>
+    </div>
+  </div>
+</section>
+
+<!-- required nav script — do not remove -->
+<script src="../../nav.js"></script>
+
+</body>
+</html>

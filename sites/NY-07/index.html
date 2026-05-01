@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LearnIT | Eduardo Almeyda</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Epilogue:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #09090b;
+      --surface:   #111115;
+      --surface2:  #16161c;
+      --border:    #1f1f28;
+      --text:      #e4e2dc;
+      --muted:     #52525e;
+      --subtle:    #2a2a35;
+      --gold:      #d4a853;
+      --gold-glow: rgba(212,168,83,0.18);
+      --gold-dim:  rgba(212,168,83,0.08);
+      --cac-navy:  #000f63;
+      --cac-red:   #a53535;
+      --cac-white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Epilogue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      cursor: none;
+    }
+
+    /* ── Custom Cursor ── */
+    #cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      mix-blend-mode: screen;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 38px; height: 38px;
+      border: 1px solid rgba(212,168,83,0.45);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: width 0.3s, height 0.3s, border-color 0.3s;
+    }
+
+    /* ── Back nav ── */
+    .back-to-showcase {
+      position: fixed;
+      top: 1.4rem; left: 1.6rem;
+      z-index: 200;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-to-showcase:hover { color: var(--gold); }
+
+    /* ── Dot grid ── */
+    #dot-canvas {
+      position: fixed; inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    /* ── Page wrapper ── */
+    .page {
+      position: relative; z-index: 1;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 5vw;
+      container-type: inline-size;
+    }
+
+    /* ═══ HERO ═══ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 0 5rem;
+    }
+
+    .hero-arc-wrap {
+      position: absolute;
+      right: -15vw;
+      top: 50%;
+      transform: translateY(-50%);
+      width: clamp(500px, 60vw, 1000px);
+      height: clamp(500px, 60vw, 1000px);
+      pointer-events: none;
+      animation: arcPulse 12s ease-in-out infinite alternate;
+    }
+    @keyframes arcPulse {
+      from { opacity: 0.45; transform: translateY(-50%) rotate(0deg) scale(1); }
+      to   { opacity: 0.8;  transform: translateY(-50%) rotate(12deg) scale(1.1); }
+    }
+    .hero-arc-wrap svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .hero-line {
+      display: block;
+      width: max-content;
+      white-space: nowrap;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(4rem, 11cqw, 10.5rem);
+      line-height: 0.88;
+      letter-spacing: -0.03em;
+      clip-path: inset(0 -5vw 100% -5vw); 
+      animation: revealClip 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    
+    .hero-line:nth-child(1) { color: var(--text); animation-delay: 0.1s; }
+    .hero-line:nth-child(2) { color: var(--gold); animation-delay: 0.22s; }
+    .hero-line:nth-child(3) {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(228,226,220,0.25);
+      animation-delay: 0.34s;
+    }
+    
+    @keyframes revealClip { 
+      to { clip-path: inset(0 -5vw 0% -5vw); } 
+    }
+
+    .hero-name-block { margin-bottom: clamp(3.5rem, 6vw, 6rem); }
+
+    .hero-sub {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 3rem;
+      flex-wrap: wrap;
+      width: 100%;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.7s forwards;
+    }
+
+    .hero-tagline {
+      font-weight: 300;
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      line-height: 1.75;
+      color: #a0a0b0;
+      max-width: 500px;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.65rem;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .chip::before {
+      content: '';
+      display: block;
+      width: 25px; height: 1px;
+      background: var(--gold);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem; left: 5vw;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 0.6s ease 1.1s forwards;
+    }
+    .scroll-line {
+      width: 40px; height: 1px;
+      background: var(--subtle);
+      position: relative; overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--gold);
+      animation: scanLine 2s ease-in-out 1.5s infinite;
+    }
+    @keyframes scanLine { to { left: 200%; } }
+
+    /* ═══ MARQUEE ═══ */
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      white-space: nowrap;
+      background: var(--surface);
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+    }
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-item {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 3.5rem;
+    }
+    .marquee-item.gold { color: var(--gold); }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* ═══ SECTION LABELS ═══ */
+    .sec-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .sec-label::before {
+      content: '';
+      display: block;
+      width: 40px; height: 1px;
+      background: var(--gold);
+    }
+    .sec-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem,5vw,4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+      margin-bottom: 2rem;
+    }
+
+    /* ═══ ABOUT SECTION ═══ */
+    .about-band {
+      position: relative;
+      border-bottom: 1px solid var(--border);
+      padding: clamp(5rem, 8vw, 8rem) 0;
+      overflow: hidden;
+    }
+    .band-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      pointer-events: none;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(4rem, 8vw, 8rem);
+      margin-top: 2rem;
+    }
+    .about-grid h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--text);
+    }
+    .about-grid h2 span { color: var(--gold); }
+    .about-grid p {
+      font-weight: 300;
+      color: #a0a0b0;
+      line-height: 1.85;
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ═══ APP SECTION & LOGO ═══ */
+    .app-section { padding: clamp(6rem, 10vw, 10rem) 0; position: relative; }
+
+    .app-intro {
+      display: grid;
+      grid-template-columns: minmax(220px, 320px) 1fr;
+      gap: clamp(4rem, 8vw, 8rem);
+      margin-bottom: clamp(5rem, 8vw, 8rem);
+      align-items: center;
+    }
+
+    .logo-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      background: rgba(212,168,83,0.02);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem;
+    }
+    .logo-frame::before {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      border: 1px solid var(--gold);
+      opacity: 0.3;
+      animation: framePulse 4s ease-in-out infinite alternate;
+    }
+    @keyframes framePulse {
+      from { opacity: 0.18; inset: -10px; }
+      to   { opacity: 0.45; inset: -18px; }
+    }
+    .logo-frame img {
+      position: relative; z-index: 1;
+      width: 100%; height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .corner { position: absolute; width: 22px; height: 22px; z-index: 2; }
+    .corner::before, .corner::after { content: ''; position: absolute; background: var(--gold); }
+    .corner::before { width: 2px; height: 100%; top: 0; }
+    .corner::after  { width: 100%; height: 2px; top: 0; }
+    .corner.tl { top:-2px; left:-2px; }
+    .corner.tr { top:-2px; right:-2px; transform: scaleX(-1); }
+    .corner.bl { bottom:-2px; left:-2px; transform: scaleY(-1); }
+    .corner.br { bottom:-2px; right:-2px; transform: scale(-1); }
+
+    .app-text p {
+      font-weight: 300;
+      color: #a0a0b0;
+      line-height: 1.85;
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+      margin-bottom: 1.5rem;
+      max-width: 800px;
+    }
+
+    /* ── FIX: STACKED FEATURES GRID ── */
+    .features {
+      display: grid;
+      grid-template-columns: 1fr; /* Forces a single stacked column */
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .feat {
+      background: var(--bg);
+      padding: clamp(2.5rem, 4vw, 4rem);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .feat::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--gold-dim);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .feat:hover::before { transform: scaleX(1); }
+
+    .feat-corner-dot {
+      position: absolute; top: 2rem; right: 2rem;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: background 0.3s;
+    }
+    .feat:hover .feat-corner-dot { background: var(--gold); }
+
+    .feat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      position: relative;
+    }
+    .feat-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+      position: relative;
+      transition: color 0.3s;
+    }
+    .feat:hover .feat-title { color: var(--gold); }
+    .feat p {
+      font-size: clamp(0.95rem, 1vw, 1.05rem);
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.8;
+      position: relative;
+      transition: color 0.3s;
+      margin: 0;
+      max-width: 800px; /* Prevents text from becoming an unreadable long line */
+    }
+    .feat:hover p { color: #a0a0b0; }
+
+    .feat-bg-num {
+      position: absolute;
+      bottom: -1rem; right: 1rem;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(6rem, 10vw, 10rem); /* Made slightly larger for the stacked layout */
+      font-weight: 800;
+      color: var(--border);
+      line-height: 1;
+      pointer-events: none;
+      transition: color 0.3s;
+      user-select: none;
+    }
+    .feat:hover .feat-bg-num { color: rgba(212,168,83,0.07); }
+
+    /* Stack */
+    .stack-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .stack-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .stack-tags { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+    .stag {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.6rem 1.25rem;
+      background: var(--surface);
+      transition: border-color 0.22s, color 0.22s, background 0.22s;
+    }
+    .stag:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+    /* ═══ VIDEO ═══ */
+    .video-section { padding: clamp(4rem, 8vw, 8rem) 0; }
+
+    .video-outer {
+      position: relative;
+      margin: 4rem auto 0 auto;
+      width: 100%;
+      max-width: 1280px;
+    }
+    .v-bracket {
+      position: absolute;
+      width: 40px; height: 40px;
+      z-index: 2;
+    }
+    .v-bracket::before, .v-bracket::after {
+      content: ''; position: absolute; background: var(--gold);
+    }
+    .v-bracket::before { width: 2px; height: 100%; }
+    .v-bracket::after  { width: 100%; height: 2px; }
+    .v-bracket.tl { top:-15px; left:-15px; }
+    .v-bracket.tr { top:-15px; right:-15px; transform: scaleX(-1); }
+    .v-bracket.bl { bottom:-15px; left:-15px; transform: scaleY(-1); }
+    .v-bracket.br { bottom:-15px; right:-15px; transform: scale(-1); }
+
+    .video-embed { width: 100%; aspect-ratio: 16/9; background: #000; }
+    .video-embed iframe { width: 100%; height: 100%; border: none; display: block; }
+
+    /* ═══ LINKS ═══ */
+    .links-section {
+      padding: clamp(5rem, 8vw, 8rem) 0 4rem;
+      border-top: 1px solid var(--border);
+    }
+    .links-row {
+      display: flex; gap: 1.5rem; flex-wrap: wrap;
+      margin-top: 3rem;
+    }
+    .lbtn {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      padding: 1rem 2rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      position: relative; overflow: hidden;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .lbtn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--gold);
+      transform: translateX(-110%);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      z-index: 0;
+    }
+    .lbtn:hover::before { transform: translateX(0); }
+    .lbtn:hover { color: var(--bg); border-color: var(--gold); }
+    .lbtn span, .lbtn svg { position: relative; z-index: 1; }
+    .lbtn svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
+    .lbtn.outline { background: transparent; color: var(--muted); }
+    .lbtn.outline::before { background: var(--surface2); }
+    .lbtn.outline:hover { color: var(--text); border-color: var(--muted); }
+
+    /* ═══ FOOTER ═══ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .foot-left {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .foot-right a {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .foot-right a:hover { color: var(--gold); }
+
+    /* ═══ SCROLL REVEAL ═══ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.75s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ── Utilities ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .app-intro { grid-template-columns: 1fr; gap: 3rem; }
+      .logo-frame { width: clamp(180px, 40vw, 280px); margin: 0 auto; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-sub { flex-direction: column; align-items: flex-start; gap: 2.5rem;}
+      .hero-chips { align-items: flex-start; }
+    }
+    @media (max-width: 560px) {
+      .page { padding: 0 1.25rem; }
+      .hero { padding-top: 6rem; }
+      .hero-sub { gap: 2rem; }
+      .links-row { flex-direction: column; }
+      .lbtn { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+  <canvas id="dot-canvas"></canvas>
+
+  <a href="../../" class="back-to-showcase">&larr; Back</a>
+
+  <div class="page">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-arc-wrap" aria-hidden="true">
+        <svg viewBox="0 0 580 580" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <circle cx="290" cy="290" r="280" stroke="rgba(212,168,83,0.09)" stroke-width="1"/>
+          <circle cx="290" cy="290" r="210" stroke="rgba(212,168,83,0.07)" stroke-width="1"/>
+          <circle cx="290" cy="290" r="140" stroke="rgba(212,168,83,0.12)" stroke-width="1"/>
+          <circle cx="290" cy="290" r="70"  stroke="rgba(212,168,83,0.08)" stroke-width="1"/>
+          <path d="M290 10 A280 280 0 0 1 570 290"
+                stroke="rgba(212,168,83,0.6)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M70 70 A280 280 0 0 0 290 570"
+                stroke="rgba(212,168,83,0.2)" stroke-width="1" stroke-linecap="round"/>
+          <line x1="290" y1="10"  x2="290" y2="570" stroke="rgba(212,168,83,0.05)" stroke-width="1"/>
+          <line x1="10"  y1="290" x2="570" y2="290" stroke="rgba(212,168,83,0.05)" stroke-width="1"/>
+          <line x1="90"  y1="90"  x2="490" y2="490" stroke="rgba(212,168,83,0.04)" stroke-width="1"/>
+          <line x1="490" y1="90"  x2="90"  y2="490" stroke="rgba(212,168,83,0.04)" stroke-width="1"/>
+          <circle cx="290" cy="10"  r="4" fill="rgba(212,168,83,0.8)"/>
+          <circle cx="570" cy="290" r="3" fill="rgba(212,168,83,0.5)"/>
+          <circle cx="290" cy="290" r="5" fill="none" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
+          <circle cx="290" cy="290" r="2" fill="rgba(212,168,83,0.5)"/>
+        </svg>
+      </div>
+
+      <div class="hero-name-block">
+        <span class="hero-line">EDUARDO</span>
+        <span class="hero-line">ALMEYDA</span>
+        <span class="hero-line">NY&#8209;07</span>
+      </div>
+
+      <div class="hero-sub">
+        <p class="hero-tagline">
+          Aspiring software engineer focused on making apps to help students learn.
+        </p>
+        <div class="hero-chips">
+          <span class="chip">Queens Tech H.S.</span>
+          <span class="chip">Cybersecurity + CS</span>
+        </div>
+      </div>
+
+      <div class="scroll-hint">
+        <span class="scroll-line"></span>
+        Scroll to explore
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee-wrap" aria-hidden="true">
+      <div class="marquee-track">
+        <span class="marquee-item">LearnIT</span><span class="marquee-item gold">·</span>
+        <span class="marquee-item">Congressional App Challenge</span><span class="marquee-item gold">·</span>
+        <span class="marquee-item">React · Electron · Python · Flask</span><span class="marquee-item gold">·</span>
+        <span class="marquee-item">NY District 07</span><span class="marquee-item gold">·</span>
+        <span class="marquee-item">AI-Powered Learning</span><span class="marquee-item gold">·</span>
+        <span class="marquee-item">Eduardo Almeyda</span><span class="marquee-item gold">·</span>
+        <span class="marquee-item">LearnIT</span><span class="marquee-item gold">·</span>
+        <span class="marquee-item">Congressional App Challenge</span><span class="marquee-item gold">·</span>
+        <span class="marquee-item">React · Electron · Python · Flask</span><span class="marquee-item gold">·</span>
+        <span class="marquee-item">NY District 07</span><span class="marquee-item gold">·</span>
+        <span class="marquee-item">AI-Powered Learning</span><span class="marquee-item gold">·</span>
+        <span class="marquee-item">Eduardo Almeyda</span><span class="marquee-item gold">·</span>
+      </div>
+    </div>
+
+    <!-- ABOUT SECTION -->
+    <div class="about-band reveal">
+      <div class="band-ring" style="width:320px;height:320px;right:-60px;top:50%;transform:translateY(-50%)" aria-hidden="true"></div>
+      <div class="band-ring" style="width:190px;height:190px;right:40px;top:50%;transform:translateY(-50%);border-color:var(--subtle)" aria-hidden="true"></div>
+
+      <div class="sec-label">01 — About Me</div>
+      <div class="about-grid">
+        <h2>I am a student at Queens Tech studying <span>cybersecurity</span> and computer science.</h2>
+        <div>
+          <p>
+            I started programming when I was eight years old — sitting at my parents' laptop, figuring it out line by line before I knew what a framework was.
+          </p>
+          <p>
+            Since then I have worked in embedded systems and firmware, built engineering projects at school, and kept pushing toward problems that have real stakes. I am not interested in software that just looks like it works. I want to ship things that actually do something.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- APP SECTION -->
+    <section class="app-section">
+      
+      <!-- Logo and App Intro -->
+      <div class="app-intro">
+        <!-- THE NEW LOGO FRAME -->
+        <div class="logo-frame reveal">
+          <div class="corner tl"></div>
+          <div class="corner tr"></div>
+          <div class="corner bl"></div>
+          <div class="corner br"></div>
+          <!-- Change "logo.png" to your actual logo filename -->
+          <img src="logo.png" alt="LearnIT Logo">
+        </div>
+
+        <div class="app-text reveal reveal-delay-2">
+          <div class="sec-label">02 — The Application</div>
+          <h2 class="sec-title">LearnIT</h2>
+          <p>I built LearnIT because passive learning is a lie. You watch a video, drift off, and retain nothing. LearnIT turns any YouTube course into an active, adaptive learning session with an AI tutor that knows exactly where you are — and what you haven't figured out yet.</p>
+          <p>At its core is an AI model with full context — the transcript, my progress, my history. It responds as a domain expert, not a generic assistant. It adapts in real time and meets me at my exact level of understanding.</p>
+          <p>Two quiz systems run alongside: one checks comprehension at my current position in the video, and one deliberately targets past failures — building tests that attack my weakest points on purpose until they're not weak anymore.</p>
+        </div>
+      </div>
+
+      <!-- Features -->
+      <div class="features reveal">
+        <div class="feat">
+          <div class="feat-corner-dot"></div>
+          <div class="feat-num">Feature 01</div>
+          <h3 class="feat-title">Progress Tracking</h3>
+          <p>The app locks onto exactly where I am in a course. Every session picks up right where the last one ended — no scrubbing, no starting over.</p>
+          <div class="feat-bg-num">01</div>
+        </div>
+        <div class="feat">
+          <div class="feat-corner-dot"></div>
+          <div class="feat-num">Feature 02</div>
+          <h3 class="feat-title">AI Tutor with Full Context</h3>
+          <p>The model has the full transcript and knows my current progress. It teaches — it does not just answer. It adjusts depth based on exactly where I actually am in the material.</p>
+          <div class="feat-bg-num">02</div>
+        </div>
+        <div class="feat">
+          <div class="feat-corner-dot"></div>
+          <div class="feat-num">Feature 03</div>
+          <h3 class="feat-title">Progress-Based Quizzes</h3>
+          <p>Multiple choice questions generated from exactly what I have covered — no more, no less. A live check on real comprehension as the video moves forward.</p>
+          <div class="feat-bg-num">03</div>
+        </div>
+        <div class="feat">
+          <div class="feat-corner-dot"></div>
+          <div class="feat-num">Feature 04</div>
+          <h3 class="feat-title">Personalized Adaptive Tests</h3>
+          <p>A second system logs every wrong answer and builds tests that target those weaknesses deliberately — until they become strengths.</p>
+          <div class="feat-bg-num">04</div>
+        </div>
+      </div>
+
+      <!-- Stack -->
+      <div class="stack-section reveal">
+        <span class="stack-label">Built with</span>
+        <div class="stack-tags">
+          <span class="stag">React</span>
+          <span class="stag">Electron</span>
+          <span class="stag">Python</span>
+          <span class="stag">Flask</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section class="video-section reveal">
+      <div class="sec-label">03 — Demo</div>
+      <h2 class="sec-title">See it in action.</h2>
+      <div class="video-outer">
+        <div class="v-bracket tl"></div>
+        <div class="v-bracket tr"></div>
+        <div class="v-bracket bl"></div>
+        <div class="v-bracket br"></div>
+        <div class="video-embed">
+          <iframe
+            src="https://www.youtube.com/embed/WiGrjawJn5I"
+            title="LearnIT Demo Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- LINKS -->
+    <section class="links-section reveal">
+      <div class="sec-label">04 — Links</div>
+      <h2 class="sec-title">Explore the project.</h2>
+      <div class="links-row">
+        <a href="https://github.com/gato001k1/LearnIT" class="lbtn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          <span>GitHub Repository</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=WiGrjawJn5I" class="lbtn outline" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          <span>Watch Demo</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <p class="foot-left"> Eduardo Almeyda &nbsp;·&nbsp; NY-07 &nbsp;·&nbsp; Congressional App Challenge</p>
+      <div class="foot-right"><a href="../../">← Back to Showcase</a></div>
+    </footer>
+
+  </div>
+
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+
+  <script>
+    /* ── Custom Cursor ── */
+    const cur  = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mx = -200, my = -200, rx = -200, ry = -200;
+
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        ring.style.width = '56px'; ring.style.height = '56px';
+        ring.style.borderColor = 'rgba(212,168,83,0.9)';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width = '38px'; ring.style.height = '38px';
+        ring.style.borderColor = 'rgba(212,168,83,0.45)';
+      });
+    });
+
+    (function animCursor() {
+      cur.style.left  = mx + 'px';  cur.style.top  = my + 'px';
+      rx += (mx - rx) * 0.12;       ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';  ring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    })();
+
+    /* ── Interactive Dot Grid ── */
+    const canvas = document.getElementById('dot-canvas');
+    const ctx    = canvas.getContext('2d');
+    const SPACING = 38, DOT_R = 1, INFLUENCE = 180;
+    let W, H, dots = [];
+
+    function buildDots() {
+      dots = [];
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      for (let x = SPACING / 2; x < W; x += SPACING)
+        for (let y = SPACING / 2; y < H; y += SPACING)
+          dots.push({ bx: x, by: y, x, y });
+    }
+
+    window.addEventListener('resize', buildDots);
+    buildDots();
+
+    (function drawDots() {
+      ctx.clearRect(0, 0, W, H);
+      for (const d of dots) {
+        const dx   = mx - d.bx, dy = my - d.by;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const pull = Math.max(0, 1 - dist / INFLUENCE);
+        d.x = d.bx + dx * pull * 0.18;
+        d.y = d.by + dy * pull * 0.18;
+        const alpha = 0.15 + pull * 0.6;
+        const r     = DOT_R + pull * 1.5;
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(212,168,83,${alpha})`;
+        ctx.fill();
+      }
+      requestAnimationFrame(drawDots);
+    })();
+
+    /* ── Scroll Reveal ── */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
