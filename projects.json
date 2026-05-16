@@ -1460,4 +1460,19 @@
   "location": { "lat": 40.7282, "lng": -73.7949, "label": "Queens, NY" },
   "district": "NY-13", "state": "NY", "tags": ["environment", "civic", "health", "social"]
 }
+  {
+  "slug": "GA-09",
+  "name": "Krish Tripathy",
+  "appName": "Pulmo Lens",
+  "description": " An AI-based platform that analyzes chest X-rays to detect and highlight pneumonia, enabling faster and more accurate clinical decisions.",
+  "thumbnail": "sites/GA-09/thumbnail.png",
+  "location": {
+    "lat": 34.108009,
+    "lng": -84.037407,
+    "label": "Sugar Hill, GA"
+  },
+  "district": "GA-09",
+  "state": "GA",
+  "tags": ["medicine", "ai"]
+}
 ]
