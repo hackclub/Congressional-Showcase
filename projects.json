@@ -1459,5 +1459,20 @@
   "thumbnail": "sites/NY-13/thumbnail.png",
   "location": { "lat": 40.7282, "lng": -73.7949, "label": "Queens, NY" },
   "district": "NY-13", "state": "NY", "tags": ["environment", "civic", "health", "social"]
+},
+{
+  "slug": "RI-02",
+  "name": "AraOluwa Adetunji",
+  "appName": "MinPlan",
+  "description": "A minimalist college planner application to help students better keep track of important deadlines, scores, events, and programs.",
+  "thumbnail": "sites/RI-02/Thumbnail.png",
+  "location": { 
+    "lat": 41.6474, 
+    "lng": -71.4780, 
+    "label": "East Greenwich, RI" 
+  },
+  "district": "RI-02", 
+  "state": "RI", 
+  "tags": ["college", "education"]
 }
 ]

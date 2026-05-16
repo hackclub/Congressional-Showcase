@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <!-- Change the title to your app name and your name -->
+  <title>MinPlan | Minimalist College Planner: AraOluwa Adetunji - </title>
+
+
+  <!-- Required: keep this line so navigation arrows are styled -->
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@400;700&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Familjen+Grotesk:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+
+
+  <style>
+    /* ============================================
+   GLOBAL STYLES
+   ============================================ */
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+:root {
+    --dark: #131313;
+    --light: #e4e4e4;
+    --border-color:#3f3f3f;
+    --accent-green: #e4e4e4;
+    --accent-teal: #1b1d25;
+    --accent-blue: #4B9BB9;
+    --accent-purple: #9B7EC9;
+    --accent-coral: #FF6B9D;
+    --light-bg: #fefae0;
+    --light-text: #1a1a2e;
+    --light-card: #FFFFFF;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+/* ============================================
+   BODY & BACKGROUND
+   ============================================ */
+
+
+body {
+    font-family: 'Familjen Grotesk', system-ui, -apple-system, sans-serif;
+    background: var(--dark);
+    color: var(--light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    perspective: 700px;
+    overflow-x: hidden;
+    transition: background-color 4s ease, color 4s ease;
+    position: relative;
+}
+
+
+body.light-mode {
+    background: linear-gradient(135deg, #F5F7FA 0%, #E8F0F8 100%);
+    color: var(--light-text);
+    transition: background-color 4s ease, color 4s ease;
+}
+
+
+/* Background decorations */
+body::before {
+    content: '';
+    position: fixed;
+    top: 20%;
+    left: 10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(155, 126, 201, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: 20%;
+    right: 10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 107, 157, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+
+/* ============================================
+   THEME TOGGLE
+   ============================================ */
+
+
+.theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: var(--accent-green);
+    border: none;
+    color: var(--dark);
+    padding: 0.7rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 200;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+
+.theme-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px var(--border-color);
+}
+
+
+body.light-mode .theme-toggle {
+    background: var(--accent-teal);
+    color: white;
+}
+
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
+
+.hero {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    position: relative;
+    z-index: 10;
+}
+
+.hero p {
+    position: fixed;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Bricolage Grotesque', serif;
+    font-size: 1.2rem;
+    color: var(--light);
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    z-index: 100;
+    white-space: nowrap;
+}
+
+
+body.light-mode .hero p {
+    color: var(--light-text);
+}
+
+
+.hero h1 {
+    font-family: 'Familjen Grotesk', sans-serif;
+    font-size: 11rem;
+    font-weight: 900;
+    color: var(--light);
+    text-align: center;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    transform-style: preserve-3d;
+    transition: transform 0.8s linear;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    padding: 50px;
+}
+
+
+body.light-mode .hero h1 {
+    color: var(--accent-teal);
+}
+
+
+.hero h2 {
+    font-family: 'Bricolage Grotesque', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-green);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 1rem;
+}
+
+
+body.light-mode .hero h2 {
+    color: var(--accent-teal);
+}
+
+
+.back-to-showcase {
+    color: var(--accent-green);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+
+.back-to-showcase:hover {
+    color: var(--accent-teal);
+}
+
+
+body.light-mode .back-to-showcase {
+    color: var(--accent-teal);
+}
+
+
+body.light-mode .back-to-showcase:hover {
+    color: var(--accent-blue);
+}
+
+
+/* ============================================
+   SECTION CARDS
+   ============================================ */
+
+
+.hero2 {
+    width: 90%;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    border-radius: 12px;
+    background: rgba(61, 61, 61, 0.08);
+    border: 2px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    animation: slideIn 0.6s ease-out backwards;
+    position: relative;
+    z-index: 10;
+}
+
+.links{
+    width: 90%;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    border-radius: 12px;
+    background: rgba(61, 61, 61, 0.08);
+    border: 2px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    animation: slideIn 0.6s ease-out backwards;
+    position: relative;
+    z-index: 10;
+}
+
+
+.hero2:nth-of-type(2) { animation-delay: 0.1s; }
+.hero2:nth-of-type(3) { animation-delay: 0.2s; }
+.hero2:nth-of-type(4) { animation-delay: 0.3s; }
+
+
+.hero2:hover {
+    transform: translateY(-10px);
+    border-color: var(--border-color);
+    background: rgba(61, 61, 61, 0.08);
+}
+
+
+body.light-mode .hero2 {
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px solid rgba(22, 22, 22, 0.3);
+}
+
+
+.hero2 p {
+    font-family: 'Familjen Grotesk', serif;
+    font-size: 1.1rem;
+    color: var(--light);
+    margin: 1rem 0;
+    line-height: 1.6;
+    text-align: center;
+}
+
+
+body.light-mode .hero2 p {
+    color: var(--light-text);
+}
+
+
+.hero2 p:first-child {
+    font-size: 0.9rem;
+    color: var(--accent-green);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+
+body.light-mode .hero2 p:first-child {
+    color: var(--accent-teal);
+}
+
+
+.hero2 h2 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--accent-green);
+    margin: 1rem 0;
+    font-family: 'Bricolage Grotesque', serif;
+}
+
+
+
+body.light-mode .hero2 h2 {
+    color: var(--accent-teal);
+}
+
+
+/* ============================================
+   BUILT WITH SECTION
+   ============================================ */
+
+
+.built-with {
+    width: 90%;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--accent-green);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 10;
+}
+
+
+.built-with h3 {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--accent-green);
+    margin-bottom: 2rem;
+}
+
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+}
+
+
+.tech-item {
+    padding: 1rem;
+    background: #9d8ce1;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--dark);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+
+.tech-item:hover {
+    background:#9d8ce1;
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px var(--border-color);
+}
+
+
+body.light-mode .tech-item {
+    background: rgba(58, 125, 150, 0.15);
+    color: var(--accent-teal);
+}
+
+
+body.light-mode .tech-item:hover {
+    background: rgba(58, 125, 150, 0.15);
+    box-shadow: 0 8px 25px rgb(203, 203, 203);
+}
+
+
+/* ============================================
+   VIDEO CONTAINER
+   ============================================ */
+
+
+.video-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 3rem auto;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    border: 2px solid var(--border-color);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 10;
+}
+
+
+.video-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+
+/* ============================================
+   STICKER EFFECT
+   ============================================ */
+
+
+.sticker {
+    position: fixed;
+    pointer-events: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    animation: floatUp 2.5s ease-out forwards;
+    border: 2px solid currentColor;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    background: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+body.light-mode .sticker {
+    background: rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+@keyframes floatUp {
+    0% {
+        opacity: 0.7;
+        transform: translateY(0) translateX(0) scale(1) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-80px) translateX(var(--tx)) scale(0.9) rotate(var(--rot));
+    }
+}
+
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+
+footer {
+    width: 100%;
+    padding: 3rem 2rem;
+    text-align: center;
+    background: var(--dark);
+    margin-top: 4rem;
+    position: relative;
+    z-index: 10;
+}
+
+.imgs{
+    width: 90%;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    border-radius: 12px;
+    background: rgba(61, 61, 61, 0.08);
+    border: 2px solid var(--border-color);
+    display: flex;
+    flex-direction:row;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    animation: slideIn 0.6s ease-out backwards;
+    position: relative;
+    z-index: 10;
+}
+
+img{
+    border-width:2px;
+    border-color:#1b1d25;
+    border-radius:18px;
+    padding:10px;
+    width:35%;
+    height:auto;
+}
+
+footer p {
+    font-size: 0.95rem;
+    color: var(--light);
+}
+
+
+footer a {
+    color: var(--accent-green);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+
+footer a:hover {
+    color: var(--accent-teal);
+}
+
+
+body.light-mode footer {
+    background: rgba(245, 247, 250, 0.3);
+}
+
+
+body.light-mode footer p {
+    color: var(--light-text);
+}
+
+
+body.light-mode footer a {
+    color: var(--accent-teal);
+}
+
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+
+@media (max-width: 1400px) {
+    .hero h1 {
+        font-size: 20rem;
+    }
+}
+
+
+@media (max-width: 1024px) {
+    .hero h1 {
+        font-size: 15rem;
+    }
+   
+    .hero p {
+        font-size: 1rem;
+        white-space: normal;
+    }
+
+
+    .running-banner span {
+        font-size: 1rem;
+    }
+}
+
+
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
+
+    .hero h1 {
+        font-size: 8rem;
+    }
+
+
+    .hero h2 {
+        font-size: 0.9rem;
+    }
+
+
+    .hero2 {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+
+    .hero2 h2 {
+        font-size: 1.5rem;
+    }
+
+
+    .tech-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    .running-banner span {
+        font-size: 0.9rem;
+        gap: 0.3rem;
+    }
+
+
+    .scroll-blur-gradient {
+        height: 350px;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+    }
+}
+
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 4rem;
+    }
+
+
+    .hero p {
+        top: 0.5rem;
+        font-size: 0.75rem;
+    }
+
+
+    .hero h2 {
+        font-size: 0.7rem;
+    }
+
+
+    .theme-toggle {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.7rem;
+    }
+
+
+    .hero2 {
+        width: 98%;
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+
+
+    .hero2 p {
+        font-size: 0.9rem;
+    }
+
+
+    .running-banner span {
+        font-size: 0.75rem;
+    }
+
+
+    .banner-section {
+        margin: 2rem 0;
+    }
+
+
+    .tech-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+
+    .scroll-blur-gradient {
+        height: 300px;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+}
+
+
+  </style>
+  </head>
+<body>
+  <!-- Theme toggle -->
+  <button class="theme-toggle" id="themeToggle">🌙 Light Mode</button>
+
+
+  <!-- Hero section -->
+  <div class="hero">
+    <p>  
+        <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a> 
+        <h3>Created by AraOluwa Adetunji<h3>
+    </p>
+    <h1 class="tilt-element">MinPlan</h1>
+    <h2>CONGRESSIONAL APP CHALLENGE · RI-01 · 2025</h2>
+  </div>
+
+  <!-- About me section -->
+  <div class="hero2">
+    <p>😎 About Me</p>
+    <h2>AraOluwa Adetunji</h2>
+    <p>Hi there! My name is AraOluwa Adetunji and I am a Junior at East Greenwich High School in East Greenwich Rhode Island. Although I come from the smallest state, I have a big vision for the future. The rise of Artificial intelligence and new AI systems has created a mix of both fear and excitement in what the future could hold. In my lightning talk Humanity in The Era of Superintelligence, I will address some of these issues and provide my own insight about where humanity is headed. I started coding when I was 11 years old, due to inspiration from my older brother, in order to make games, but quickly found my own passion for app development as I started to realize the power of harnessing technology for social good. In the future, I want to continue to use this ability to make personalized apps and programs to solve problems in my community and beyond. When I am not coding you can find me at my local church youth group, playing my cello, watching movies, or racing 300 meter hurdles during the track season.</p>
+</div>
+
+
+  <!-- What is Mini Plan section -->
+  <div class="hero2">
+    <p> 📅 The App </p>
+    <h2>MinPlan</h2>
+    <p>MinPlan is a minimalist college planner application to help students better keep track of important deadlines, scores, events, and programs so that they are better equipped to apply to college when the time comes. It uses an iterative process that allows students to quickly add or edit key areas of interest in an organized manner so that compiling important college application items is simple and easy. To keep everything clean and organized, the app primarily uses a system of drop down menus that allows the users to add items of interest like the descriptions of awards, community service events, or scholarship links without a hassle. The app also allows people to track events and upcoming tasks that they need to complete. In the future, I want to add a notification system to make the process even more seamless for users.</p>
+</div>
+
+  <!-- Built with section -->
+  <div class="hero2">
+    <p>🔨 Tools</p>
+    <h2 style="padding-bottom:20px">Built With</h2>
+    <div class="tech-grid">
+      <div class="tech-item">Expo</div>
+      <div class="tech-item">Appwrite</div>
+      <div class="tech-item">Node.js</div>
+      <div class="tech-item">React Native</div>
+    </div>
+  </div>
+
+
+  <!-- Video section -->
+  <div class="video-container">
+    <iframe src="https://www.youtube.com/embed/wICg8ndl9tc?si=WsOswbeFBH-ZKrHr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy='strict-origin-when-cross-origin'
+ allowfullscreen></iframe>
+  </div>
+
+    <!-- Stats section -->
+    <div class="hero2">
+        <p>🖼️ Screenshots</p>
+    <div class="imgs">
+        <img src="assets\Dashboard.png"></img>
+        <img src="assets\Task.png"></img>
+        <img src="assets\Plan.png"></img>
+    </div>
+    </div>
+
+    <div class="hero2">
+        <p style="padding-bottom:30px">🔗 Links</p>
+        
+        <div class="tech-grid">
+
+        <a class ="tech-item" href="https://github.com/ANASTUDIOS">GitHub</a>
+        <a  class ="tech-item" href="https://minplan--kg48hiwme3.expo.app/">Live App</a>
+
+        </div>
+    </div>
+
+  <footer>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+  <!-- Required: keep this line so arrow key navigation works -->
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+ 
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+    const bodyElement = document.body;
+
+
+    // Check saved theme preference
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+      bodyElement.classList.add('light-mode');
+      themeToggle.textContent = '🌞 Dark Mode';
+    }
+
+
+    themeToggle.addEventListener('click', () => {
+      bodyElement.classList.toggle('light-mode');
+      const isLightMode = bodyElement.classList.contains('light-mode');
+      themeToggle.textContent = isLightMode ? '🌞 Dark Mode' : '🌙 Light Mode';
+      localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+    });
+
+
+    // Tilt effect
+    const h1 = document.querySelector('.tilt-element');
+    const maxRotation = 30;
+   
+    document.addEventListener('mousemove', (e) => {
+      const rect = h1.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+     
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+     
+      const distX = ((mouseX - centerX) / window.innerWidth) * maxRotation;
+      const distY = ((mouseY - centerY) / window.innerHeight) * maxRotation;
+     
+      h1.style.transform = `perspective(1000px) rotateX(${-distY}deg) rotateY(${distX}deg)`;
+    });
+   
+    document.addEventListener('mouseleave', () => {
+      h1.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+    });
+
+
+    // Sticker effect
+    const stickers = [
+      { text: 'Education', emoji: '📚' },
+      { text: 'Planning', emoji: '📅' },
+      { text: 'Scheduling', emoji: '⏰' },
+      { text: 'Tasks', emoji: '✅' },
+      { text: 'Goals', emoji: '🎯' },
+      { text: 'Time', emoji: '⏳' },
+      { text: 'Progress', emoji: '📈' },
+      { text: 'Study', emoji: '🎓' }
+    ];
+
+
+    const stickerColors = [
+      { bg: '#91D37E', text: '#777777', border: '#91D37E' },
+      { bg: '#3A7D96', text: '#777777', border: '#3A7D96' },
+      { bg: '#4B9BB9', text: '#777777', border: '#4B9BB9' }
+    ];
+
+
+    let lastStickerTime = 0;
+    const stickerDelay = 200;
+
+
+    const heroDiv = document.querySelector('.hero');
+   
+    heroDiv.addEventListener('mousemove', (e) => {
+      const now = Date.now();
+      if (now - lastStickerTime < stickerDelay) return;
+      lastStickerTime = now;
+
+
+      const randomSticker = stickers[Math.floor(Math.random() * stickers.length)];
+      const randomColor = stickerColors[Math.floor(Math.random() * stickerColors.length)];
+
+
+      const sticker = document.createElement('div');
+      sticker.className = 'sticker';
+      sticker.innerHTML = `${randomSticker.emoji} ${randomSticker.text}`;
+      sticker.style.left = e.clientX + 'px';
+      sticker.style.top = e.clientY + 'px';
+      sticker.style.backgroundColor = randomColor.bg;
+      sticker.style.color = randomColor.text;
+      sticker.style.border = `2px solid ${randomColor.border}`;
+     
+      const randomTX = (Math.random() - 0.5) * 120;
+      const randomRot = (Math.random() - 0.5) * 45;
+     
+      sticker.style.setProperty('--tx', randomTX + 'px');
+      sticker.style.setProperty('--rot', randomRot + 'deg');
+
+
+      document.body.appendChild(sticker);
+
+
+      setTimeout(() => {
+        sticker.remove();
+      }, 2500);
+    });
+  </script>
+</body>
+</html>
