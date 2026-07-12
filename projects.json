@@ -343,6 +343,21 @@
     "district": "NC-02",
     "state": "NC",
     "tags": ["health", "ai", "accessibility"]
+  }
+  {
+  "slug": "MA-04",
+  "name": "Aaron Prager,
+  "appName": "BoostT1D",
+  "description": "Turning complex Type 1 diabetes data into clear, personalized guidance",
+  "thumbnail": "sites/MA-04/BoostT1D.png",
+  "location": {
+    "lat": 42.338032,
+    "lng": -71.211578,
+    "label": "Newton, MA"
+  },
+  "district": "MA-04",
+  "state": "MA",
+  "tags": ["health", "ai"]
   },
   {
   "slug": "CA-49",
