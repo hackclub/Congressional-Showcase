@@ -465,6 +465,19 @@
   "tags": ["health", "ai"]
 },
 {
+  "slug": "WI-05",
+  "name": "Ashok Nambisan and Bharat Nambisan",
+  "appName": "IntergenTEC",
+  "description": "A platform that allows teen volunteers to provide intergenerational care to older adults",
+  "thumbnail": "sites/WI-05/thumbnail.png",
+  "location": {
+    "lat": 43.1178,
+    "lng": -88.1172,
+    "label": "Menomonee Falls, WI"
+  },
+  "district": "WI-05",
+  "state": "WI",
+  "tags": ["health", "social"]
   "slug": "MN-05",
   "name": "Ved Bastodkar",
   "appName": "Bread Head",
