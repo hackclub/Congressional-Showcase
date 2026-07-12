@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis will handle smooth scrolling */
+}
+
+body {
+  background-color: #061A40;
+  color: #B9D6F2;
+  font-family: 'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Lenis smooth scroll */
+html.lenis {
+  height: auto;
+}
+
+html.lenis body {
+  height: auto;
+}
+
+html.lenis body {
+  overflow: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+  touch-action: none;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* High contrast utility classes */
+.contrast-high {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Glassmorphism effect */
+.glass {
+  background: rgba(11, 26, 64, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(185, 214, 242, 0.1);
+}
