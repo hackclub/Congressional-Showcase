@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoniSight | Paul Rowe</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Figtree:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #07111e;
+      --navy2:  #0d1e32;
+      --navy3:  #162840;
+      --cyan:   #00d4f0;
+      --teal:   #00f0bc;
+      --glow:   rgba(0, 212, 240, 0.18);
+      --glow2:  rgba(0, 240, 188, 0.12);
+      --text:   #dce9f5;
+      --muted:  #6a85a0;
+      --glass:  rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.09);
+      --grad: linear-gradient(135deg, var(--cyan), var(--teal));
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Figtree', sans-serif;
+      background: var(--navy);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── Background canvas ─────────────────────────────────── */
+    .bg-canvas {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 20%, rgba(0,212,240,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 80%, rgba(0,240,188,0.07) 0%, transparent 60%),
+        var(--navy);
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0,212,240,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,240,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* ─── Back link override ─────────────────────────────────── */
+    .back-to-showcase {
+      position: fixed;
+      top: 1.2rem; left: 1.4rem;
+      z-index: 100;
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-decoration: none;
+      background: rgba(7,17,30,0.7);
+      border: 1px solid var(--glass-border);
+      padding: 0.45rem 0.9rem;
+      border-radius: 99px;
+      backdrop-filter: blur(10px);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .back-to-showcase:hover { color: var(--cyan); border-color: rgba(0,212,240,0.35); }
+
+    /* ─── Layout ────────────────────────────────────────────── */
+    main {
+      position: relative; z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 1.5rem 5rem;
+    }
+
+    /* ─── Hero ──────────────────────────────────────────────── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 1rem 4rem;
+      position: relative;
+    }
+
+    /* Ultrasound pulse rings */
+    .pulse-rings {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 340px; height: 340px;
+      pointer-events: none;
+    }
+    .ring {
+      position: absolute; inset: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(0,212,240,0.15);
+      animation: pulse-out 3.5s cubic-bezier(0.2,0.6,0.4,1) infinite;
+    }
+    .ring:nth-child(2) { animation-delay: 0.7s; }
+    .ring:nth-child(3) { animation-delay: 1.4s; }
+    .ring:nth-child(4) { animation-delay: 2.1s; }
+    @keyframes pulse-out {
+      0%   { transform: scale(0.3); opacity: 0.7; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+
+    /* Logo */
+    .hero-logo {
+      width: 108px; height: 108px;
+      border-radius: 24px;
+      object-fit: cover;
+      position: relative; z-index: 2;
+      box-shadow:
+        0 0 0 1px rgba(0,212,240,0.2),
+        0 0 32px rgba(0,212,240,0.2),
+        0 20px 60px rgba(0,0,0,0.5);
+      animation: logo-in 0.9s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    @keyframes logo-in {
+      from { opacity: 0; transform: translateY(20px) scale(0.88); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .hero-eyebrow {
+      margin-top: 1.8rem;
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      position: relative; z-index: 2;
+      animation: fade-up 0.7s 0.2s both;
+    }
+
+    .hero h1 {
+      margin-top: 0.6rem;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      position: relative; z-index: 2;
+      background: linear-gradient(135deg, #ffffff 30%, var(--cyan) 70%, var(--teal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fade-up 0.7s 0.3s both;
+    }
+
+    .hero-by {
+      margin-top: 0.9rem;
+      font-size: 1rem;
+      color: var(--muted);
+      position: relative; z-index: 2;
+      animation: fade-up 0.7s 0.4s both;
+    }
+    .hero-by strong { color: var(--text); font-weight: 600; }
+
+    .hero-tagline {
+      margin-top: 1.4rem;
+      max-width: 480px;
+      font-size: 1.1rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: #8ea9c2;
+      position: relative; z-index: 2;
+      animation: fade-up 0.7s 0.5s both;
+    }
+
+    .hero-badges {
+      margin-top: 2rem;
+      display: flex; gap: 0.6rem; flex-wrap: wrap;
+      justify-content: center;
+      position: relative; z-index: 2;
+      animation: fade-up 0.7s 0.6s both;
+    }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.35rem 0.85rem;
+      border-radius: 99px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .badge.accent {
+      border-color: rgba(0,212,240,0.3);
+      background: rgba(0,212,240,0.08);
+      color: var(--cyan);
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ─── Divider ───────────────────────────────────────────── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,212,240,0.2), transparent);
+      margin: 0 0 2.5rem;
+    }
+
+    /* ─── Cards ─────────────────────────────────────────────── */
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2.2rem 2.4rem;
+      margin-bottom: 1.8rem;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      border-color: rgba(0,212,240,0.18);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,212,240,0.08);
+    }
+
+    .card-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.8rem;
+    }
+    .card h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+    .card p {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: #8ea9c2;
+      margin-bottom: 0.8rem;
+    }
+    .card p:last-child { margin-bottom: 0; }
+    .card p strong { color: var(--text); }
+
+    /* ─── How It Works ──────────────────────────────────────── */
+    .steps {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.4rem;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.1rem;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(0,212,240,0.15), rgba(0,240,188,0.15));
+      border: 1px solid rgba(0,212,240,0.22);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+    .step-body { padding-top: 0.3rem; }
+    .step-body strong {
+      display: block;
+      font-size: 0.93rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.22rem;
+    }
+    .step-body span {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ─── Tech Stack ────────────────────────────────────────── */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.85rem;
+      margin-top: 1.4rem;
+    }
+    .tech-item {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.85rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .tech-item:hover {
+      border-color: rgba(0,212,240,0.2);
+      background: rgba(0,212,240,0.05);
+    }
+    .tech-icon {
+      width: 32px; height: 32px; flex-shrink: 0;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .tech-info { min-width: 0; }
+    .tech-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .tech-role {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 0.08rem;
+    }
+
+    /* ─── Video ─────────────────────────────────────────────── */
+    .video-wrap {
+      position: relative;
+      margin-top: 1.2rem;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(0,212,240,0.15);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,240,0.08);
+    }
+    .video-wrap::before {
+      content: '';
+      display: block;
+      padding-top: 56.25%;
+    }
+    .video-wrap iframe {
+      position: absolute;
+      inset: 0; width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* ─── Links ─────────────────────────────────────────────── */
+    .links-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.4rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .link-btn.primary {
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      color: #07111e;
+      box-shadow: 0 4px 20px rgba(0,212,240,0.25);
+    }
+    .link-btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,212,240,0.35);
+    }
+    .link-btn.secondary {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      color: var(--text);
+    }
+    .link-btn.secondary:hover {
+      border-color: rgba(0,212,240,0.3);
+      color: var(--cyan);
+      transform: translateY(-2px);
+    }
+
+    /* ─── Inspiration callout ───────────────────────────────── */
+    .callout {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-top: 1.2rem;
+      padding: 1.2rem 1.4rem;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(0,212,240,0.06), rgba(0,240,188,0.04));
+      border: 1px solid rgba(0,212,240,0.15);
+    }
+    .callout-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      line-height: 1;
+      margin-top: 0.1rem;
+    }
+    .callout p {
+      font-size: 0.92rem !important;
+      font-style: italic;
+      color: #7fb8cc !important;
+      margin: 0 !important;
+      line-height: 1.65;
+    }
+
+    /* ─── Footer ────────────────────────────────────────────── */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 2.5rem 1rem 3rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .footer-divider {
+      width: 60px; height: 1px;
+      background: var(--glass-border);
+      margin: 0 auto 1.2rem;
+    }
+
+    /* ─── Scroll reveals ────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 600px) {
+      main { padding: 0 1rem 4rem; }
+      .card { padding: 1.6rem 1.4rem; }
+      .hero { padding: 7rem 0.5rem 3rem; }
+      .tech-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-canvas"></div>
+  <div class="bg-grid"></div>
+
+  <a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
+
+  <main>
+    <!-- ── Hero ── -->
+    <section class="hero">
+      <div class="pulse-rings">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+      <img src="../../sites/NJ-11/logo1.png" alt="SoniSight logo" class="hero-logo"
+           onerror="this.style.display='none'">
+      <p class="hero-eyebrow">Congressional App Challenge</p>
+      <h1>SoniSight</h1>
+      <p class="hero-by">by <strong>Paul Rowe</strong></p>
+      <p class="hero-tagline">
+        AI-powered breast ultrasound diagnostics — detecting the unseen so doctors can see more clearly.
+      </p>
+      <div class="hero-badges">
+        <span class="badge accent">AI / Medical</span>
+        <span class="badge">React + FastAPI</span>
+        <span class="badge">Gemini 2.5 Flash</span>
+        <span class="badge">OpenCV</span>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ── About Me ── -->
+    <div class="card reveal">
+      <p class="card-label">The Builder</p>
+      <h2>About Me</h2>
+      <p>
+        I'm Paul Rowe, a high schooler passionate about the intersection of computer science, machine learning, and healthcare.
+        I started coding because I wanted to make things that actually matter, like software that helps real people navigate real problems.
+      </p>
+      <p>
+        SoniSight was born from a personal place: my mother's experience with uncertain biopsy results and the anxiety that
+        comes from waiting on ambiguous imaging. I wanted to explore whether AI could bring more clarity, as well as more peace of mind,
+        to that process.
+      </p>
+    </div>
+
+    <!-- ── About the App ── -->
+    <div class="card reveal">
+      <p class="card-label">The App</p>
+      <h2>What is SoniSight?</h2>
+      <p>
+        SoniSight is a diagnostic web application that analyzes breast ultrasound images using computer vision and AI,
+        identifying whether a mass appears <strong>normal</strong> or <strong>suspicious</strong>, and explaining why.
+      </p>
+      <p>
+        It's not a replacement for a radiologist, but a fast, accessible, and explainable second opinion.
+      </p>
+
+      <div class="callout">
+        <span class="callout-icon">💡</span>
+        <p>
+          Inspired by my mother's experience with uncertain biopsy results, and built to help bridge the gap between raw imaging
+          data and human understanding.
+        </p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Upload or choose a sample</strong>
+            <span>Drop in a breast ultrasound image, or pick from built-in examples.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>OpenCV extracts features</strong>
+            <span>Shape, margins, texture, contrast, and circularity are computed from the image.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Gemini AI interprets them</strong>
+            <span>Google Gemini 2.5 Flash reads those descriptors and outputs probabilities with a plain-English rationale.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Visual overlay highlights the ROI</strong>
+            <span>The detected region of interest is drawn directly onto the image so you know exactly what was analyzed.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Tech Stack ── -->
+    <div class="card reveal">
+      <p class="card-label">Under the Hood</p>
+      <h2>Tech Stack</h2>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="tech-icon" style="background:rgba(97,218,251,0.12);">⚛️</div>
+          <div class="tech-info">
+            <div class="tech-name">React + Vite</div>
+            <div class="tech-role">Frontend</div>
+          </div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon" style="background:rgba(0,212,240,0.12);">🚀</div>
+          <div class="tech-info">
+            <div class="tech-name">FastAPI</div>
+            <div class="tech-role">Backend API</div>
+          </div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon" style="background:rgba(255,165,0,0.12);">👁️</div>
+          <div class="tech-info">
+            <div class="tech-name">OpenCV</div>
+            <div class="tech-role">Image Analysis</div>
+          </div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon" style="background:rgba(66,133,244,0.12);">🤖</div>
+          <div class="tech-info">
+            <div class="tech-name">Gemini 2.5 Flash</div>
+            <div class="tech-role">AI Model</div>
+          </div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon" style="background:rgba(0,240,188,0.12);">▲</div>
+          <div class="tech-info">
+            <div class="tech-name">Vercel</div>
+            <div class="tech-role">Frontend Host</div>
+          </div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon" style="background:rgba(100,80,220,0.12);">🎛️</div>
+          <div class="tech-info">
+            <div class="tech-name">Render</div>
+            <div class="tech-role">Backend Host</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Demo Video ── -->
+    <div class="card reveal">
+      <p class="card-label">See It in Action</p>
+      <h2>Demo</h2>
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube.com/embed/R_Qm-wHADtE"
+          title="SoniSight Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <!-- ── Links ── -->
+    <div class="card reveal">
+      <p class="card-label">Explore</p>
+      <h2>Links</h2>
+      <p>Try the live app, browse the code, or check out the dataset used to train and test the model.</p>
+      <div class="links-row">
+        <a class="link-btn primary" href="https://sonisight.app" target="_blank" rel="noopener">
+          <span>↗</span> Live App
+        </a>
+        <a class="link-btn secondary" href="https://github.com/paulrowe/sonisight-pr" target="_blank" rel="noopener">
+          <span>⌥</span> GitHub Repo
+        </a>
+        <a class="link-btn secondary" href="https://www.kaggle.com/datasets/aryashah2k/breast-ultrasound-images-dataset" target="_blank" rel="noopener">
+          <span>◈</span> Dataset
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-divider"></div>
+    <p>Congressional App Challenge &bull; <a href="../../">Back to Showcase</a></p>
+  </footer>
+
+  <script src="../../assets/js/nav.js" data-root="../../"></script>
+  <script>
+    // Scroll-reveal
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
