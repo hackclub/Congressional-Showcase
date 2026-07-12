@@ -135,6 +135,21 @@
     "tags": ["health", "ai", "safety"]
   },
   {
+    "slug": "NJ-06",
+    "name": "Vaibhav Sitaraman and Eric Dai",
+    "appName": "RoadWatch",
+    "description": "RoadWatch is an AI-powered dashcam system that revolutionizes how both drivers and local governments interact with road infrastructure.",
+    "thumbnail": "sites/NJ-06/thumbnail.png",
+    "location": {
+      "lat": 40.525532,
+      "lng": -74.388229,
+      "label": "Edison, NJ"
+    },
+    "district": "NJ-06",
+    "state": "NJ",
+    "tags": ["infrastructure", "computer-vision", "ai"]
+  },
+  {
     "slug": "DC-01",
     "name": "Shivaj Raman",
     "appName": "DIVENDO",
