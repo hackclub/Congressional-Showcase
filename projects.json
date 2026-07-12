@@ -1488,4 +1488,18 @@
   "location": { "lat": 40.7282, "lng": -73.7949, "label": "Queens, NY" },
   "district": "NY-13", "state": "NY", "tags": ["environment", "civic", "health", "social"]
 }
-]
+{
+  "slug": "CA-46",
+  "name": "Xiong Yi",
+  "appName": "MathFluent",
+  "description": "MathFluent is a conceptual learning platform that helps students understand the logic behind mathematics so they can think critically, solve problems confidently, and explain why their answers are correct.",
+  "thumbnail": "sites/CA-46/thumbnail.png",
+  "location": {
+    "lat": 33.77,
+    "lng": -117.92,
+    "label": "Anaheim, CA"
+  },
+  "district": "CA-46",
+  "state": "CA",
+  "tags": ["Education", "Mathematics"]
+}]
